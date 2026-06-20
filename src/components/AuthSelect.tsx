@@ -15,12 +15,12 @@ const AuthSelect: React.FC<AuthSelectProps> = ({
 }) => {
   return (
     <div className="w-full">
-      {label && <label className="text-[12px] font-bold text-black block mb-1">{label}</label>}
+      {label && <label className="text-[12px] font-bold text-ink block mb-1.5">{label}</label>}
       <select
         name={name}
         value={value}
         onChange={onChange}
-        className="w-full h-[40px] border border-gray-300 rounded-[10px] px-3 bg-white text-sm outline-none cursor-pointer text-gray-500 focus:border-indigo-500"
+        className="w-full h-[42px] border border-line rounded-xl px-3.5 bg-card text-[13.5px] outline-none cursor-pointer text-ink-soft focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-snappy"
         required={required}
       >
         <option value="">{placeholder}</option>

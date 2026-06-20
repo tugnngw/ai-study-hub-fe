@@ -1,7 +1,9 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 @theme {
-  --font-sans: ui-sans-serif, -apple-system, "SF Pro Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", "Inter", ui-sans-serif, -apple-system, system-ui, sans-serif;
 
   /* Neutral ink scale (slightly warm, cool-violet undertone) */
   --color-ink: #15131F;
@@ -34,19 +36,52 @@
   --color-warning: #D97706;
   --color-warning-bg: #FFF6E7;
   --color-warning-line: #FBE3B8;
+
+  /* Elevation system — soft, cool-tinted shadows (never pure black) */
+  --shadow-xs: 0 1px 2px 0 rgba(28, 14, 69, 0.04);
+  --shadow-card: 0 1px 2px rgba(28, 14, 69, 0.04), 0 1px 1px rgba(28, 14, 69, 0.03);
+  --shadow-card-hover: 0 8px 24px -6px rgba(28, 14, 69, 0.10), 0 2px 6px -2px rgba(28, 14, 69, 0.06);
+  --shadow-popover: 0 12px 32px -8px rgba(28, 14, 69, 0.16), 0 4px 10px -4px rgba(28, 14, 69, 0.08);
+  --shadow-modal: 0 24px 64px -12px rgba(28, 14, 69, 0.28), 0 8px 20px -6px rgba(28, 14, 69, 0.12);
+  --shadow-brand-glow: 0 8px 20px -4px rgba(124, 58, 237, 0.28);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
     background-color: var(--color-surface);
     color: var(--color-ink);
+    font-feature-settings: "ss01" 1, "cv05" 1;
   }
   ::selection {
     background-color: var(--color-brand-200);
     color: var(--color-brand-900);
+  }
+
+  /* Consistent, visible focus ring across the app (a11y + polish) */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--color-brand-400);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
@@ -59,7 +94,56 @@
     background-color: var(--color-line);
     border-radius: 999px;
   }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-ink-faint);
+  }
   .scrollbar-thin::-webkit-scrollbar-track {
     background-color: transparent;
   }
+
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+
+  /* Reusable elevation utilities so shadows stay consistent everywhere */
+  .shadow-card { box-shadow: var(--shadow-card); }
+  .shadow-card-hover { box-shadow: var(--shadow-card-hover); }
+  .shadow-popover { box-shadow: var(--shadow-popover); }
+  .shadow-modal { box-shadow: var(--shadow-modal); }
+  .shadow-brand-glow { box-shadow: var(--shadow-brand-glow); }
+
+  .transition-snappy {
+    transition-timing-function: var(--ease-out);
+    transition-duration: 180ms;
+  }
+
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-up {
+    animation: fade-in-up 320ms var(--ease-out) both;
+  }
+
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .animate-scale-in {
+    animation: scale-in 180ms var(--ease-out) both;
+  }
+
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
+  }
+  .animate-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+    animation: shimmer 1.6s infinite;
+  }
 }
+

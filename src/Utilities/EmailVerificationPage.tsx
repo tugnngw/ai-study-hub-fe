@@ -1,24 +1,32 @@
 import React from 'react';
+import { AllPages } from '../App';
+import { MailCheck } from 'lucide-react';
 
-interface Props { onNavigate: (page: any) => void; }
+interface Props {
+  onNavigate: (page: AllPages) => void;
+}
 
 const EmailVerificationPage: React.FC<Props> = ({ onNavigate }) => {
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-[#3B82F6] via-[#6366F1] to-[#C084FC] flex items-center justify-center p-4 text-black font-sans antialiased">
-      <div className="w-full max-w-[400px] bg-white rounded-[24px] p-8 shadow-xl flex flex-col items-center text-center">
-        
-        <div className="w-12 h-12 bg-[#D1FAE5] text-[#10B981] rounded-full flex items-center justify-center mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
+    <div className="relative w-full min-h-screen bg-gradient-to-br from-brand-900 via-brand-700 to-brand-500 flex items-center justify-center p-4 font-sans text-ink antialiased overflow-hidden">
+      <div className="pointer-events-none absolute -top-32 -left-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 -right-24 w-96 h-96 rounded-full bg-brand-300/20 blur-3xl" />
+
+      <div className="animate-scale-in relative z-10 w-full max-w-[400px] bg-card rounded-[24px] p-8 shadow-modal flex flex-col items-center text-center">
+        <div className="w-14 h-14 bg-success-bg text-success border border-success-line rounded-full flex items-center justify-center mb-4">
+          <MailCheck size={26} strokeWidth={2} />
         </div>
 
-        <h2 className="text-[18px] font-bold mb-2">Tạo tài khoản</h2>
-        <p className="text-gray-500 text-xs leading-relaxed max-w-[260px] mb-6">
-          Tài khoản của bạn đã được tạo thành công. Vui lòng xác nhận email để tiếp tục.
+        <h2 className="font-display text-[19px] font-bold mb-2">Tạo tài khoản thành công</h2>
+        <p className="text-ink-soft text-[13.5px] leading-relaxed max-w-[280px] mb-7">
+          Tài khoản của bạn đã được tạo. Vui lòng xác nhận email để bắt đầu sử dụng AI Study Hub.
         </p>
 
-        <button type="button" onClick={() => onNavigate('login')} className="w-full h-[42px] bg-[#5368FF] text-white font-bold rounded-[10px] cursor-pointer text-sm shadow-md hover:opacity-95">
+        <button
+          type="button"
+          onClick={() => onNavigate('login')}
+          className="w-full h-[44px] bg-brand-500 hover:bg-brand-600 active:scale-[0.99] text-white font-bold rounded-xl text-[14.5px] shadow-brand-glow transition-snappy cursor-pointer"
+        >
           Đăng nhập ngay
         </button>
       </div>

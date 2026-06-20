@@ -1,104 +1,160 @@
 import React from 'react';
+import { AllPages } from '../App';
+import {
+  BotMessageSquare,
+  Cloud,
+  GraduationCap,
+  Share2,
+  Sparkles,
+  Upload,
+} from 'lucide-react';
 
 interface WelcomePageProps {
-  onNavigate: (page: any) => void;
+  onNavigate: (page: AllPages) => void;
 }
+
+const features = [
+  {
+    icon: BotMessageSquare,
+    title: 'Trợ lý AI thông minh',
+    desc: 'Đặt câu hỏi và nhận câu trả lời tức thì từ chính tài liệu học tập của bạn.',
+  },
+  {
+    icon: Share2,
+    title: 'Chia sẻ tài liệu',
+    desc: 'Cùng học, cùng chia sẻ tài liệu với bạn bè và đồng nghiệp một cách dễ dàng.',
+  },
+  {
+    icon: Cloud,
+    title: 'Lưu trữ trên Cloud',
+    desc: 'Tài liệu được lưu trữ an toàn, truy cập mọi lúc mọi nơi không giới hạn.',
+  },
+  {
+    icon: Upload,
+    title: 'Tải lên dễ dàng',
+    desc: 'Kéo - thả tệp tin nhanh chóng, hỗ trợ đa dạng định dạng tài liệu.',
+  },
+];
 
 const WelcomePage: React.FC<WelcomePageProps> = ({ onNavigate }) => {
   return (
-    <div className="w-full min-h-screen bg-[#EBEBEB] font-sans text-black antialiased flex flex-col items-center p-4">
-      <div className="w-full max-w-[1024px] bg-white shadow-md flex flex-col items-center pb-12">
-        
-        {/* HEADER BAR */}
-        <header className="w-full h-[70px] bg-white border-b border-gray-100 flex items-center justify-between px-6 md:px-12 shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-[#7B92FF] rounded-[12px] flex items-center justify-center text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-              </svg>
-            </div>
-            <span className="text-[22px] font-bold tracking-tight text-black">AI STUDY HUB</span>
+    <div className="w-full min-h-screen bg-surface font-sans text-ink antialiased">
+      {/* HEADER */}
+      <header className="w-full h-[76px] bg-card/90 backdrop-blur border-b border-line flex items-center justify-between px-6 md:px-12 sticky top-0 z-30">
+        <div className="flex items-center gap-2.5">
+          <div className="w-10 h-10 bg-gradient-to-br from-brand-500 to-brand-600 rounded-xl flex items-center justify-center text-white shadow-brand-glow">
+            <GraduationCap size={22} strokeWidth={2.25} />
           </div>
-          <div className="flex items-center gap-2">
-            <button type="button" onClick={() => onNavigate('login')} className="h-[32px] px-4 rounded-full border border-[#8A51FF]/30 text-xs font-bold text-[#8A51FF] hover:bg-purple-50 transition-colors cursor-pointer">
-              Đăng Nhập
-            </button>
-            <button type="button" onClick={() => onNavigate('register')} className="h-[32px] px-4 rounded-full border border-[#8A51FF]/30 text-xs font-bold text-[#8A51FF] hover:bg-purple-50 transition-colors cursor-pointer">
-              Tạo Tài Khoản
-            </button>
-          </div>
-        </header>
-
-        {/* HERO */}
-        <section className="text-center mt-12 px-6 flex flex-col items-center">
-          <div className="h-[36px] px-4 bg-[#7B92FF]/15 text-[#7B92FF] rounded-full flex items-center gap-1.5 mb-6 text-sm font-bold">
-            <span>⚡</span> Powered by AI Technology
-          </div>
-          <h1 className="text-[36px] font-bold leading-tight text-black">
-            Manage your learning documents <br />
-            <span className="text-[#9BAFFF]">with AI</span>
-          </h1>
-          <p className="mt-3 text-gray-500 text-xs max-w-[420px] leading-relaxed">
-            Upload, organize, and chat with your study materials. Get instant answers powered by advanced AI technology.
-          </p>
-        </section>
-
-        {/* FEATURES BANNER */}
-        <section className="text-center mt-12 w-full px-6">
-          <h2 className="text-[32px] font-bold text-black">Everything you need to succeed</h2>
-          <p className="text-gray-400 text-xs mt-1">Powerful features to enhance your learning experience</p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10 w-full max-w-[900px] mx-auto">
-            {/* Card 1 */}
-            <div className="bg-white border border-gray-300 rounded-[16px] p-5 flex flex-col items-start text-left gap-3 min-h-[220px]">
-              <div className="w-10 h-10 bg-[#7B92FF]/20 rounded-[10px] flex items-center justify-center text-[#7B92FF]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
-              </div>
-              <h3 className="text-base font-bold text-black">AI Chatbot</h3>
-              <p className="text-gray-500 text-xs leading-normal">Chat with AI to get instant answers from your documents</p>
-            </div>
-            {/* Card 2 */}
-            <div className="bg-white border border-gray-300 rounded-[16px] p-5 flex flex-col items-start text-left gap-3 min-h-[220px]">
-              <div className="w-10 h-10 bg-[#7B92FF]/20 rounded-[10px] flex items-center justify-center text-[#7B92FF]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" /></svg>
-              </div>
-              <h3 className="text-base font-bold text-black">Document Sharing</h3>
-              <p className="text-gray-500 text-xs leading-normal">Collaborate with classmates by sharing your study materials</p>
-            </div>
-            {/* Card 3 */}
-            <div className="bg-white border border-gray-300 rounded-[16px] p-5 flex flex-col items-start text-left gap-3 min-h-[220px]">
-              <div className="w-10 h-10 bg-[#7B92FF]/20 rounded-[10px] flex items-center justify-center text-[#7B92FF]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
-              </div>
-              <h3 className="text-base font-bold text-black">Cloud Storage</h3>
-              <p className="text-gray-500 text-xs leading-normal">Store your documents securely in the cloud with unlimited access</p>
-            </div>
-            {/* Card 4 */}
-            <div className="bg-white border border-gray-300 rounded-[16px] p-5 flex flex-col items-start text-left gap-3 min-h-[220px]">
-              <div className="w-10 h-10 bg-[#7B92FF]/20 rounded-[10px] flex items-center justify-center text-[#7B92FF]">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-              </div>
-              <h3 className="text-base font-bold text-black">Upload Documents</h3>
-              <p className="text-gray-500 text-xs leading-normal">Easy drag-and-drop file upload with multiple format support</p>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA */}
-        <section className="w-full max-w-[900px] bg-gradient-to-r from-[#70B0FF] to-[#B38FFF] rounded-[16px] flex flex-col items-center justify-center text-center p-8 mt-12 gap-3 text-white">
-          <h2 className="text-2xl font-bold">Ready to transform your studying?</h2>
-          <p className="text-xs opacity-90">Join thousands of students already using AI Study Hub</p>
-          <button type="button" onClick={() => onNavigate('register')} className="h-[44px] px-8 bg-white text-[#7CA0FF] rounded-[12px] font-bold text-sm shadow-sm hover:bg-gray-50 transition-all cursor-pointer mt-2">
-            Get Started for Free
+          <span className="font-display text-[19px] font-bold tracking-tight">AI Study Hub</span>
+        </div>
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => onNavigate('login')}
+            className="h-[38px] px-4 rounded-xl text-[13.5px] font-bold text-ink-soft hover:bg-surface-alt hover:text-ink transition-snappy cursor-pointer"
+          >
+            Đăng nhập
           </button>
-        </section>
+          <button
+            type="button"
+            onClick={() => onNavigate('register')}
+            className="h-[38px] px-5 rounded-xl border border-brand-200 text-[13.5px] font-bold text-brand-600 bg-brand-50 hover:bg-brand-100 transition-snappy cursor-pointer"
+          >
+            Tạo tài khoản
+          </button>
+        </div>
+      </header>
 
-        {/* FOOTER */}
-        <footer className="w-full max-w-[900px] bg-black text-white rounded-b-[16px] p-6 text-left mt-12">
-          <h4 className="text-sm font-bold">AI Study Hub</h4>
-          <p className="text-[11px] opacity-40 mt-1">Modern AI-powered document management system for students and educators.</p>
-        </footer>
-      </div>
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[680px] h-[680px] rounded-full bg-brand-200/30 blur-3xl" />
+        <div className="relative z-10 text-center pt-20 pb-16 px-6 flex flex-col items-center max-w-3xl mx-auto">
+          <div className="animate-fade-in-up h-[34px] px-4 bg-brand-50 text-brand-600 border border-brand-100 rounded-full flex items-center gap-1.5 mb-7 text-[13px] font-bold">
+            <Sparkles size={14} strokeWidth={2.5} />
+            Hỗ trợ bởi công nghệ AI
+          </div>
+          <h1 className="animate-fade-in-up font-display text-[40px] sm:text-[48px] font-bold leading-[1.12] tracking-tight" style={{ animationDelay: '60ms' }}>
+            Quản lý tài liệu học tập
+            <br />
+            <span className="text-brand-500">cùng trí tuệ nhân tạo</span>
+          </h1>
+          <p className="animate-fade-in-up mt-5 text-ink-soft text-[15.5px] max-w-[460px] leading-relaxed" style={{ animationDelay: '120ms' }}>
+            Tải lên, sắp xếp và trò chuyện với tài liệu học tập của bạn. Nhận câu trả lời
+            tức thì được hỗ trợ bởi công nghệ AI tiên tiến.
+          </p>
+          <div className="animate-fade-in-up flex items-center gap-3 mt-8" style={{ animationDelay: '180ms' }}>
+            <button
+              type="button"
+              onClick={() => onNavigate('register')}
+              className="h-[46px] px-7 bg-brand-500 hover:bg-brand-600 active:scale-[0.98] text-white rounded-xl font-bold text-[14.5px] shadow-brand-glow transition-snappy cursor-pointer"
+            >
+              Bắt đầu miễn phí
+            </button>
+            <button
+              type="button"
+              onClick={() => onNavigate('login')}
+              className="h-[46px] px-7 border border-line bg-card hover:bg-surface-alt text-ink rounded-xl font-bold text-[14.5px] transition-snappy cursor-pointer"
+            >
+              Đăng nhập
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section className="px-6 py-16 max-w-5xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="font-display text-[28px] sm:text-[32px] font-bold tracking-tight">Mọi thứ bạn cần để học tốt hơn</h2>
+          <p className="text-ink-soft text-[14.5px] mt-2">Các tính năng mạnh mẽ giúp nâng cao trải nghiệm học tập của bạn</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {features.map((f, i) => {
+            const Icon = f.icon;
+            return (
+              <div
+                key={f.title}
+                className="group bg-card border border-line rounded-2xl p-6 flex flex-col items-start text-left gap-3 shadow-card hover:shadow-card-hover hover:-translate-y-1 transition-snappy"
+              >
+                <div className="w-11 h-11 bg-brand-50 rounded-xl flex items-center justify-center text-brand-500 group-hover:scale-110 transition-snappy">
+                  <Icon size={20} strokeWidth={2.1} />
+                </div>
+                <h3 className="font-display text-[15.5px] font-bold">{f.title}</h3>
+                <p className="text-ink-soft text-[13.5px] leading-relaxed">{f.desc}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="px-6 pb-20 max-w-5xl mx-auto">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-600 via-brand-500 to-brand-400 px-8 py-14 text-center text-white">
+          <div className="pointer-events-none absolute -top-10 -right-10 w-56 h-56 rounded-full bg-white/10 blur-3xl" />
+          <h2 className="font-display text-[26px] sm:text-[30px] font-bold tracking-tight">Sẵn sàng thay đổi cách bạn học?</h2>
+          <p className="text-[14.5px] text-white/85 mt-2">Tham gia cùng hàng nghìn học viên đang sử dụng AI Study Hub</p>
+          <button
+            type="button"
+            onClick={() => onNavigate('register')}
+            className="h-[46px] px-8 bg-white text-brand-600 rounded-xl font-bold text-[14.5px] shadow-lg hover:shadow-xl active:scale-[0.98] transition-snappy cursor-pointer mt-7"
+          >
+            Đăng ký miễn phí ngay
+          </button>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="border-t border-line px-6 py-8">
+        <div className="max-w-5xl mx-auto flex items-center gap-2.5">
+          <div className="w-7 h-7 bg-brand-900 rounded-lg flex items-center justify-center text-white shrink-0">
+            <GraduationCap size={15} strokeWidth={2.25} />
+          </div>
+          <div>
+            <p className="font-display text-[13.5px] font-bold">AI Study Hub</p>
+            <p className="text-ink-faint text-[12px] mt-0.5">Hệ thống quản lý tài liệu học tập ứng dụng AI cho học viên và giảng viên.</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

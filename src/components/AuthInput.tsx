@@ -15,15 +15,15 @@ const AuthInput: React.FC<AuthInputProps> = ({
 }) => {
   return (
     <div>
-      <label className="text-[11px] font-bold block mb-1 text-gray-700">{label}</label>
-      <div className="w-full h-[40px] border border-gray-300 rounded-[10px] flex items-center px-3 bg-white focus-within:border-indigo-500 transition-colors">
+      <label className="text-[12px] font-bold block mb-1.5 text-ink">{label}</label>
+      <div className="w-full h-[42px] border border-line rounded-xl flex items-center px-3.5 bg-card focus-within:border-brand-400 focus-within:ring-2 focus-within:ring-brand-100 transition-snappy">
         <input
           type={type}
           name={name}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className="w-full h-full bg-transparent outline-none text-xs text-black placeholder-gray-400"
+          className="w-full h-full bg-transparent outline-none text-[13.5px] text-ink placeholder-ink-faint"
           required={required}
         />
       </div>

@@ -13,8 +13,8 @@ const SubTabFilter: React.FC<SubTabFilterProps> = ({ tabs, activeTab, onChange }
             key={tab.id}
             type="button"
             onClick={() => onChange(tab.id)}
-            className={`h-[34px] px-4 font-bold text-[13.5px] rounded-lg transition-all cursor-pointer ${
-              isActive ? 'bg-brand-500 text-white shadow-sm' : 'text-ink-soft hover:text-ink'
+            className={`h-[34px] px-4 font-bold text-[13.5px] rounded-lg transition-snappy cursor-pointer ${
+              isActive ? 'bg-brand-500 text-white shadow-brand-glow' : 'text-ink-soft hover:text-ink'
             }`}
           >
             {tab.label}

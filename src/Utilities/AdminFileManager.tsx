@@ -47,10 +47,10 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
       <AdminSidebar onNavigate={onNavigate} activeTab="adminFileManager" />
       <div className="flex-1 flex flex-col min-w-0">
         <AdminHeader title="Quản lý Tài liệu" placeholder="Tìm kiếm tài liệu vi phạm..." />
-        <main className="flex-1 p-8 flex flex-col gap-5">
-          <div className="w-full bg-card border border-line rounded-2xl shadow-[0_1px_2px_rgba(20,15,40,0.04)] overflow-hidden">
+        <main className="flex-1 animate-fade-in-up p-8 flex flex-col gap-5">
+          <div className="w-full bg-card border border-line rounded-2xl shadow-card overflow-hidden">
             <div className="h-[64px] border-b border-line flex items-center justify-between px-6">
-              <h2 className="text-[17px] font-extrabold">Tài liệu bị báo cáo</h2>
+              <h2 className="font-display text-[17px] font-bold">Tài liệu bị báo cáo</h2>
               <span className="text-ink-soft text-[13.5px] font-semibold">{files.length} tài liệu</span>
             </div>
 
@@ -69,7 +69,7 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
                 </thead>
                 <tbody>
                   {files.map((file) => (
-                    <tr key={file.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-colors">
+                    <tr key={file.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-snappy">
                       <td className="px-6">
                         <div className="flex items-center gap-3 min-w-0">
                           <div className="w-9 h-9 rounded-lg bg-brand-50 text-brand-500 flex items-center justify-center shrink-0">
@@ -104,7 +104,7 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
 
       {selected && (
         <div className="fixed inset-0 bg-ink/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-2xl w-full max-w-[480px] shadow-2xl overflow-hidden">
+          <div className="bg-card rounded-2xl w-full max-w-[480px] shadow-modal animate-scale-in overflow-hidden">
             {!resolved ? (
               <>
                 <div className="flex items-center justify-between px-6 pt-6">
@@ -112,7 +112,7 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
                     <div className="w-9 h-9 rounded-lg bg-danger-bg text-danger flex items-center justify-center">
                       <AlertTriangle size={18} strokeWidth={2.25} />
                     </div>
-                    <h3 className="text-[18px] font-extrabold">Báo cáo tài liệu</h3>
+                    <h3 className="font-display text-[18px] font-bold">Báo cáo tài liệu</h3>
                   </div>
                   <button type="button" onClick={closeModal} className="text-ink-faint hover:text-ink cursor-pointer">
                     <X size={20} />
@@ -144,14 +144,14 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
                   <div>
                     <p className="font-bold text-[13.5px] mb-2">Quyết định xử lý <span className="text-danger">*</span></p>
                     <div className="space-y-2">
-                      <label className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${decision === 'remove' ? 'border-brand-400 bg-brand-50' : 'border-line hover:bg-surface-alt'}`}>
+                      <label className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-snappy ${decision === 'remove' ? 'border-brand-400 bg-brand-50' : 'border-line hover:bg-surface-alt'}`}>
                         <input type="radio" name="decision" className="mt-1 accent-brand-500" checked={decision === 'remove'} onChange={() => setDecision('remove')} />
                         <span>
                           <span className="block font-bold text-[14px]">Gỡ tài liệu xuống</span>
                           <span className="block text-ink-soft text-[13px]">Xóa tài liệu và thông báo người tải</span>
                         </span>
                       </label>
-                      <label className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-colors ${decision === 'reject' ? 'border-brand-400 bg-brand-50' : 'border-line hover:bg-surface-alt'}`}>
+                      <label className={`flex items-start gap-3 p-3 rounded-xl border cursor-pointer transition-snappy ${decision === 'reject' ? 'border-brand-400 bg-brand-50' : 'border-line hover:bg-surface-alt'}`}>
                         <input type="radio" name="decision" className="mt-1 accent-brand-500" checked={decision === 'reject'} onChange={() => setDecision('reject')} />
                         <span>
                           <span className="block font-bold text-[14px]">Từ chối báo cáo</span>
@@ -168,20 +168,20 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
                       onChange={(e) => setNote(e.target.value)}
                       rows={2}
                       placeholder="Nội dung thông báo gửi tới người báo cáo và người tải..."
-                      className="w-full border border-line rounded-xl p-3 text-[13.5px] outline-none resize-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all"
+                      className="w-full border border-line rounded-xl p-3 text-[13.5px] outline-none resize-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-snappy"
                     />
                   </div>
                 </div>
 
                 <div className="flex gap-3 p-6">
-                  <button type="button" onClick={closeModal} className="flex-1 py-2.5 border border-line rounded-xl font-bold text-[14px] text-ink-soft hover:bg-surface-alt cursor-pointer transition-colors">
+                  <button type="button" onClick={closeModal} className="flex-1 py-2.5 border border-line rounded-xl font-bold text-[14px] text-ink-soft hover:bg-surface-alt cursor-pointer transition-snappy">
                     Hủy
                   </button>
                   <button
                     type="button"
                     disabled={!decision}
                     onClick={confirmDecision}
-                    className={`flex-1 py-2.5 rounded-xl font-bold text-[14px] text-white transition-colors ${decision ? 'bg-brand-500 hover:bg-brand-600 cursor-pointer' : 'bg-ink-faint cursor-not-allowed'}`}
+                    className={`flex-1 py-2.5 rounded-xl font-bold text-[14px] text-white transition-snappy ${decision ? 'bg-brand-500 hover:bg-brand-600 cursor-pointer' : 'bg-ink-faint cursor-not-allowed'}`}
                   >
                     Xác nhận xử lý
                   </button>
@@ -192,11 +192,11 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
                 <div className="w-14 h-14 rounded-full bg-success-bg text-success flex items-center justify-center mb-4">
                   <CheckCircle2 size={28} strokeWidth={2} />
                 </div>
-                <h3 className="text-[18px] font-extrabold mb-1.5">Đã giải quyết báo cáo</h3>
+                <h3 className="font-display text-[18px] font-bold mb-1.5">Đã giải quyết báo cáo</h3>
                 <p className="text-ink-soft text-[14px] max-w-[300px] mb-6">
                   {decision === 'remove' ? 'Tài liệu đã được gỡ xuống và người dùng đã được thông báo.' : 'Báo cáo đã được từ chối, tài liệu vẫn được giữ nguyên.'}
                 </p>
-                <button type="button" onClick={closeModal} className="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold text-[14px] cursor-pointer transition-colors">
+                <button type="button" onClick={closeModal} className="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white rounded-xl font-bold text-[14px] cursor-pointer transition-snappy">
                   Đóng
                 </button>
               </div>

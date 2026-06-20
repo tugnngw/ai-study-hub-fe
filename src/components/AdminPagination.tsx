@@ -11,7 +11,7 @@ const AdminPagination: React.FC<AdminPaginationProps> = ({ currentPage, totalPag
         type="button"
         disabled={currentPage === 1}
         onClick={() => onPageChange?.(currentPage - 1)}
-        className={`w-8 h-8 rounded-lg flex items-center justify-center border border-line transition-colors ${currentPage === 1 ? 'text-ink-faint cursor-not-allowed' : 'text-ink-soft cursor-pointer hover:bg-surface-alt'}`}
+        className={`w-8 h-8 rounded-lg flex items-center justify-center border border-line transition-snappy active:scale-95 ${currentPage === 1 ? 'text-ink-faint cursor-not-allowed' : 'text-ink-soft cursor-pointer hover:bg-surface-alt'}`}
       >
         <ChevronLeft size={16} strokeWidth={2.5} />
       </button>
@@ -20,8 +20,8 @@ const AdminPagination: React.FC<AdminPaginationProps> = ({ currentPage, totalPag
           key={i + 1}
           type="button"
           onClick={() => onPageChange?.(i + 1)}
-          className={`w-8 h-8 rounded-lg font-bold text-[13.5px] flex items-center justify-center transition-colors cursor-pointer ${
-            i + 1 === currentPage ? 'bg-brand-500 text-white shadow-sm' : 'border border-line text-ink-soft hover:bg-surface-alt'
+          className={`w-8 h-8 rounded-lg font-bold text-[13.5px] flex items-center justify-center transition-snappy active:scale-95 cursor-pointer ${
+            i + 1 === currentPage ? 'bg-brand-500 text-white shadow-brand-glow' : 'border border-line text-ink-soft hover:bg-surface-alt'
           }`}
         >
           {i + 1}
@@ -31,7 +31,7 @@ const AdminPagination: React.FC<AdminPaginationProps> = ({ currentPage, totalPag
         type="button"
         disabled={currentPage === totalPages}
         onClick={() => onPageChange?.(currentPage + 1)}
-        className={`w-8 h-8 rounded-lg flex items-center justify-center border border-line transition-colors ${currentPage === totalPages ? 'text-ink-faint cursor-not-allowed' : 'text-ink-soft cursor-pointer hover:bg-surface-alt'}`}
+        className={`w-8 h-8 rounded-lg flex items-center justify-center border border-line transition-snappy active:scale-95 ${currentPage === totalPages ? 'text-ink-faint cursor-not-allowed' : 'text-ink-soft cursor-pointer hover:bg-surface-alt'}`}
       >
         <ChevronRight size={16} strokeWidth={2.5} />
       </button>

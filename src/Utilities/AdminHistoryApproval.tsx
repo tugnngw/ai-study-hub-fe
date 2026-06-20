@@ -26,10 +26,10 @@ const AdminHistoryApproval: React.FC<{ onNavigate: (page: AllPages) => void }> =
       <AdminSidebar onNavigate={onNavigate} activeTab="adminHistoryApproval" />
       <div className="flex-1 flex flex-col min-w-0">
         <AdminHeader title="Phê duyệt tài liệu" placeholder="Tìm kiếm nội dung chờ duyệt..." />
-        <main className="flex-1 p-8 flex flex-col gap-5">
-          <div className="w-full bg-card border border-line rounded-2xl shadow-[0_1px_2px_rgba(20,15,40,0.04)] overflow-hidden">
+        <main className="flex-1 animate-fade-in-up p-8 flex flex-col gap-5">
+          <div className="w-full bg-card border border-line rounded-2xl shadow-card overflow-hidden">
             <div className="h-[64px] border-b border-line flex items-center justify-between px-6">
-              <h2 className="text-[17px] font-extrabold">Đang chờ duyệt</h2>
+              <h2 className="font-display text-[17px] font-bold">Đang chờ duyệt</h2>
               <span className="text-ink-soft text-[13.5px] font-semibold">{list.length} mục</span>
             </div>
 
@@ -47,7 +47,7 @@ const AdminHistoryApproval: React.FC<{ onNavigate: (page: AllPages) => void }> =
                 </thead>
                 <tbody>
                   {list.map((item) => (
-                    <tr key={item.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-colors">
+                    <tr key={item.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-snappy">
                       <td className="px-6">
                         <div className="flex items-center gap-3 min-w-0">
                           <div className="w-9 h-9 rounded-lg bg-brand-50 text-brand-500 flex items-center justify-center shrink-0">

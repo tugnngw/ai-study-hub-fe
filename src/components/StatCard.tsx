@@ -18,9 +18,9 @@ const accentStyles = {
 const StatCard: React.FC<StatCardProps> = ({ label, value, trend, icon, accent }) => {
   const isUp = (trend ?? 0) >= 0;
   return (
-    <div className="bg-card p-6 rounded-2xl border border-line shadow-[0_1px_2px_rgba(20,15,40,0.04)] hover:shadow-[0_4px_16px_rgba(20,15,40,0.06)] transition-shadow">
+    <div className="group bg-card p-6 rounded-2xl border border-line shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-snappy">
       <div className="flex items-start justify-between">
-        <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${accentStyles[accent]}`}>
+        <div className={`w-11 h-11 rounded-xl flex items-center justify-center transition-snappy group-hover:scale-110 ${accentStyles[accent]}`}>
           {icon}
         </div>
         {trend !== undefined && (
@@ -31,7 +31,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, trend, icon, accent }
         )}
       </div>
       <p className="text-ink-soft font-semibold text-[14px] mt-4">{label}</p>
-      <h3 className="text-[30px] font-extrabold mt-1 tracking-tight text-ink">{value}</h3>
+      <h3 className="font-display text-[30px] font-bold mt-1 tracking-tight text-ink">{value}</h3>
     </div>
   );
 };

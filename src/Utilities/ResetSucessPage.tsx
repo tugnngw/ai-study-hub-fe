@@ -1,17 +1,29 @@
 import React from 'react';
+import { AllPages } from '../App';
+import { CheckCircle2 } from 'lucide-react';
 
-const ResetSuccessPage: React.FC<{ onNavigate: (page: any) => void }> = ({ onNavigate }) => {
+const ResetSuccessPage: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ onNavigate }) => {
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-[#007aff]/78 to-[#6e30e0]/52 flex items-center justify-center p-4 text-black">
-      <div className="w-full max-w-[500px] min-h-[450px] bg-white rounded-[30px] p-8 shadow-2xl flex flex-col justify-between items-center">
-        <div className="w-full flex flex-col items-center flex-1 justify-center text-center">
-          <div className="w-16 h-16 border border-emerald-500/20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mb-6">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-          </div>
-          <h2 className="text-[24px] font-extrabold mb-2">Đặt lại thành công</h2>
-          <p className="text-gray-500 font-medium">Mật khẩu mới của bạn đã được cập nhật thành công hệ thống!</p>
+    <div className="relative w-full min-h-screen bg-gradient-to-br from-brand-900 via-brand-700 to-brand-500 flex items-center justify-center p-4 text-ink overflow-hidden">
+      <div className="pointer-events-none absolute -top-32 -left-24 w-96 h-96 rounded-full bg-white/10 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-0 -right-24 w-96 h-96 rounded-full bg-brand-300/20 blur-3xl" />
+
+      <div className="animate-scale-in relative z-10 w-full max-w-[420px] bg-card rounded-[24px] p-8 shadow-modal flex flex-col items-center text-center">
+        <div className="w-16 h-16 bg-success-bg text-success border border-success-line rounded-full flex items-center justify-center mb-6">
+          <CheckCircle2 size={32} strokeWidth={2} />
         </div>
-        <button type="button" onClick={() => onNavigate('login')} className="w-full h-[65px] bg-[#2431eb]/71 text-white font-bold text-xl rounded-[20px] cursor-pointer">Đăng nhập</button>
+        <h2 className="font-display text-[20px] font-bold mb-1.5">Đặt lại thành công</h2>
+        <p className="text-ink-soft text-[13.5px] leading-relaxed max-w-[280px]">
+          Mật khẩu mới của bạn đã được cập nhật. Hãy đăng nhập lại để tiếp tục.
+        </p>
+
+        <button
+          type="button"
+          onClick={() => onNavigate('login')}
+          className="w-full h-[44px] bg-brand-500 hover:bg-brand-600 active:scale-[0.99] text-white font-bold rounded-xl text-[14.5px] shadow-brand-glow transition-snappy cursor-pointer mt-7"
+        >
+          Đăng nhập
+        </button>
       </div>
     </div>
   );

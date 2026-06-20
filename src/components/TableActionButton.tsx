@@ -19,7 +19,7 @@ const TableActionButton: React.FC<TableActionButtonProps> = ({ onClick, label, i
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex items-center gap-1.5 px-3 py-[7px] border rounded-lg font-bold text-[13px] transition-colors cursor-pointer select-none whitespace-nowrap ${variants[variant]}`}
+      className={`inline-flex items-center gap-1.5 px-3 py-[7px] border rounded-lg font-bold text-[13px] transition-snappy cursor-pointer select-none whitespace-nowrap active:scale-95 ${variants[variant]}`}
     >
       {icon}
       {label}

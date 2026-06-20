@@ -37,10 +37,10 @@ const AdminTrashManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({
       <AdminSidebar onNavigate={onNavigate} activeTab="adminTrashManager" />
       <div className="flex-1 flex flex-col min-w-0">
         <AdminHeader title="Thùng rác" placeholder="Tìm nội dung trong thùng rác..." />
-        <main className="flex-1 p-8 flex flex-col gap-5">
-          <div className="w-full bg-card border border-line rounded-2xl shadow-[0_1px_2px_rgba(20,15,40,0.04)] overflow-hidden">
+        <main className="flex-1 animate-fade-in-up p-8 flex flex-col gap-5">
+          <div className="w-full bg-card border border-line rounded-2xl shadow-card overflow-hidden">
             <div className="h-[64px] border-b border-line flex items-center justify-between px-6">
-              <h2 className="text-[17px] font-extrabold">Thùng rác</h2>
+              <h2 className="font-display text-[17px] font-bold">Thùng rác</h2>
               <SubTabFilter tabs={[{ id: 'file', label: 'File' }, { id: 'account', label: 'Tài khoản' }]} activeTab={subTab} onChange={setSubTab} />
             </div>
 
@@ -59,7 +59,7 @@ const AdminTrashManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({
                 <tbody>
                   {subTab === 'file'
                     ? delFiles.map((f) => (
-                        <tr key={f.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-colors">
+                        <tr key={f.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-snappy">
                           <td className="px-6">
                             <div className="flex items-center gap-3 min-w-0">
                               <div className="w-9 h-9 rounded-lg bg-surface-alt text-ink-soft flex items-center justify-center shrink-0">
@@ -79,7 +79,7 @@ const AdminTrashManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({
                         </tr>
                       ))
                     : delAccs.map((a) => (
-                        <tr key={a.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-colors">
+                        <tr key={a.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-snappy">
                           <td className="px-6">
                             <div className="flex items-center gap-3 min-w-0">
                               <Avatar name={a.name} size={34} />
