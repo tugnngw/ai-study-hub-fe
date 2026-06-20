@@ -1,1 +1,65 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: ui-sans-serif, -apple-system, "SF Pro Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+
+  /* Neutral ink scale (slightly warm, cool-violet undertone) */
+  --color-ink: #15131F;
+  --color-ink-soft: #6B6877;
+  --color-ink-faint: #9D9AAC;
+  --color-surface: #F7F6FB;
+  --color-surface-alt: #F0EEFA;
+  --color-line: #E7E4F1;
+  --color-card: #FFFFFF;
+
+  /* Brand violet/indigo scale */
+  --color-brand-50: #F4F0FF;
+  --color-brand-100: #E7DEFF;
+  --color-brand-200: #CDB9FF;
+  --color-brand-300: #AC8CFF;
+  --color-brand-400: #8E62FF;
+  --color-brand-500: #7C3AED;
+  --color-brand-600: #6423D6;
+  --color-brand-700: #4E19AE;
+  --color-brand-800: #321377;
+  --color-brand-900: #1C0E45;
+
+  /* Status colors */
+  --color-success: #16A34A;
+  --color-success-bg: #EAFBF1;
+  --color-success-line: #BCEFD1;
+  --color-danger: #E11D48;
+  --color-danger-bg: #FDEEF1;
+  --color-danger-line: #F8C9D4;
+  --color-warning: #D97706;
+  --color-warning-bg: #FFF6E7;
+  --color-warning-line: #FBE3B8;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+  }
+  ::selection {
+    background-color: var(--color-brand-200);
+    color: var(--color-brand-900);
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--color-line);
+    border-radius: 999px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
