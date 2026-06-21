@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Cloud, Database, HardDrive } from "lucide-react";
 import { useDocuments } from "@/lib/queries";
-import { mockStorage } from "@/lib/mock-data";
+// import { mockStorage } from "@/lib/mock-data"; // removed mock storage
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
@@ -18,8 +18,9 @@ function formatBytes(n: number) {
 
 function CloudPage() {
   const docs = useDocuments();
-  const used = mockStorage.usedBytes();
-  const total = mockStorage.totalBytes;
+  // Calculate storage from actual document sizes
+  const used = docs.data?.reduce((sum, d) => sum + (d.fileSize ?? 0), 0) ?? 0;
+  const total = 15 * 1024 * 1024 * 1024; // 15 GB limit (or fetch from backend if available)
   const pct = (used / total) * 100;
 
   return (

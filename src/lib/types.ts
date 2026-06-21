@@ -1,38 +1,28 @@
+// src/lib/types.ts
 // =============================================================
-// types.ts — Data models aligned with DB schema & BE API
-// =============================================================
-// ⚠️  Các type này map trực tiếp với response của BE.
-//     Khi BE trả về field tên khác, chỉnh sửa ở đây là đủ.
+// 1. AUTH / ACCOUNT
 // =============================================================
 
-// ------------------------------------------------------------------
-// 1. AUTH / ACCOUNT  →  table: account
-// ------------------------------------------------------------------
-
-/** POST /api/auth/register */
 export interface RegisterRequest {
-  username: string;    // VARCHAR(10) UNIQUE
-  email: string;       // VARCHAR(40)
+  username: string;
+  email: string;
   password: string;
-  fullName: string;    // VARCHAR(30)
+  fullName?: string;
 }
 
-/** POST /api/auth/login */
 export interface LoginRequest {
   username: string;
   password: string;
 }
 
-/** Response của login */
 export interface LoginResponse {
   token: string;
   refreshToken?: string;
   user: User;
 }
 
-/** GET /api/account/me  →  table: account */
 export interface User {
-  id: string;              // UUID
+  id: string;
   username: string;
   email: string;
   fullName: string;
@@ -40,49 +30,45 @@ export interface User {
   role: "USER" | "ADMIN";
   status: "ACTIVE" | "BANNED";
   authProvider: "LOCAL" | "GOOGLE";
-  lastLoginAt?: string;   // ISO datetime
+  lastLoginAt?: string;
   createdAt: string;
+  updatedAt: string;
 }
 
-// ------------------------------------------------------------------
-// 2. FOLDER  →  table: folder
-// ------------------------------------------------------------------
+// =============================================================
+// 2. FOLDER
+// =============================================================
 
-/** GET /api/folder/getall  |  GET /api/folder/getbyid/:id */
 export interface Folder {
-  id: string;              // UUID
-  ownerId: string;         // UUID
+  id: string;
+  ownerId: string;
   name: string;
   aiSummary?: string | null;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
-  // virtual (có thể BE trả về hoặc tính ở FE)
   documentCount?: number;
 }
 
-/** POST /api/folder/create */
 export interface CreateFolderRequest {
   name: string;
 }
 
-/** PUT /api/folder/update/:id */
 export interface UpdateFolderRequest {
   name: string;
 }
 
-// ------------------------------------------------------------------
-// 3. DOCUMENT  →  table: document
-// ------------------------------------------------------------------
+// =============================================================
+// 3. DOCUMENT
+// =============================================================
 
 export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
-/** GET /api/documents  |  GET /api/documents/:id */
 export interface Document {
-  id: number;              // BIGINT IDENTITY
-  ownerId: string;         // UUID
+  id: number;
+  ownerId: string;
   subjectId?: number | null;
-  folderId?: string | null; // UUID
+  folderId?: string | null;
   title: string;
   description?: string | null;
   summary?: string | null;
@@ -94,41 +80,32 @@ export interface Document {
   fileSize?: number | null;
   totalPages?: number | null;
   createdAt: string;
+  updatedAt: string;
   deletedAt?: string | null;
-
-  // Virtual fields FE dùng từ mock — BE có thể không trả, xử lý ở adapter
-  /** @deprecated dùng cloudinaryUrl thay cho fileName */
-  fileName?: string;
 }
 
-/**
- * POST /api/documents  (multipart/form-data)
- * Dùng FormData khi gọi API — xem realApi.uploadDocument()
- */
 export interface UploadDocumentRequest {
   file: File;
   title: string;
   description?: string;
-  folderId?: string;       // UUID
+  folderId?: string;
   subjectId?: number;
 }
 
-/** PUT /api/documents/:id */
 export interface UpdateDocumentRequest {
   title?: string;
   description?: string;
   folderId?: string;
 }
 
-/** GET /api/documents/:id/download */
 export interface DownloadUrlResponse {
   url: string;
   expiresAt?: string;
 }
 
-// ------------------------------------------------------------------
-// 4. SHARE  →  table: share
-// ------------------------------------------------------------------
+// =============================================================
+// 4. SHARE
+// =============================================================
 
 export type Visibility = "private" | "shared" | "public";
 
@@ -136,7 +113,6 @@ export interface ShareInfo {
   folderId: string;
   visibility: Visibility;
   recipients: ShareRecipient[];
-  /** Public link nếu visibility = public */
   link?: string;
 }
 
@@ -146,20 +122,18 @@ export interface ShareRecipient {
   fullName?: string;
 }
 
-/** Tài liệu được chia sẻ cho user hiện tại (dùng ở trang Shared) */
 export interface SharedDocument extends Document {
-  sharedBy: string;       // fullName của người share
-  sharedAt: string;       // ISO datetime
-  shareId: number;        // share.id — dùng để xoá khỏi danh sách shared
+  sharedBy: string;
+  sharedAt: string;
+  shareId: number;
 }
 
-// ------------------------------------------------------------------
-// 5. RAG  →  table: document_chunk
-// ------------------------------------------------------------------
+// =============================================================
+// 5. RAG
+// =============================================================
 
-/** POST /api/rag/ask */
 export interface AskRequest {
-  id: number;             // documentId
+  id: number;
   question: string;
 }
 
@@ -174,9 +148,9 @@ export interface ReferencedChunk {
   similarity?: number;
 }
 
-// ------------------------------------------------------------------
-// 6. QUIZ  →  tables: quiz, question, quiz_attempt, quiz_answer
-// ------------------------------------------------------------------
+// =============================================================
+// 6. QUIZ
+// =============================================================
 
 export interface Quiz {
   id: number;
@@ -209,9 +183,9 @@ export interface QuizAttempt {
   completedAt?: string;
 }
 
-// ------------------------------------------------------------------
-// 7. FLASHCARD  →  tables: flashcard, flashcard_progress
-// ------------------------------------------------------------------
+// =============================================================
+// 7. FLASHCARD
+// =============================================================
 
 export interface Flashcard {
   id: number;
@@ -230,48 +204,12 @@ export interface FlashcardProgress {
   nextReviewAt?: string;
 }
 
-// ------------------------------------------------------------------
-// 8. REPORT  →  table: report
-// ------------------------------------------------------------------
+// =============================================================
+// 8. REPORT
+// =============================================================
 
 export interface ReportDocumentRequest {
-  id: number;             // documentId
+  id: number;
   reason: string;
   description?: string;
-}
-
-// ------------------------------------------------------------------
-// 9. PAYMENT  →  table: payment
-// ------------------------------------------------------------------
-
-export interface Payment {
-  id: number;
-  planName: string;
-  amount: number;
-  currency: string;
-  paymentMethod?: string;
-  transactionCode?: string;
-  status: "pending" | "success" | "failed";
-  createdAt: string;
-  expiredAt?: string;
-}
-
-// ------------------------------------------------------------------
-// 10. GENERIC API WRAPPER
-// ------------------------------------------------------------------
-
-/** Wrapper phổ biến nếu BE bọc response trong { data, message } */
-export interface ApiResponse<T> {
-  data: T;
-  message?: string;
-  success?: boolean;
-}
-
-/** Pagination (nếu BE hỗ trợ) */
-export interface PagedResponse<T> {
-  content: T[];
-  totalElements: number;
-  totalPages: number;
-  page: number;
-  size: number;
 }

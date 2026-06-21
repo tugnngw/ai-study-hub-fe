@@ -9,32 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as AuthRouteRouteImport } from './routes/auth/route'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthIndexRouteImport } from './routes/auth.index'
-import { Route as AuthResetPasswordRouteImport } from './routes/auth.reset-password'
-import { Route as AuthRegisterRouteImport } from './routes/auth.register'
-import { Route as AuthLoginRouteImport } from './routes/auth.login'
-import { Route as AuthForgotPasswordRouteImport } from './routes/auth.forgot-password'
-import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated.trash'
-import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated.shared'
-import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated.settings'
-import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
-import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated.folders'
-import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated.documents'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
-import { Route as AuthenticatedCloudRouteImport } from './routes/_authenticated.cloud'
-import { Route as AuthenticatedAichatRouteImport } from './routes/_authenticated.aichat'
-import { Route as AuthenticatedFoldersIdRouteImport } from './routes/_authenticated.folders.$id'
-import { Route as AuthenticatedDocumentsIdRouteImport } from './routes/_authenticated.documents.$id'
+import { Route as AuthIndexRouteImport } from './routes/auth/index'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
+import { Route as AuthRegisterRouteImport } from './routes/auth/register'
+import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
+import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
+import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated/folders'
+import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCloudRouteImport } from './routes/_authenticated/cloud'
+import { Route as AuthenticatedAiRouteImport } from './routes/_authenticated/ai'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedFoldersIdRouteImport } from './routes/_authenticated/folders.$id'
+import { Route as AuthenticatedDocumentsIdRouteImport } from './routes/_authenticated/documents.$id'
 
-const AuthRoute = AuthRouteImport.update({
+const AuthRouteRoute = AuthRouteRouteImport.update({
   id: '/auth',
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
@@ -46,72 +46,72 @@ const IndexRoute = IndexRouteImport.update({
 const AuthIndexRoute = AuthIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthRegisterRoute = AuthRegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthenticatedTrashRoute = AuthenticatedTrashRouteImport.update({
   id: '/trash',
   path: '/trash',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
   id: '/shared',
   path: '/shared',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFoldersRoute = AuthenticatedFoldersRouteImport.update({
   id: '/folders',
   path: '/folders',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDocumentsRoute = AuthenticatedDocumentsRouteImport.update({
   id: '/documents',
   path: '/documents',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedCloudRoute = AuthenticatedCloudRouteImport.update({
   id: '/cloud',
   path: '/cloud',
-  getParentRoute: () => AuthenticatedRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAichatRoute = AuthenticatedAichatRouteImport.update({
-  id: '/aichat',
-  path: '/aichat',
-  getParentRoute: () => AuthenticatedRoute,
+const AuthenticatedAiRoute = AuthenticatedAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFoldersIdRoute = AuthenticatedFoldersIdRouteImport.update({
   id: '/$id',
@@ -127,14 +127,14 @@ const AuthenticatedDocumentsIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRouteWithChildren
-  '/aichat': typeof AuthenticatedAichatRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/admin': typeof AuthenticatedAdminRoute
+  '/ai': typeof AuthenticatedAiRoute
   '/cloud': typeof AuthenticatedCloudRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
-  '/settings': typeof AuthenticatedSettingsRoute
   '/shared': typeof AuthenticatedSharedRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -147,13 +147,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/aichat': typeof AuthenticatedAichatRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/ai': typeof AuthenticatedAiRoute
   '/cloud': typeof AuthenticatedCloudRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
-  '/settings': typeof AuthenticatedSettingsRoute
   '/shared': typeof AuthenticatedSharedRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -167,15 +167,15 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/auth': typeof AuthRouteWithChildren
-  '/_authenticated/aichat': typeof AuthenticatedAichatRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/ai': typeof AuthenticatedAiRoute
   '/_authenticated/cloud': typeof AuthenticatedCloudRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/_authenticated/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
-  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/shared': typeof AuthenticatedSharedRoute
   '/_authenticated/trash': typeof AuthenticatedTrashRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -191,13 +191,13 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/aichat'
+    | '/admin'
+    | '/ai'
     | '/cloud'
     | '/dashboard'
     | '/documents'
     | '/folders'
     | '/profile'
-    | '/settings'
     | '/shared'
     | '/trash'
     | '/auth/forgot-password'
@@ -210,13 +210,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/aichat'
+    | '/admin'
+    | '/ai'
     | '/cloud'
     | '/dashboard'
     | '/documents'
     | '/folders'
     | '/profile'
-    | '/settings'
     | '/shared'
     | '/trash'
     | '/auth/forgot-password'
@@ -231,13 +231,13 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
-    | '/_authenticated/aichat'
+    | '/_authenticated/admin'
+    | '/_authenticated/ai'
     | '/_authenticated/cloud'
     | '/_authenticated/dashboard'
     | '/_authenticated/documents'
     | '/_authenticated/folders'
     | '/_authenticated/profile'
-    | '/_authenticated/settings'
     | '/_authenticated/shared'
     | '/_authenticated/trash'
     | '/auth/forgot-password'
@@ -251,8 +251,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  AuthRoute: typeof AuthRouteWithChildren
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -261,14 +261,14 @@ declare module '@tanstack/react-router' {
       id: '/auth'
       path: '/auth'
       fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+      preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
       fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteImport
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -283,98 +283,98 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/auth/'
       preLoaderRoute: typeof AuthIndexRouteImport
-      parentRoute: typeof AuthRoute
+      parentRoute: typeof AuthRouteRoute
     }
     '/auth/reset-password': {
       id: '/auth/reset-password'
       path: '/reset-password'
       fullPath: '/auth/reset-password'
       preLoaderRoute: typeof AuthResetPasswordRouteImport
-      parentRoute: typeof AuthRoute
+      parentRoute: typeof AuthRouteRoute
     }
     '/auth/register': {
       id: '/auth/register'
       path: '/register'
       fullPath: '/auth/register'
       preLoaderRoute: typeof AuthRegisterRouteImport
-      parentRoute: typeof AuthRoute
+      parentRoute: typeof AuthRouteRoute
     }
     '/auth/login': {
       id: '/auth/login'
       path: '/login'
       fullPath: '/auth/login'
       preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRoute
+      parentRoute: typeof AuthRouteRoute
     }
     '/auth/forgot-password': {
       id: '/auth/forgot-password'
       path: '/forgot-password'
       fullPath: '/auth/forgot-password'
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
-      parentRoute: typeof AuthRoute
+      parentRoute: typeof AuthRouteRoute
     }
     '/_authenticated/trash': {
       id: '/_authenticated/trash'
       path: '/trash'
       fullPath: '/trash'
       preLoaderRoute: typeof AuthenticatedTrashRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/shared': {
       id: '/_authenticated/shared'
       path: '/shared'
       fullPath: '/shared'
       preLoaderRoute: typeof AuthenticatedSharedRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/settings': {
-      id: '/_authenticated/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/folders': {
       id: '/_authenticated/folders'
       path: '/folders'
       fullPath: '/folders'
       preLoaderRoute: typeof AuthenticatedFoldersRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/documents': {
       id: '/_authenticated/documents'
       path: '/documents'
       fullPath: '/documents'
       preLoaderRoute: typeof AuthenticatedDocumentsRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/cloud': {
       id: '/_authenticated/cloud'
       path: '/cloud'
       fullPath: '/cloud'
       preLoaderRoute: typeof AuthenticatedCloudRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/aichat': {
-      id: '/_authenticated/aichat'
-      path: '/aichat'
-      fullPath: '/aichat'
-      preLoaderRoute: typeof AuthenticatedAichatRouteImport
-      parentRoute: typeof AuthenticatedRoute
+    '/_authenticated/ai': {
+      id: '/_authenticated/ai'
+      path: '/ai'
+      fullPath: '/ai'
+      preLoaderRoute: typeof AuthenticatedAiRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/folders/$id': {
       id: '/_authenticated/folders/$id'
@@ -418,35 +418,34 @@ const AuthenticatedFoldersRouteChildren: AuthenticatedFoldersRouteChildren = {
 const AuthenticatedFoldersRouteWithChildren =
   AuthenticatedFoldersRoute._addFileChildren(AuthenticatedFoldersRouteChildren)
 
-interface AuthenticatedRouteChildren {
-  AuthenticatedAichatRoute: typeof AuthenticatedAichatRoute
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAiRoute: typeof AuthenticatedAiRoute
   AuthenticatedCloudRoute: typeof AuthenticatedCloudRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRouteWithChildren
   AuthenticatedFoldersRoute: typeof AuthenticatedFoldersRouteWithChildren
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
-  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
 }
 
-const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedAichatRoute: AuthenticatedAichatRoute,
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAiRoute: AuthenticatedAiRoute,
   AuthenticatedCloudRoute: AuthenticatedCloudRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentsRoute: AuthenticatedDocumentsRouteWithChildren,
   AuthenticatedFoldersRoute: AuthenticatedFoldersRouteWithChildren,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
-  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedSharedRoute: AuthenticatedSharedRoute,
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,
 }
 
-const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
-  AuthenticatedRouteChildren,
-)
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface AuthRouteChildren {
+interface AuthRouteRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
@@ -454,7 +453,7 @@ interface AuthRouteChildren {
   AuthIndexRoute: typeof AuthIndexRoute
 }
 
-const AuthRouteChildren: AuthRouteChildren = {
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
   AuthForgotPasswordRoute: AuthForgotPasswordRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
@@ -462,12 +461,14 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthIndexRoute: AuthIndexRoute,
 }
 
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthenticatedRoute: AuthenticatedRouteWithChildren,
-  AuthRoute: AuthRouteWithChildren,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

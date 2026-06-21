@@ -7,7 +7,7 @@ const searchSchema = z.object({
   docId: z.coerce.number().optional(),
 });
 
-export const Route = createFileRoute("/_authenticated/aichat")({
+export const Route = createFileRoute("/_authenticated/ai")({
   validateSearch: searchSchema,
   component: AIChatPage,
 });

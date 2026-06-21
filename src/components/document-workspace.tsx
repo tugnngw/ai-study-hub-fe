@@ -19,6 +19,7 @@ import {
   useDeleteDocument,
   useDocument,
   useDocumentsByFolder,
+  useDownloadDocument,
   useFolder,
   useUploadDocument,
 } from "@/lib/queries";
@@ -62,7 +63,8 @@ export function DocumentWorkspace({
   const folderDocs = useDocumentsByFolder(folderId);
   const doc = useDocument(docId ?? 0);
   const del = useDeleteDocument();
-  const ask = useAskRag();
+  const ask = useAskRAG();
+  const download = useDownloadDocument();
   const navigate = useNavigate();
 
   const [tab, setTab] = useState<Tab>("original");
@@ -89,6 +91,16 @@ export function DocumentWorkspace({
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
+    }
+  };
+
+  const handleDownload = async () => {
+    if (!docId) return;
+    try {
+      const res = await download.mutateAsync(docId);
+      window.open(res.url, "_blank");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Tải xuống thất bại");
     }
   };
 
@@ -317,21 +329,21 @@ export function DocumentWorkspace({
 
 
 
-        {docId && (
-          <div className="p-3 border-t border-border flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => toast.info("Mock download")}>
-              <Download className="h-3.5 w-3.5 mr-2" /> Download
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleDelete}
-              className="text-destructive"
-            >
-              <Trash2 className="h-3.5 w-3.5 mr-2" /> Xoá
-            </Button>
-          </div>
-        )}
+          {docId && (
+            <div className="p-3 border-t border-border flex items-center gap-2">
+              <Button variant="outline" size="sm" onClick={handleDownload} disabled={download.isPending}>
+                <Download className="h-3.5 w-3.5 mr-2" /> {download.isPending ? "Đang tải…" : "Tải xuống"}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDelete}
+                className="text-destructive"
+              >
+                <Trash2 className="h-3.5 w-3.5 mr-2" /> Xoá
+              </Button>
+            </div>
+          )}
       </section>
 
       {/* Column 3: chat */}

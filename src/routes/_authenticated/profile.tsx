@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useDocuments, useFolders } from "@/lib/queries";
-import { mockShared } from "@/lib/mock-data";
+import { useDocuments, useFolders, useSharedDocuments } from "@/lib/queries";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: ProfilePage,
@@ -18,6 +17,7 @@ function ProfilePage() {
   const { user } = useAuth();
   const docs = useDocuments();
   const folders = useFolders();
+  const sharedDocs = useSharedDocuments();
 
   const [editing, setEditing] = useState(false);
   const initialForm = useMemo(
@@ -58,9 +58,9 @@ function ProfilePage() {
       icon: FolderKanban,
       cls: "text-violet-600 bg-violet-50",
     },
-    {
+      {
       label: "Chia sẻ",
-      value: mockShared.length,
+      value: sharedDocs.data?.length ?? 0,
       icon: Share2,
       cls: "text-emerald-600 bg-emerald-50",
     },

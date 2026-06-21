@@ -17,7 +17,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 
-export const Route = createFileRoute("/_authenticated/settings")({
+export const Route = createFileRoute("/_authenticated/admin")({
   component: SettingsPage,
 });
 

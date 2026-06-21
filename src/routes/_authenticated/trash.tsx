@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FileText, RotateCcw, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { mockApi } from "@/lib/mock-data";
+import { useTrash, useRestoreFromTrash, useEmptyTrash } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -11,28 +10,9 @@ export const Route = createFileRoute("/_authenticated/trash")({
 });
 
 function TrashPage() {
-  const qc = useQueryClient();
-  const { data, isLoading } = useQuery({
-    queryKey: ["trash"],
-    queryFn: () => mockApi.listTrash(),
-  });
-
-  const restore = useMutation({
-    mutationFn: (id: number) => mockApi.restoreFromTrash(id),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["trash"] });
-      qc.invalidateQueries({ queryKey: ["documents"] });
-      toast.success("Đã khôi phục");
-    },
-  });
-
-  const erase = useMutation({
-    mutationFn: (id: number) => mockApi.emptyTrash(id),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["trash"] });
-      toast.success("Đã xoá vĩnh viễn");
-    },
-  });
+  const { data, isLoading } = useTrash();
+  const restore = useRestoreFromTrash();
+  const erase = useEmptyTrash();
 
   return (
     <div className="space-y-6">

@@ -1,6 +1,6 @@
-// Lightweight API client. JWT stored in localStorage.
+// src/lib/api.ts
 export const API_BASE =
-  (import.meta.env.VITE_API_BASE as string | undefined) ?? "http://localhost:8080";
+    (import.meta.env.VITE_API_BASE as string | undefined) ?? "http://localhost:4040";
 
 const TOKEN_KEY = "auth_token";
 const REFRESH_KEY = "refresh_token";
@@ -13,7 +13,7 @@ export const tokenStore = {
     localStorage.removeItem(REFRESH_KEY);
   },
   getRefresh: () =>
-    typeof window === "undefined" ? null : localStorage.getItem(REFRESH_KEY),
+      typeof window === "undefined" ? null : localStorage.getItem(REFRESH_KEY),
   setRefresh: (t: string) => localStorage.setItem(REFRESH_KEY, t),
 };
 
@@ -47,7 +47,7 @@ export async function api<T = unknown>(path: string, opts: Options = {}): Promis
     body = JSON.stringify(opts.body);
   }
 
-  const res = await fetch(`${API_BASE}/api${path}`, {
+  const res = await fetch(`${API_BASE}${path}`, {
     method: opts.method ?? "GET",
     headers,
     body,
@@ -58,10 +58,14 @@ export async function api<T = unknown>(path: string, opts: Options = {}): Promis
 
   if (!res.ok) {
     const message =
-      (data && typeof data === "object" && "message" in data && String((data as { message: unknown }).message)) ||
-      `Request failed (${res.status})`;
+        (data && typeof data === "object" && "message" in data && String((data as { message: unknown }).message)) ||
+        `Request failed (${res.status})`;
     if (res.status === 401) {
       tokenStore.clear();
+      // Redirect to login if not already there
+      if (typeof window !== "undefined" && !window.location.pathname.includes("/auth")) {
+        window.location.href = "/auth/login";
+      }
     }
     throw new ApiError(res.status, message, data);
   }
