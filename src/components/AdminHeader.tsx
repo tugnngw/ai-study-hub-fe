@@ -1,5 +1,6 @@
 import React from 'react';
-import { Search, Bell, Database } from 'lucide-react';
+import { Search, Database } from 'lucide-react';
+import NotificationBell from './NotificationBell';
 
 interface AdminHeaderProps {
   title?: string;
@@ -7,9 +8,11 @@ interface AdminHeaderProps {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   storage?: { usedLabel: string; totalLabel: string; percent: number };
+  /** Vai trò của trang đang hiển thị header — quyết định bộ thông báo (user/admin) được tải. */
+  role: 'user' | 'admin';
 }
 
-const AdminHeader: React.FC<AdminHeaderProps> = ({ title, placeholder = 'Tìm kiếm...', value, onChange, storage }) => {
+const AdminHeader: React.FC<AdminHeaderProps> = ({ title, placeholder = 'Tìm kiếm...', value, onChange, storage, role }) => {
   return (
     <div className="w-full h-[78px] bg-card/90 backdrop-blur border-b border-line flex items-center justify-between gap-6 px-8 shrink-0 sticky top-0 z-30">
       {title ? (
@@ -44,14 +47,7 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({ title, placeholder = 'Tìm ki
         />
       </div>
 
-      <button
-        type="button"
-        className="relative w-10 h-10 rounded-full bg-surface border border-line flex items-center justify-center text-ink-soft hover:text-brand-500 hover:border-brand-200 hover:scale-105 active:scale-95 transition-snappy shrink-0"
-        aria-label="Thông báo"
-      >
-        <Bell size={18} strokeWidth={2} />
-        <span className="absolute top-2 right-2.5 w-1.5 h-1.5 rounded-full bg-danger ring-2 ring-card" />
-      </button>
+      <NotificationBell role={role} />
     </div>
   );
 };

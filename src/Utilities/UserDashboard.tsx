@@ -34,7 +34,7 @@ const UserDashboard: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => 
     <div className="w-full min-h-screen bg-surface flex font-sans text-ink antialiased">
       <UserSidebar onNavigate={onNavigate} activeTab="userDashboard" userName={CURRENT_USER.fullName} />
       <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader title="Dashboard" placeholder="Tìm kiếm tài liệu, thư mục..." />
+        <AdminHeader role="user" title="Dashboard" placeholder="Tìm kiếm tài liệu, thư mục..." />
         <main className="flex-1 animate-fade-in-up p-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-7">
             <StatCard

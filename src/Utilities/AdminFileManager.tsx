@@ -16,8 +16,12 @@ const fileIcon = (name: string) => {
   return <FileText size={18} strokeWidth={2} />;
 };
 
+const PAGE_SIZE = 8;
+
 const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ onNavigate }) => {
   const [files, setFiles] = useState<ReportedFileItem[]>([]);
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
   const [selected, setSelected] = useState<ReportedFileItem | null>(null);
   const [decision, setDecision] = useState<'remove' | 'reject' | null>(null);
   const [note, setNote] = useState('');
@@ -25,6 +29,15 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
 
   const fetchFiles = () => fileApi.getReportedFiles().then(setFiles);
   useEffect(() => { fetchFiles(); }, []);
+
+  const filtered = files.filter((f) => f.name.toLowerCase().includes(query.toLowerCase()) || f.uploader.toLowerCase().includes(query.toLowerCase()));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    setPage(1);
+  };
 
   const openModal = (file: ReportedFileItem) => {
     setSelected(file);
@@ -46,15 +59,15 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
     <div className="w-full min-h-screen bg-surface flex font-sans text-ink antialiased">
       <AdminSidebar onNavigate={onNavigate} activeTab="adminFileManager" />
       <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader title="Quản lý Tài liệu" placeholder="Tìm kiếm tài liệu vi phạm..." />
+        <AdminHeader role="admin" title="Quản lý Tài liệu" placeholder="Tìm kiếm tài liệu vi phạm..." value={query} onChange={handleSearch} />
         <main className="flex-1 animate-fade-in-up p-8 flex flex-col gap-5">
           <div className="w-full bg-card border border-line rounded-2xl shadow-card overflow-hidden">
             <div className="h-[64px] border-b border-line flex items-center justify-between px-6">
               <h2 className="font-display text-[17px] font-bold">Tài liệu bị báo cáo</h2>
-              <span className="text-ink-soft text-[13.5px] font-semibold">{files.length} tài liệu</span>
+              <span className="text-ink-soft text-[13.5px] font-semibold">{filtered.length} tài liệu</span>
             </div>
 
-            {files.length === 0 ? (
+            {filtered.length === 0 ? (
               <EmptyState icon={<ShieldCheck size={24} strokeWidth={1.75} />} title="Không có báo cáo nào" description="Mọi tài liệu hiện đang tuân thủ quy định." />
             ) : (
               <table className="w-full text-left border-collapse">
@@ -68,7 +81,7 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
                   </tr>
                 </thead>
                 <tbody>
-                  {files.map((file) => (
+                  {paged.map((file) => (
                     <tr key={file.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-snappy">
                       <td className="px-6">
                         <div className="flex items-center gap-3 min-w-0">
@@ -98,7 +111,7 @@ const AdminFileManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
             )}
           </div>
 
-          <AdminPagination currentPage={1} totalPages={1} />
+          <AdminPagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
         </main>
       </div>
 

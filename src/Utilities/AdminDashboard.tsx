@@ -3,7 +3,6 @@ import AdminSidebar from '../components/AdminSideBar';
 import AdminHeader from '../components/AdminHeader';
 import StatCard from '../components/StatCard';
 import Avatar from '../components/Avatar';
-import AdminPagination from '../components/AdminPagination';
 import { dashboardApi, DashboardStats, ActivityItem } from '../api/dashboardApi';
 import { AllPages } from '../App';
 import { Users, FileStack, Download, UserPlus, Upload, Flag, Trash } from 'lucide-react';
@@ -35,7 +34,7 @@ const AdminDashboard: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ on
     <div className="w-full min-h-screen bg-surface flex font-sans text-ink antialiased">
       <AdminSidebar onNavigate={onNavigate} activeTab="adminDashboard" />
       <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader title="Dashboard" placeholder="Tìm kiếm số liệu..." />
+        <AdminHeader role="admin" title="Dashboard" placeholder="Tìm kiếm số liệu..." />
         <main className="flex-1 animate-fade-in-up p-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-7">
             <StatCard
@@ -62,11 +61,18 @@ const AdminDashboard: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ on
           </div>
 
           <div className="w-full bg-card border border-line rounded-2xl shadow-card">
-            <div className="h-[64px] border-b border-line flex items-center px-6">
+            <div className="h-[64px] border-b border-line flex items-center justify-between px-6">
               <h2 className="font-display text-[17px] font-bold">Hoạt động gần đây</h2>
+              <button
+                type="button"
+                onClick={() => onNavigate('adminHistoryApproval')}
+                className="text-brand-500 hover:text-brand-600 hover:underline font-bold text-[13px] cursor-pointer"
+              >
+                Xem tất cả →
+              </button>
             </div>
             <div>
-              {activity.map((item) => (
+              {activity.slice(0, 6).map((item) => (
                 <div key={item.id} className="flex items-center gap-4 px-6 h-[68px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-snappy">
                   <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 ${activityTone[item.type]}`}>
                     {activityIcon[item.type]}
@@ -79,9 +85,6 @@ const AdminDashboard: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ on
                   <span className="text-ink-faint text-[13px] font-medium shrink-0">{item.time}</span>
                 </div>
               ))}
-            </div>
-            <div className="px-6">
-              <AdminPagination currentPage={1} totalPages={1} />
             </div>
           </div>
         </main>

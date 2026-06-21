@@ -270,6 +270,11 @@ export const workspaceApi = {
     await delay();
     return [...mockShared];
   },
+  removeShared: async (id: number): Promise<boolean> => {
+    await delay();
+    mockShared = mockShared.filter((x) => x.id !== id);
+    return true;
+  },
 
   askRag: async (input: { id: number; question: string }): Promise<AskResponse> => {
     await delay(600);

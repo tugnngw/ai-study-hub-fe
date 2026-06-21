@@ -22,8 +22,23 @@ let mockDelAccs = [
   { id: 103, name: "Nguoi Qua Duong F", email: "quaduongf@student.edu.vn", deletedDate: "09/07/2026", remainingDays: 2 },
 ];
 
+let reportSeq = 900;
+
 export const fileApi = {
   getReportedFiles: () => Promise.resolve([...mockReports]),
+  submitReport: (input: { name: string; uploader: string; size: string; reporter: string; reason: string }) => {
+    const existing = mockReports.find((r) => r.name === input.name);
+    if (existing) {
+      existing.reports += 1;
+      existing.reason = input.reason;
+    } else {
+      mockReports = [
+        { id: ++reportSeq, name: input.name, uploader: input.uploader, size: input.size, reports: 1, reporter: input.reporter, reason: input.reason },
+        ...mockReports,
+      ];
+    }
+    return Promise.resolve(true);
+  },
   handleReportDecision: (id: number, decision: 'remove' | 'reject') => {
     if (decision === 'remove') mockReports = mockReports.filter(f => f.id !== id);
     return Promise.resolve(true);

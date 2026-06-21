@@ -6,14 +6,19 @@ import StatusBadge from '../components/StatusBadge';
 import TableActionButton from '../components/TableActionButton';
 import AdminPagination from '../components/AdminPagination';
 import EmptyState from '../components/EmptyState';
+import ConfirmDeleteDialog from '../components/ConfirmDeleteDialog';
 import { userApi, UserItem } from '../api/userApi';
 import { AllPages } from '../App';
 import { Lock, Unlock, Trash2, Users } from 'lucide-react';
+
+const PAGE_SIZE = 8;
 
 const AdminUserManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ onNavigate }) => {
   const [users, setUsers] = useState<UserItem[]>([]);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
+  const [deletingUser, setDeletingUser] = useState<UserItem | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchUsers = () => userApi.getUsers().then(setUsers);
   useEffect(() => { fetchUsers(); }, []);
@@ -24,12 +29,31 @@ const AdminUserManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
     ),
     [users, query]
   );
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    setPage(1);
+  };
+
+  const handleDeleteUser = async () => {
+    if (!deletingUser) return;
+    setDeleting(true);
+    try {
+      await userApi.deleteUser(deletingUser.id);
+      fetchUsers();
+    } finally {
+      setDeleting(false);
+      setDeletingUser(null);
+    }
+  };
 
   return (
     <div className="w-full min-h-screen bg-surface flex font-sans text-ink antialiased">
       <AdminSidebar onNavigate={onNavigate} activeTab="adminUserManager" />
       <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader title="Quản lý Users" placeholder="Tìm kiếm tên hoặc email..." value={query} onChange={(e) => setQuery(e.target.value)} />
+        <AdminHeader role="admin" title="Quản lý Users" placeholder="Tìm kiếm tên hoặc email..." value={query} onChange={handleSearch} />
         <main className="flex-1 animate-fade-in-up p-8 flex flex-col gap-5">
           <div className="w-full bg-card border border-line rounded-2xl shadow-card overflow-hidden">
             <div className="h-[64px] border-b border-line flex items-center justify-between px-6">
@@ -50,7 +74,7 @@ const AdminUserManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
                   </tr>
                 </thead>
                 <tbody>
-                  {filtered.map((u) => (
+                  {paged.map((u) => (
                     <tr key={u.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-snappy">
                       <td className="px-6">
                         <div className="flex items-center gap-3">
@@ -73,7 +97,7 @@ const AdminUserManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
                             label="Xóa"
                             icon={<Trash2 size={14} />}
                             variant="danger"
-                            onClick={async () => { if (window.confirm('Xóa thành viên?')) { await userApi.deleteUser(u.id); fetchUsers(); } }}
+                            onClick={() => setDeletingUser(u)}
                           />
                         </div>
                       </td>
@@ -84,9 +108,19 @@ const AdminUserManager: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ 
             )}
           </div>
 
-          <AdminPagination currentPage={page} totalPages={1} onPageChange={setPage} />
+          <AdminPagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
         </main>
       </div>
+
+      {deletingUser && (
+        <ConfirmDeleteDialog
+          title="Xóa thành viên?"
+          description={`Tài khoản "${deletingUser.name}" sẽ bị xóa khỏi hệ thống.`}
+          loading={deleting}
+          onConfirm={handleDeleteUser}
+          onClose={() => setDeletingUser(null)}
+        />
+      )}
     </div>
   );
 };

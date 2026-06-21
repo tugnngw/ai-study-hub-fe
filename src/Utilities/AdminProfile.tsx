@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
-import UserSidebar from '../components/UserSideBar';
+import AdminSidebar from '../components/AdminSideBar';
 import AdminHeader from '../components/AdminHeader';
 import ProfileField from '../components/ProfileField';
-import { storageApi, CURRENT_USER } from '../api/workspaceApi';
-import { NavigateFn } from '../App';
-import { formatBytes } from './formatBytes';
-import { CalendarDays, Lock, Mail, ShieldCheck } from 'lucide-react';
+import { CURRENT_ADMIN } from '../api/adminApi';
+import { AllPages } from '../App';
+import { CalendarDays, Lock, Mail, ShieldCheck, Sparkles } from 'lucide-react';
 
-const UserProfile: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
+const AdminProfile: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ onNavigate }) => {
   const [form, setForm] = useState({
-    fullName: CURRENT_USER.fullName,
-    email: CURRENT_USER.email,
-    phone: '',
-    dob: '',
-    address: '',
-    bio: '',
-    occupation: '',
-    company: '',
+    fullName: CURRENT_ADMIN.fullName,
+    email: CURRENT_ADMIN.email,
+    phone: CURRENT_ADMIN.phone,
+    role: CURRENT_ADMIN.role,
   });
   const [saved, setSaved] = useState(false);
 
@@ -28,15 +23,11 @@ const UserProfile: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
     setTimeout(() => setSaved(false), 2500);
   };
 
-  const used = storageApi.usedBytes();
-  const total = storageApi.totalBytes;
-  const pct = (used / total) * 100;
-
   return (
     <div className="w-full min-h-screen bg-surface flex font-sans text-ink antialiased">
-      <UserSidebar onNavigate={onNavigate} activeTab="userProfile" userName={CURRENT_USER.fullName} />
+      <AdminSidebar onNavigate={onNavigate} activeTab="adminProfile" />
       <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader role="user" title="Hồ sơ" />
+        <AdminHeader role="admin" title="Hồ sơ quản trị" />
         <main className="flex-1 animate-fade-in-up p-7">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,720px)_300px] gap-5 items-start max-w-[1040px] mx-auto">
             {/* Main form column */}
@@ -48,7 +39,7 @@ const UserProfile: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
                 <div className="p-5 space-y-4">
                   <div className="flex items-center gap-4 pb-4 border-b border-line">
                     <div className="h-14 w-14 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center text-lg font-bold shrink-0">
-                      {form.fullName?.[0]?.toUpperCase() ?? 'U'}
+                      {form.fullName?.[0]?.toUpperCase() ?? 'A'}
                     </div>
                     <button type="button" className="h-[34px] px-4 border border-line rounded-xl font-bold text-[13px] text-ink-soft hover:bg-surface-alt transition-snappy cursor-pointer">
                       Đổi ảnh đại diện
@@ -59,30 +50,7 @@ const UserProfile: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
                     <ProfileField label="Họ và tên" value={form.fullName} onChange={(v) => update('fullName', v)} />
                     <ProfileField label="Email" type="email" value={form.email} onChange={(v) => update('email', v)} />
                     <ProfileField label="Số điện thoại" value={form.phone} onChange={(v) => update('phone', v)} placeholder="0xxx xxx xxx" />
-                    <ProfileField label="Ngày sinh" type="date" value={form.dob} onChange={(v) => update('dob', v)} />
-                  </div>
-                  <ProfileField label="Địa chỉ" value={form.address} onChange={(v) => update('address', v)} />
-                </div>
-              </div>
-
-              <div className="bg-card border border-line rounded-2xl shadow-card overflow-hidden">
-                <div className="h-[54px] border-b border-line flex items-center px-5">
-                  <h2 className="font-display text-[15.5px] font-bold">Thông tin nghề nghiệp</h2>
-                </div>
-                <div className="p-5 space-y-4">
-                  <div className="grid sm:grid-cols-2 gap-3.5">
-                    <ProfileField label="Nghề nghiệp" value={form.occupation} onChange={(v) => update('occupation', v)} placeholder="VD: Software Engineer" />
-                    <ProfileField label="Công ty / Trường học" value={form.company} onChange={(v) => update('company', v)} />
-                  </div>
-                  <div>
-                    <label className="text-[13px] font-bold block mb-1.5">Giới thiệu</label>
-                    <textarea
-                      value={form.bio}
-                      onChange={(e) => update('bio', e.target.value)}
-                      rows={3}
-                      placeholder="Vài dòng giới thiệu về bản thân…"
-                      className="w-full border border-line rounded-xl p-3 text-[14px] outline-none resize-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-snappy"
-                    />
+                    <ProfileField label="Vai trò" value={form.role} onChange={(v) => update('role', v)} disabled />
                   </div>
                 </div>
               </div>
@@ -98,37 +66,21 @@ const UserProfile: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
               </div>
             </form>
 
-            {/* Side summary column — sticky so it doesn't trail empty space below a shorter form */}
+            {/* Side summary column — sticky so it never trails empty space */}
             <div className="space-y-4 lg:sticky lg:top-[94px]">
               <div className="bg-card border border-line rounded-2xl shadow-card p-5 text-center">
                 <div className="h-16 w-16 rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white flex items-center justify-center text-xl font-bold mx-auto shadow-brand-glow">
-                  {form.fullName?.[0]?.toUpperCase() ?? 'U'}
+                  {form.fullName?.[0]?.toUpperCase() ?? 'A'}
                 </div>
-                <h3 className="font-display text-[15px] font-bold mt-2.5">{form.fullName || 'Người dùng'}</h3>
+                <h3 className="font-display text-[15px] font-bold mt-2.5">{form.fullName || 'Quản trị viên'}</h3>
                 <p className="text-ink-soft text-[12.5px] mt-0.5 flex items-center justify-center gap-1.5">
                   <Mail size={13} strokeWidth={2.25} />
                   {form.email}
                 </p>
-                {form.occupation && (
-                  <p className="text-ink-faint text-[12px] mt-1.5">{form.occupation}{form.company ? ` · ${form.company}` : ''}</p>
-                )}
-              </div>
-
-              <div className="bg-card border border-line rounded-2xl shadow-card p-4">
-                <h3 className="font-display text-[13.5px] font-bold mb-2.5">Dung lượng đang dùng</h3>
-                <div className="text-[12.5px] font-semibold text-ink-soft mb-1.5">
-                  {formatBytes(used)} <span className="text-ink-faint">/ {formatBytes(total)}</span>
-                </div>
-                <div className="w-full h-2 bg-surface-alt rounded-full overflow-hidden">
-                  <div className="h-full bg-gradient-to-r from-brand-400 to-brand-500 rounded-full" style={{ width: `${Math.min(100, pct)}%` }} />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => onNavigate('userCloud')}
-                  className="text-brand-500 hover:text-brand-600 hover:underline font-bold text-[12px] mt-2.5 cursor-pointer"
-                >
-                  Xem chi tiết →
-                </button>
+                <p className="text-ink-faint text-[12px] mt-1.5 inline-flex items-center gap-1.5">
+                  <Sparkles size={12} strokeWidth={2.5} className="text-brand-500" />
+                  {form.role}
+                </p>
               </div>
 
               <div className="bg-card border border-line rounded-2xl shadow-card p-4">
@@ -143,12 +95,12 @@ const UserProfile: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
                   </li>
                   <li className="flex items-center gap-2">
                     <CalendarDays size={13} strokeWidth={2.25} className="text-ink-faint shrink-0" />
-                    Tham gia từ tháng 6, 2026
+                    Tham gia từ {CURRENT_ADMIN.joinedLabel}
                   </li>
                 </ul>
                 <button
                   type="button"
-                  onClick={() => onNavigate('userSettings')}
+                  onClick={() => onNavigate('adminSettings')}
                   className="w-full h-[34px] mt-3.5 border border-line rounded-lg font-bold text-[12px] text-ink-soft hover:bg-surface-alt transition-snappy cursor-pointer"
                 >
                   Đi đến Cài đặt
@@ -162,4 +114,4 @@ const UserProfile: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
   );
 };
 
-export default UserProfile;
+export default AdminProfile;

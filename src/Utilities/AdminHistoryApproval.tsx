@@ -9,11 +9,24 @@ import { approvalApi, ApprovalItem } from '../api/approvalApi';
 import { AllPages } from '../App';
 import { FileText, Check, X, ClipboardCheck } from 'lucide-react';
 
+const PAGE_SIZE = 8;
+
 const AdminHistoryApproval: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ onNavigate }) => {
   const [list, setList] = useState<ApprovalItem[]>([]);
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
 
   const fetchList = () => approvalApi.getPendingList().then(setList);
   useEffect(() => { fetchList(); }, []);
+
+  const filtered = list.filter((item) => item.title.toLowerCase().includes(query.toLowerCase()) || item.uploader.toLowerCase().includes(query.toLowerCase()));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paged = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+    setPage(1);
+  };
 
   const handleAction = async (id: number, action: 'approve' | 'reject') => {
     if (action === 'approve') await approvalApi.approve(id);
@@ -25,15 +38,15 @@ const AdminHistoryApproval: React.FC<{ onNavigate: (page: AllPages) => void }> =
     <div className="w-full min-h-screen bg-surface flex font-sans text-ink antialiased">
       <AdminSidebar onNavigate={onNavigate} activeTab="adminHistoryApproval" />
       <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader title="Phê duyệt tài liệu" placeholder="Tìm kiếm nội dung chờ duyệt..." />
+        <AdminHeader role="admin" title="Phê duyệt tài liệu" placeholder="Tìm kiếm nội dung chờ duyệt..." value={query} onChange={handleSearch} />
         <main className="flex-1 animate-fade-in-up p-8 flex flex-col gap-5">
           <div className="w-full bg-card border border-line rounded-2xl shadow-card overflow-hidden">
             <div className="h-[64px] border-b border-line flex items-center justify-between px-6">
               <h2 className="font-display text-[17px] font-bold">Đang chờ duyệt</h2>
-              <span className="text-ink-soft text-[13.5px] font-semibold">{list.length} mục</span>
+              <span className="text-ink-soft text-[13.5px] font-semibold">{filtered.length} mục</span>
             </div>
 
-            {list.length === 0 ? (
+            {filtered.length === 0 ? (
               <EmptyState icon={<ClipboardCheck size={24} strokeWidth={1.75} />} title="Không có tài liệu chờ duyệt" description="Mọi yêu cầu đã được xử lý." />
             ) : (
               <table className="w-full text-left border-collapse">
@@ -46,7 +59,7 @@ const AdminHistoryApproval: React.FC<{ onNavigate: (page: AllPages) => void }> =
                   </tr>
                 </thead>
                 <tbody>
-                  {list.map((item) => (
+                  {paged.map((item) => (
                     <tr key={item.id} className="h-[72px] border-b border-line last:border-b-0 hover:bg-surface/60 transition-snappy">
                       <td className="px-6">
                         <div className="flex items-center gap-3 min-w-0">
@@ -76,7 +89,7 @@ const AdminHistoryApproval: React.FC<{ onNavigate: (page: AllPages) => void }> =
             )}
           </div>
 
-          <AdminPagination currentPage={1} totalPages={1} />
+          <AdminPagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
         </main>
       </div>
     </div>

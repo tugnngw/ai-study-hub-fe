@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import UserSidebar from '../components/UserSideBar';
+import AdminSidebar from '../components/AdminSideBar';
 import AdminHeader from '../components/AdminHeader';
 import ToggleSwitch from '../components/ToggleSwitch';
 import ChangePasswordDialog from '../components/ChangePasswordDialog';
 import ConfirmDeleteDialog from '../components/ConfirmDeleteDialog';
-import { CURRENT_USER } from '../api/workspaceApi';
 import { authApi, LoginSession } from '../api/authApi';
-import { NavigateFn } from '../App';
+import { AllPages } from '../App';
 import { KeyRound, Laptop, LogOut, Monitor, Shield, Smartphone } from 'lucide-react';
 
-const UserSettings: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
+const AdminSettings: React.FC<{ onNavigate: (page: AllPages) => void }> = ({ onNavigate }) => {
   const [sessions, setSessions] = useState<LoginSession[]>([]);
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [twoFA, setTwoFA] = useState(false);
@@ -51,13 +50,13 @@ const UserSettings: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
 
   return (
     <div className="w-full min-h-screen bg-surface flex font-sans text-ink antialiased">
-      <UserSidebar onNavigate={onNavigate} activeTab="userSettings" userName={CURRENT_USER.fullName} />
+      <AdminSidebar onNavigate={onNavigate} activeTab="adminSettings" />
       <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader role="user" />
+        <AdminHeader role="admin" />
         <main className="flex-1 animate-fade-in-up p-8 max-w-4xl mx-auto w-full">
           <div className="mb-7">
             <h1 className="font-display text-[26px] font-bold tracking-tight">Cài đặt &amp; Quyền riêng tư</h1>
-            <p className="text-ink-soft text-[14.5px] mt-1">Bảo vệ tài khoản và quản lý các phiên đăng nhập</p>
+            <p className="text-ink-soft text-[14.5px] mt-1">Bảo vệ tài khoản quản trị và quản lý các phiên đăng nhập</p>
           </div>
 
           <div className="space-y-5">
@@ -190,4 +189,4 @@ const UserSettings: React.FC<{ onNavigate: NavigateFn }> = ({ onNavigate }) => {
   );
 };
 
-export default UserSettings;
+export default AdminSettings;

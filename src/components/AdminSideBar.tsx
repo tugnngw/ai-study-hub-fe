@@ -1,5 +1,6 @@
 import React from 'react';
 import { AllPages } from '../App';
+import { CURRENT_ADMIN } from '../api/adminApi';
 import {
   LayoutDashboard,
   Users,
@@ -8,6 +9,7 @@ import {
   Trash2,
   LogOut,
   GraduationCap,
+  Settings,
 } from 'lucide-react';
 
 interface AdminSidebarProps {
@@ -24,6 +26,8 @@ const menuItems = [
 ] as const;
 
 const AdminSidebar: React.FC<AdminSidebarProps> = ({ onNavigate, activeTab }) => {
+  const initial = CURRENT_ADMIN.fullName?.[0]?.toUpperCase() ?? 'A';
+
   return (
     <div className="relative w-[260px] bg-gradient-to-b from-brand-900 via-brand-800 to-brand-900 text-white flex flex-col justify-between p-5 shrink-0 min-h-screen overflow-hidden">
       {/* Ambient glow accents — quiet, not decorative noise */}
@@ -38,15 +42,19 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onNavigate, activeTab }) =>
           <span className="font-display font-bold text-[17px] tracking-tight">AI Study Hub</span>
         </div>
 
-        <div className="flex items-center gap-3 mb-8 px-3 py-3 rounded-2xl bg-white/[0.06] border border-white/[0.08]">
-          <div className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center border border-white/20 font-bold text-[16px]">
-            A
+        <button
+          type="button"
+          onClick={() => onNavigate('adminProfile')}
+          className="w-full flex items-center gap-3 mb-8 px-3 py-3 rounded-2xl bg-white/[0.06] border border-white/[0.08] hover:bg-white/[0.1] transition-snappy cursor-pointer"
+        >
+          <div className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center border border-white/20 font-bold text-[16px] shrink-0">
+            {initial}
           </div>
-          <div className="min-w-0">
+          <div className="min-w-0 text-left">
             <h3 className="text-[15px] font-bold leading-tight truncate">Admin</h3>
-            <p className="text-[13px] text-white/55 truncate">Nguyen Van A</p>
+            <p className="text-[13px] text-white/55 truncate">{CURRENT_ADMIN.fullName}</p>
           </div>
-        </div>
+        </button>
 
         <nav className="flex flex-col gap-1">
           {menuItems.map((item) => {
@@ -70,13 +78,26 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ onNavigate, activeTab }) =>
         </nav>
       </div>
 
-      <a
-        onClick={() => onNavigate('welcome')}
-        className="relative z-10 w-full h-[46px] hover:bg-white/[0.08] rounded-xl flex items-center gap-3 px-3.5 text-[14.5px] font-semibold text-white/70 hover:text-white transition-snappy cursor-pointer mt-auto"
-      >
-        <LogOut size={18} strokeWidth={2.25} />
-        Đăng xuất
-      </a>
+      <div className="relative z-10 flex flex-col gap-1">
+        <a
+          onClick={() => onNavigate('adminSettings')}
+          className={`w-full h-[46px] rounded-xl flex items-center gap-3 px-3.5 text-[14.5px] font-semibold transition-snappy cursor-pointer select-none ${
+            activeTab === 'adminSettings'
+              ? 'bg-white text-brand-700 shadow-[0_4px_14px_rgba(0,0,0,0.22)]'
+              : 'text-white/65 hover:bg-white/[0.08] hover:text-white hover:translate-x-0.5'
+          }`}
+        >
+          <Settings size={18} strokeWidth={2.25} className={activeTab === 'adminSettings' ? 'text-brand-600' : ''} />
+          Cài đặt
+        </a>
+        <a
+          onClick={() => onNavigate('welcome')}
+          className="w-full h-[46px] hover:bg-white/[0.08] rounded-xl flex items-center gap-3 px-3.5 text-[14.5px] font-semibold text-white/70 hover:text-white transition-snappy cursor-pointer"
+        >
+          <LogOut size={18} strokeWidth={2.25} />
+          Đăng xuất
+        </a>
+      </div>
     </div>
   );
 };

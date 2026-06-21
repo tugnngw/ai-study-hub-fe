@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AllPages, NavigateFn } from '../App';
+import UploadDocumentDialog from './UploadDocumentDialog';
 import {
   LayoutDashboard,
   FolderKanban,
@@ -8,7 +9,9 @@ import {
   Trash2,
   Cloud,
   LogOut,
+  Settings,
   GraduationCap,
+  UploadCloud,
 } from 'lucide-react';
 
 interface UserSidebarProps {
@@ -23,11 +26,12 @@ const menuItems = [
   { id: 'userDocuments', label: 'Tài liệu', icon: FileText },
   { id: 'userShared', label: 'Được chia sẻ', icon: Users },
   { id: 'userTrash', label: 'Thùng rác', icon: Trash2 },
-  { id: 'userCloud', label: 'Dung lượng Cloud', icon: Cloud },
+  { id: 'userCloud', label: 'Lưu trữ Cloud', icon: Cloud },
 ] as const;
 
 const UserSidebar: React.FC<UserSidebarProps> = ({ onNavigate, activeTab, userName }) => {
   const initial = userName?.[0]?.toUpperCase() ?? 'U';
+  const [uploadOpen, setUploadOpen] = useState(false);
 
   return (
     <div className="relative w-[260px] bg-gradient-to-b from-brand-900 via-brand-800 to-brand-900 text-white flex flex-col justify-between p-5 shrink-0 min-h-screen overflow-hidden">
@@ -78,7 +82,15 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ onNavigate, activeTab, userNa
         </nav>
       </div>
 
-      <div className="relative z-10 flex flex-col gap-1">
+      <div className="relative z-10 flex flex-col gap-2">
+        <button
+          type="button"
+          onClick={() => setUploadOpen(true)}
+          className="w-full h-[44px] rounded-xl flex items-center justify-center gap-2 text-[14px] font-bold text-white bg-gradient-to-r from-brand-500 to-brand-400 hover:from-brand-400 hover:to-brand-300 shadow-[0_4px_14px_rgba(124,58,237,0.35)] transition-snappy cursor-pointer"
+        >
+          <UploadCloud size={17} strokeWidth={2.25} />
+          Tải lên tài liệu
+        </button>
         <a
           onClick={() => onNavigate('userSettings')}
           className={`w-full h-[46px] rounded-xl flex items-center gap-3 px-3.5 text-[14.5px] font-semibold transition-snappy cursor-pointer select-none ${
@@ -87,7 +99,7 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ onNavigate, activeTab, userNa
               : 'text-white/65 hover:bg-white/[0.08] hover:text-white hover:translate-x-0.5'
           }`}
         >
-          <Users size={18} strokeWidth={2.25} className={activeTab === 'userSettings' ? 'text-brand-600' : ''} />
+          <Settings size={18} strokeWidth={2.25} className={activeTab === 'userSettings' ? 'text-brand-600' : ''} />
           Cài đặt
         </a>
         <a
@@ -98,6 +110,13 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ onNavigate, activeTab, userNa
           Đăng xuất
         </a>
       </div>
+
+      {uploadOpen && (
+        <UploadDocumentDialog
+          onClose={() => setUploadOpen(false)}
+          onUploaded={() => onNavigate('userDocuments')}
+        />
+      )}
     </div>
   );
 };
