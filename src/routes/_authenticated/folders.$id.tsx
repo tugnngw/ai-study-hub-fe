@@ -14,5 +14,5 @@ export const Route = createFileRoute("/_authenticated/folders/$id")({
 function FolderDetail() {
   const { id } = Route.useParams();
   const { docId } = Route.useSearch();
-  return <DocumentWorkspace folderId={Number(id)} docId={docId} />;
+  return <DocumentWorkspace folderId={id} docId={docId} />;
 }

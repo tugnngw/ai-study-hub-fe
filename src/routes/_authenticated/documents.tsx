@@ -2,11 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { FileText, Plus, Search, Upload } from "lucide-react";
 import { toast } from "sonner";
-import {
-  useDocuments,
-  useFolders,
-  useUploadDocument,
-} from "@/lib/queries";
+import { useDocuments, useFolders, useUploadDocument } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -66,12 +62,18 @@ function DocumentsPage() {
       </div>
 
       {isLoading ? (
-        <div className="space-y-2">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-14" />)}</div>
+        <div className="space-y-2">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Skeleton key={i} className="h-14" />
+          ))}
+        </div>
       ) : filtered.length === 0 ? (
         <Card>
           <CardContent className="py-16 text-center">
             <FileText className="h-10 w-10 mx-auto text-muted-foreground/50" />
-            <p className="mt-4 text-sm text-muted-foreground">No documents found.</p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              No documents found.
+            </p>
             <Button className="mt-4" onClick={() => setUploadOpen(true)}>
               <Upload className="h-4 w-4 mr-2" /> Upload your first
             </Button>
@@ -83,13 +85,21 @@ function DocumentsPage() {
             <thead className="bg-muted/40">
               <tr className="text-left">
                 <th className="px-4 py-3 font-medium">Title</th>
-                <th className="px-4 py-3 font-medium hidden md:table-cell">Description</th>
+                <th className="px-4 py-3 font-medium hidden md:table-cell">
+                  Description
+                </th>
                 <th className="px-4 py-3 font-medium w-24">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((d) => (
-                <DocumentRow key={d.id} id={d.id} folderId={d.folderId} title={d.title} description={d.description ?? ""} />
+                <DocumentRow
+                  key={d.id}
+                  id={d.id}
+                  folderId={d.folderId ?? ""}
+                  title={d.title}
+                  description={d.description ?? ""}
+                />
               ))}
             </tbody>
           </table>
@@ -101,24 +111,50 @@ function DocumentsPage() {
   );
 }
 
-function DocumentRow({ id, folderId, title, description }: { id: number; folderId: number; title: string; description: string }) {
+function DocumentRow({
+  id,
+  folderId,
+  title,
+  description,
+}: {
+  id: number;
+  folderId: string;
+  title: string;
+  description: string;
+}) {
   return (
     <tr className="border-t border-border/60 hover:bg-accent/30">
       <td className="px-4 py-3">
-        <Link to="/aichat" search={{ folderId, docId: id }} className="flex items-center gap-2 hover:text-primary">
+        <Link
+          to="/ai"
+          search={{ folderId, docId: id }}
+          className="flex items-center gap-2 hover:text-primary"
+        >
           <FileText className="h-4 w-4 text-muted-foreground" />
           <span className="font-medium">{title}</span>
         </Link>
       </td>
-      <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">{description}</td>
+      <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
+        {description}
+      </td>
       <td className="px-4 py-3">
-        <DocumentActionsMenu documentId={id} folderId={folderId} title={title} />
+        <DocumentActionsMenu
+          documentId={id}
+          folderId={folderId}
+          title={title}
+        />
       </td>
     </tr>
   );
 }
 
-function UploadDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+function UploadDialog({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+}) {
   const folders = useFolders();
   const upload = useUploadDocument();
   const [file, setFile] = useState<File | null>(null);
@@ -131,10 +167,18 @@ function UploadDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v:
     if (!title.trim()) return toast.error("Title required");
     if (!folderId) return toast.error("Select a folder");
     try {
-      await upload.mutateAsync({ file, folderId: Number(folderId), title, description });
+      await upload.mutateAsync({
+        file,
+        folderId,
+        title,
+        description,
+      });
       toast.success("Uploaded");
       onOpenChange(false);
-      setFile(null); setTitle(""); setDescription(""); setFolderId("");
+      setFile(null);
+      setTitle("");
+      setDescription("");
+      setFolderId("");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Upload failed");
     }
@@ -145,12 +189,17 @@ function UploadDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v:
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Upload document</DialogTitle>
-          <DialogDescription>Add a new file to your workspace.</DialogDescription>
+          <DialogDescription>
+            Add a new file to your workspace.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>File</Label>
-            <Input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+            <Input
+              type="file"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
           </div>
           <div className="space-y-2">
             <Label>Title</Label>
@@ -158,22 +207,31 @@ function UploadDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (v:
           </div>
           <div className="space-y-2">
             <Label>Description</Label>
-            <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           <div className="space-y-2">
             <Label>Folder</Label>
             <Select value={folderId} onValueChange={setFolderId}>
-              <SelectTrigger><SelectValue placeholder="Choose folder" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue placeholder="Choose folder" />
+              </SelectTrigger>
               <SelectContent>
                 {(folders.data ?? []).map((f) => (
-                  <SelectItem key={f.id} value={String(f.id)}>{f.name}</SelectItem>
+                  <SelectItem key={f.id} value={String(f.id)}>
+                    {f.name}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
           <Button onClick={submit} disabled={upload.isPending}>
             {upload.isPending ? "Uploading..." : "Upload"}
           </Button>

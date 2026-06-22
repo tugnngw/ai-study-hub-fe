@@ -20,5 +20,5 @@ function DocumentDetail() {
       <div className="text-sm text-muted-foreground">Document not found.</div>
     );
   }
-  return <DocumentWorkspace folderId={doc.data.folderId} docId={docId} />;
+  return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
 }

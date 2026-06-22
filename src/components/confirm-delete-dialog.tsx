@@ -29,14 +29,19 @@ export function ConfirmDeleteDialog({
         <DialogHeader>
           <DialogTitle className="truncate">Xóa "{title}"?</DialogTitle>
           <DialogDescription>
-            {description ?? "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
+            {description ??
+              "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Hủy
           </Button>
-          <Button variant="destructive" onClick={onConfirm} disabled={isPending}>
+          <Button
+            variant="destructive"
+            onClick={onConfirm}
+            disabled={isPending}
+          >
             {isPending ? "Đang xóa..." : "Xóa"}
           </Button>
         </DialogFooter>

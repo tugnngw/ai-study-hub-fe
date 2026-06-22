@@ -109,12 +109,22 @@
   --violet-soft: oklch(0.95 0.04 305);
 
   /* Gradients & shadows */
-  --gradient-brand: linear-gradient(135deg, oklch(0.55 0.23 275), oklch(0.6 0.24 305));
-  --gradient-soft: linear-gradient(135deg, oklch(0.97 0.03 285), oklch(0.97 0.035 305));
-  --gradient-page: radial-gradient(at 0% 0%, oklch(0.96 0.04 285) 0%, transparent 50%),
-                   radial-gradient(at 100% 0%, oklch(0.96 0.04 320) 0%, transparent 50%);
-  --shadow-soft: 0 1px 2px oklch(0.5 0.22 275 / 0.04),
-                 0 8px 24px -8px oklch(0.5 0.22 275 / 0.12);
+  --gradient-brand: linear-gradient(
+    135deg,
+    oklch(0.55 0.23 275),
+    oklch(0.6 0.24 305)
+  );
+  --gradient-soft: linear-gradient(
+    135deg,
+    oklch(0.97 0.03 285),
+    oklch(0.97 0.035 305)
+  );
+  --gradient-page:
+    radial-gradient(at 0% 0%, oklch(0.96 0.04 285) 0%, transparent 50%),
+    radial-gradient(at 100% 0%, oklch(0.96 0.04 320) 0%, transparent 50%);
+  --shadow-soft:
+    0 1px 2px oklch(0.5 0.22 275 / 0.04),
+    0 8px 24px -8px oklch(0.5 0.22 275 / 0.12);
   --shadow-brand: 0 8px 30px -8px oklch(0.5 0.22 275 / 0.45);
 
   --sidebar: oklch(0.985 0.008 285);
@@ -152,10 +162,19 @@
   --brand-soft: oklch(0.3 0.07 280);
   --violet: oklch(0.72 0.2 310);
   --violet-soft: oklch(0.32 0.08 310);
-  --gradient-brand: linear-gradient(135deg, oklch(0.6 0.22 275), oklch(0.65 0.22 310));
-  --gradient-soft: linear-gradient(135deg, oklch(0.24 0.05 275), oklch(0.24 0.06 310));
-  --gradient-page: radial-gradient(at 0% 0%, oklch(0.24 0.06 275) 0%, transparent 50%),
-                   radial-gradient(at 100% 0%, oklch(0.24 0.06 320) 0%, transparent 50%);
+  --gradient-brand: linear-gradient(
+    135deg,
+    oklch(0.6 0.22 275),
+    oklch(0.65 0.22 310)
+  );
+  --gradient-soft: linear-gradient(
+    135deg,
+    oklch(0.24 0.05 275),
+    oklch(0.24 0.06 310)
+  );
+  --gradient-page:
+    radial-gradient(at 0% 0%, oklch(0.24 0.06 275) 0%, transparent 50%),
+    radial-gradient(at 100% 0%, oklch(0.24 0.06 320) 0%, transparent 50%);
   --shadow-soft: 0 8px 24px -8px oklch(0 0 0 / 0.4);
   --shadow-brand: 0 8px 30px -8px oklch(0.7 0.2 280 / 0.5);
   --sidebar: oklch(0.19 0.04 275);
@@ -173,7 +192,8 @@
     border-color: var(--color-border);
   }
 
-  html, body {
+  html,
+  body {
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
@@ -187,7 +207,13 @@
     color: var(--color-foreground);
   }
 
-  h1, h2, h3, h4, h5, h6, .font-display {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  .font-display {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }

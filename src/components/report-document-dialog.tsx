@@ -50,7 +50,11 @@ export function ReportDocumentDialog({
       return;
     }
     try {
-      await report.mutateAsync({ id: documentId, reason, description: description.trim() || undefined });
+      await report.mutateAsync({
+        id: documentId,
+        reason,
+        description: description.trim() || undefined,
+      });
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
@@ -62,7 +66,9 @@ export function ReportDocumentDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="truncate">Báo cáo "{documentTitle}"</DialogTitle>
+          <DialogTitle className="truncate">
+            Báo cáo "{documentTitle}"
+          </DialogTitle>
           <DialogDescription>
             Cho chúng tôi biết vấn đề bạn gặp phải với tài liệu này.
           </DialogDescription>
@@ -71,7 +77,11 @@ export function ReportDocumentDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Lý do báo cáo</Label>
-            <RadioGroup value={reason} onValueChange={setReason} className="space-y-2">
+            <RadioGroup
+              value={reason}
+              onValueChange={setReason}
+              className="space-y-2"
+            >
               {REPORT_REASONS.map((r) => (
                 <label
                   key={r.value}
@@ -99,7 +109,11 @@ export function ReportDocumentDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Hủy
           </Button>
-          <Button variant="destructive" onClick={submit} disabled={report.isPending}>
+          <Button
+            variant="destructive"
+            onClick={submit}
+            disabled={report.isPending}
+          >
             {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>

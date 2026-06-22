@@ -25,7 +25,6 @@ function ProfilePage() {
       fullName: user?.fullName ?? "",
       username: user?.username ?? "",
       email: user?.email ?? "",
-      dob: user?.dob ?? "",
     }),
     [user],
   );
@@ -58,7 +57,7 @@ function ProfilePage() {
       icon: FolderKanban,
       cls: "text-violet-600 bg-violet-50",
     },
-      {
+    {
       label: "Chia sẻ",
       value: sharedDocs.data?.length ?? 0,
       icon: Share2,
@@ -87,12 +86,18 @@ function ProfilePage() {
         {stats.map((s) => (
           <Card key={s.label}>
             <CardContent className="flex items-center gap-3 p-4">
-              <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${s.cls}`}>
+              <div
+                className={`h-10 w-10 rounded-lg flex items-center justify-center ${s.cls}`}
+              >
                 <s.icon className="h-5 w-5" />
               </div>
               <div>
-                <div className="text-2xl font-semibold leading-none">{s.value}</div>
-                <div className="text-xs text-muted-foreground mt-1">{s.label}</div>
+                <div className="text-2xl font-semibold leading-none">
+                  {s.value}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {s.label}
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -139,15 +144,6 @@ function ProfilePage() {
                   type="email"
                   value={form.email}
                   onChange={(e) => update("email", e.target.value)}
-                  disabled={!editing}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>Ngày tháng năm sinh</Label>
-                <Input
-                  type="date"
-                  value={form.dob}
-                  onChange={(e) => update("dob", e.target.value)}
                   disabled={!editing}
                 />
               </div>

@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
-import { useCreateFolder, useFolders, useSaveSharedDocument } from "@/lib/queries";
+import {
+  useCreateFolder,
+  useFolders,
+  useSaveSharedDocument,
+} from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,7 +65,7 @@ export function SaveSharedDocumentDialog({
       return;
     }
 
-    let targetFolderId: number | null = null;
+    let targetFolderId: string | null = null;
 
     try {
       if (folderId === NEW_FOLDER_VALUE) {
@@ -69,10 +73,12 @@ export function SaveSharedDocumentDialog({
           toast.error("Vui lòng nhập tên thư mục mới");
           return;
         }
-        const created = await createFolder.mutateAsync({ name: newFolderName.trim() });
+        const created = await createFolder.mutateAsync({
+          name: newFolderName.trim(),
+        });
         targetFolderId = created.id;
       } else if (folderId) {
-        targetFolderId = Number(folderId);
+        targetFolderId = folderId;
       } else {
         toast.error("Vui lòng chọn thư mục lưu trữ");
         return;
@@ -98,7 +104,9 @@ export function SaveSharedDocumentDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Lưu tài liệu</DialogTitle>
-          <DialogDescription>Lưu tài liệu được chia sẻ vào thư mục của bạn.</DialogDescription>
+          <DialogDescription>
+            Lưu tài liệu được chia sẻ vào thư mục của bạn.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">

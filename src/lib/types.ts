@@ -5,7 +5,6 @@
 
 export interface RegisterRequest {
   username: string;
-  email: string;
   password: string;
   fullName?: string;
 }
@@ -30,9 +29,12 @@ export interface User {
   role: "USER" | "ADMIN";
   status: "ACTIVE" | "BANNED";
   authProvider: "LOCAL" | "GOOGLE";
+  providerId?: string;
   lastLoginAt?: string;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string | null;
+  version?: number;
 }
 
 // =============================================================
@@ -47,15 +49,16 @@ export interface Folder {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
-  documentCount?: number;
 }
 
 export interface CreateFolderRequest {
   name: string;
+  description?: string;
 }
 
 export interface UpdateFolderRequest {
   name: string;
+  description?: string;
 }
 
 // =============================================================
@@ -80,7 +83,6 @@ export interface Document {
   fileSize?: number | null;
   totalPages?: number | null;
   createdAt: string;
-  updatedAt: string;
   deletedAt?: string | null;
 }
 

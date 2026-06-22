@@ -27,7 +27,9 @@ function CloudPage() {
     <div className="space-y-6 max-w-3xl">
       <div>
         <h1 className="text-3xl font-semibold tracking-tight">Cloud đã sài</h1>
-        <p className="text-muted-foreground mt-1">Theo dõi dung lượng lưu trữ của bạn</p>
+        <p className="text-muted-foreground mt-1">
+          Theo dõi dung lượng lưu trữ của bạn
+        </p>
       </div>
 
       <Card>
@@ -37,14 +39,21 @@ function CloudPage() {
               <Cloud className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <div className="text-sm text-muted-foreground">Tổng dung lượng đã dùng</div>
+              <div className="text-sm text-muted-foreground">
+                Tổng dung lượng đã dùng
+              </div>
               <div className="text-2xl font-semibold">
-                {formatBytes(used)} <span className="text-base text-muted-foreground">/ {formatBytes(total)}</span>
+                {formatBytes(used)}{" "}
+                <span className="text-base text-muted-foreground">
+                  / {formatBytes(total)}
+                </span>
               </div>
             </div>
           </div>
           <Progress value={pct} className="h-2" />
-          <div className="text-xs text-muted-foreground">{pct.toFixed(4)}% đã sử dụng</div>
+          <div className="text-xs text-muted-foreground">
+            {pct.toFixed(4)}% đã sử dụng
+          </div>
         </CardContent>
       </Card>
 
@@ -54,7 +63,9 @@ function CloudPage() {
             <Database className="h-8 w-8 text-violet-500" />
             <div>
               <div className="text-sm text-muted-foreground">Số tài liệu</div>
-              <div className="text-2xl font-semibold">{docs.data?.length ?? 0}</div>
+              <div className="text-2xl font-semibold">
+                {docs.data?.length ?? 0}
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -63,7 +74,9 @@ function CloudPage() {
             <HardDrive className="h-8 w-8 text-emerald-500" />
             <div>
               <div className="text-sm text-muted-foreground">Còn trống</div>
-              <div className="text-2xl font-semibold">{formatBytes(total - used)}</div>
+              <div className="text-2xl font-semibold">
+                {formatBytes(total - used)}
+              </div>
             </div>
           </CardContent>
         </Card>

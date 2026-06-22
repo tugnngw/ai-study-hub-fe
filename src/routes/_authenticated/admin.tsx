@@ -58,8 +58,10 @@ function SettingsPage() {
   const submitPwd = (e: React.FormEvent) => {
     e.preventDefault();
     if (!pwd.current || !pwd.next) return toast.error("Vui lòng nhập đầy đủ");
-    if (pwd.next.length < 6) return toast.error("Mật khẩu mới phải có ít nhất 6 ký tự");
-    if (pwd.next !== pwd.confirm) return toast.error("Mật khẩu xác nhận không khớp");
+    if (pwd.next.length < 6)
+      return toast.error("Mật khẩu mới phải có ít nhất 6 ký tự");
+    if (pwd.next !== pwd.confirm)
+      return toast.error("Mật khẩu xác nhận không khớp");
     toast.success("Đã đổi mật khẩu");
     setPwd({ current: "", next: "", confirm: "" });
     setPwdOpen(false);
@@ -92,7 +94,9 @@ function SettingsPage() {
   return (
     <div className="space-y-6 max-w-3xl">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight">Cài đặt & Quyền riêng tư</h1>
+        <h1 className="text-3xl font-semibold tracking-tight">
+          Cài đặt & Quyền riêng tư
+        </h1>
         <p className="text-muted-foreground mt-1">
           Bảo vệ tài khoản và quản lý các phiên đăng nhập
         </p>
@@ -202,7 +206,9 @@ function SettingsPage() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Đổi mật khẩu</DialogTitle>
-            <DialogDescription>Nhập mật khẩu hiện tại và mật khẩu mới</DialogDescription>
+            <DialogDescription>
+              Nhập mật khẩu hiện tại và mật khẩu mới
+            </DialogDescription>
           </DialogHeader>
           <form onSubmit={submitPwd} className="space-y-4">
             <div className="space-y-2">
@@ -210,7 +216,9 @@ function SettingsPage() {
               <Input
                 type="password"
                 value={pwd.current}
-                onChange={(e) => setPwd((p) => ({ ...p, current: e.target.value }))}
+                onChange={(e) =>
+                  setPwd((p) => ({ ...p, current: e.target.value }))
+                }
               />
             </div>
             <div className="space-y-2">
@@ -218,7 +226,9 @@ function SettingsPage() {
               <Input
                 type="password"
                 value={pwd.next}
-                onChange={(e) => setPwd((p) => ({ ...p, next: e.target.value }))}
+                onChange={(e) =>
+                  setPwd((p) => ({ ...p, next: e.target.value }))
+                }
               />
             </div>
             <div className="space-y-2">
@@ -226,11 +236,17 @@ function SettingsPage() {
               <Input
                 type="password"
                 value={pwd.confirm}
-                onChange={(e) => setPwd((p) => ({ ...p, confirm: e.target.value }))}
+                onChange={(e) =>
+                  setPwd((p) => ({ ...p, confirm: e.target.value }))
+                }
               />
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setPwdOpen(false)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setPwdOpen(false)}
+              >
                 Huỷ
               </Button>
               <Button type="submit">Cập nhật</Button>

@@ -57,7 +57,8 @@ export function UploadDocumentDialog({
     try {
       await upload.mutateAsync({
         file,
-        folderId: Number(folderId),
+        folderId,
+
         title,
         description,
       });
@@ -80,12 +81,17 @@ export function UploadDocumentDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Tải lên tài liệu</DialogTitle>
-          <DialogDescription>Thêm tệp mới vào không gian làm việc của bạn.</DialogDescription>
+          <DialogDescription>
+            Thêm tệp mới vào không gian làm việc của bạn.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>File</Label>
-            <Input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+            <Input
+              type="file"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
           </div>
           <div className="space-y-2">
             <Label>Tiêu đề</Label>
@@ -97,7 +103,10 @@ export function UploadDocumentDialog({
           </div>
           <div className="space-y-2">
             <Label>Mô tả (tuỳ chọn)</Label>
-            <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
           <div className="space-y-2">
             <Label>Thư mục</Label>

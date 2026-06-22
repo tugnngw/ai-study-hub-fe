@@ -1,5 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { FolderKanban, FileText, Upload, Clock, Sparkles, ArrowRight } from "lucide-react";
+import {
+  FolderKanban,
+  FileText,
+  Upload,
+  Clock,
+  Sparkles,
+  ArrowRight,
+} from "lucide-react";
 import { useFolders, useDocuments } from "@/lib/queries";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -65,10 +72,15 @@ function Dashboard() {
               Chào mừng trở lại, {user?.fullName?.split(" ").pop() ?? "bạn"} 👋
             </h1>
             <p className="text-white/80 text-sm mt-1.5 max-w-md">
-              Tiếp tục học cùng AI — tóm tắt, flashcards và quizzes từ tài liệu của bạn.
+              Tiếp tục học cùng AI — tóm tắt, flashcards và quizzes từ tài liệu
+              của bạn.
             </p>
           </div>
-          <Button asChild variant="secondary" className="bg-white text-primary hover:bg-white/90">
+          <Button
+            asChild
+            variant="secondary"
+            className="bg-white text-primary hover:bg-white/90"
+          >
             <Link to="/folders">
               Mở thư mục <ArrowRight className="h-4 w-4 ml-1.5" />
             </Link>
@@ -82,16 +94,20 @@ function Dashboard() {
             <CardContent className="p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-xs text-muted-foreground font-medium">{s.label}</div>
+                  <div className="text-xs text-muted-foreground font-medium">
+                    {s.label}
+                  </div>
                   <div className="text-3xl font-bold font-display mt-2">
-                    {(folders.isLoading || docs.isLoading) ? (
+                    {folders.isLoading || docs.isLoading ? (
                       <Skeleton className="h-8 w-12" />
                     ) : (
                       s.value
                     )}
                   </div>
                 </div>
-                <div className={`h-11 w-11 rounded-xl flex items-center justify-center ${s.iconBg}`}>
+                <div
+                  className={`h-11 w-11 rounded-xl flex items-center justify-center ${s.iconBg}`}
+                >
                   <s.icon className="h-5 w-5" />
                 </div>
               </div>
@@ -100,16 +116,22 @@ function Dashboard() {
         ))}
       </div>
 
-
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="shadow-soft">
           <CardHeader>
-            <CardTitle className="text-base font-display">Tài liệu gần đây</CardTitle>
+            <CardTitle className="text-base font-display">
+              Tài liệu gần đây
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1.5">
-            {docs.isLoading && Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-14 rounded-xl" />)}
+            {docs.isLoading &&
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-14 rounded-xl" />
+              ))}
             {!docs.isLoading && recent.length === 0 && (
-              <div className="text-sm text-muted-foreground py-6 text-center">Chưa có tài liệu.</div>
+              <div className="text-sm text-muted-foreground py-6 text-center">
+                Chưa có tài liệu.
+              </div>
             )}
             {recent.map((d) => (
               <Link
@@ -123,7 +145,9 @@ function Dashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium truncate">{d.title}</div>
-                  <div className="text-xs text-muted-foreground truncate">{d.description}</div>
+                  <div className="text-xs text-muted-foreground truncate">
+                    {d.description}
+                  </div>
                 </div>
                 <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
               </Link>
@@ -133,12 +157,19 @@ function Dashboard() {
 
         <Card className="shadow-soft">
           <CardHeader>
-            <CardTitle className="text-base font-display">Thư mục của bạn</CardTitle>
+            <CardTitle className="text-base font-display">
+              Thư mục của bạn
+            </CardTitle>
           </CardHeader>
           <CardContent className="space-y-1.5">
-            {folders.isLoading && Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-14 rounded-xl" />)}
+            {folders.isLoading &&
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-14 rounded-xl" />
+              ))}
             {!folders.isLoading && (folders.data?.length ?? 0) === 0 && (
-              <div className="text-sm text-muted-foreground py-6 text-center">Chưa có thư mục.</div>
+              <div className="text-sm text-muted-foreground py-6 text-center">
+                Chưa có thư mục.
+              </div>
             )}
             {(folders.data ?? []).slice(0, 5).map((f) => (
               <Link
@@ -152,7 +183,9 @@ function Dashboard() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium truncate">{f.name}</div>
-                  <div className="text-xs text-muted-foreground truncate">{f.description}</div>
+                  <div className="text-xs text-muted-foreground truncate">
+                    {f.aiSummary || "Chưa có tóm tắt"}
+                  </div>
                 </div>
                 <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
               </Link>
@@ -163,4 +196,3 @@ function Dashboard() {
     </div>
   );
 }
-

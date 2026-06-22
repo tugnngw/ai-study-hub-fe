@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import type { ShareRecipient } from "@/lib/types";
 
 export function ShareDocumentDialog({
   open,
@@ -29,7 +30,7 @@ export function ShareDocumentDialog({
   const info = useShareInfo(documentId, open);
   const [email, setEmail] = useState("");
   const [copied, setCopied] = useState(false);
-  const [recipients, setRecipients] = useState<string[]>([]);
+  const [recipients, setRecipients] = useState<ShareRecipient[]>([]);
 
   useEffect(() => {
     if (info.data) setRecipients(info.data.recipients);
@@ -76,8 +77,12 @@ export function ShareDocumentDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="truncate">Chia sẻ "{documentTitle}"</DialogTitle>
-          <DialogDescription>Mời người khác xem hoặc sao chép liên kết chia sẻ.</DialogDescription>
+          <DialogTitle className="truncate">
+            Chia sẻ "{documentTitle}"
+          </DialogTitle>
+          <DialogDescription>
+            Mời người khác xem hoặc sao chép liên kết chia sẻ.
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -96,7 +101,10 @@ export function ShareDocumentDialog({
                   }
                 }}
               />
-              <Button onClick={handleInvite} disabled={share.isPending || !email.trim()}>
+              <Button
+                onClick={handleInvite}
+                disabled={share.isPending || !email.trim()}
+              >
                 {share.isPending ? "Đang mời..." : "Mời"}
               </Button>
             </div>
@@ -108,15 +116,17 @@ export function ShareDocumentDialog({
               Đã chia sẻ với ({recipients.length})
             </div>
             {recipients.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Chưa chia sẻ với ai.</p>
+              <p className="text-sm text-muted-foreground">
+                Chưa chia sẻ với ai.
+              </p>
             ) : (
               <ul className="space-y-1 max-h-32 overflow-y-auto">
                 {recipients.map((r) => (
                   <li
-                    key={r}
+                    key={r.accountId}
                     className="text-sm rounded-md bg-muted/50 px-2.5 py-1.5 truncate"
                   >
-                    {r}
+                    {r.fullName ?? r.email}
                   </li>
                 ))}
               </ul>
@@ -127,8 +137,17 @@ export function ShareDocumentDialog({
             <Label>Liên kết chia sẻ</Label>
             <div className="flex gap-2">
               <Input value={link} readOnly className="text-muted-foreground" />
-              <Button variant="outline" size="icon" onClick={handleCopy} title="Sao chép liên kết">
-                {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={handleCopy}
+                title="Sao chép liên kết"
+              >
+                {copied ? (
+                  <Check className="h-4 w-4 text-primary" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
               </Button>
             </div>
           </div>

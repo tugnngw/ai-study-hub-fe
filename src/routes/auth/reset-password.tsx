@@ -7,7 +7,13 @@ import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const searchSchema = z.object({
   email: z.string().optional().default(""),
@@ -61,8 +67,12 @@ function ResetPasswordPage() {
   return (
     <Card className="backdrop-blur-xl bg-card/60 border-border/60 shadow-2xl">
       <CardHeader>
-        <CardTitle className="text-2xl font-display">Đặt lại mật khẩu</CardTitle>
-        <CardDescription>Tạo mật khẩu mới cho tài khoản của bạn</CardDescription>
+        <CardTitle className="text-2xl font-display">
+          Đặt lại mật khẩu
+        </CardTitle>
+        <CardDescription>
+          Tạo mật khẩu mới cho tài khoản của bạn
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">
@@ -75,7 +85,9 @@ function ResetPasswordPage() {
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
-            {errors.password && <p className="text-xs text-destructive">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-xs text-destructive">{errors.password}</p>
+            )}
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirmPassword">Xác nhận mật khẩu mới</Label>
@@ -84,10 +96,14 @@ function ResetPasswordPage() {
               type="password"
               autoComplete="new-password"
               value={form.confirmPassword}
-              onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, confirmPassword: e.target.value })
+              }
             />
             {errors.confirmPassword && (
-              <p className="text-xs text-destructive">{errors.confirmPassword}</p>
+              <p className="text-xs text-destructive">
+                {errors.confirmPassword}
+              </p>
             )}
           </div>
           <Button

@@ -10,7 +10,6 @@ export default defineConfig({
     tailwindcss(),
     tanstackStart({
       // src/server.ts wraps the SSR entry for error handling.
-      target: "node-server",
     }),
     viteReact(),
   ],

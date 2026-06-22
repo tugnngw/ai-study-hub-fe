@@ -53,26 +53,26 @@ Hoặc nếu muốn test từng phần: bỏ comment `// REAL:` và comment `// 
 
 ## Mapping: Mock → Real
 
-| Hook hiện tại | mockApi | realApi |
-|---|---|---|
-| `useFolders()` | `mockApi.listFolders()` | `folderApi.list()` → `GET /api/folder/getall` |
-| `useFolder(id)` | `mockApi.getFolder(id)` | `folderApi.getById(id)` → `GET /api/folder/getbyid/:id` |
-| `useCreateFolder()` | `mockApi.createFolder()` | `folderApi.create()` → `POST /api/folder/create` |
-| `useUpdateFolder()` | `mockApi.updateFolder()` | `folderApi.update()` → `PUT /api/folder/update/:id` |
-| `useDeleteFolder()` | `mockApi.deleteFolder()` | `folderApi.delete()` → `DELETE /api/folder/delete/:id` |
-| `useDocuments()` | `mockApi.listDocuments()` | `documentApi.list()` → `GET /api/documents` |
-| `useDocumentsByFolder(id)` | `mockApi.listDocsByFolder()` | `documentApi.listByFolder()` → `GET /api/documents/folder/:id` |
-| `useDocument(id)` | `mockApi.getDocument()` | `documentApi.getById()` → `GET /api/documents/:id` |
-| `useUploadDocument()` | `mockApi.uploadDocument()` | `documentApi.upload()` → `POST /api/documents` |
-| `useDeleteDocument()` | `mockApi.deleteDocument()` | `documentApi.delete()` → `DELETE /api/documents/:id` |
-| `useDownloadDocument()` | `mockApi.downloadDocument()` | `documentApi.getDownloadUrl()` → `GET /api/documents/:id/download` |
-| `useSharedDocuments()` | `mockApi.listShared()` | `shareApi.listSharedWithMe()` → `GET /api/documents/shared` |
-| `useShareDocument()` | `mockApi.shareDocument()` | `shareApi.shareWithEmail()` → `POST /api/documents/:id/share` |
-| `useShareInfo()` | `mockApi.getShareInfo()` | `shareApi.getShareInfo()` → `GET /api/documents/:id/share` |
+| Hook hiện tại               | mockApi                          | realApi                                                            |
+| --------------------------- | -------------------------------- | ------------------------------------------------------------------ |
+| `useFolders()`              | `mockApi.listFolders()`          | `folderApi.list()` → `GET /api/folder/getall`                      |
+| `useFolder(id)`             | `mockApi.getFolder(id)`          | `folderApi.getById(id)` → `GET /api/folder/getbyid/:id`            |
+| `useCreateFolder()`         | `mockApi.createFolder()`         | `folderApi.create()` → `POST /api/folder/create`                   |
+| `useUpdateFolder()`         | `mockApi.updateFolder()`         | `folderApi.update()` → `PUT /api/folder/update/:id`                |
+| `useDeleteFolder()`         | `mockApi.deleteFolder()`         | `folderApi.delete()` → `DELETE /api/folder/delete/:id`             |
+| `useDocuments()`            | `mockApi.listDocuments()`        | `documentApi.list()` → `GET /api/documents`                        |
+| `useDocumentsByFolder(id)`  | `mockApi.listDocsByFolder()`     | `documentApi.listByFolder()` → `GET /api/documents/folder/:id`     |
+| `useDocument(id)`           | `mockApi.getDocument()`          | `documentApi.getById()` → `GET /api/documents/:id`                 |
+| `useUploadDocument()`       | `mockApi.uploadDocument()`       | `documentApi.upload()` → `POST /api/documents`                     |
+| `useDeleteDocument()`       | `mockApi.deleteDocument()`       | `documentApi.delete()` → `DELETE /api/documents/:id`               |
+| `useDownloadDocument()`     | `mockApi.downloadDocument()`     | `documentApi.getDownloadUrl()` → `GET /api/documents/:id/download` |
+| `useSharedDocuments()`      | `mockApi.listShared()`           | `shareApi.listSharedWithMe()` → `GET /api/documents/shared`        |
+| `useShareDocument()`        | `mockApi.shareDocument()`        | `shareApi.shareWithEmail()` → `POST /api/documents/:id/share`      |
+| `useShareInfo()`            | `mockApi.getShareInfo()`         | `shareApi.getShareInfo()` → `GET /api/documents/:id/share`         |
 | `useDeleteSharedDocument()` | `mockApi.deleteSharedDocument()` | `shareApi.removeFromShared()` → `DELETE /api/documents/shared/:id` |
-| `useSaveSharedDocument()` | `mockApi.saveSharedDocument()` | `shareApi.saveToMyFolder()` → `POST /api/documents/:id/save` |
-| `useReportDocument()` | `mockApi.reportDocument()` | `shareApi.report()` → `POST /api/documents/:id/report` |
-| `useAskRag()` | `mockApi.ask()` | `ragApi.ask()` → `POST /api/rag/ask` |
+| `useSaveSharedDocument()`   | `mockApi.saveSharedDocument()`   | `shareApi.saveToMyFolder()` → `POST /api/documents/:id/save`       |
+| `useReportDocument()`       | `mockApi.reportDocument()`       | `shareApi.report()` → `POST /api/documents/:id/report`             |
+| `useAskRag()`               | `mockApi.ask()`                  | `ragApi.ask()` → `POST /api/rag/ask`                               |
 
 ---
 
@@ -99,9 +99,9 @@ Các endpoint share (`/api/documents/shared`, `/api/documents/:id/share`) đư�
 ```ts
 // realApi.ts — shareApi section
 // Điều chỉnh path nếu BE dùng endpoint khác
-shareApi.listSharedWithMe()  // GET /api/documents/shared
-shareApi.getShareInfo(id)    // GET /api/documents/:id/share
-shareApi.shareWithEmail()    // POST /api/documents/:id/share
+shareApi.listSharedWithMe(); // GET /api/documents/shared
+shareApi.getShareInfo(id); // GET /api/documents/:id/share
+shareApi.shareWithEmail(); // POST /api/documents/:id/share
 ```
 
 ### RAG ask — query params vs body
@@ -125,7 +125,7 @@ Nếu BE dùng wrapper `ApiResponse<T>`, sửa hàm `api()` trong `api.ts`:
 
 ```ts
 // Trong api.ts, sau khi parse JSON:
-const payload = data?.data ?? data;  // unwrap nếu có
+const payload = data?.data ?? data; // unwrap nếu có
 return payload as T;
 ```
 

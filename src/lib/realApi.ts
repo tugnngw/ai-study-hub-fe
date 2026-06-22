@@ -29,7 +29,7 @@ import type {
 
 export const authApi = {
   register: (data: RegisterRequest) =>
-      api<void>("/api/auth/register", { method: "POST", body: data }),
+    api<void>("/api/auth/register", { method: "POST", body: data }),
 
   login: async (data: LoginRequest): Promise<LoginResponse> => {
     const res = await api<LoginResponse>("/api/auth/login", {
@@ -45,6 +45,17 @@ export const authApi = {
     await api("/api/auth/logout", { method: "POST" }).catch(() => {});
     tokenStore.clear();
   },
+
+  // Password reset flow
+  requestPasswordReset: (email: string) =>
+    api<void>("/api/auth/request-reset", { method: "POST", body: { email } }),
+  verifyResetOtp: (email: string, otp: string) =>
+    api<void>("/api/auth/verify-otp", { method: "POST", body: { email, otp } }),
+  resetPassword: (email: string, newPassword: string) =>
+    api<void>("/api/auth/reset-password", {
+      method: "POST",
+      body: { email, password: newPassword },
+    }),
 };
 
 // ================================================================
@@ -63,11 +74,11 @@ export const folderApi = {
   list: () => api<Folder[]>("/api/folder/getall"),
   getById: (id: string) => api<Folder>(`/api/folder/getbyid/${id}`),
   create: (body: CreateFolderRequest) =>
-      api<Folder>("/api/folder/create", { method: "POST", body }),
+    api<Folder>("/api/folder/create", { method: "POST", body }),
   update: (id: string, body: UpdateFolderRequest) =>
-      api<Folder>(`/api/folder/update/${id}`, { method: "PUT", body }),
+    api<Folder>(`/api/folder/update/${id}`, { method: "PUT", body }),
   delete: (id: string) =>
-      api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
+    api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
 };
 
 // ================================================================
@@ -77,7 +88,7 @@ export const folderApi = {
 export const documentApi = {
   list: () => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string) =>
-      api<Document[]>(`/api/documents/folder/${folderId}`),
+    api<Document[]>(`/api/documents/folder/${folderId}`),
   getById: (id: number) => api<Document>(`/api/documents/${id}`),
 
   upload: async (input: UploadDocumentRequest): Promise<Document> => {
@@ -91,20 +102,20 @@ export const documentApi = {
   },
 
   update: (id: number, body: UpdateDocumentRequest) =>
-      api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
+    api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
   delete: (id: number) =>
-      api<void>(`/api/documents/${id}`, { method: "DELETE" }),
+    api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
   getDownloadUrl: (id: number) =>
-      api<DownloadUrlResponse>(`/api/documents/${id}/download`),
+    api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   // Trash (soft-deleted docs)
   listTrash: () => api<Document[]>("/api/documents/trash"),
   restoreFromTrash: (id: number) =>
-      api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
+    api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
   emptyTrash: (id: number) =>
-      api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+    api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
 };
 
 // ================================================================
@@ -127,10 +138,10 @@ export const ragApi = {
   },
 
   ask: (input: AskRequest): Promise<AskResponse> =>
-      api<AskResponse>("/api/rag/ask", {
-        method: "POST",
-        body: { id: input.id, question: input.question },
-      }),
+    api<AskResponse>("/api/rag/ask", {
+      method: "POST",
+      body: { id: input.id, question: input.question },
+    }),
 };
 
 // ================================================================
@@ -141,28 +152,33 @@ export const shareApi = {
   listSharedWithMe: () => api<SharedDocument[]>("/api/documents/shared"),
 
   getShareInfo: (documentId: number) =>
-      api<ShareInfo>(`/api/documents/${documentId}/share`),
+    api<ShareInfo>(`/api/documents/${documentId}/share`),
 
   shareWithEmail: (documentId: number, email: string) =>
-      api<ShareInfo>(`/api/documents/${documentId}/share`, {
-        method: "POST",
-        body: { email },
-      }),
+    api<ShareInfo>(`/api/documents/${documentId}/share`, {
+      method: "POST",
+      body: { email },
+    }),
 
   removeFromShared: (shareId: number) =>
-      api<void>(`/api/documents/shared/${shareId}`, { method: "DELETE" }),
+    api<void>(`/api/documents/shared/${shareId}`, { method: "DELETE" }),
 
-  saveToMyFolder: (sharedDocId: number, folderId: string, title: string, description?: string) =>
-      api<Document>(`/api/documents/${sharedDocId}/save`, {
-        method: "POST",
-        body: { folderId, title, description },
-      }),
+  saveToMyFolder: (
+    sharedDocId: number,
+    folderId: string,
+    title: string,
+    description?: string,
+  ) =>
+    api<Document>(`/api/documents/${sharedDocId}/save`, {
+      method: "POST",
+      body: { folderId, title, description },
+    }),
 
   report: (body: ReportDocumentRequest) =>
-      api<void>(`/api/documents/${body.id}/report`, {
-        method: "POST",
-        body: { reason: body.reason, description: body.description },
-      }),
+    api<void>(`/api/documents/${body.id}/report`, {
+      method: "POST",
+      body: { reason: body.reason, description: body.description },
+    }),
 };
 
 // ================================================================
@@ -171,13 +187,13 @@ export const shareApi = {
 
 export const quizApi = {
   listByDocument: (documentId: number) =>
-      api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
+    api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
 
   generate: (documentId: number, questionCount = 10) =>
-      api<Quiz>("/api/quiz/generate", {
-        method: "POST",
-        body: { documentId, questionCount },
-      }),
+    api<Quiz>("/api/quiz/generate", {
+      method: "POST",
+      body: { documentId, questionCount },
+    }),
 };
 
 // ================================================================
@@ -186,17 +202,17 @@ export const quizApi = {
 
 export const flashcardApi = {
   listByDocument: (documentId: number) =>
-      api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
+    api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
 
   generate: (documentId: number) =>
-      api<Flashcard[]>("/api/flashcard/generate", {
-        method: "POST",
-        body: { documentId },
-      }),
+    api<Flashcard[]>("/api/flashcard/generate", {
+      method: "POST",
+      body: { documentId },
+    }),
 
   updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
-      api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
-        method: "PUT",
-        body: { status },
-      }),
+    api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
+      method: "PUT",
+      body: { status },
+    }),
 };

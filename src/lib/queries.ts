@@ -29,14 +29,14 @@ import type {
 export function useLogin() {
   return useMutation({
     mutationFn: (input: { username: string; password: string }) =>
-        authApi.login(input),
+      authApi.login(input),
   });
 }
 
 export function useRegister() {
   return useMutation({
     mutationFn: (input: Parameters<typeof authApi.register>[0]) =>
-        authApi.register(input),
+      authApi.register(input),
   });
 }
 
@@ -97,7 +97,7 @@ export function useUpdateFolder() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, ...body }: { id: string } & UpdateFolderRequest) =>
-        folderApi.update(id, body),
+      folderApi.update(id, body),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: folderKeys.all });
       qc.invalidateQueries({ queryKey: folderKeys.detail(v.id) });
@@ -153,7 +153,8 @@ export function useUploadDocument() {
     mutationFn: (input: UploadDocumentRequest) => documentApi.upload(input),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
-      if (v.folderId) qc.invalidateQueries({ queryKey: docKeys.byFolder(v.folderId) });
+      if (v.folderId)
+        qc.invalidateQueries({ queryKey: docKeys.byFolder(v.folderId) });
     },
   });
 }
@@ -162,7 +163,7 @@ export function useUpdateDocument() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, ...body }: { id: number } & UpdateDocumentRequest) =>
-        documentApi.update(id, body),
+      documentApi.update(id, body),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
       qc.invalidateQueries({ queryKey: docKeys.detail(v.id) });
@@ -244,7 +245,7 @@ export function useShareDocument() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: { id: number; email: string }) =>
-        shareApi.shareWithEmail(input.id, input.email),
+      shareApi.shareWithEmail(input.id, input.email),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: sharedKeys.info(v.id) });
     },
@@ -267,7 +268,13 @@ export function useSaveSharedDocument() {
       folderId: string;
       title: string;
       description?: string;
-    }) => shareApi.saveToMyFolder(input.sharedId, input.folderId, input.title, input.description),
+    }) =>
+      shareApi.saveToMyFolder(
+        input.sharedId,
+        input.folderId,
+        input.title,
+        input.description,
+      ),
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
   });
 }
@@ -291,9 +298,9 @@ export function useAskRag() {
 export function useUploadRag() {
   return useMutation({
     mutationFn: (input: { file: File; documentId: number; chunk?: boolean }) =>
-        input.chunk
-            ? ragApi.uploadAndChunk(input.file, input.documentId)
-            : ragApi.upload(input.file, input.documentId),
+      input.chunk
+        ? ragApi.uploadAndChunk(input.file, input.documentId)
+        : ragApi.upload(input.file, input.documentId),
   });
 }
 
@@ -317,9 +324,9 @@ export function useGenerateQuiz() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: { documentId: number; questionCount?: number }) =>
-        quizApi.generate(input.documentId, input.questionCount),
+      quizApi.generate(input.documentId, input.questionCount),
     onSuccess: (_d, v) =>
-        qc.invalidateQueries({ queryKey: quizKeys.byDocument(v.documentId) }),
+      qc.invalidateQueries({ queryKey: quizKeys.byDocument(v.documentId) }),
   });
 }
 
@@ -344,7 +351,7 @@ export function useGenerateFlashcards() {
   return useMutation({
     mutationFn: (documentId: number) => flashcardApi.generate(documentId),
     onSuccess: (_d, documentId) =>
-        qc.invalidateQueries({ queryKey: flashcardKeys.byDocument(documentId) }),
+      qc.invalidateQueries({ queryKey: flashcardKeys.byDocument(documentId) }),
   });
 }
 

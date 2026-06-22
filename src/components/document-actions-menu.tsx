@@ -21,7 +21,7 @@ export function DocumentActionsMenu({
   iconClassName,
 }: {
   documentId: number;
-  folderId: number;
+  folderId: string;
   title: string;
   className?: string;
   iconClassName?: string;
@@ -61,7 +61,12 @@ export function DocumentActionsMenu({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem
-            onClick={() => navigate({ to: "/aichat", search: { folderId, docId: documentId } })}
+            onClick={() =>
+              navigate({
+                to: "/ai",
+                search: { folderId, docId: documentId },
+              })
+            }
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>

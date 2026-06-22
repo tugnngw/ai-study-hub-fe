@@ -24,12 +24,18 @@ function TrashPage() {
       </div>
 
       {isLoading ? (
-        <Card><CardContent className="py-12 text-center text-sm">Đang tải…</CardContent></Card>
+        <Card>
+          <CardContent className="py-12 text-center text-sm">
+            Đang tải…
+          </CardContent>
+        </Card>
       ) : (data ?? []).length === 0 ? (
         <Card>
           <CardContent className="py-16 text-center">
             <Trash2 className="h-10 w-10 mx-auto text-muted-foreground/50" />
-            <p className="mt-4 text-sm text-muted-foreground">Thùng rác trống</p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              Thùng rác trống
+            </p>
           </CardContent>
         </Card>
       ) : (
@@ -42,7 +48,9 @@ function TrashPage() {
               <FileText className="h-4 w-4 text-muted-foreground" />
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-medium truncate">{d.title}</div>
-                <div className="text-xs text-muted-foreground truncate">{d.description}</div>
+                <div className="text-xs text-muted-foreground truncate">
+                  {d.description}
+                </div>
               </div>
               <Button
                 size="sm"

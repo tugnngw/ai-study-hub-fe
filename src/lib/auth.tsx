@@ -18,6 +18,9 @@ interface AuthContextValue {
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<void>;
+  verifyResetOtp: (email: string, otp: string) => Promise<void>;
+  resetPassword: (email: string, password: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -33,13 +36,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     accountApi
-        .me()
-        .then(setUser)
-        .catch(() => {
-          tokenStore.clear();
-          setUser(null);
-        })
-        .finally(() => setIsLoading(false));
+      .me()
+      .then(setUser)
+      .catch(() => {
+        tokenStore.clear();
+        setUser(null);
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const login = async (username: string, password: string) => {
@@ -65,20 +68,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const requestPasswordReset = async (email: string) => {
+    await authApi.requestPasswordReset(email);
+  };
+
+  const verifyResetOtp = async (email: string, otp: string) => {
+    await authApi.verifyResetOtp(email, otp);
+  };
+
+  const resetPassword = async (email: string, password: string) => {
+    await authApi.resetPassword(email, password);
+  };
+
   return (
-      <AuthContext.Provider
-          value={{
-            user,
-            isLoading,
-            isAuthenticated: !!user,
-            login,
-            register,
-            logout,
-            refresh,
-          }}
-      >
-        {children}
-      </AuthContext.Provider>
+    <AuthContext.Provider
+      value={{
+        user,
+        isLoading,
+        isAuthenticated: !!user,
+        login,
+        register,
+        logout,
+        refresh,
+        requestPasswordReset,
+        verifyResetOtp,
+        resetPassword,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 }
 

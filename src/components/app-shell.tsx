@@ -56,7 +56,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const { data: documents } = useDocuments();
 
   // Calculate storage used from actual documents
-  const used = documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
+  const used =
+    documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
   const total = 15 * 1024 * 1024 * 1024; // 15GB
   const pct = Math.min(100, (used / total) * 100);
 
@@ -69,178 +70,186 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [uploadOpen, setUploadOpen] = useState(false);
 
   return (
-      <div className="min-h-screen flex">
-        {/* Sidebar */}
-        <aside className="hidden md:flex md:flex-col md:w-64 shrink-0 border-r border-sidebar-border bg-sidebar/80 backdrop-blur-xl sticky top-0 h-screen">
-          <div className="px-5 py-5 border-b border-sidebar-border">
-            <Link to="/dashboard" className="flex items-center gap-2.5 group">
-              <div className="h-9 w-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-brand group-hover:scale-105 transition-transform">
-                <Sparkles className="h-4.5 w-4.5 text-white" strokeWidth={2.5} />
+    <div className="min-h-screen flex">
+      {/* Sidebar */}
+      <aside className="hidden md:flex md:flex-col md:w-64 shrink-0 border-r border-sidebar-border bg-sidebar/80 backdrop-blur-xl sticky top-0 h-screen">
+        <div className="px-5 py-5 border-b border-sidebar-border">
+          <Link to="/dashboard" className="flex items-center gap-2.5 group">
+            <div className="h-9 w-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-brand group-hover:scale-105 transition-transform">
+              <Sparkles className="h-4.5 w-4.5 text-white" strokeWidth={2.5} />
+            </div>
+            <div>
+              <div className="font-display font-bold text-base leading-tight">
+                AI Study Hub
               </div>
-              <div>
-                <div className="font-display font-bold text-base leading-tight">AI Study Hub</div>
-                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">
-                  Learn smarter
-                </div>
+              <div className="text-[10px] text-muted-foreground tracking-wider uppercase">
+                Learn smarter
               </div>
-            </Link>
+            </div>
+          </Link>
+        </div>
+
+        <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
+          <div className="text-[10px] font-semibold tracking-wider text-muted-foreground px-3 pt-2 pb-1.5">
+            WORKSPACE
+          </div>
+          {nav.map((item) => {
+            const active = pathname.startsWith(item.to);
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all group relative",
+                  active
+                    ? "bg-gradient-brand text-white shadow-brand font-medium"
+                    : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
+                )}
+              >
+                <item.icon
+                  className={cn("h-4 w-4 shrink-0", active && "drop-shadow-sm")}
+                  strokeWidth={active ? 2.5 : 2}
+                />
+                <span className="truncate">{item.label}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Upload button */}
+        <div className="px-3 pb-1">
+          <Button
+            onClick={() => setUploadOpen(true)}
+            className="w-full justify-start bg-gradient-brand text-white hover:opacity-90 shadow-brand"
+          >
+            <Upload className="h-4 w-4 mr-2" /> Tải lên tài liệu
+          </Button>
+        </div>
+
+        {/* Storage card */}
+        <div className="p-3">
+          <div className="rounded-xl border border-sidebar-border bg-card/60 p-3.5 space-y-2.5">
+            <div className="flex items-center gap-2">
+              <Database className="h-3.5 w-3.5 text-primary" />
+              <span className="text-xs font-semibold">Dung lượng</span>
+            </div>
+            <Progress value={pct} className="h-1.5" />
+            <div className="text-[11px] text-muted-foreground">
+              <span className="font-medium text-foreground">
+                {formatBytes(used)}
+              </span>{" "}
+              / {formatBytes(total)}
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main */}
+      <div className="flex-1 min-w-0 flex flex-col">
+        {/* Top bar */}
+        <header className="h-16 border-b border-border/60 bg-background/70 backdrop-blur-xl flex items-center px-4 md:px-6 gap-3 sticky top-0 z-30">
+          <Link to="/dashboard" className="md:hidden flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-gradient-brand flex items-center justify-center">
+              <Sparkles className="h-4 w-4 text-white" />
+            </div>
+          </Link>
+
+          <div className="hidden sm:flex items-center gap-2 flex-1 max-w-md">
+            <div className="relative w-full">
+              <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Tìm tài liệu, thư mục…"
+                className="pl-9 h-9 bg-muted/50 border-transparent focus-visible:bg-card focus-visible:border-input"
+              />
+            </div>
           </div>
 
-          <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
-            <div className="text-[10px] font-semibold tracking-wider text-muted-foreground px-3 pt-2 pb-1.5">
-              WORKSPACE
-            </div>
+          <div className="ml-auto flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 hover:bg-accent rounded-full pr-3 pl-1 py-1 transition-colors">
+                  <div className="h-8 w-8 rounded-full bg-gradient-brand text-white flex items-center justify-center text-sm font-semibold shadow-soft">
+                    {initial}
+                  </div>
+                  <div className="hidden sm:flex flex-col items-start leading-tight">
+                    <span className="text-xs font-medium">
+                      {user?.fullName ?? "User"}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground">
+                      @{user?.username ?? "user"}
+                    </span>
+                  </div>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-60">
+                <DropdownMenuLabel className="pb-2">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-full bg-gradient-brand text-white flex items-center justify-center font-semibold">
+                      {initial}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="font-semibold truncate">
+                        {user?.fullName}
+                      </div>
+                      <div className="text-xs text-muted-foreground font-normal truncate">
+                        {user?.email}
+                      </div>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link to="/profile" className="cursor-pointer">
+                    <UserIcon className="h-4 w-4 mr-2" /> Hồ sơ
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/profile" className="cursor-pointer">
+                    <UserIcon className="h-4 w-4 mr-2" /> Hồ sơ
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={handleLogout}
+                  className="cursor-pointer text-destructive focus:text-destructive"
+                >
+                  <LogOut className="h-4 w-4 mr-2" /> Đăng xuất
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </header>
+
+        {/* Mobile nav */}
+        <div className="md:hidden border-b border-border bg-card/60 backdrop-blur-md">
+          <nav className="flex overflow-x-auto px-2 py-2 gap-1">
             {nav.map((item) => {
               const active = pathname.startsWith(item.to);
               return (
-                  <Link
-                      key={item.to}
-                      to={item.to}
-                      className={cn(
-                          "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all group relative",
-                          active
-                              ? "bg-gradient-brand text-white shadow-brand font-medium"
-                              : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
-                      )}
-                  >
-                    <item.icon
-                        className={cn("h-4 w-4 shrink-0", active && "drop-shadow-sm")}
-                        strokeWidth={active ? 2.5 : 2}
-                    />
-                    <span className="truncate">{item.label}</span>
-                  </Link>
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={cn(
+                    "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs whitespace-nowrap",
+                    active
+                      ? "bg-gradient-brand text-white"
+                      : "text-muted-foreground hover:bg-accent",
+                  )}
+                >
+                  <item.icon className="h-3.5 w-3.5" />
+                  {item.label}
+                </Link>
               );
             })}
           </nav>
-
-          {/* Upload button */}
-          <div className="px-3 pb-1">
-            <Button
-                onClick={() => setUploadOpen(true)}
-                className="w-full justify-start bg-gradient-brand text-white hover:opacity-90 shadow-brand"
-            >
-              <Upload className="h-4 w-4 mr-2" /> Tải lên tài liệu
-            </Button>
-          </div>
-
-          {/* Storage card */}
-          <div className="p-3">
-            <div className="rounded-xl border border-sidebar-border bg-card/60 p-3.5 space-y-2.5">
-              <div className="flex items-center gap-2">
-                <Database className="h-3.5 w-3.5 text-primary" />
-                <span className="text-xs font-semibold">Dung lượng</span>
-              </div>
-              <Progress value={pct} className="h-1.5" />
-              <div className="text-[11px] text-muted-foreground">
-                <span className="font-medium text-foreground">{formatBytes(used)}</span> /{" "}
-                {formatBytes(total)}
-              </div>
-            </div>
-          </div>
-        </aside>
-
-        {/* Main */}
-        <div className="flex-1 min-w-0 flex flex-col">
-          {/* Top bar */}
-          <header className="h-16 border-b border-border/60 bg-background/70 backdrop-blur-xl flex items-center px-4 md:px-6 gap-3 sticky top-0 z-30">
-            <Link to="/dashboard" className="md:hidden flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-brand flex items-center justify-center">
-                <Sparkles className="h-4 w-4 text-white" />
-              </div>
-            </Link>
-
-            <div className="hidden sm:flex items-center gap-2 flex-1 max-w-md">
-              <div className="relative w-full">
-                <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                    placeholder="Tìm tài liệu, thư mục…"
-                    className="pl-9 h-9 bg-muted/50 border-transparent focus-visible:bg-card focus-visible:border-input"
-                />
-              </div>
-            </div>
-
-            <div className="ml-auto flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-2 hover:bg-accent rounded-full pr-3 pl-1 py-1 transition-colors">
-                    <div className="h-8 w-8 rounded-full bg-gradient-brand text-white flex items-center justify-center text-sm font-semibold shadow-soft">
-                      {initial}
-                    </div>
-                    <div className="hidden sm:flex flex-col items-start leading-tight">
-                      <span className="text-xs font-medium">{user?.fullName ?? "User"}</span>
-                      <span className="text-[10px] text-muted-foreground">
-                      @{user?.username ?? "user"}
-                    </span>
-                    </div>
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-60">
-                  <DropdownMenuLabel className="pb-2">
-                    <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-gradient-brand text-white flex items-center justify-center font-semibold">
-                        {initial}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-semibold truncate">{user?.fullName}</div>
-                        <div className="text-xs text-muted-foreground font-normal truncate">
-                          {user?.email}
-                        </div>
-                      </div>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link to="/profile" className="cursor-pointer">
-                      <UserIcon className="h-4 w-4 mr-2" /> Hồ sơ
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/settings" className="cursor-pointer">
-                      <SettingsIcon className="h-4 w-4 mr-2" /> Cài đặt & Quyền riêng tư
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                      onClick={handleLogout}
-                      className="cursor-pointer text-destructive focus:text-destructive"
-                  >
-                    <LogOut className="h-4 w-4 mr-2" /> Đăng xuất
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </header>
-
-          {/* Mobile nav */}
-          <div className="md:hidden border-b border-border bg-card/60 backdrop-blur-md">
-            <nav className="flex overflow-x-auto px-2 py-2 gap-1">
-              {nav.map((item) => {
-                const active = pathname.startsWith(item.to);
-                return (
-                    <Link
-                        key={item.to}
-                        to={item.to}
-                        className={cn(
-                            "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs whitespace-nowrap",
-                            active
-                                ? "bg-gradient-brand text-white"
-                                : "text-muted-foreground hover:bg-accent",
-                        )}
-                    >
-                      <item.icon className="h-3.5 w-3.5" />
-                      {item.label}
-                    </Link>
-                );
-              })}
-            </nav>
-          </div>
-
-          <main className="flex-1 min-w-0">
-            <div className="p-6 md:p-8 max-w-7xl mx-auto">{children}</div>
-          </main>
         </div>
 
-        <UploadDocumentDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+        <main className="flex-1 min-w-0">
+          <div className="p-6 md:p-8 max-w-7xl mx-auto">{children}</div>
+        </main>
       </div>
+
+      <UploadDocumentDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+    </div>
   );
 }

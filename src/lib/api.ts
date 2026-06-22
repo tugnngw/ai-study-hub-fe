@@ -1,19 +1,21 @@
 // src/lib/api.ts
 export const API_BASE =
-    (import.meta.env.VITE_API_BASE as string | undefined) ?? "http://localhost:4040";
+  (import.meta.env.VITE_API_BASE as string | undefined) ??
+  "http://localhost:4040";
 
 const TOKEN_KEY = "auth_token";
 const REFRESH_KEY = "refresh_token";
 
 export const tokenStore = {
-  get: () => (typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY)),
+  get: () =>
+    typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY),
   set: (t: string) => localStorage.setItem(TOKEN_KEY, t),
   clear: () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(REFRESH_KEY);
   },
   getRefresh: () =>
-      typeof window === "undefined" ? null : localStorage.getItem(REFRESH_KEY),
+    typeof window === "undefined" ? null : localStorage.getItem(REFRESH_KEY),
   setRefresh: (t: string) => localStorage.setItem(REFRESH_KEY, t),
 };
 
@@ -34,7 +36,10 @@ type Options = {
   headers?: Record<string, string>;
 };
 
-export async function api<T = unknown>(path: string, opts: Options = {}): Promise<T> {
+export async function api<T = unknown>(
+  path: string,
+  opts: Options = {},
+): Promise<T> {
   const token = tokenStore.get();
   const headers: Record<string, string> = { ...(opts.headers ?? {}) };
   if (token) headers["Authorization"] = `Bearer ${token}`;
@@ -54,16 +59,24 @@ export async function api<T = unknown>(path: string, opts: Options = {}): Promis
   });
 
   const ct = res.headers.get("content-type") ?? "";
-  const data = ct.includes("application/json") ? await res.json().catch(() => null) : await res.text();
+  const data = ct.includes("application/json")
+    ? await res.json().catch(() => null)
+    : await res.text();
 
   if (!res.ok) {
     const message =
-        (data && typeof data === "object" && "message" in data && String((data as { message: unknown }).message)) ||
-        `Request failed (${res.status})`;
+      (data &&
+        typeof data === "object" &&
+        "message" in data &&
+        String((data as { message: unknown }).message)) ||
+      `Request failed (${res.status})`;
     if (res.status === 401) {
       tokenStore.clear();
       // Redirect to login if not already there
-      if (typeof window !== "undefined" && !window.location.pathname.includes("/auth")) {
+      if (
+        typeof window !== "undefined" &&
+        !window.location.pathname.includes("/auth")
+      ) {
         window.location.href = "/auth/login";
       }
     }

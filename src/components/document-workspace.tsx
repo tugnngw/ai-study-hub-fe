@@ -41,10 +41,26 @@ type Tab = "original" | "notes" | "summary" | "flashcards" | "quizzes";
 type Highlight = "memo" | "quiz" | "summary" | "idea";
 
 const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
-  { id: "memo", label: "Thẻ ghi nhớ", cls: "bg-orange-100 text-orange-700 hover:bg-orange-200" },
-  { id: "quiz", label: "Bài kiểm tra", cls: "bg-green-100 text-green-700 hover:bg-green-200" },
-  { id: "summary", label: "Tóm Tắt", cls: "bg-blue-100 text-blue-700 hover:bg-blue-200" },
-  { id: "idea", label: "Ý Chính", cls: "bg-purple-100 text-purple-700 hover:bg-purple-200" },
+  {
+    id: "memo",
+    label: "Thẻ ghi nhớ",
+    cls: "bg-orange-100 text-orange-700 hover:bg-orange-200",
+  },
+  {
+    id: "quiz",
+    label: "Bài kiểm tra",
+    cls: "bg-green-100 text-green-700 hover:bg-green-200",
+  },
+  {
+    id: "summary",
+    label: "Tóm Tắt",
+    cls: "bg-blue-100 text-blue-700 hover:bg-blue-200",
+  },
+  {
+    id: "idea",
+    label: "Ý Chính",
+    cls: "bg-purple-100 text-purple-700 hover:bg-purple-200",
+  },
 ];
 
 interface ChatMsg {
@@ -56,14 +72,14 @@ export function DocumentWorkspace({
   folderId,
   docId,
 }: {
-  folderId: number;
+  folderId: string;
   docId?: number;
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
   const doc = useDocument(docId ?? 0);
   const del = useDeleteDocument();
-  const ask = useAskRAG();
+  const ask = useAskRag();
   const download = useDownloadDocument();
   const navigate = useNavigate();
 
@@ -75,11 +91,13 @@ export function DocumentWorkspace({
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages]);
 
   // Note: user clicks files in the grid to open them — no auto-select.
-
 
   const submitChat = async () => {
     if (!input.trim() || !docId) return;
@@ -135,7 +153,9 @@ export function DocumentWorkspace({
           <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-1">
             THƯ MỤC ĐANG DÙNG
           </div>
-          <div className="text-sm font-semibold font-display">{folder.data?.name ?? "—"}</div>
+          <div className="text-sm font-semibold font-display">
+            {folder.data?.name ?? "—"}
+          </div>
           <div className="text-xs text-muted-foreground mt-0.5">
             {folderDocs.data?.length ?? 0} tài liệu
           </div>
@@ -147,7 +167,9 @@ export function DocumentWorkspace({
           </div>
           <div className="space-y-1 overflow-y-auto flex-1 -mx-1 px-1">
             {folderDocs.isLoading &&
-              Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-9 rounded-lg" />)}
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-9 rounded-lg" />
+              ))}
             {(folderDocs.data ?? []).map((d) => {
               const active = d.id === docId;
               return (
@@ -169,7 +191,9 @@ export function DocumentWorkspace({
               );
             })}
             {!folderDocs.isLoading && (folderDocs.data ?? []).length === 0 && (
-              <div className="text-xs text-muted-foreground px-2">Chưa có tài liệu</div>
+              <div className="text-xs text-muted-foreground px-2">
+                Chưa có tài liệu
+              </div>
             )}
           </div>
         </div>
@@ -267,7 +291,8 @@ export function DocumentWorkspace({
                     search={{ docId: d.id }}
                     className={cn(
                       "group flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
-                      active && "border-primary ring-2 ring-primary/20 shadow-soft",
+                      active &&
+                        "border-primary ring-2 ring-primary/20 shadow-soft",
                     )}
                   >
                     <div className="flex-1 flex items-center justify-center w-full py-4">
@@ -281,11 +306,12 @@ export function DocumentWorkspace({
                   </Link>
                 );
               })}
-              {!folderDocs.isLoading && (folderDocs.data ?? []).length === 0 && (
-                <div className="col-span-full text-sm text-muted-foreground text-center py-10">
-                  Chưa có tài liệu. Bấm "Tải lên tài liệu" để bắt đầu.
-                </div>
-              )}
+              {!folderDocs.isLoading &&
+                (folderDocs.data ?? []).length === 0 && (
+                  <div className="col-span-full text-sm text-muted-foreground text-center py-10">
+                    Chưa có tài liệu. Bấm "Tải lên tài liệu" để bắt đầu.
+                  </div>
+                )}
             </div>
           ) : !docId ? (
             <div className="text-sm text-muted-foreground text-center mt-16">
@@ -299,16 +325,34 @@ export function DocumentWorkspace({
           ) : tab === "notes" ? (
             <div className="space-y-3">
               <div className="flex flex-wrap gap-1 border border-border rounded-lg px-2 py-1.5 text-xs text-muted-foreground bg-muted/40">
-                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer font-bold">B</span>
-                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer italic">I</span>
-                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer underline">U</span>
-                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">H1</span>
-                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">H2</span>
-                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">• List</span>
-                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">1. List</span>
-                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">Link</span>
+                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer font-bold">
+                  B
+                </span>
+                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer italic">
+                  I
+                </span>
+                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer underline">
+                  U
+                </span>
+                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">
+                  H1
+                </span>
+                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">
+                  H2
+                </span>
+                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">
+                  • List
+                </span>
+                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">
+                  1. List
+                </span>
+                <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">
+                  Link
+                </span>
               </div>
-              <h2 className="text-xl font-bold text-gradient-brand font-display">Ghi chú AI</h2>
+              <h2 className="text-xl font-bold text-gradient-brand font-display">
+                Ghi chú AI
+              </h2>
               <Textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -317,7 +361,10 @@ export function DocumentWorkspace({
               />
             </div>
           ) : tab === "summary" ? (
-            <SummaryTab title={doc.data?.title ?? ""} description={doc.data?.description ?? ""} />
+            <SummaryTab
+              title={doc.data?.title ?? ""}
+              description={doc.data?.description ?? ""}
+            />
           ) : tab === "flashcards" ? (
             <FlashcardsTab title={doc.data?.title ?? ""} />
           ) : (
@@ -325,25 +372,27 @@ export function DocumentWorkspace({
           )}
         </div>
 
-
-
-
-
-          {docId && (
-            <div className="p-3 border-t border-border flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={handleDownload} disabled={download.isPending}>
-                <Download className="h-3.5 w-3.5 mr-2" /> {download.isPending ? "Đang tải…" : "Tải xuống"}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleDelete}
-                className="text-destructive"
-              >
-                <Trash2 className="h-3.5 w-3.5 mr-2" /> Xoá
-              </Button>
-            </div>
-          )}
+        {docId && (
+          <div className="p-3 border-t border-border flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDownload}
+              disabled={download.isPending}
+            >
+              <Download className="h-3.5 w-3.5 mr-2" />{" "}
+              {download.isPending ? "Đang tải…" : "Tải xuống"}
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleDelete}
+              className="text-destructive"
+            >
+              <Trash2 className="h-3.5 w-3.5 mr-2" /> Xoá
+            </Button>
+          </div>
+        )}
       </section>
 
       {/* Column 3: chat */}
@@ -438,7 +487,6 @@ export function DocumentWorkspace({
         </form>
       </aside>
 
-
       <UploadDialog
         open={uploadOpen}
         onOpenChange={setUploadOpen}
@@ -455,7 +503,7 @@ function UploadDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  folderId: number;
+  folderId: string;
 }) {
   const upload = useUploadDocument();
   const [file, setFile] = useState<File | null>(null);
@@ -486,7 +534,10 @@ function UploadDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>File</Label>
-            <Input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+            <Input
+              type="file"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
           </div>
           <div className="space-y-2">
             <Label>Tiêu đề</Label>
@@ -494,7 +545,10 @@ function UploadDialog({
           </div>
           <div className="space-y-2">
             <Label>Mô tả</Label>
-            <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
         </div>
         <DialogFooter>
@@ -511,7 +565,13 @@ function UploadDialog({
 }
 
 /* -------------------- AI Summary -------------------- */
-function SummaryTab({ title, description }: { title: string; description: string }) {
+function SummaryTab({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) {
   const [loading, setLoading] = useState(true);
   const [tick, setTick] = useState(0);
 
@@ -543,7 +603,11 @@ function SummaryTab({ title, description }: { title: string; description: string
             Tóm tắt được tạo tự động bởi AI dựa trên nội dung tài liệu
           </p>
         </div>
-        <Button size="sm" variant="outline" onClick={() => setTick((t) => t + 1)}>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => setTick((t) => t + 1)}
+        >
           <RotateCw className="h-3.5 w-3.5 mr-2" /> Tạo lại
         </Button>
       </div>
@@ -558,7 +622,9 @@ function SummaryTab({ title, description }: { title: string; description: string
       ) : (
         <>
           <div className="rounded-lg border border-primary/20 bg-brand-soft/60 p-4">
-            <div className="text-xs font-semibold text-primary mb-1">Tóm tắt ngắn</div>
+            <div className="text-xs font-semibold text-primary mb-1">
+              Tóm tắt ngắn
+            </div>
             <p className="text-sm leading-relaxed">
               {description ||
                 `Tài liệu “${title}” tổng hợp các kiến thức cốt lõi và thuật ngữ quan trọng, giúp người đọc nắm chắc lý thuyết và áp dụng vào thực tế.`}
@@ -587,11 +653,26 @@ function SummaryTab({ title, description }: { title: string; description: string
 function FlashcardsTab({ title }: { title: string }) {
   const cards = useMemo(
     () => [
-      { front: "Algorithm", back: "Tập hợp các bước cụ thể để giải quyết một bài toán." },
-      { front: "Variable", back: "Vùng nhớ có tên, dùng để lưu trữ giá trị có thể thay đổi." },
-      { front: "Function", back: "Khối lệnh có thể tái sử dụng, nhận đầu vào và trả về kết quả." },
-      { front: "Loop", back: "Cấu trúc lặp lại một khối lệnh nhiều lần theo điều kiện." },
-      { front: "Class", back: "Khuôn mẫu định nghĩa thuộc tính và hành vi của đối tượng (OOP)." },
+      {
+        front: "Algorithm",
+        back: "Tập hợp các bước cụ thể để giải quyết một bài toán.",
+      },
+      {
+        front: "Variable",
+        back: "Vùng nhớ có tên, dùng để lưu trữ giá trị có thể thay đổi.",
+      },
+      {
+        front: "Function",
+        back: "Khối lệnh có thể tái sử dụng, nhận đầu vào và trả về kết quả.",
+      },
+      {
+        front: "Loop",
+        back: "Cấu trúc lặp lại một khối lệnh nhiều lần theo điều kiện.",
+      },
+      {
+        front: "Class",
+        back: "Khuôn mẫu định nghĩa thuộc tính và hành vi của đối tượng (OOP).",
+      },
     ],
     [],
   );
@@ -623,7 +704,12 @@ function FlashcardsTab({ title }: { title: string }) {
         <div className="text-[11px] uppercase tracking-wider text-muted-foreground mb-3">
           {flipped ? "Định nghĩa" : "Thuật ngữ"}
         </div>
-        <div className={cn("font-semibold", flipped ? "text-base leading-relaxed" : "text-2xl")}>
+        <div
+          className={cn(
+            "font-semibold",
+            flipped ? "text-base leading-relaxed" : "text-2xl",
+          )}
+        >
           {flipped ? cards[idx].back : cards[idx].front}
         </div>
         <div className="text-xs text-muted-foreground mt-4">Bấm để lật thẻ</div>
@@ -756,12 +842,21 @@ function QuizzesTab({ title }: { title: string }) {
                     <span
                       className={cn(
                         "h-5 w-5 rounded-full border flex items-center justify-center text-[10px] font-bold shrink-0",
-                        correct && "bg-emerald-500 text-white border-emerald-500",
+                        correct &&
+                          "bg-emerald-500 text-white border-emerald-500",
                         wrong && "bg-red-500 text-white border-red-500",
-                        !submitted && picked && "bg-gradient-brand text-white border-transparent",
+                        !submitted &&
+                          picked &&
+                          "bg-gradient-brand text-white border-transparent",
                       )}
                     >
-                      {correct ? <Check className="h-3 w-3" /> : wrong ? <X className="h-3 w-3" /> : String.fromCharCode(65 + oi)}
+                      {correct ? (
+                        <Check className="h-3 w-3" />
+                      ) : wrong ? (
+                        <X className="h-3 w-3" />
+                      ) : (
+                        String.fromCharCode(65 + oi)
+                      )}
                     </span>
                     <span>{opt}</span>
                   </button>
@@ -794,4 +889,3 @@ function QuizzesTab({ title }: { title: string }) {
     </div>
   );
 }
-

@@ -2,7 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
 import { toast } from "sonner";
-import { useCreateFolder, useDeleteFolder, useFolders, useUpdateFolder } from "@/lib/queries";
+import {
+  useCreateFolder,
+  useDeleteFolder,
+  useFolders,
+  useUpdateFolder,
+} from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -51,7 +56,12 @@ function FoldersPage() {
           <h1 className="text-3xl font-semibold tracking-tight">Folders</h1>
           <p className="text-muted-foreground mt-1">Organize your documents</p>
         </div>
-        <Button onClick={() => { setEditing(null); setOpen(true); }}>
+        <Button
+          onClick={() => {
+            setEditing(null);
+            setOpen(true);
+          }}
+        >
           <Plus className="h-4 w-4 mr-2" /> New folder
         </Button>
       </div>
@@ -68,21 +78,28 @@ function FoldersPage() {
 
       {isLoading ? (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-32" />)}
+          {Array.from({ length: 6 }).map((_, i) => (
+            <Skeleton key={i} className="h-32" />
+          ))}
         </div>
       ) : filtered.length === 0 ? (
         <Card>
           <CardContent className="py-16 text-center">
             <FolderKanban className="h-10 w-10 mx-auto text-muted-foreground/50" />
-            <p className="mt-4 text-sm text-muted-foreground">No folders found.</p>
+            <p className="mt-4 text-sm text-muted-foreground">
+              No folders found.
+            </p>
           </CardContent>
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((f) => (
-            <Card key={f.id} className="group hover:border-primary/40 transition-colors">
+            <Card
+              key={f.id}
+              className="group hover:border-primary/40 transition-colors"
+            >
               <CardContent className="p-5">
-                <Link to="/aichat" search={{ folderId: f.id }} className="block">
+                <Link to="/ai" search={{ folderId: f.id }} className="block">
                   <div className="flex items-start gap-3">
                     <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                       <FolderKanban className="h-5 w-5 text-primary" />
@@ -90,16 +107,27 @@ function FoldersPage() {
                     <div className="flex-1 min-w-0">
                       <div className="font-medium truncate">{f.name}</div>
                       <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
-                        {f.description || "No description"}
+                        {f.aiSummary || "No summary"}
                       </div>
                     </div>
                   </div>
                 </Link>
                 <div className="flex justify-end gap-1 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button size="sm" variant="ghost" onClick={() => { setEditing(f); setOpen(true); }}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      setEditing(f);
+                      setOpen(true);
+                    }}
+                  >
                     <Pencil className="h-3.5 w-3.5" />
                   </Button>
-                  <Button size="sm" variant="ghost" onClick={() => setDeleting(f)}>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => setDeleting(f)}
+                  >
                     <Trash2 className="h-3.5 w-3.5 text-destructive" />
                   </Button>
                 </div>
@@ -127,12 +155,14 @@ function FolderFormDialog({
   const create = useCreateFolder();
   const update = useUpdateFolder();
   const [name, setName] = useState(folder?.name ?? "");
-  const [description, setDescription] = useState(folder?.description ?? "");
+  const [description, setDescription] = useState<string>(
+    folder?.aiSummary ?? "",
+  );
 
   // sync when folder changes
   if (open && folder && folder.name !== name && name === "") {
     setName(folder.name);
-    setDescription(folder.description ?? "");
+    setDescription(folder.aiSummary ?? "");
   }
 
   const submit = async () => {
@@ -146,32 +176,56 @@ function FolderFormDialog({
         toast.success("Folder created");
       }
       onOpenChange(false);
-      setName(""); setDescription("");
+      setName("");
+      setDescription("");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={(v) => { onOpenChange(v); if (!v) { setName(""); setDescription(""); } }}>
+    <Dialog
+      open={open}
+      onOpenChange={(v) => {
+        onOpenChange(v);
+        if (!v) {
+          setName("");
+          setDescription("");
+        }
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{folder ? "Edit folder" : "New folder"}</DialogTitle>
-          <DialogDescription>Organize related documents together.</DialogDescription>
+          <DialogDescription>
+            Organize related documents together.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Name</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Contracts" />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Contracts"
+            />
           </div>
           <div className="space-y-2">
             <Label>Description (optional)</Label>
-            <Textarea value={description ?? ""} onChange={(e) => setDescription(e.target.value)} />
+            <Textarea
+              value={description ?? ""}
+              onChange={(e) => setDescription(e.target.value)}
+            />
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={submit} disabled={create.isPending || update.isPending}>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <Button
+            onClick={submit}
+            disabled={create.isPending || update.isPending}
+          >
             {folder ? "Save" : "Create"}
           </Button>
         </DialogFooter>
@@ -180,15 +234,27 @@ function FolderFormDialog({
   );
 }
 
-function DeleteFolderDialog({ folder, onClose }: { folder: Folder | null; onClose: () => void }) {
+function DeleteFolderDialog({
+  folder,
+  onClose,
+}: {
+  folder: Folder | null;
+  onClose: () => void;
+}) {
   const del = useDeleteFolder();
   return (
-    <AlertDialog open={!!folder} onOpenChange={(v) => { if (!v) onClose(); }}>
+    <AlertDialog
+      open={!!folder}
+      onOpenChange={(v) => {
+        if (!v) onClose();
+      }}
+    >
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete folder?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will delete &ldquo;{folder?.name}&rdquo;. This action cannot be undone.
+            This will delete &ldquo;{folder?.name}&rdquo;. This action cannot be
+            undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

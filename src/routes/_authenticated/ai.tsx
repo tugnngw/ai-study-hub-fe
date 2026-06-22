@@ -3,7 +3,7 @@ import { z } from "zod";
 import { AIChat } from "@/components/ui/AIChat";
 
 const searchSchema = z.object({
-  folderId: z.coerce.number(),
+  folderId: z.string(),
   docId: z.coerce.number().optional(),
 });
 

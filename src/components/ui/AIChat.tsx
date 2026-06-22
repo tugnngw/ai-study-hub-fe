@@ -36,15 +36,25 @@ function formatBytes(n: number) {
 }
 
 function fileTone(d: Document) {
-  const name = (d.fileName ?? "").toLowerCase();
+  const name = (d.title ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
     return { icon: "text-red-500", soft: "bg-red-50" };
-  if (name.endsWith(".doc") || name.endsWith(".docx") || d.mimeType?.includes("word"))
+  if (
+    name.endsWith(".doc") ||
+    name.endsWith(".docx") ||
+    d.mimeType?.includes("word")
+  )
     return { icon: "text-blue-500", soft: "bg-blue-50" };
   return { icon: "text-primary", soft: "bg-muted" };
 }
 
-export function AIChat({ folderId, docId }: { folderId: number; docId?: number }) {
+export function AIChat({
+  folderId,
+  docId,
+}: {
+  folderId: string;
+  docId?: number;
+}) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
   const doc = useDocument(docId ?? 0);
@@ -67,7 +77,10 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
   }, [docId]);
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [messages, ask.isPending]);
 
   useEffect(() => {
@@ -143,7 +156,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 )}
               >
                 <Link
-                  to="/aichat"
+                  to="/ai"
                   search={{ folderId, docId: d.id }}
                   className="flex items-center gap-2 min-w-0 flex-1"
                 >
@@ -151,7 +164,9 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                   <span
                     className={cn(
                       "truncate text-sm",
-                      active ? "font-medium text-foreground" : "text-foreground/90",
+                      active
+                        ? "font-medium text-foreground"
+                        : "text-foreground/90",
                     )}
                   >
                     {d.title}
@@ -168,7 +183,9 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
             );
           })}
           {!folderDocs.isLoading && docs.length === 0 && (
-            <div className="text-xs text-muted-foreground px-2">Chưa có tài liệu</div>
+            <div className="text-xs text-muted-foreground px-2">
+              Chưa có tài liệu
+            </div>
           )}
         </div>
 
@@ -184,14 +201,13 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
       <section className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
         <div className="px-4 pt-3 border-b border-border">
           <div className="flex items-center gap-6 overflow-x-auto">
-
             <button
               onClick={() => setActiveTab("content")}
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "content"
                   ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
               Original Content
@@ -203,7 +219,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "summary"
                   ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
               AI Summary
@@ -215,7 +231,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "flashcards"
                   ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
               AI Flashcards
@@ -227,22 +243,22 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "quizzes"
                   ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
               AI Quizzes
             </button>
-
           </div>
         </div>
-
         {/* Pill row */}
         <div className="flex gap-2 px-4 py-2.5 border-b border-border overflow-x-auto items-center">
           <button
-            onClick={() => navigate({ to: "/aichat", search: { folderId } })}
+            onClick={() => navigate({ to: "/ai", search: { folderId } })}
             className={cn(
               "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
-              !docId ? "bg-gradient-brand text-white" : "bg-muted text-foreground hover:bg-accent",
+              !docId
+                ? "bg-gradient-brand text-white"
+                : "bg-muted text-foreground hover:bg-accent",
             )}
           >
             All
@@ -250,7 +266,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
           {docs.map((d) => (
             <Link
               key={d.id}
-              to="/aichat"
+              to="/ai"
               search={{ folderId, docId: d.id }}
               className={cn(
                 "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
@@ -259,7 +275,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                   : "bg-brand-soft text-primary hover:bg-accent",
               )}
             >
-              {d.fileName ?? d.title}
+              {d.title}
             </Link>
           ))}
           {docs.length > 3 && (
@@ -268,74 +284,47 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
             </span>
           )}
         </div>
-
-
-
-        {activeTab === "content" && (
-          <></>
-        )}          {activeTab === "summary" && (
+        {activeTab === "content" && <></>}{" "}
+        {activeTab === "summary" && (
           <div className="max-w-3xl mx-auto space-y-6">
-
-            <h2 className="text-xl font-semibold">
-              AI Summary
-            </h2>
+            <h2 className="text-xl font-semibold">AI Summary</h2>
 
             <div className="rounded-xl border p-5 bg-muted/20">
-              <h3 className="font-medium mb-3">
-                Tóm tắt tài liệu
-              </h3>
+              <h3 className="font-medium mb-3">Tóm tắt tài liệu</h3>
 
               <p className="text-sm text-muted-foreground leading-7">
                 AI sẽ sinh phần tóm tắt nội dung của tài liệu đang chọn tại đây.
               </p>
             </div>
-
           </div>
         )}
         {activeTab === "flashcards" && (
           <div className="space-y-5">
-
-            <h2 className="text-xl font-semibold">
-              AI Flashcards
-            </h2>
+            <h2 className="text-xl font-semibold">AI Flashcards</h2>
 
             <div className="grid md:grid-cols-2 gap-4">
-
               <div className="rounded-xl border p-5 hover:shadow-md">
-                <div className="font-semibold mb-2">
-                  Front
-                </div>
-
+                <div className="font-semibold mb-2">Front</div>
                 Agile là gì?
               </div>
 
               <div className="rounded-xl border p-5 bg-primary/5">
-                <div className="font-semibold mb-2">
-                  Back
-                </div>
-
+                <div className="font-semibold mb-2">Back</div>
                 Agile là phương pháp phát triển phần mềm theo từng vòng lặp.
               </div>
-
             </div>
-
           </div>
         )}
         {activeTab === "quizzes" && (
           <div className="space-y-5">
-
-            <h2 className="text-xl font-semibold">
-              AI Quizzes
-            </h2>
+            <h2 className="text-xl font-semibold">AI Quizzes</h2>
 
             <div className="rounded-xl border p-5">
-
               <div className="font-medium mb-4">
                 Agile tập trung vào điều gì?
               </div>
 
               <div className="space-y-3">
-
                 <Button variant="outline" className="w-full justify-start">
                   A. Waterfall
                 </Button>
@@ -351,11 +340,8 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 <Button variant="outline" className="w-full justify-start">
                   D. Không có đáp án
                 </Button>
-
               </div>
-
             </div>
-
           </div>
         )}
         {/* File grid */}
@@ -376,7 +362,8 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                     key={d.id}
                     className={cn(
                       "group relative flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
-                      active && "border-primary ring-2 ring-primary/20 shadow-soft",
+                      active &&
+                        "border-primary ring-2 ring-primary/20 shadow-soft",
                     )}
                   >
                     <div className="absolute top-2 right-2 opacity-60 group-hover:opacity-100">
@@ -389,7 +376,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                       />
                     </div>
                     <Link
-                      to="/aichat"
+                      to="/ai"
                       search={{ folderId, docId: d.id }}
                       className="flex flex-col items-center w-full"
                     >
@@ -405,7 +392,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                       </div>
 
                       <div className="text-xs font-medium text-primary truncate w-full">
-                        {d.fileName ?? d.title}
+                        {d.title}
                       </div>
                     </Link>
                   </div>
@@ -425,13 +412,11 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
             {/* Nội dung AI Summary */}
           </div>
         )}
-
         {activeTab === "flashcards" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Flashcards */}
           </div>
         )}
-
         {activeTab === "quizzes" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Quizzes */}
@@ -443,7 +428,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
       <aside className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
         <div className="px-4 py-3.5 border-b border-border text-center">
           <div className="text-sm font-semibold font-display truncate">
-            {doc.data?.fileName ?? doc.data?.title ?? "Chưa chọn tài liệu"}
+            {doc.data?.title ?? "Chưa chọn tài liệu"}
           </div>
         </div>
 
@@ -453,7 +438,9 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
               <div className="h-14 w-14 rounded-2xl bg-gradient-soft flex items-center justify-center mb-3">
                 <Sparkles className="h-7 w-7 text-primary" />
               </div>
-              <div className="text-base font-semibold font-display">Trò chuyện với AI</div>
+              <div className="text-base font-semibold font-display">
+                Trò chuyện với AI
+              </div>
               <div className="text-sm text-muted-foreground mt-1 max-w-sm">
                 {docId
                   ? "Hỏi AI để tóm tắt, giải thích hoặc kiểm tra kiến thức từ tài liệu này."
