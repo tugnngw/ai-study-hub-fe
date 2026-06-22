@@ -15,8 +15,9 @@ export interface LoginRequest {
 }
 
 export interface LoginResponse {
-  token: string;
+  accessToken: string;
   refreshToken?: string;
+  expiresIn: number;
   user: User;
 }
 
@@ -53,12 +54,10 @@ export interface Folder {
 
 export interface CreateFolderRequest {
   name: string;
-  description?: string;
 }
 
 export interface UpdateFolderRequest {
   name: string;
-  description?: string;
 }
 
 // =============================================================
@@ -111,11 +110,20 @@ export interface DownloadUrlResponse {
 
 export type Visibility = "private" | "shared" | "public";
 
-export interface ShareInfo {
-  folderId: string;
+export interface ShareRequest {
+  folder: Folder;
+  owner: User;
+  sharedAccount?: User;
   visibility: Visibility;
-  recipients: ShareRecipient[];
-  link?: string;
+}
+
+export interface ShareResponse {
+  id: number;
+  folderId: string;
+  ownerId: string;
+  sharedAccountId?: string;
+  visibility: Visibility;
+  createdAt: string;
 }
 
 export interface ShareRecipient {

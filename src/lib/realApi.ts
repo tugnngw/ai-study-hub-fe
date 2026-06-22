@@ -13,8 +13,8 @@ import type {
   UploadDocumentRequest,
   UpdateDocumentRequest,
   DownloadUrlResponse,
-  ShareInfo,
-  SharedDocument,
+  ShareResponse,
+  ShareRequest,
   AskRequest,
   AskResponse,
   ReportDocumentRequest,
@@ -31,13 +31,22 @@ export const authApi = {
   register: (data: RegisterRequest) =>
     api<void>("/api/auth/register", { method: "POST", body: data }),
 
-  login: async (data: LoginRequest): Promise<LoginResponse> => {
-    const res = await api<LoginResponse>("/api/auth/login", {
+  login: async (data: LoginRequest): Promise<any> => {
+    localStorage.clear(); // Clear old tokens before new login
+    const res = await api<any>("/api/auth/login", {
       method: "POST",
       body: data,
     });
-    tokenStore.set(res.token);
-    if (res.refreshToken) tokenStore.setRefresh(res.refreshToken);
+    
+    // api() already unwraps ApiResponse<T> → res is the AuthResponse object
+    if (res?.accessToken) {
+      tokenStore.set(res.accessToken);
+      console.log("DEBUG FE: Token saved, length:", res.accessToken.length);
+    } else {
+      console.error("DEBUG FE: No accessToken found in response", res);
+    }
+    
+    if (res?.refreshToken) tokenStore.setRefresh(res.refreshToken);
     return res;
   },
 
@@ -149,31 +158,21 @@ export const ragApi = {
 // ================================================================
 
 export const shareApi = {
-  listSharedWithMe: () => api<SharedDocument[]>("/api/documents/shared"),
+  // List shares where current user is the owner
+  listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
 
-  getShareInfo: (documentId: number) =>
-    api<ShareInfo>(`/api/documents/${documentId}/share`),
+  // List shares where current user is shared with
+  listSharedWithMe: () => api<ShareResponse[]>("/api/shares/shared-with-me"),
 
-  shareWithEmail: (documentId: number, email: string) =>
-    api<ShareInfo>(`/api/documents/${documentId}/share`, {
-      method: "POST",
-      body: { email },
-    }),
+  // Create a new share (share folder with email)
+  shareFolder: (request: ShareRequest) =>
+    api<ShareResponse>("/api/shares", { method: "POST", body: request }),
 
-  removeFromShared: (shareId: number) =>
-    api<void>(`/api/documents/shared/${shareId}`, { method: "DELETE" }),
+  // Remove a share by its ID
+  removeShare: (shareId: number) =>
+    api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
 
-  saveToMyFolder: (
-    sharedDocId: number,
-    folderId: string,
-    title: string,
-    description?: string,
-  ) =>
-    api<Document>(`/api/documents/${sharedDocId}/save`, {
-      method: "POST",
-      body: { folderId, title, description },
-    }),
-
+  // Report a document
   report: (body: ReportDocumentRequest) =>
     api<void>(`/api/documents/${body.id}/report`, {
       method: "POST",

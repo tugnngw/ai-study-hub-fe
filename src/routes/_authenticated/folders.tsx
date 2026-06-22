@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
@@ -155,29 +154,24 @@ function FolderFormDialog({
   const create = useCreateFolder();
   const update = useUpdateFolder();
   const [name, setName] = useState(folder?.name ?? "");
-  const [description, setDescription] = useState<string>(
-    folder?.aiSummary ?? "",
-  );
 
   // sync when folder changes
   if (open && folder && folder.name !== name && name === "") {
     setName(folder.name);
-    setDescription(folder.aiSummary ?? "");
   }
 
   const submit = async () => {
     if (!name.trim()) return toast.error("Name is required");
     try {
       if (folder) {
-        await update.mutateAsync({ id: folder.id, name, description });
+        await update.mutateAsync({ id: folder.id, name });
         toast.success("Folder updated");
       } else {
-        await create.mutateAsync({ name, description });
+        await create.mutateAsync({ name });
         toast.success("Folder created");
       }
       onOpenChange(false);
       setName("");
-      setDescription("");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     }
@@ -190,7 +184,6 @@ function FolderFormDialog({
         onOpenChange(v);
         if (!v) {
           setName("");
-          setDescription("");
         }
       }}
     >
@@ -208,13 +201,6 @@ function FolderFormDialog({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Contracts"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>Description (optional)</Label>
-            <Textarea
-              value={description ?? ""}
-              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
         </div>

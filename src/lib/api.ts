@@ -59,28 +59,25 @@ export async function api<T = unknown>(
   });
 
   const ct = res.headers.get("content-type") ?? "";
-  const data = ct.includes("application/json")
+  const json = ct.includes("application/json")
     ? await res.json().catch(() => null)
-    : await res.text();
+    : null;
 
-  if (!res.ok) {
-    const message =
-      (data &&
-        typeof data === "object" &&
-        "message" in data &&
-        String((data as { message: unknown }).message)) ||
-      `Request failed (${res.status})`;
-    if (res.status === 401) {
-      tokenStore.clear();
-      // Redirect to login if not already there
-      if (
-        typeof window !== "undefined" &&
-        !window.location.pathname.includes("/auth")
-      ) {
-        window.location.href = "/auth/login";
+    if (!res.ok) {
+      const message =
+        (json &&
+          typeof json === "object" &&
+          "message" in json &&
+          String((json as { message: unknown }).message)) ||
+        `Request failed (${res.status})`;
+      // Only clear token on Unauthorized
+      if (res.status === 401) {
+        tokenStore.clear();
       }
+      throw new ApiError(res.status, message, json);
     }
-    throw new ApiError(res.status, message, data);
-  }
-  return data as T;
+  
+  // Unwrap ApiResponse<T> { code, message, data } -> T
+  const result = (json as any)?.data !== undefined ? (json as any).data : json;
+  return result as T;
 }

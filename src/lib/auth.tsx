@@ -38,16 +38,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     accountApi
       .me()
       .then(setUser)
-      .catch(() => {
-        tokenStore.clear();
-        setUser(null);
+      .catch((err) => {
+        if (err?.status === 401 || err?.status === 403) {
+          tokenStore.clear();
+          setUser(null);
+        } else {
+          setIsLoading(false); // Giữ nguyên user (có thể đã có từ trước) nếu lỗi server
+        }
       })
       .finally(() => setIsLoading(false));
   }, []);
 
   const login = async (username: string, password: string) => {
+    tokenStore.clear(); // Clear any old token before setting new
     const res = await authApi.login({ username, password });
-    setUser(res.user);
+    // Backend returns AuthResponse directly as res (flat structure: userId, username, email, etc.)
+    const userObj: User = {
+      id: res.userId,
+      username: res.username,
+      email: res.email,
+      fullName: res.fullName,
+      role: res.role,
+      status: "ACTIVE", // Fallback defaults
+      authProvider: "LOCAL",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    setUser(userObj);
   };
 
   const register = async (data: RegisterRequest) => {
