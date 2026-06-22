@@ -1,15 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+
 import { useEffect, useState } from "react";
 import AdminPagination from "@/components/admin/admin-pagination";
 import { userApi, type UserItem } from "@/lib/adminApi";
 
 const PER_PAGE = 5;
 
-export const Route = createFileRoute("/_admin/admin/users")({
-  component: AdminUserManager,
-});
-
-function AdminUserManager() {
+export function AdminUserManager() {
   const [users, setUsers] = useState<UserItem[]>([]);
   const [page, setPage] = useState(1);
 

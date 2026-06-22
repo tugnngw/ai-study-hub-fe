@@ -1,15 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+
 import { useEffect, useState } from "react";
 import AdminPagination from "@/components/admin/admin-pagination";
 import { approvalApi, type ApprovalItem } from "@/lib/adminApi";
 
 const PER_PAGE = 5;
 
-export const Route = createFileRoute("/_admin/admin/approvals")({
-  component: AdminHistoryApproval,
-});
-
-function AdminHistoryApproval() {
+export function AdminHistoryApproval() {
   const [list, setList] = useState<ApprovalItem[]>([]);
   const [page, setPage] = useState(1);
 

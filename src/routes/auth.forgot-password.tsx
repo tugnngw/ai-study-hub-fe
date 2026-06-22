@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -16,11 +17,7 @@ import {
 
 const emailSchema = z.string().email("Email không hợp lệ");
 
-export const Route = createFileRoute("/auth/forgot-password")({
-  component: ForgotPasswordPage,
-});
-
-function ForgotPasswordPage() {
+export function ForgotPasswordPage() {
   const { requestPasswordReset, verifyResetOtp } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState<"email" | "otp">("email");
@@ -59,7 +56,7 @@ function ForgotPasswordPage() {
     setLoading(true);
     try {
       await verifyResetOtp(email, otp);
-      navigate({ to: "/auth/reset-password", search: { email } });
+      navigate(`/auth/reset-password?email=${encodeURIComponent(email)}`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Mã OTP không đúng");
     } finally {

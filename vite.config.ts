@@ -1,18 +1,8 @@
 import { defineConfig } from "vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  resolve: {
-    tsconfigPaths: true,
-  },
-  plugins: [
-    tailwindcss(),
-    tanstackStart({
-      // src/server.ts wraps the SSR entry for error handling.
-      target: "node-server",
-    }),
-    viteReact(),
-  ],
+  plugins: [tailwindcss(), react(), tsconfigPaths()],
 });

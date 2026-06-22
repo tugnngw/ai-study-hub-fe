@@ -1,11 +1,8 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
+
 import { useState } from "react";
 import { FileText, Plus, MoreHorizontal, Folder } from "lucide-react";
 import { useDocuments, useSubjectsBySemester } from "@/lib/queries";
-
-export const Route = createFileRoute("/_authenticated/dashboard")({
-  component: Dashboard,
-});
 
 // Màu nền gradient cho card ghi chú (xoay vòng)
 const noteGradients = [
@@ -14,7 +11,7 @@ const noteGradients = [
   "from-[#9D7BF6] to-[#C3AEFD]",
 ];
 
-function Dashboard() {
+export function Dashboard() {
   const docs = useDocuments();
 
   const recentDocs = (docs.data ?? [])

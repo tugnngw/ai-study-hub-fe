@@ -1,9 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useDocuments, useFolders } from "@/lib/queries";
 
-export const Route = createFileRoute("/_authenticated/cloud")({
-  component: CloudPage,
-});
+import { useDocuments, useFolders } from "@/lib/queries";
 
 // ⚠️ DB chưa có cột storage quota theo user → hạn mức tạm hardcode ở FE
 // (khớp mockup: 15 GB). Khi BE có endpoint quota, thay hằng số này.
@@ -32,7 +28,7 @@ const kindColor: Record<string, string> = {
   Khác: "bg-gray-800",
 };
 
-function CloudPage() {
+export function CloudPage() {
   const docs = useDocuments();
   const folders = useFolders();
   const list = docs.data ?? [];

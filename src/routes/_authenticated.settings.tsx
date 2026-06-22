@@ -1,15 +1,12 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 import { toast } from "sonner";
 import { Lock, ShieldCheck, Monitor, ChevronRight, X } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useChangePassword } from "@/lib/queries";
 
-export const Route = createFileRoute("/_authenticated/settings")({
-  component: SettingsPage,
-});
-
-function SettingsPage() {
+export function SettingsPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [pwOpen, setPwOpen] = useState(false);
@@ -37,7 +34,7 @@ function SettingsPage() {
               <p className="text-muted-foreground text-[12px]">Thành viên từ {(user as any)?.createdAt?.slice(0, 10) ?? "—"}</p>
             </div>
           </div>
-          <button type="button" onClick={() => navigate({ to: "/profile" })} className="px-4 py-2 rounded-lg border border-border text-[13px] font-medium hover:bg-secondary/60">
+          <button type="button" onClick={() => navigate("/profile")} className="px-4 py-2 rounded-lg border border-border text-[13px] font-medium hover:bg-secondary/60">
             Chỉnh sửa thông tin
           </button>
         </div>

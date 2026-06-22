@@ -1,4 +1,5 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "react-router-dom";
+
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
@@ -12,14 +13,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Folder } from "@/lib/types";
 
-export const Route = createFileRoute("/_authenticated/documents")({
-  component: DocumentsPage,
-});
-
 const PER_PAGE = 9;
 type SortKey = "newest" | "oldest" | "name";
 
-function DocumentsPage() {
+export function DocumentsPage() {
   const navigate = useNavigate();
   const folders = useFolders();
   const docs = useDocuments();
@@ -105,7 +102,7 @@ function DocumentsPage() {
           {paged.map((f) => (
             <div
               key={f.id}
-              onClick={() => navigate({ to: "/folders/$id", params: { id: f.id } })}
+              onClick={() => navigate(`/folders/${f.id}`)}
               className="group flex items-center gap-3 rounded-2xl border border-border/70 bg-white px-4 py-4 hover:border-primary/40 hover:shadow-soft transition-all cursor-pointer"
             >
               <div className="h-10 w-10 rounded-xl bg-secondary flex items-center justify-center shrink-0">
@@ -125,7 +122,7 @@ function DocumentsPage() {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => navigate({ to: "/folders/$id", params: { id: f.id } })}>
+                    <DropdownMenuItem onClick={() => navigate(`/folders/${f.id}`)}>
                       <FolderIcon className="h-4 w-4 mr-2" /> Mở
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setEditing(f)}>

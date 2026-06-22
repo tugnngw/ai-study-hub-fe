@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -26,11 +27,7 @@ const schema = z
     message: "Mật khẩu xác nhận không khớp",
   });
 
-export const Route = createFileRoute("/auth/register")({
-  component: RegisterPage,
-});
-
-function RegisterPage() {
+export function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({
@@ -67,7 +64,7 @@ function RegisterPage() {
         password: form.password,
       });
       toast.success("Tạo tài khoản thành công! Vui lòng đăng nhập.");
-      navigate({ to: "/auth/login" });
+      navigate("/auth/login");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Đăng ký thất bại");
     } finally {

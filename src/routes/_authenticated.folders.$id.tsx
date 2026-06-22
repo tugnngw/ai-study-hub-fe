@@ -1,18 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
+import { useParams, useSearchParams } from "react-router-dom";
 import { DocumentWorkspace } from "@/components/document-workspace";
 
-const searchSchema = z.object({
-  docId: z.coerce.number().optional(),
-});
-
-export const Route = createFileRoute("/_authenticated/folders/$id")({
-  validateSearch: searchSchema,
-  component: FolderDetail,
-});
-
-function FolderDetail() {
-  const { id } = Route.useParams();
-  const { docId } = Route.useSearch();
+export function FolderDetail() {
+  const { id } = useParams();
+  const [params] = useSearchParams();
+  const docIdRaw = params.get("docId");
+  const docId = docIdRaw ? Number(docIdRaw) : undefined;
   return <DocumentWorkspace folderId={Number(id)} docId={docId} />;
 }

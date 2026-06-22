@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useEffect, useRef, useState } from "react";
 import {
   ChevronLeft,
@@ -143,8 +144,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 )}
               >
                 <Link
-                  to="/aichat"
-                  search={{ folderId, docId: d.id }}
+                  to={`/aichat?folderId=${folderId}&docId=${d.id}`}
                   className="flex items-center gap-2 min-w-0 flex-1"
                 >
                   <FileText className={cn("h-4 w-4 shrink-0", tone.icon)} />
@@ -239,7 +239,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
         {/* Pill row */}
         <div className="flex gap-2 px-4 py-2.5 border-b border-border overflow-x-auto items-center">
           <button
-            onClick={() => navigate({ to: "/aichat", search: { folderId } })}
+            onClick={() => navigate(`/aichat?folderId=${folderId}`)}
             className={cn(
               "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
               !docId ? "bg-gradient-brand text-white" : "bg-muted text-foreground hover:bg-accent",
@@ -250,8 +250,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
           {docs.map((d) => (
             <Link
               key={d.id}
-              to="/aichat"
-              search={{ folderId, docId: d.id }}
+              to={`/aichat?folderId=${folderId}&docId=${d.id}`}
               className={cn(
                 "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
                 d.id === docId
@@ -389,8 +388,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                       />
                     </div>
                     <Link
-                      to="/aichat"
-                      search={{ folderId, docId: d.id }}
+                      to={`/aichat?folderId=${folderId}&docId=${d.id}`}
                       className="flex flex-col items-center w-full"
                     >
                       <div className="flex-1 flex items-center justify-center w-full py-4">

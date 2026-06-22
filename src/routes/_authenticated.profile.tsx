@@ -1,14 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 import { useDocuments, useFolders, useSharedDocuments, useUpdateProfile } from "@/lib/queries";
 
-export const Route = createFileRoute("/_authenticated/profile")({
-  component: ProfilePage,
-});
-
-function ProfilePage() {
+export function ProfilePage() {
   const { user, refresh } = useAuth();
   const docs = useDocuments();
   const folders = useFolders();

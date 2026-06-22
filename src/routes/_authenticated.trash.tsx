@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { FileText, Folder, Search, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
@@ -6,14 +6,10 @@ import { useTrash, useRestoreDocument, usePermanentDeleteDocument } from "@/lib/
 import { formatBytes, formatDate, formatRelativeTime } from "@/lib/utils";
 import type { Document } from "@/lib/types";
 
-export const Route = createFileRoute("/_authenticated/trash")({
-  component: TrashPage,
-});
-
 const PER_PAGE = 8;
 type SortKey = "newest" | "oldest";
 
-function TrashPage() {
+export function TrashPage() {
   const { data, isLoading } = useTrash();
   const restore = useRestoreDocument();
   const erase = usePermanentDeleteDocument();

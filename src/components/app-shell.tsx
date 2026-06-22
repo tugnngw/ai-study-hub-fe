@@ -1,4 +1,5 @@
-import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
 import { useState } from "react";
 import {
   Home,
@@ -44,7 +45,7 @@ function gb(bytes: number) {
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const pathname = useLocation().pathname;
   const docs = useDocuments();
   const [uploadOpen, setUploadOpen] = useState(false);
 
@@ -54,7 +55,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const handleLogout = async () => {
     await logout();
-    navigate({ to: "/auth/login" });
+    navigate("/auth/login");
   };
 
   const initial = (user?.fullName ?? user?.username ?? "U")[0]?.toUpperCase();

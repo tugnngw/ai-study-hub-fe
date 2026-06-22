@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+
 import { useEffect, useState } from "react";
 import AdminPagination from "@/components/admin/admin-pagination";
 import SubTabFilter from "@/components/admin/sub-tab-filter";
@@ -6,10 +6,6 @@ import { fileApi, type DeletedFileItem, type DeletedAccountItem } from "@/lib/ad
 
 const PER_PAGE = 5;
 const dayColor = (d: number) => (d <= 7 ? "text-red-500" : "text-amber-500");
-
-export const Route = createFileRoute("/_admin/admin/trash")({
-  component: AdminTrashManager,
-});
 
 function RestoreBtn({ onClick }: { onClick: () => void }) {
   return (
@@ -30,7 +26,7 @@ function DeleteBtn({ onClick }: { onClick: () => void }) {
   );
 }
 
-function AdminTrashManager() {
+export function AdminTrashManager() {
   const [subTab, setSubTab] = useState<"file" | "account">("file");
   const [delFiles, setDelFiles] = useState<DeletedFileItem[]>([]);
   const [delAccs, setDelAccs] = useState<DeletedAccountItem[]>([]);

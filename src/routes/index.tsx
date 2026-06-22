@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
+
 import {
   Sparkles,
   Bot,
@@ -7,10 +8,6 @@ import {
   Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-export const Route = createFileRoute("/")({
-  component: WelcomePage,
-});
 
 const features = [
   {
@@ -35,7 +32,7 @@ const features = [
   },
 ];
 
-function WelcomePage() {
+export function WelcomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}

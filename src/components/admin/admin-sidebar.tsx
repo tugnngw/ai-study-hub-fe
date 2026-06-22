@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { NavLink, useNavigate } from "react-router-dom";
+
 import { useAuth } from "@/lib/auth";
 
 const items = [
@@ -36,7 +37,7 @@ export function AdminSidebar() {
 
   const handleLogout = async () => {
     try { await logout(); } catch { /* ignore */ }
-    navigate({ to: "/admin/login" });
+    navigate("/admin/login");
   };
 
   return (
@@ -56,15 +57,18 @@ export function AdminSidebar() {
 
         <div className="flex flex-col gap-1">
           {items.map((item) => (
-            <Link
+            <NavLink
               key={item.to}
               to={item.to}
-              className="w-full h-[42px] rounded-[10px] flex items-center gap-3 px-3 text-[14px] font-medium transition-all cursor-pointer select-none text-white/70 hover:bg-white/10 hover:text-white"
-              activeProps={{ className: "w-full h-[42px] rounded-[10px] flex items-center gap-3 px-3 text-[14px] font-semibold transition-all cursor-pointer select-none bg-white/15 text-white" }}
+              className={({ isActive }) =>
+                isActive
+                  ? "w-full h-[42px] rounded-[10px] flex items-center gap-3 px-3 text-[14px] font-semibold transition-all cursor-pointer select-none bg-white/15 text-white"
+                  : "w-full h-[42px] rounded-[10px] flex items-center gap-3 px-3 text-[14px] font-medium transition-all cursor-pointer select-none text-white/70 hover:bg-white/10 hover:text-white"
+              }
             >
               {item.icon}
               {item.label}
-            </Link>
+            </NavLink>
           ))}
         </div>
       </div>

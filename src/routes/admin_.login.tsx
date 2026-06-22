@@ -1,15 +1,12 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 import { toast } from "sonner";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 
 // Route phẳng /admin/login — hậu tố "_" để KHÔNG bị bọc layout _admin (sidebar).
-export const Route = createFileRoute("/admin_/login")({
-  component: AdminLoginPage,
-});
-
-function AdminLoginPage() {
+export function AdminLoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: "", password: "" });
@@ -26,7 +23,7 @@ function AdminLoginPage() {
       await login(form.username, form.password);
       toast.success("Đăng nhập quản trị thành công");
       // Quyền truy cập do BE kiểm soát; FE chỉ điều hướng vào cổng quản trị.
-      navigate({ to: "/admin" });
+      navigate("/admin");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Đăng nhập thất bại");
     } finally {

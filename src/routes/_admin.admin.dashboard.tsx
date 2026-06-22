@@ -1,13 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+
 import { useEffect, useState } from "react";
 import AdminPagination from "@/components/admin/admin-pagination";
 import { dashboardApi, type DashboardStats } from "@/lib/adminApi";
 
-export const Route = createFileRoute("/_admin/admin/dashboard")({
-  component: AdminDashboard,
-});
-
-function AdminDashboard() {
+export function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [page, setPage] = useState(1);
   useEffect(() => { dashboardApi.getStats().then(setStats).catch(() => setStats(null)); }, []);

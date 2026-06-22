@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+
 import { FileText, Users, Search, ChevronDown } from "lucide-react";
 import { useSharedDocuments } from "@/lib/queries";
 import {
@@ -21,10 +21,6 @@ import { SharedDocumentActionsMenu } from "@/components/shared-document-actions-
 import { formatBytes, formatRelativeTime } from "@/lib/utils";
 import type { SharedDocument } from "@/lib/types";
 
-export const Route = createFileRoute("/_authenticated/shared")({
-  component: SharedPage,
-});
-
 type TabId = "all" | "with-me" | "by-me";
 
 const TABS: { id: TabId; label: string }[] = [
@@ -33,7 +29,7 @@ const TABS: { id: TabId; label: string }[] = [
   { id: "by-me", label: "Tôi đã chia sẻ" },
 ];
 
-function SharedPage() {
+export function SharedPage() {
   const [tab, setTab] = useState<TabId>("all");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState("newest");

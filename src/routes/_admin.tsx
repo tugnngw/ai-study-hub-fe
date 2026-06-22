@@ -1,12 +1,9 @@
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { Outlet } from "react-router-dom";
+
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 import AdminHeader from "@/components/admin/admin-header";
 
-export const Route = createFileRoute("/_admin")({
-  component: AdminLayout,
-});
-
-function AdminLayout() {
+export function AdminLayout() {
   // Việc kiểm tra quyền truy cập (chỉ ADMIN) do BE đảm nhiệm — FE không guard ở đây.
   // Người dùng vào cổng quản trị qua trang đăng nhập riêng /admin/login.
   return (

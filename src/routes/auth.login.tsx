@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -15,11 +16,7 @@ const schema = z.object({
   password: z.string().min(1, "Vui lòng nhập mật khẩu"),
 });
 
-export const Route = createFileRoute("/auth/login")({
-  component: LoginPage,
-});
-
-function LoginPage() {
+export function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: "", password: "" });
@@ -41,7 +38,7 @@ function LoginPage() {
       const u = await login(form.username, form.password);
       toast.success("Chào mừng trở lại!");
       // Admin -> khu quản trị, user thường -> dashboard
-      navigate({ to: u.role === "ADMIN" ? "/admin" : "/dashboard" });
+      navigate(u.role === "ADMIN" ? "/admin" : "/dashboard");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Đăng nhập thất bại");
     } finally {
@@ -137,7 +134,7 @@ function LoginPage() {
       <div className="border-t border-border/60 px-6 py-4">
         <button
           type="button"
-          onClick={() => navigate({ to: "/admin/login" })}
+          onClick={() => navigate("/admin/login")}
           className="w-full flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           <ShieldCheck className="h-3.5 w-3.5" />

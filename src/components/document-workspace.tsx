@@ -1,4 +1,5 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
@@ -105,11 +106,7 @@ export function DocumentWorkspace({
     try {
       await del.mutateAsync(docId);
       toast.success("Đã chuyển vào thùng rác");
-      navigate({
-        to: "/folders/$id",
-        params: { id: String(folderId) },
-        search: {},
-      });
+      navigate(`/folders/${folderId}`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     }
@@ -148,9 +145,7 @@ export function DocumentWorkspace({
               return (
                 <Link
                   key={d.id}
-                  to="/folders/$id"
-                  params={{ id: String(folderId) }}
-                  search={{ docId: d.id }}
+                  to={`/folders/${String(folderId)}?docId=${d.id}`}
                   className={cn(
                     "flex items-center gap-2 text-sm px-2.5 py-2 rounded-lg transition-colors",
                     active
@@ -211,11 +206,7 @@ export function DocumentWorkspace({
           <div className="flex gap-2 px-4 py-2.5 border-b border-border overflow-x-auto items-center">
             <button
               onClick={() =>
-                navigate({
-                  to: "/folders/$id",
-                  params: { id: String(folderId) },
-                  search: {},
-                })
+                navigate(`/folders/${folderId}`)
               }
               className={cn(
                 "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
@@ -229,9 +220,7 @@ export function DocumentWorkspace({
             {(folderDocs.data ?? []).map((d) => (
               <Link
                 key={d.id}
-                to="/folders/$id"
-                params={{ id: String(folderId) }}
-                search={{ docId: d.id }}
+                to={`/folders/${String(folderId)}?docId=${d.id}`}
                 className={cn(
                   "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
                   d.id === docId
@@ -257,9 +246,7 @@ export function DocumentWorkspace({
                 return (
                   <Link
                     key={d.id}
-                    to="/folders/$id"
-                    params={{ id: String(folderId) }}
-                    search={{ docId: d.id }}
+                    to={`/folders/${String(folderId)}?docId=${d.id}`}
                     className={cn(
                       "group flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
                       active && "border-primary ring-2 ring-primary/20 shadow-soft",

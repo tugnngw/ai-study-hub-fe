@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -23,13 +24,9 @@ const schema = z
     message: "Mật khẩu xác nhận không khớp",
   });
 
-export const Route = createFileRoute("/auth/reset-password")({
-  validateSearch: searchSchema,
-  component: ResetPasswordPage,
-});
-
-function ResetPasswordPage() {
-  const { email } = Route.useSearch();
+export function ResetPasswordPage() {
+  const [searchParams] = useSearchParams();
+  const email = searchParams.get("email") ?? "";
   const { resetPassword } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ password: "", confirmPassword: "" });
@@ -50,7 +47,7 @@ function ResetPasswordPage() {
     try {
       await resetPassword(email, form.password);
       toast.success("Đổi mật khẩu thành công! Vui lòng đăng nhập lại.");
-      navigate({ to: "/auth/login" });
+      navigate("/auth/login");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Đổi mật khẩu thất bại");
     } finally {

@@ -1,5 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
+
 import { Flag, FolderOpen, MoreVertical, Share2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -61,7 +62,7 @@ export function DocumentActionsMenu({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem
-            onClick={() => navigate({ to: "/aichat", search: { folderId, docId: documentId } })}
+            onClick={() => navigate(`/aichat?folderId=${folderId}&docId=${documentId}`)}
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>

@@ -1,15 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
+
 import { useEffect, useState } from "react";
 import AdminPagination from "@/components/admin/admin-pagination";
 import { fileApi, type ReportedFileItem } from "@/lib/adminApi";
 
 const PER_PAGE = 5;
 
-export const Route = createFileRoute("/_admin/admin/files")({
-  component: AdminFileManager,
-});
-
-function AdminFileManager() {
+export function AdminFileManager() {
   const [files, setFiles] = useState<ReportedFileItem[]>([]);
   const [actId, setActId] = useState<number | null>(null);
   const [selected, setSelected] = useState<ReportedFileItem | null>(null);
