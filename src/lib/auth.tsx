@@ -37,7 +37,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     accountApi
       .me()
-      .then(setUser)
+      .then((u) => {
+        setUser(u);
+      })
       .catch((err) => {
         if (err?.status === 401 || err?.status === 403) {
           tokenStore.clear();
@@ -46,7 +48,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setIsLoading(false); // Giữ nguyên user (có thể đã có từ trước) nếu lỗi server
         }
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []); // Empty dependency array - OAuth callback executes only once on mount
+
+  // ── Periodically refresh token (every 10 min) ─────────
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (!tokenStore.get()) return; // No token, skip
+      try {
+        const res = await authApi.refresh();
+        if (res?.accessToken) {
+          tokenStore.set(res.accessToken);
+          if (res.refreshToken) tokenStore.setRefresh(res.refreshToken);
+          // Re-fetch user info silently
+          accountApi.me().then(setUser).catch(() => {});
+        }
+      } catch {
+        // Refresh failed — will be caught by api() interceptor later
+      }
+    }, 10 * 60 * 1000); // 10 minutes
+
+    return () => clearInterval(interval);
   }, []);
 
   const login = async (username: string, password: string) => {
@@ -80,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const u = await accountApi.me();
       setUser(u);
-    } catch {
+    } catch (err) {
       setUser(null);
     }
   };

@@ -41,14 +41,17 @@ export const authApi = {
     // api() already unwraps ApiResponse<T> → res is the AuthResponse object
     if (res?.accessToken) {
       tokenStore.set(res.accessToken);
-      console.log("DEBUG FE: Token saved, length:", res.accessToken.length);
-    } else {
-      console.error("DEBUG FE: No accessToken found in response", res);
     }
     
     if (res?.refreshToken) tokenStore.setRefresh(res.refreshToken);
     return res;
   },
+
+  refresh: (): Promise<{ accessToken: string; refreshToken?: string }> =>
+    api("/api/auth/refresh", {
+      method: "POST",
+      body: { refreshToken: tokenStore.getRefresh() },
+    }),
 
   logout: async (): Promise<void> => {
     await api("/api/auth/logout", { method: "POST" }).catch(() => {});
@@ -98,16 +101,31 @@ export const documentApi = {
   list: () => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
-  getById: (id: number) => api<Document>(`/api/documents/${id}`),
+  getById: (id: number) => {
+    console.log('[TRACE-6] documentApi.getById called with id:', id);
+    return api<Document>(`/api/documents/${id}`);
+  },
 
-  upload: async (input: UploadDocumentRequest): Promise<Document> => {
+  upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
     const fd = new FormData();
-    fd.append("file", input.file);
+    fd.append("files", input.file); // <-- file -> files
     fd.append("title", input.title);
-    if (input.description) fd.append("description", input.description);
-    if (input.folderId) fd.append("folderId", input.folderId);
-    if (input.subjectId) fd.append("subjectId", String(input.subjectId));
-    return api<Document>("/api/documents", { method: "POST", formData: fd });
+    if (input.description) {
+      fd.append("description", input.description);
+    }
+    if (input.folderId) {
+      fd.append("folderId", input.folderId);
+    }
+    if (input.subjectId) {
+      fd.append("subjectId", String(input.subjectId));
+    }
+    return api<Document[]>(
+      "/api/documents",
+      {
+        method: "POST",
+        formData: fd,
+      }
+    );
   },
 
   update: (id: number, body: UpdateDocumentRequest) =>

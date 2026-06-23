@@ -3,6 +3,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/oauth-success")({
   component: OAuthSuccessPage,
@@ -10,28 +11,35 @@ export const Route = createFileRoute("/oauth-success")({
 
 function OAuthSuccessPage() {
   const navigate = useNavigate();
+  const { refresh } = useAuth();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("access_token");
-    const userId = params.get("user_id");
+    const handleOAuth = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("access_token");
+      const userId = params.get("user_id");
 
-    if (token) {
+      if (!token) {
+        navigate({ to: "/auth/login", replace: true });
+        return;
+      }
+
       localStorage.setItem("auth_token", token);
+
       if (userId) {
         localStorage.setItem("user_id", userId);
       }
 
-      // Xóa token khỏi URL
-      window.history.replaceState({}, document.title, "/dashboard");
+      await refresh();
 
-      // Redirect đến dashboard
-      navigate({ to: "/dashboard", replace: true });
-    } else {
-      // Không có token, redirect về trang đăng nhập
-      navigate({ to: "/auth/login", replace: true });
-    }
-  }, [navigate]);
+      navigate({
+        to: "/dashboard",
+        replace: true,
+      });
+    };
+
+    handleOAuth();
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

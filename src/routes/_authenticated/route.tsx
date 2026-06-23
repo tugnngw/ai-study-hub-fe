@@ -1,38 +1,39 @@
-// src/routes/_authenticated.tsx
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { AppShell } from "@/components/app-shell";
 import { useAuth } from "@/lib/auth";
 import { useEffect } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { DocumentViewer } from "@/components/document-viewer/DocumentViewer";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated")({
-  beforeLoad: ({ context }) => {
-    // Auth guard - redirect to login if not authenticated
-    // Note: This runs on server too, so we need to handle it carefully
-  },
   component: AuthLayout,
 });
 
 function AuthLayout() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading, user } = useAuth();
 
-  // Redirect to login if not authenticated
   useEffect(() => {
+    // Redirect to login if not authenticated and not loading
     if (!isLoading && !isAuthenticated) {
+      // Use navigate for client-side routing if preferred, but window.location.href
+      // works directly for immediate redirection, especially during initial load.
       window.location.href = "/auth/login";
     }
-  }, [isAuthenticated, isLoading]);
+  }, [isAuthenticated, isLoading, user]);
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
           <p className="text-sm text-muted-foreground">Đang tải...</p>
         </div>
       </div>
     );
   }
 
+  // If not authenticated after loading, do not render anything to avoid flashing login.
   if (!isAuthenticated) {
     return null;
   }

@@ -12,6 +12,7 @@ import {
   Check,
   X,
   ChevronRight,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -23,6 +24,7 @@ import {
   useFolder,
   useUploadDocument,
 } from "@/lib/queries";
+import { DocumentViewer } from "@/components/document-viewer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -77,7 +79,12 @@ export function DocumentWorkspace({
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
-  const doc = useDocument(docId ?? 0);
+  const isValidDocId = typeof docId === 'number' && !isNaN(docId) && docId > 0;
+  const doc = useDocument(isValidDocId ? docId : 0);;
+  console.log("DOC DATA", doc.data);
+  console.log('[TRACE-3] DocumentWorkspace: docId received:', docId);
+  console.log('[TRACE-3.1] isValidDocId:', isValidDocId);
+  console.log('[TRACE-3.2] docId passed to useDocument:', isValidDocId ? docId : 0);
   const del = useDeleteDocument();
   const ask = useAskRag();
   const download = useDownloadDocument();
@@ -276,43 +283,73 @@ export function DocumentWorkspace({
 
         <div className="flex-1 overflow-y-auto p-6">
           {tab === "original" ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {folderDocs.isLoading &&
-                Array.from({ length: 6 }).map((_, i) => (
-                  <Skeleton key={i} className="h-40 rounded-xl" />
-                ))}
-              {(folderDocs.data ?? []).map((d) => {
-                const active = d.id === docId;
-                return (
-                  <Link
-                    key={d.id}
-                    to="/folders/$id"
-                    params={{ id: String(folderId) }}
-                    search={{ docId: d.id }}
-                    className={cn(
-                      "group flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
-                      active &&
-                        "border-primary ring-2 ring-primary/20 shadow-soft",
-                    )}
-                  >
-                    <div className="flex-1 flex items-center justify-center w-full py-4">
-                      <div className="h-16 w-16 rounded-xl bg-gradient-soft flex items-center justify-center group-hover:bg-gradient-brand transition-colors">
-                        <FileText className="h-8 w-8 text-primary group-hover:text-white" />
+            // 🔥 Kiểm tra kỹ hơn
+            docId && doc.data ? (
+              // Display original document viewer when a document is selected
+              <DocumentViewer document={doc.data} />
+            ) : doc.isLoading ? (
+              // 🔥 Đang loading
+              <div className="flex items-center justify-center h-full">
+                <div className="flex flex-col items-center gap-2">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <p className="text-sm text-muted-foreground">Đang tải tài liệu...</p>
+                </div>
+              </div>
+            ) : !docId ? (
+              // Display grid of documents to select from when no document is selected
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {folderDocs.isLoading &&
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <Skeleton key={i} className="h-40 rounded-xl" />
+                  ))}
+                {(folderDocs.data ?? []).map((d) => {
+                  const active = d.id === docId;
+                  return (
+                    <Link
+                      key={d.id}
+                      to="/folders/$id"
+                      params={{ id: String(folderId) }}
+                      search={{ docId: d.id }}
+                      className={cn(
+                        "group flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
+                        active &&
+                          "border-primary ring-2 ring-primary/20 shadow-soft",
+                      )}
+                    >
+                      <div className="flex-1 flex items-center justify-center w-full py-4">
+                        <div className="h-16 w-16 rounded-xl bg-gradient-soft flex items-center justify-center group-hover:bg-gradient-brand transition-colors">
+                          <FileText className="h-8 w-8 text-primary group-hover:text-white" />
+                        </div>
                       </div>
+                      <div className="text-xs font-medium text-foreground truncate w-full">
+                        {d.title}
+                      </div>
+                    </Link>
+                  );
+                })}
+                {!folderDocs.isLoading &&
+                  (folderDocs.data ?? []).length === 0 && (
+                    <div className="col-span-full text-sm text-muted-foreground text-center py-10">
+                      Chưa có tài liệu. Bấm "Tải lên tài liệu" để bắt đầu.
                     </div>
-                    <div className="text-xs font-medium text-foreground truncate w-full">
-                      {d.title}
-                    </div>
-                  </Link>
-                );
-              })}
-              {!folderDocs.isLoading &&
-                (folderDocs.data ?? []).length === 0 && (
-                  <div className="col-span-full text-sm text-muted-foreground text-center py-10">
-                    Chưa có tài liệu. Bấm "Tải lên tài liệu" để bắt đầu.
-                  </div>
-                )}
-            </div>
+                  )}
+              </div>
+            ) : (
+              // 🔥 Fallback khi có lỗi
+              <div className="flex items-center justify-center h-full">
+                <div className="flex flex-col items-center gap-2">
+                  <p className="text-sm text-muted-foreground">Không thể tải tài liệu</p>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => window.location.reload()}
+                  >
+                    <RotateCw className="h-4 w-4 mr-2" />
+                    Thử lại
+                  </Button>
+                </div>
+              </div>
+            )
           ) : !docId ? (
             <div className="text-sm text-muted-foreground text-center mt-16">
               Chọn một tài liệu để xem nội dung.

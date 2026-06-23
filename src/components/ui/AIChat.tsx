@@ -5,6 +5,7 @@ import {
   ChevronRight,
   FileText,
   FolderClosed,
+  Loader2,
   Send,
   Sparkles,
 } from "lucide-react";
@@ -19,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
+import { DocumentViewer } from "@/components/document-viewer";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/lib/types";
 
@@ -284,129 +286,68 @@ export function AIChat({
             </span>
           )}
         </div>
-        {activeTab === "content" && <></>}{" "}
-        {activeTab === "summary" && (
-          <div className="max-w-3xl mx-auto space-y-6">
-            <h2 className="text-xl font-semibold">AI Summary</h2>
-
-            <div className="rounded-xl border p-5 bg-muted/20">
-              <h3 className="font-medium mb-3">Tóm tắt tài liệu</h3>
-
-              <p className="text-sm text-muted-foreground leading-7">
-                AI sẽ sinh phần tóm tắt nội dung của tài liệu đang chọn tại đây.
-              </p>
-            </div>
-          </div>
-        )}
-        {activeTab === "flashcards" && (
-          <div className="space-y-5">
-            <h2 className="text-xl font-semibold">AI Flashcards</h2>
-
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="rounded-xl border p-5 hover:shadow-md">
-                <div className="font-semibold mb-2">Front</div>
-                Agile là gì?
-              </div>
-
-              <div className="rounded-xl border p-5 bg-primary/5">
-                <div className="font-semibold mb-2">Back</div>
-                Agile là phương pháp phát triển phần mềm theo từng vòng lặp.
-              </div>
-            </div>
-          </div>
-        )}
-        {activeTab === "quizzes" && (
-          <div className="space-y-5">
-            <h2 className="text-xl font-semibold">AI Quizzes</h2>
-
-            <div className="rounded-xl border p-5">
-              <div className="font-medium mb-4">
-                Agile tập trung vào điều gì?
-              </div>
-
-              <div className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
-                  A. Waterfall
-                </Button>
-
-                <Button variant="outline" className="w-full justify-start">
-                  B. Phản hồi nhanh
-                </Button>
-
-                <Button variant="outline" className="w-full justify-start">
-                  C. Big Bang
-                </Button>
-
-                <Button variant="outline" className="w-full justify-start">
-                  D. Không có đáp án
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
-        {/* File grid */}
         {activeTab === "content" && (
-          <div className="flex-1 overflow-y-auto p-5">
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-              {folderDocs.isLoading &&
-                Array.from({ length: 6 }).map((_, i) => (
-                  <Skeleton key={i} className="h-40 rounded-xl" />
-                ))}
-
-              {docs.map((d) => {
-                const active = d.id === docId;
-                const tone = fileTone(d);
-
-                return (
-                  <div
-                    key={d.id}
-                    className={cn(
-                      "group relative flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
-                      active &&
-                        "border-primary ring-2 ring-primary/20 shadow-soft",
-                    )}
-                  >
-                    <div className="absolute top-2 right-2 opacity-60 group-hover:opacity-100">
-                      <DocumentActionsMenu
-                        documentId={d.id}
-                        folderId={folderId}
-                        title={d.title}
-                        className="h-6 w-6 rounded-md hover:bg-accent flex items-center justify-center text-muted-foreground shrink-0"
-                        iconClassName="h-3.5 w-3.5"
-                      />
-                    </div>
-                    <Link
-                      to="/ai"
-                      search={{ folderId, docId: d.id }}
-                      className="flex flex-col items-center w-full"
-                    >
-                      <div className="flex-1 flex items-center justify-center w-full py-4">
-                        <div
-                          className={cn(
-                            "h-16 w-16 rounded-xl flex items-center justify-center",
-                            tone.soft,
-                          )}
-                        >
-                          <FileText className={cn("h-8 w-8", tone.icon)} />
-                        </div>
-                      </div>
-
-                      <div className="text-xs font-medium text-primary truncate w-full">
-                        {d.title}
-                      </div>
-                    </Link>
-                  </div>
-                );
-              })}
-
-              {!folderDocs.isLoading && docs.length === 0 && (
-                <div className="col-span-full text-sm text-muted-foreground text-center py-10">
-                  Chưa có tài liệu trong thư mục này.
+          <div className="flex-1 overflow-y-auto">
+            {docId && doc.data?.status === "ready" ? (
+              <DocumentViewer document={doc.data} />
+            ) : doc.data?.status === "processing" ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="flex flex-col items-center gap-2 p-8">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <p className="text-sm text-muted-foreground">Đang xử lý tài liệu...</p>
                 </div>
-              )}
-            </div>
+              </div>
+            ) : doc.data?.status === "failed" ? (
+              <div className="flex items-center justify-center h-full p-8">
+                <p className="text-red-500 text-center">Tài liệu đã xảy ra lỗi khi xử lý</p>
+              </div>
+            ) : docId && !doc.data ? (
+              <div className="flex items-center justify-center h-full p-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-5">
+                {folderDocs.isLoading &&
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <Skeleton key={i} className="h-40 rounded-xl" />
+                  ))}
+                {docs.map((d) => {
+                  const active = d.id === docId;
+                  const tone = fileTone(d);
+                  return (
+                    <div
+                      key={d.id}
+                      className={cn(
+                        "group relative flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
+                        active && "border-primary ring-2 ring-primary/20 shadow-soft",
+                      )}
+                    >
+                      <Link
+                        to="/ai"
+                        search={{ folderId, docId: d.id }}
+                        className="flex flex-col items-center w-full"
+                      >
+                        <div className="flex-1 flex items-center justify-center w-full py-4">
+                          <div className={cn("h-16 w-16 rounded-xl flex items-center justify-center", tone.soft)}>
+                            <FileText className={cn("h-8 w-8", tone.icon)} />
+                          </div>
+                        </div>
+                        <div className="text-xs font-medium text-primary truncate w-full">
+                          {d.title}
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+                {!folderDocs.isLoading && docs.length === 0 && (
+                  <div className="col-span-full text-sm text-muted-foreground text-center py-10">
+                    Chưa có tài liệu trong thư mục này.
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        )}
+        )}{" "}
         {activeTab === "summary" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Summary */}
