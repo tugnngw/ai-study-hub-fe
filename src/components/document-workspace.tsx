@@ -146,7 +146,7 @@ export function DocumentWorkspace({
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
+    <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr_320px] gap-4 h-[calc(100vh-7rem)] min-h-[480px]">
       {/* Column 1: file list */}
       <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
         <Link

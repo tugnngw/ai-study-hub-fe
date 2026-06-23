@@ -38,7 +38,7 @@ const nav = [
   { to: "/documents", label: "Tài liệu", icon: FileText },
   { to: "/shared", label: "Được chia sẻ", icon: Users },
   { to: "/trash", label: "Thùng rác", icon: Trash2 },
-  { to: "/cloud", label: "Lưu trữ Cloud", icon: Cloud },
+  { to: "/cloud", label: "Cloud", icon: Cloud },
 ] as const;
 
 function formatBytes(n: number) {
@@ -58,7 +58,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   // Calculate storage used from actual documents
   const used =
     documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
-  const total = 15 * 1024 * 1024 * 1024; // 15GB
+  const total = 1 * 1024 * 1024 * 1024; // 1GB
   const pct = Math.min(100, (used / total) * 100);
 
   const handleLogout = async () => {
@@ -89,7 +89,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
 
-        <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
+        <nav className="p-3 space-y-0.5 overflow-y-auto">
           <div className="text-[10px] font-semibold tracking-wider text-muted-foreground px-3 pt-2 pb-1.5">
             WORKSPACE
           </div>
@@ -116,18 +116,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        {/* Upload button */}
-        <div className="px-3 pb-1">
-          <Button
-            onClick={() => setUploadOpen(true)}
-            className="w-full justify-start bg-gradient-brand text-white hover:opacity-90 shadow-brand"
-          >
-            <Upload className="h-4 w-4 mr-2" /> Tải lên tài liệu
-          </Button>
-        </div>
-
         {/* Storage card */}
-        <div className="p-3">
+        <div className="px-3 pt-2">
           <div className="rounded-xl border border-sidebar-border bg-card/60 p-3.5 space-y-2.5">
             <div className="flex items-center gap-2">
               <Database className="h-3.5 w-3.5 text-primary" />
@@ -141,6 +131,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               / {formatBytes(total)}
             </div>
           </div>
+        </div>
+
+        {/* Spacer pushes upload button to the bottom */}
+        <div className="flex-1" />
+
+        {/* Upload button */}
+        <div className="p-3">
+          <Button
+            onClick={() => setUploadOpen(true)}
+            className="w-full justify-start bg-gradient-brand text-white hover:opacity-90 shadow-brand"
+          >
+            <Upload className="h-4 w-4 mr-2" /> Tải lên tài liệu
+          </Button>
         </div>
       </aside>
 
@@ -245,7 +248,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </div>
 
         <main className="flex-1 min-w-0">
-          <div className="p-6 md:p-8 max-w-7xl mx-auto">{children}</div>
+          <div className="p-4 md:p-5 max-w-[1600px] mx-auto">{children}</div>
         </main>
       </div>
 

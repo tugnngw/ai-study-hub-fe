@@ -202,7 +202,7 @@ function UploadDialog({
             />
           </div>
           <div className="space-y-2">
-            <Label>Title</Label>
+            <Label>File Name</Label>
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="space-y-2">
