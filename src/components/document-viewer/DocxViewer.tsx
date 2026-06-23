@@ -1,10 +1,11 @@
 // src/components/document-viewer/DocxViewer.tsx
+// Renders DOCX files using mammoth.js (converts to clean HTML)
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Loader2, RotateCw, Download, ExternalLink } from "lucide-react";
+import * as mammoth from "mammoth";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import {
   isCloudinaryUrl,
@@ -30,7 +31,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
   const isCloudinary = isCloudinaryUrl(url);
 
-  // Process URL on mount and when URL changes
+  // Process Cloudinary URL if needed
   useEffect(() => {
     let isMounted = true;
     let currentBlobUrl: string | null = null;
@@ -55,6 +56,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 
     if (isCloudinary) {
       processUrl();
+    } else {
+      setProcessedUrl(null);
+      setLoading(false);
     }
 
     return () => {
@@ -68,12 +72,12 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
   const fetchAndRender = useCallback(async () => {
     if (!containerRef.current) return;
 
+    let isMounted = true;
+
     try {
       setLoading(true);
       setError(null);
-      containerRef.current.innerHTML = "";
 
-      // Use processedUrl (blob) for Cloudinary, original URL for others
       const targetUrl = (isCloudinary && processedUrl) ? processedUrl : url;
 
       const response = await fetch(targetUrl, {
@@ -88,14 +92,38 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       }
 
       const arrayBuffer = await response.arrayBuffer();
-      const { renderAsync } = await import("docx-preview");
 
-      await renderAsync(arrayBuffer, containerRef.current, {
-        renderImages: true,
+      if (!isMounted) return;
+
+      // Convert DOCX to HTML using mammoth
+      const result = await mammoth.convertArrayBuffer({
+        arrayBuffer,
+        options: {
+          styleMap: [
+            "p[style-name='Heading 1'] => h1:fresh",
+            "p[style-name='Heading 2'] => h2:fresh",
+            "p[style-name='Heading 3'] => h3:fresh",
+            "p[style-name='Normal'] => p:fresh",
+            "p[style-name='List Paragraph'] => p:fresh",
+          ],
+          includeEmbeddedStyleMap: true,
+        },
       });
+
+      if (!isMounted || !containerRef.current) return;
+
+      // Insert HTML into container
+      containerRef.current.innerHTML = result.value;
+
+      // Log warnings if any
+      if (result.messages.length > 0) {
+        console.warn("DOCX conversion warnings:", result.messages);
+      }
 
       setLoading(false);
     } catch (e) {
+      if (!isMounted) return;
+
       console.error("DOCX render error:", e);
       const errorMsg = e instanceof Error ? e.message : "Unknown error";
 
@@ -113,6 +141,10 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 
       setLoading(false);
     }
+
+    return () => {
+      isMounted = false;
+    };
   }, [url, isCloudinary, processedUrl]);
 
   useEffect(() => {
@@ -174,7 +206,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
         <div className="flex-1 overflow-auto p-6">
           <div
             ref={containerRef}
-            className="docx-viewer prose prose-sm max-w-none dark:prose-invert"
+            className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
             style={{
               fontSize: "14px",
               lineHeight: "1.6",

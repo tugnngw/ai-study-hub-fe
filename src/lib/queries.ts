@@ -10,6 +10,7 @@ import {
   ragApi,
   shareApi,
 } from "./realApi";
+import { tokenStore } from "./api";
 import type {
   Document,
   Folder,
@@ -257,6 +258,7 @@ export function useOwnedShares() {
   return useQuery({
     queryKey: sharedKeys.owned,
     queryFn: () => shareApi.listOwned(),
+    enabled: !!tokenStore.get(), // Only run if authenticated
   });
 }
 
