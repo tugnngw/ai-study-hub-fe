@@ -39,8 +39,9 @@ export const authApi = {
     });
     
     // api() already unwraps ApiResponse<T> → res is the AuthResponse object
-    if (res?.accessToken) {
-      tokenStore.set(res.accessToken);
+    const token = res?.accessToken ?? res?.token;
+    if (token) {
+      tokenStore.set(token);
     }
     
     if (res?.refreshToken) tokenStore.setRefresh(res.refreshToken);
@@ -182,9 +183,9 @@ export const shareApi = {
   // List shares where current user is shared with
   listSharedWithMe: () => api<ShareResponse[]>("/api/shares/shared-with-me"),
 
-  // Create a new share (share folder with email)
-  shareFolder: (request: ShareRequest) =>
-    api<ShareResponse>("/api/shares", { method: "POST", body: request }),
+    // Create a new share (share folder with username)
+    shareFolder: (request: ShareRequest) =>
+      api<ShareResponse>("/api/shares", { method: "POST", body: request }),
 
   // Remove a share by its ID
   removeShare: (shareId: number) =>

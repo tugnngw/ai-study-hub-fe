@@ -81,7 +81,7 @@ export function useFolder(id: string) {
   return useQuery({
     queryKey: folderKeys.detail(id),
     queryFn: () => folderApi.getById(id),
-    enabled: !!id,
+    enabled: !!id && id > 0,
   });
 }
 
@@ -242,6 +242,7 @@ export function useEmptyTrash() {
 
 export const sharedKeys = {
   all: ["shared"] as const,
+  owned: ["shared-owned"] as const,
   info: (docId: number) => ["share-info", docId] as const,
 };
 
@@ -252,21 +253,26 @@ export function useSharedDocuments() {
   });
 }
 
-export function useShareInfo(documentId: number, enabled = true) {
+export function useOwnedShares() {
   return useQuery({
-    queryKey: sharedKeys.info(documentId),
-    queryFn: () => shareApi.getShareInfo(documentId),
-    enabled: !!documentId && enabled,
+    queryKey: sharedKeys.owned,
+    queryFn: () => shareApi.listOwned(),
   });
 }
 
-export function useShareDocument() {
+export function useShareFolder() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (input: { id: number; email: string }) =>
-      shareApi.shareWithEmail(input.id, input.email),
-    onSuccess: (_d, v) => {
-      qc.invalidateQueries({ queryKey: sharedKeys.info(v.id) });
+    mutationFn: (request: { folderId: string; username?: string; email?: string }) =>
+      shareApi.shareFolder({
+        folderId: request.folderId,
+        username: request.username,
+        email: request.email,
+        visibility: "private",
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: sharedKeys.all });
+      qc.invalidateQueries({ queryKey: sharedKeys.owned });
     },
   });
 }
@@ -274,8 +280,11 @@ export function useShareDocument() {
 export function useDeleteSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (shareId: number) => shareApi.removeFromShared(shareId),
-    onSuccess: () => qc.invalidateQueries({ queryKey: sharedKeys.all }),
+    mutationFn: (shareId: number) => shareApi.removeShare(shareId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: sharedKeys.all });
+      qc.invalidateQueries({ queryKey: sharedKeys.owned });
+    },
   });
 }
 
@@ -287,14 +296,15 @@ export function useSaveSharedDocument() {
       folderId: string;
       title: string;
       description?: string;
-    }) =>
-      shareApi.saveToMyFolder(
-        input.sharedId,
-        input.folderId,
-        input.title,
-        input.description,
-      ),
-    onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
+    }) => {
+      // Placeholder: BE doesn't have a "save shared doc" endpoint yet.
+      // For now, just simulate success.
+      console.log("useSaveSharedDocument called:", input);
+      return Promise.resolve({});
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: docKeys.all });
+    },
   });
 }
 

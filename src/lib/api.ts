@@ -75,6 +75,7 @@ export async function api<T = unknown>(
 ): Promise<T> {
   const doFetch = async (): Promise<Response> => {
     const token = tokenStore.get();
+  console.log('🔑 api request', { path, tokenPresent: !!token });
     const headers: Record<string, string> = { ...(opts.headers ?? {}) };
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
@@ -129,13 +130,13 @@ export async function api<T = unknown>(
         String((json as { message: unknown }).message)) ||
       `Request failed (${res.status})`;
 
-    if (res.status === 403) {
-      // 403 after 401 means refresh also failed — clear
-      tokenStore.clear();
-    }
-
+    // Do NOT clear token on 403 – user may simply lack permission.
+    // Token clearing is only for 401 (unauthenticated) after refresh failure.
+    // 403 means the request was understood but the user lacks required rights.
+    // Let the UI handle the error (e.g., show a permission dialog).
     throw new ApiError(res.status, message, json);
   }
+
 
   // Unwrap ApiResponse<T> { code, message, data } -> T
   const result = (json as any)?.data !== undefined ? (json as any).data : json;

@@ -111,9 +111,9 @@ export interface DownloadUrlResponse {
 export type Visibility = "private" | "shared" | "public";
 
 export interface ShareRequest {
-  folder: Folder;
-  owner: User;
-  sharedAccount?: User;
+  folderId: string;
+  email?: string;      // Search by email
+  username?: string;   // Search by username
   visibility: Visibility;
 }
 
@@ -122,6 +122,8 @@ export interface ShareResponse {
   folderId: string;
   ownerId: string;
   sharedAccountId?: string;
+  sharedUsername?: string;
+  sharedEmail?: string;
   visibility: Visibility;
   createdAt: string;
 }

@@ -88,8 +88,8 @@ export function DocumentActionsMenu({
       <ShareDocumentDialog
         open={shareOpen}
         onOpenChange={setShareOpen}
-        documentId={documentId}
         documentTitle={title}
+        folderId={folderId!}
       />
       <ReportDocumentDialog
         open={reportOpen}

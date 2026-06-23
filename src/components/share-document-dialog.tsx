@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Check, Copy, Users } from "lucide-react";
 import { toast } from "sonner";
-import { useShareDocument, useShareInfo } from "@/lib/queries";
+import { useShareFolder, useOwnedShares } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -18,44 +18,40 @@ import type { ShareRecipient } from "@/lib/types";
 export function ShareDocumentDialog({
   open,
   onOpenChange,
-  documentId,
   documentTitle,
+  folderId,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  documentId: number;
   documentTitle: string;
+  folderId: string;
 }) {
-  const share = useShareDocument();
-  const info = useShareInfo(documentId, open);
-  const [email, setEmail] = useState("");
+  const share = useShareFolder();
+  const { data: shares, isLoading } = useOwnedShares();
+  const [emailOrUsername, setEmailOrUsername] = useState("");
   const [copied, setCopied] = useState(false);
-  const [recipients, setRecipients] = useState<ShareRecipient[]>([]);
-
-  useEffect(() => {
-    if (info.data) setRecipients(info.data.recipients);
-  }, [info.data]);
 
   useEffect(() => {
     if (!open) {
-      setEmail("");
+      setEmailOrUsername("");
       setCopied(false);
     }
   }, [open]);
 
-  const link = info.data?.link ?? "";
+  const link = `http://localhost:5174/shared/${folderId}`;
 
   const handleInvite = async () => {
-    const value = email.trim();
+    const value = emailOrUsername.trim();
     if (!value) return;
-    if (!/^\S+@\S+\.\S+$/.test(value)) {
-      toast.error("Email không hợp lệ");
-      return;
-    }
+    // Check if input is email or username
+    const isEmail = /^\S+@\S+\.\S+$/.test(value);
     try {
-      const res = await share.mutateAsync({ id: documentId, email: value });
-      setRecipients(res.recipients);
-      setEmail("");
+      await share.mutateAsync({
+        folderId,
+        email: isEmail ? value : undefined,
+        username: isEmail ? undefined : value,
+      });
+      setEmailOrUsername("");
       toast.success(`Đã mời ${value}`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Mời thất bại");
@@ -90,10 +86,10 @@ export function ShareDocumentDialog({
             <Label>Mời người dùng</Label>
             <div className="flex gap-2">
               <Input
-                type="email"
-                placeholder="email@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                placeholder="email@example.com hoặc username"
+                value={emailOrUsername}
+                onChange={(e) => setEmailOrUsername(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
@@ -103,7 +99,7 @@ export function ShareDocumentDialog({
               />
               <Button
                 onClick={handleInvite}
-                disabled={share.isPending || !email.trim()}
+                disabled={share.isPending || !emailOrUsername.trim()}
               >
                 {share.isPending ? "Đang mời..." : "Mời"}
               </Button>
@@ -113,20 +109,20 @@ export function ShareDocumentDialog({
           <div className="space-y-2">
             <div className="flex items-center gap-1.5 text-sm font-medium">
               <Users className="h-4 w-4 text-muted-foreground" />
-              Đã chia sẻ với ({recipients.length})
+              Đã chia sẻ ({isLoading ? "..." : (shares?.length ?? 0)})
             </div>
-            {recipients.length === 0 ? (
+            {!shares || shares.length === 0 ? (
               <p className="text-sm text-muted-foreground">
                 Chưa chia sẻ với ai.
               </p>
             ) : (
               <ul className="space-y-1 max-h-32 overflow-y-auto">
-                {recipients.map((r) => (
+                {shares.map((s) => (
                   <li
-                    key={r.accountId}
+                    key={s.id}
                     className="text-sm rounded-md bg-muted/50 px-2.5 py-1.5 truncate"
                   >
-                    {r.fullName ?? r.email}
+                    {s.sharedUsername ?? s.sharedEmail ?? "Unknown"}
                   </li>
                 ))}
               </ul>
