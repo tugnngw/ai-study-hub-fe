@@ -7,7 +7,8 @@ import {
   Cloud,
   Upload,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const features = [
   {
@@ -36,7 +37,7 @@ export function WelcomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
-      <header className="border-b border-border/60 sticky top-0 z-30 bg-background/80 backdrop-blur-xl">
+      <header className="border-b border-border/60 sticky top-0 z-50 bg-background">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="h-9 w-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-brand">
@@ -44,13 +45,16 @@ export function WelcomePage() {
             </div>
             <span className="font-display font-bold text-base">AI STUDY HUB</span>
           </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" asChild>
-              <Link to="/auth/login">Đăng Nhập</Link>
-            </Button>
-            <Button className="bg-gradient-brand shadow-brand hover:opacity-90" asChild>
-              <Link to="/auth/register">Tạo Tài Khoản</Link>
-            </Button>
+          <div className="relative z-50 flex items-center gap-2">
+            <Link to="/auth/login" className={buttonVariants({ variant: "ghost" })}>
+              Đăng Nhập
+            </Link>
+            <Link
+              to="/auth/register"
+              className={cn(buttonVariants(), "bg-gradient-brand shadow-brand hover:opacity-90")}
+            >
+              Tạo Tài Khoản
+            </Link>
           </div>
         </div>
       </header>
@@ -111,9 +115,12 @@ export function WelcomePage() {
               Tham gia cùng hàng nghìn sinh viên đang sử dụng AI Study Hub
             </p>
             <div className="mt-6">
-              <Button size="lg" variant="secondary" className="shadow-lg" asChild>
-                <Link to="/auth/register">Bắt đầu miễn phí</Link>
-              </Button>
+              <Link
+                to="/auth/register"
+                className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "shadow-lg")}
+              >
+                Bắt đầu miễn phí
+              </Link>
             </div>
           </div>
         </section>

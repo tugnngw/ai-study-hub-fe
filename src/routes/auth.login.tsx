@@ -3,13 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Mail, Facebook, ShieldCheck } from "lucide-react";
+import { Mail, Facebook, ShieldCheck, Home } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 
 const schema = z.object({
   username: z.string().trim().min(1, "Vui lòng nhập tên đăng nhập"),
@@ -95,11 +94,10 @@ export function LoginPage() {
             {loading ? "Đang đăng nhập..." : "Đăng nhập"}
           </Button>
 
-          <div className="relative py-1">
-            <Separator />
-            <span className="absolute inset-0 -top-2.5 flex items-center justify-center">
-              <span className="bg-card px-2 text-xs text-muted-foreground">hoặc</span>
-            </span>
+          <div className="flex items-center gap-3 py-1">
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">hoặc</span>
+            <span className="h-px flex-1 bg-border" />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -131,11 +129,19 @@ export function LoginPage() {
           </p>
         </form>
       </CardContent>
-      <div className="border-t border-border/60 px-6 py-4">
+      <div className="border-t border-border/60 px-6 py-4 flex items-center justify-center gap-5">
+        <Link
+          to="/"
+          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Home className="h-3.5 w-3.5" />
+          Về trang chủ
+        </Link>
+        <span className="h-3.5 w-px bg-border" />
         <button
           type="button"
           onClick={() => navigate("/admin/login")}
-          className="w-full flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           <ShieldCheck className="h-3.5 w-3.5" />
           Cổng quản trị
