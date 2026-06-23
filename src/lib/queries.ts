@@ -61,6 +61,13 @@ export function useCurrentUser() {
   });
 }
 
+export function useChangePassword() {
+  return useMutation({
+    mutationFn: (input: { currentPassword: string; newPassword: string }) =>
+      accountApi.changePassword(input),
+  });
+}
+
 // ================================================================
 // FOLDER
 // ================================================================

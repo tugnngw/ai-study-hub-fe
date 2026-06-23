@@ -15,6 +15,8 @@ import {
   Sparkles,
   Search,
   Upload,
+  PanelLeftClose,
+  PanelLeft,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useDocuments } from "@/lib/queries";
@@ -68,39 +70,79 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const initial = user?.fullName?.[0]?.toUpperCase() ?? "U";
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
-      <aside className="hidden md:flex md:flex-col md:w-64 shrink-0 border-r border-sidebar-border bg-sidebar/80 backdrop-blur-xl sticky top-0 h-screen">
-        <div className="px-5 py-5 border-b border-sidebar-border">
+      <aside
+        className={cn(
+          "hidden md:flex md:flex-col shrink-0 border-r border-sidebar-border bg-sidebar/80 backdrop-blur-xl sticky top-0 h-screen transition-[width] duration-200",
+          collapsed ? "md:w-[68px]" : "md:w-64",
+        )}
+      >
+        <div
+          className={cn(
+            "px-5 py-5 border-b border-sidebar-border flex items-center",
+            collapsed ? "justify-center px-0" : "justify-between",
+          )}
+        >
           <Link to="/dashboard" className="flex items-center gap-2.5 group">
-            <div className="h-9 w-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-brand group-hover:scale-105 transition-transform">
+            <div className="h-9 w-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-brand group-hover:scale-105 transition-transform shrink-0">
               <Sparkles className="h-4.5 w-4.5 text-white" strokeWidth={2.5} />
             </div>
-            <div>
-              <div className="font-display font-bold text-base leading-tight">
-                AI Study Hub
+            {!collapsed && (
+              <div>
+                <div className="font-display font-bold text-base leading-tight">
+                  AI Study Hub
+                </div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">
+                  Learn smarter
+                </div>
               </div>
-              <div className="text-[10px] text-muted-foreground tracking-wider uppercase">
-                Learn smarter
-              </div>
-            </div>
+            )}
           </Link>
+          {!collapsed && (
+            <button
+              type="button"
+              onClick={() => setCollapsed(true)}
+              className="h-7 w-7 rounded-md hover:bg-sidebar-accent flex items-center justify-center text-muted-foreground shrink-0"
+              title="Thu gọn"
+            >
+              <PanelLeftClose className="h-4 w-4" />
+            </button>
+          )}
         </div>
 
-        <nav className="p-3 space-y-0.5 overflow-y-auto">
-          <div className="text-[10px] font-semibold tracking-wider text-muted-foreground px-3 pt-2 pb-1.5">
-            WORKSPACE
+        {collapsed && (
+          <div className="flex justify-center py-2 border-b border-sidebar-border">
+            <button
+              type="button"
+              onClick={() => setCollapsed(false)}
+              className="h-8 w-8 rounded-md hover:bg-sidebar-accent flex items-center justify-center text-muted-foreground"
+              title="Mở rộng"
+            >
+              <PanelLeft className="h-4 w-4" />
+            </button>
           </div>
+        )}
+
+        <nav className="p-3 space-y-0.5 overflow-y-auto overflow-x-hidden">
+          {!collapsed && (
+            <div className="text-[10px] font-semibold tracking-wider text-muted-foreground px-3 pt-2 pb-1.5">
+              WORKSPACE
+            </div>
+          )}
           {nav.map((item) => {
             const active = pathname.startsWith(item.to);
             return (
               <Link
                 key={item.to}
                 to={item.to}
+                title={collapsed ? item.label : undefined}
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all group relative",
+                  collapsed && "justify-center px-0",
                   active
                     ? "bg-gradient-brand text-white shadow-brand font-medium"
                     : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
@@ -110,28 +152,30 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className={cn("h-4 w-4 shrink-0", active && "drop-shadow-sm")}
                   strokeWidth={active ? 2.5 : 2}
                 />
-                <span className="truncate">{item.label}</span>
+                {!collapsed && <span className="truncate">{item.label}</span>}
               </Link>
             );
           })}
         </nav>
 
         {/* Storage card */}
-        <div className="px-3 pt-2">
-          <div className="rounded-xl border border-sidebar-border bg-card/60 p-3.5 space-y-2.5">
-            <div className="flex items-center gap-2">
-              <Database className="h-3.5 w-3.5 text-primary" />
-              <span className="text-xs font-semibold">Dung lượng</span>
-            </div>
-            <Progress value={pct} className="h-1.5" />
-            <div className="text-[11px] text-muted-foreground">
-              <span className="font-medium text-foreground">
-                {formatBytes(used)}
-              </span>{" "}
-              / {formatBytes(total)}
+        {!collapsed && (
+          <div className="px-3 pt-2">
+            <div className="rounded-xl border border-sidebar-border bg-card/60 p-3.5 space-y-2.5">
+              <div className="flex items-center gap-2">
+                <Database className="h-3.5 w-3.5 text-primary" />
+                <span className="text-xs font-semibold">Dung lượng</span>
+              </div>
+              <Progress value={pct} className="h-1.5" />
+              <div className="text-[11px] text-muted-foreground">
+                <span className="font-medium text-foreground">
+                  {formatBytes(used)}
+                </span>{" "}
+                / {formatBytes(total)}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Spacer pushes upload button to the bottom */}
         <div className="flex-1" />
@@ -140,9 +184,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="p-3">
           <Button
             onClick={() => setUploadOpen(true)}
-            className="w-full justify-start bg-gradient-brand text-white hover:opacity-90 shadow-brand"
+            title={collapsed ? "Tải lên tài liệu" : undefined}
+            className={cn(
+              "w-full bg-gradient-brand text-white hover:opacity-90 shadow-brand",
+              collapsed ? "justify-center px-0" : "justify-start",
+            )}
           >
-            <Upload className="h-4 w-4 mr-2" /> Tải lên tài liệu
+            <Upload className={cn("h-4 w-4", !collapsed && "mr-2")} />{" "}
+            {!collapsed && "Tải lên tài liệu"}
           </Button>
         </div>
       </aside>
@@ -207,8 +256,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link to="/profile" className="cursor-pointer">
-                    <UserIcon className="h-4 w-4 mr-2" /> Hồ sơ
+                  <Link to="/settings" className="cursor-pointer">
+                    <SettingsIcon className="h-4 w-4 mr-2" /> Cài đặt
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />

@@ -8,6 +8,8 @@ import {
   Loader2,
   Send,
   Sparkles,
+  ZoomIn,
+  ZoomOut,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -70,6 +72,9 @@ export function AIChat({
   >("content");
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [chatZoom, setChatZoom] = useState(1);
+  const zoomOut = () => setChatZoom((z) => Math.max(0.8, +(z - 0.1).toFixed(2)));
+  const zoomIn = () => setChatZoom((z) => Math.min(1.6, +(z + 0.1).toFixed(2)));
 
   const docs = folderDocs.data ?? [];
   const totalSize = docs.reduce((s, d) => s + (d.fileSize ?? 0), 0);
@@ -367,13 +372,40 @@ export function AIChat({
 
       {/* Column 3: chat */}
       <aside className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
-        <div className="px-4 py-3.5 border-b border-border text-center">
-          <div className="text-sm font-semibold font-display truncate">
+        <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+          <div className="text-sm font-semibold font-display truncate flex-1 text-center">
             {doc.data?.title ?? "Chưa chọn tài liệu"}
+          </div>
+          <div className="flex items-center gap-0.5 shrink-0">
+            <button
+              type="button"
+              onClick={zoomOut}
+              disabled={chatZoom <= 0.8}
+              title="Thu nhỏ"
+              className="h-7 w-7 rounded-md hover:bg-accent flex items-center justify-center text-muted-foreground disabled:opacity-40"
+            >
+              <ZoomOut className="h-4 w-4" />
+            </button>
+            <span className="text-[11px] text-muted-foreground w-9 text-center tabular-nums">
+              {Math.round(chatZoom * 100)}%
+            </span>
+            <button
+              type="button"
+              onClick={zoomIn}
+              disabled={chatZoom >= 1.6}
+              title="Phóng to"
+              className="h-7 w-7 rounded-md hover:bg-accent flex items-center justify-center text-muted-foreground disabled:opacity-40"
+            >
+              <ZoomIn className="h-4 w-4" />
+            </button>
           </div>
         </div>
 
-        <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+        <div
+          ref={scrollRef}
+          className="flex-1 overflow-y-auto p-4 space-y-3"
+          style={{ fontSize: `${chatZoom}rem` }}
+        >
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center px-4 py-8">
               <div className="h-14 w-14 rounded-2xl bg-gradient-soft flex items-center justify-center mb-3">
@@ -393,7 +425,7 @@ export function AIChat({
               <div
                 key={i}
                 className={cn(
-                  "text-sm rounded-2xl px-4 py-2.5 max-w-[85%] leading-relaxed whitespace-pre-wrap",
+                  "text-[1em] rounded-2xl px-4 py-2.5 max-w-[85%] leading-relaxed whitespace-pre-wrap",
                   m.role === "user"
                     ? "bg-gradient-brand text-white ml-auto rounded-br-md shadow-soft"
                     : "bg-muted text-foreground rounded-bl-md",

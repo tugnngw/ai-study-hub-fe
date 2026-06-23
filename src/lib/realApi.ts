@@ -76,6 +76,8 @@ export const authApi = {
 
 export const accountApi = {
   me: () => api<User>("/api/account/me"),
+  changePassword: (data: { currentPassword: string; newPassword: string }) =>
+    api<void>("/api/account/change-password", { method: "POST", body: data }),
 };
 
 // ================================================================
