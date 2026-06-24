@@ -1,7 +1,7 @@
 // src/components/document-viewer/DocxViewer.tsx
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
-import { Loader2, RotateCw, Download, ExternalLink } from "lucide-react";
+import { Loader2, RotateCw, Download, ExternalLink, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -123,23 +123,22 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
     setRetryCount((prev) => prev + 1);
   };
 
-  // Toolbar
+  // Toolbar - matches PdfViewer styling
   const Toolbar = (
-    <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
-      <span className="text-sm font-medium truncate max-w-[200px]">
-        {fileName}
-      </span>
-      <div className="flex items-center gap-2">
+    <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-1.5 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm gap-1 flex-wrap min-h-[42px]">
+      <div className="flex items-center gap-2 min-w-0">
+        <FileText className="h-4 w-4 text-primary shrink-0" />
+        <span className="text-sm font-semibold truncate max-w-[160px]">{fileName}</span>
+      </div>
+      <div className="flex items-center gap-0.5 flex-wrap">
         <Button variant="ghost" size="sm" asChild>
           <a href={url} download target="_blank" rel="noopener noreferrer">
-            <Download className="h-4 w-4 mr-1" />
-            Tải xuống
+            <Download className="h-3.5 w-3.5 mr-1" /> Tải
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={url} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="h-4 w-4 mr-1" />
-            Mở tab mới
+            <ExternalLink className="h-3.5 w-3.5 mr-1" /> Mở mới
           </a>
         </Button>
       </div>
@@ -147,7 +146,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
   );
 
   return (
-    <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+    <Card className={cn("flex flex-col min-h-0", className)}>
       {Toolbar}
 
       {/* Loading State */}

@@ -8,6 +8,7 @@ import {
   Loader2,
   Send,
   Sparkles,
+  Upload,
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
@@ -17,14 +18,26 @@ import {
   useDocument,
   useDocumentsByFolder,
   useFolder,
+  useUploadDocument,
 } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
 import { DocumentViewer } from "@/components/document-viewer";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/lib/types";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface ChatMsg {
   role: "user" | "assistant";
@@ -67,6 +80,7 @@ export function AIChat({
 
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
+  const [uploadOpen, setUploadOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
     "content" | "summary" | "flashcards" | "quizzes"
   >("content");
@@ -140,6 +154,15 @@ export function AIChat({
             <FolderClosed className="h-4 w-4" />
           </Link>
         </div>
+
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setUploadOpen(true)}
+          className="w-full justify-start gap-2 text-primary font-medium text-sm hover:gap-3 transition-all border-primary/30 hover:border-primary hover:bg-primary/5 mb-3"
+        >
+          <Upload className="h-4 w-4" /> Tải lên tài liệu
+        </Button>
 
         <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mt-5 mb-2">
           TÀI LIỆU ĐANG CÓ
@@ -425,13 +448,41 @@ export function AIChat({
               <div
                 key={i}
                 className={cn(
-                  "text-[1em] rounded-2xl px-4 py-2.5 max-w-[85%] leading-relaxed whitespace-pre-wrap",
+                  "text-[1em] rounded-2xl px-4 py-2.5 max-w-[85%] leading-relaxed",
                   m.role === "user"
-                    ? "bg-gradient-brand text-white ml-auto rounded-br-md shadow-soft"
-                    : "bg-muted text-foreground rounded-bl-md",
+                    ? "bg-gradient-brand text-white ml-auto rounded-br-md shadow-soft whitespace-pre-wrap"
+                    : "bg-muted text-foreground rounded-bl-md prose prose-sm dark:prose-invert prose-p:m-1 prose-pre:m-1 prose-ul:m-1 prose-ol:m-1",
                 )}
               >
-                {m.content}
+                {m.role === "user" ? (
+                  m.content
+                ) : (
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code: ({ inline, className, children, ...props }) => (
+                        <code
+                          className={cn(
+                            "rounded px-1.5 py-0.5",
+                            inline
+                              ? "bg-slate-700 text-slate-100"
+                              : "block bg-slate-800 text-slate-100 overflow-x-auto p-2 my-1"
+                          )}
+                          {...props}
+                        >
+                          {children}
+                        </code>
+                      ),
+                      a: ({ children, ...props }) => (
+                        <a className="text-blue-500 hover:underline" {...props}>
+                          {children}
+                        </a>
+                      ),
+                    }}
+                  >
+                    {m.content}
+                  </ReactMarkdown>
+                )}
               </div>
             ))
           )}
@@ -469,6 +520,80 @@ export function AIChat({
           </Button>
         </form>
       </aside>
+
+      <UploadDialog
+        open={uploadOpen}
+        onOpenChange={setUploadOpen}
+        folderId={folderId}
+      />
     </div>
+  );
+}
+
+function UploadDialog({
+  open,
+  onOpenChange,
+  folderId,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  folderId: string;
+}) {
+  const upload = useUploadDocument();
+  const [file, setFile] = useState<File | null>(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const submit = async () => {
+    if (!file) return toast.error("Chọn file");
+    if (!title.trim()) return toast.error("Nhập tiêu đề");
+    try {
+      await upload.mutateAsync({ file, folderId, title, description });
+      toast.success("Đã tải lên");
+      onOpenChange(false);
+      setFile(null);
+      setTitle("");
+      setDescription("");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Tải lên tài liệu</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>File</Label>
+            <Input
+              type="file"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Tiêu đề</Label>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label>Mô tả</Label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Huỷ
+          </Button>
+          <Button onClick={submit} disabled={upload.isPending}>
+            {upload.isPending ? "Đang tải…" : "Tải lên"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

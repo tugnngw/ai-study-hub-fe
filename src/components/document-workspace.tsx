@@ -149,24 +149,21 @@ export function DocumentWorkspace({
     <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr_320px] gap-4 h-[calc(100vh-7rem)] min-h-[480px]">
       {/* Column 1: file list */}
       <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
-        <Link
-          to="/folders"
-          className="flex items-center gap-1.5 text-primary font-medium text-sm mb-4 hover:gap-2.5 transition-all"
-        >
-          <ChevronLeft className="h-4 w-4" /> Quay về
-        </Link>
 
-        <div className="rounded-xl bg-gradient-soft p-3 border border-border/50">
-          <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-1">
-            THƯ MỤC ĐANG DÙNG
+        {/* Folder details - hidden when viewing a document (shown in content panel) */}
+        {!docId && (
+          <div className="rounded-xl bg-gradient-soft p-3 border border-border/50">
+            <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-1">
+              THƯ MỤC ĐANG DÙNG
+            </div>
+            <div className="text-sm font-semibold font-display">
+              {folder.data?.name ?? "—"}
+            </div>
+            <div className="text-xs text-muted-foreground mt-0.5">
+              {folderDocs.data?.length ?? 0} tài liệu
+            </div>
           </div>
-          <div className="text-sm font-semibold font-display">
-            {folder.data?.name ?? "—"}
-          </div>
-          <div className="text-xs text-muted-foreground mt-0.5">
-            {folderDocs.data?.length ?? 0} tài liệu
-          </div>
-        </div>
+        )}
 
         <div className="mt-5 flex-1 min-h-0 flex flex-col">
           <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-2 px-1">
@@ -204,15 +201,6 @@ export function DocumentWorkspace({
             )}
           </div>
         </div>
-
-        <Button
-          variant="outline"
-          size="sm"
-          className="mt-4 justify-start border-dashed hover:border-primary hover:text-primary hover:bg-primary/5"
-          onClick={() => setUploadOpen(true)}
-        >
-          <Upload className="h-3.5 w-3.5 mr-2" /> Tải lên tài liệu
-        </Button>
       </aside>
 
       {/* Column 2: preview */}
@@ -281,6 +269,31 @@ export function DocumentWorkspace({
           </div>
         )}
 
+        {/* Folder navigation - only show when viewing PDF */}
+        {tab === "original" && docId && (
+          <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setUploadOpen(true)}
+                className="flex items-center gap-1.5 text-primary font-medium text-sm hover:gap-2.5 transition-all h-auto px-0"
+              >
+                <Upload className="h-4 w-4" /> Tải lên tài liệu
+              </Button>
+              <div className="text-[10px] font-semibold tracking-wider text-muted-foreground">
+                THƯ MỤC
+              </div>
+              <div className="text-sm font-semibold font-display">
+                {folder.data?.name ?? "—"}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {folderDocs.data?.length ?? 0} tài liệu
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="flex-1 overflow-y-auto p-6">
           {tab === "original" ? (
             // 🔥 Kiểm tra kỹ hơn
@@ -313,7 +326,7 @@ export function DocumentWorkspace({
                       className={cn(
                         "group flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
                         active &&
-                          "border-primary ring-2 ring-primary/20 shadow-soft",
+                        "border-primary ring-2 ring-primary/20 shadow-soft",
                       )}
                     >
                       <div className="flex-1 flex items-center justify-center w-full py-4">
@@ -339,8 +352,8 @@ export function DocumentWorkspace({
               <div className="flex items-center justify-center h-full">
                 <div className="flex flex-col items-center gap-2">
                   <p className="text-sm text-muted-foreground">Không thể tải tài liệu</p>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={() => window.location.reload()}
                   >
@@ -880,11 +893,11 @@ function QuizzesTab({ title }: { title: string }) {
                       className={cn(
                         "h-5 w-5 rounded-full border flex items-center justify-center text-[10px] font-bold shrink-0",
                         correct &&
-                          "bg-emerald-500 text-white border-emerald-500",
+                        "bg-emerald-500 text-white border-emerald-500",
                         wrong && "bg-red-500 text-white border-red-500",
                         !submitted &&
-                          picked &&
-                          "bg-gradient-brand text-white border-transparent",
+                        picked &&
+                        "bg-gradient-brand text-white border-transparent",
                       )}
                     >
                       {correct ? (
