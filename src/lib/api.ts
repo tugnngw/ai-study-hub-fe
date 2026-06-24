@@ -39,7 +39,7 @@ type Options = {
 // ── Refresh token queue ─────────────────────────────────────
 let refreshPromise: Promise<boolean> | null = null;
 
-async function attemptRefresh(): Promise<boolean> {
+export async function attemptRefresh(): Promise<boolean> {
   const refreshToken = tokenStore.getRefresh();
   if (!refreshToken) return false;
 

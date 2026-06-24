@@ -1,0 +1,43 @@
+Quy tắc tổ chức root-folder
+
+1. Components (components/)
+UI components: Shadcn/ui trong components/ui/
+
+Layout components: app-shell.tsx
+
+KHÔNG chứa business logic
+
+2. Hooks (hooks/)
+Chỉ chứa hooks kỹ thuật: use-mobile, useDebounce, useTheme
+
+KHÔNG chứa business logic
+
+Business logic hooks → vào features/*/hooks/
+
+3. Lib (lib/)
+Core infrastructure: API client, error handling, utilities
+
+KHÔNG chứa business logic
+
+Được sử dụng bởi tất cả features
+
+4. Types (types/)
+Global types: Window, ProcessEnv, API wrappers
+
+Common types: Pagination, Sort, Filter
+
+Feature-specific types → vào features/*/types/
+
+5. Features (features/)
+Tự quản lý: components, hooks, services, types
+
+Độc lập: Không phụ thuộc vào feature khác
+
+Rõ ràng: Mỗi feature có domain riêng
+
+6. Routes (routes/)
+Chỉ là lớp presentation
+
+Không chứa logic
+
+Import components từ features
