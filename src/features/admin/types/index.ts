@@ -1,2 +1,2 @@
-// Admin types
+// Admin types barrel
 export * from "./admin.types";

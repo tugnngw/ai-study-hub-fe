@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import {
   FolderKanban,
   FileText,
@@ -21,6 +22,14 @@ function Dashboard() {
   const folders = useFolders();
   const docs = useDocuments();
   const { user } = useAuth();
+  const navigate = useNavigate();
+
+  // Nếu là admin (backend trả role ADMIN) thì điều hướng thẳng vào khu
+  // quản trị — không cần lối vào riêng.
+  const isAdmin = user?.role === "ADMIN";
+  useEffect(() => {
+    if (isAdmin) navigate({ to: "/admin_panel", replace: true });
+  }, [isAdmin, navigate]);
 
   const recent = (docs.data ?? [])
     .slice()
