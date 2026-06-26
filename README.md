@@ -13,7 +13,7 @@ src/
 │   ├── types/
 │   │   ├── admin.types.ts            # [SỬA] bộ domain type đầy đủ
 │   │   └── index.ts
-│   ├── services/                     # [MỚI] tầng gọi API (hiện là mock)
+│   ├── services/                     # [MỚI] tầng gọi API
 │   │   ├── dashboardApi.ts
 │   │   ├── userApi.ts
 │   │   ├── fileApi.ts
