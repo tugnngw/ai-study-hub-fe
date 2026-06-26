@@ -106,7 +106,7 @@ function DocumentsPage() {
         </div>
       )}
 
-      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} isPipelineTriggerEnabled />
     </div>
   );
 }
@@ -117,7 +117,7 @@ function DocumentRow({
   title,
   description,
 }: {
-  id: number;
+  id: string;
   folderId: string;
   title: string;
   description: string;

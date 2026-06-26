@@ -67,7 +67,7 @@ export interface UpdateFolderRequest {
 export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
 export interface Document {
-  id: number;
+  id: string;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;
@@ -126,6 +126,10 @@ export interface ShareResponse {
   sharedEmail?: string;
   visibility: Visibility;
   createdAt: string;
+  // Temporary addition to prevent TS errors on shared page
+  title?: string;
+  description?: string;
+  sharedBy?: string;
 }
 
 export interface ShareRecipient {
@@ -145,7 +149,8 @@ export interface SharedDocument extends Document {
 // =============================================================
 
 export interface AskRequest {
-  id: number;
+  id: string; // folderId
+  documentId?: string;
   question: string;
 }
 
@@ -166,7 +171,7 @@ export interface ReferencedChunk {
 
 export interface Quiz {
   id: number;
-  documentId: number;
+  documentId: string;
   title: string;
   generatedByAi: boolean;
   createdAt: string;
@@ -201,7 +206,7 @@ export interface QuizAttempt {
 
 export interface Flashcard {
   id: number;
-  documentId: number;
+  documentId: string;
   frontContent: string;
   backContent: string;
   generatedByAi: boolean;
@@ -221,7 +226,26 @@ export interface FlashcardProgress {
 // =============================================================
 
 export interface ReportDocumentRequest {
-  id: number;
+  id: string;
   reason: string;
   description?: string;
+}
+
+// =============================================================
+// 9. RAG REQUESTS
+// =============================================================
+
+export interface RagProcessRequest {
+  documentId: string;
+}
+
+export interface RagChatRequest {
+  folderId?: string;
+  documentId?: string;
+  question: string;
+}
+
+export interface RagChatResponse {
+  answer: string;
+  referencedDocumentIds: string[];
 }

@@ -21,6 +21,9 @@ import type {
   UpdateFolderRequest,
   AskRequest,
   ReportDocumentRequest,
+  RagProcessRequest,
+  RagChatRequest,
+  RagChatResponse,
 } from "./types";
 
 // ================================================================
@@ -82,7 +85,7 @@ export function useFolder(id: string) {
   return useQuery({
     queryKey: folderKeys.detail(id),
     queryFn: () => folderApi.getById(id),
-    enabled: !!id && id > 0,
+    enabled: typeof id === 'string' && id.trim().length > 0,
   });
 }
 
@@ -121,7 +124,7 @@ export function useDeleteFolder() {
 export const docKeys = {
   all: ["documents"] as const,
   byFolder: (folderId: string) => ["documents", "folder", folderId] as const,
-  detail: (id: number) => ["documents", id] as const,
+  detail: (id: string) => ["documents", "detail", id] as const,
   trash: ["documents", "trash"] as const,
 };
 
@@ -140,8 +143,8 @@ export function useDocumentsByFolder(folderId: string) {
   });
 }
 
-export function useDocument(id: number) {
-  const enabled = !!id;
+export function useDocument(id: string) {
+  const enabled = typeof id === 'string' && id.trim().length > 0;
   console.log('[TRACE-4] useDocument id:', id, 'enabled:', enabled);
   return useQuery({
     queryKey: docKeys.detail(id),
@@ -182,7 +185,7 @@ export function useUploadDocument() {
 export function useUpdateDocument() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, ...body }: { id: number } & UpdateDocumentRequest) =>
+    mutationFn: ({ id, ...body }: { id: string } & UpdateDocumentRequest) =>
       documentApi.update(id, body),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -194,14 +197,14 @@ export function useUpdateDocument() {
 export function useDeleteDocument() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => documentApi.delete(id),
+    mutationFn: (id: string) => documentApi.delete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
   });
 }
 
 export function useDownloadDocument() {
   return useMutation({
-    mutationFn: (id: number) => documentApi.getDownloadUrl(id),
+    mutationFn: (id: string) => documentApi.getDownloadUrl(id),
   });
 }
 
@@ -219,7 +222,7 @@ export function useTrash() {
 export function useRestoreFromTrash() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => documentApi.restoreFromTrash(id),
+    mutationFn: (id: string) => documentApi.restoreFromTrash(id),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -230,7 +233,7 @@ export function useRestoreFromTrash() {
 export function useEmptyTrash() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => documentApi.emptyTrash(id),
+    mutationFn: (id: string) => documentApi.emptyTrash(id),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
     },
@@ -244,7 +247,7 @@ export function useEmptyTrash() {
 export const sharedKeys = {
   all: ["shared"] as const,
   owned: ["shared-owned"] as const,
-  info: (docId: number) => ["share-info", docId] as const,
+  info: (docId: string) => ["share-info", docId] as const,
 };
 
 export function useSharedDocuments() {
@@ -328,10 +331,22 @@ export function useAskRag() {
 
 export function useUploadRag() {
   return useMutation({
-    mutationFn: (input: { file: File; documentId: number; chunk?: boolean }) =>
+    mutationFn: (input: { file: File; documentId: string; chunk?: boolean }) =>
       input.chunk
         ? ragApi.uploadAndChunk(input.file, input.documentId)
         : ragApi.upload(input.file, input.documentId),
+  });
+}
+
+export function useProcessRagPipeline() {
+  return useMutation({
+    mutationFn: (req: RagProcessRequest) => ragApi.processDocumentPipeline(req),
+  });
+}
+
+export function useChatWithFolder() {
+  return useMutation({
+    mutationFn: (req: RagChatRequest) => ragApi.chatWithFolder(req),
   });
 }
 
@@ -340,10 +355,10 @@ export function useUploadRag() {
 // ================================================================
 
 export const quizKeys = {
-  byDocument: (docId: number) => ["quiz", "document", docId] as const,
+  byDocument: (docId: string) => ["quiz", "document", docId] as const,
 };
 
-export function useQuizByDocument(documentId: number) {
+export function useQuizByDocument(documentId: string) {
   return useQuery({
     queryKey: quizKeys.byDocument(documentId),
     queryFn: () => quizApi.listByDocument(documentId),
@@ -354,7 +369,7 @@ export function useQuizByDocument(documentId: number) {
 export function useGenerateQuiz() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (input: { documentId: number; questionCount?: number }) =>
+    mutationFn: (input: { documentId: string; questionCount?: number }) =>
       quizApi.generate(input.documentId, input.questionCount),
     onSuccess: (_d, v) =>
       qc.invalidateQueries({ queryKey: quizKeys.byDocument(v.documentId) }),
@@ -366,10 +381,10 @@ export function useGenerateQuiz() {
 // ================================================================
 
 export const flashcardKeys = {
-  byDocument: (docId: number) => ["flashcard", "document", docId] as const,
+  byDocument: (docId: string) => ["flashcard", "document", docId] as const,
 };
 
-export function useFlashcardsByDocument(documentId: number) {
+export function useFlashcardsByDocument(documentId: string) {
   return useQuery({
     queryKey: flashcardKeys.byDocument(documentId),
     queryFn: () => flashcardApi.listByDocument(documentId),
@@ -380,7 +395,7 @@ export function useFlashcardsByDocument(documentId: number) {
 export function useGenerateFlashcards() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (documentId: number) => flashcardApi.generate(documentId),
+    mutationFn: (documentId: string) => flashcardApi.generate(documentId),
     onSuccess: (_d, documentId) =>
       qc.invalidateQueries({ queryKey: flashcardKeys.byDocument(documentId) }),
   });

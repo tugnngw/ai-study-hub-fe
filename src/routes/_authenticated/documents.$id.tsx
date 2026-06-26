@@ -10,9 +10,7 @@ export const Route = createFileRoute("/_authenticated/documents/$id")({
 function DocumentDetail() {
   const { id } = Route.useParams();
   console.log('[TRACE-1] Route param id:', id, 'type:', typeof id);
-  const docId = Number(id);
-  console.log('[TRACE-2] Converted docId:', docId, 'isNaN:', isNaN(docId));
-  const doc = useDocument(docId);
+  const doc = useDocument(id);
 
   if (doc.isLoading) {
     return <Skeleton className="h-[calc(100vh-8rem)] w-full" />;
@@ -22,5 +20,5 @@ function DocumentDetail() {
       <div className="text-sm text-muted-foreground">Document not found.</div>
     );
   }
-  return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
+  return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={id} />;
 }

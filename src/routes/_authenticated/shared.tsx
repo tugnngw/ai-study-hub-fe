@@ -57,7 +57,7 @@ function SharedPage() {
                 </div>
                 <SharedDocumentActionsMenu
                   sharedId={d.id}
-                  title={d.title}
+                  title={d.title ?? ""}
                   description={d.description ?? undefined}
                 />
               </CardContent>

@@ -75,12 +75,12 @@ export function DocumentWorkspace({
   docId,
 }: {
   folderId: string;
-  docId?: number;
+  docId?: string;
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
-  const isValidDocId = typeof docId === 'number' && !isNaN(docId) && docId > 0;
-  const doc = useDocument(isValidDocId ? docId : 0);;
+  const isValidDocId = typeof docId === 'string' && docId.trim().length > 0;
+  const doc = useDocument(isValidDocId ? docId : '');
   console.log("DOC DATA", doc.data);
   console.log('[TRACE-3] DocumentWorkspace: docId received:', docId);
   console.log('[TRACE-3.1] isValidDocId:', isValidDocId);
@@ -112,7 +112,7 @@ export function DocumentWorkspace({
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
-      const res = await ask.mutateAsync({ id: docId, question: q });
+      const res = await ask.mutateAsync({ id: folderId, question: q });
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");

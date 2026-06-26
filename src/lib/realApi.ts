@@ -21,6 +21,9 @@ import type {
   Quiz,
   Flashcard,
   FlashcardProgress,
+  RagProcessRequest,
+  RagChatRequest,
+  RagChatResponse,
 } from "./types";
 
 // ================================================================
@@ -102,7 +105,7 @@ export const documentApi = {
   list: () => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
-  getById: (id: number) => {
+  getById: (id: string) => {
     console.log('[TRACE-6] documentApi.getById called with id:', id);
     return api<Document>(`/api/documents/${id}`);
   },
@@ -129,20 +132,20 @@ export const documentApi = {
     );
   },
 
-  update: (id: number, body: UpdateDocumentRequest) =>
+  update: (id: string, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
-  delete: (id: number) =>
+  delete: (id: string) =>
     api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
-  getDownloadUrl: (id: number) =>
+  getDownloadUrl: (id: string) =>
     api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   // Trash (soft-deleted docs)
   listTrash: () => api<Document[]>("/api/documents/trash"),
-  restoreFromTrash: (id: number) =>
+  restoreFromTrash: (id: string) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
-  emptyTrash: (id: number) =>
+  emptyTrash: (id: string) =>
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
 };
 
@@ -151,25 +154,31 @@ export const documentApi = {
 // ================================================================
 
 export const ragApi = {
-  upload: (file: File, documentId: number) => {
+  upload: (file: File, documentId: string) => {
     const fd = new FormData();
     fd.append("file", file);
-    fd.append("documentId", String(documentId));
-    return api<void>("/api/rag/upload", { method: "POST", formData: fd });
+    fd.append("documentId", documentId);
+    return api<void>("/api/v1/rag/upload", { method: "POST", formData: fd });
   },
 
-  uploadAndChunk: (file: File, documentId: number) => {
+  uploadAndChunk: (file: File, documentId: string) => {
     const fd = new FormData();
     fd.append("file", file);
-    fd.append("documentId", String(documentId));
-    return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
+    fd.append("documentId", documentId);
+    return api<void>("/api/v1/rag/upload/chunk", { method: "POST", formData: fd });
   },
 
   ask: (input: AskRequest): Promise<AskResponse> =>
-    api<AskResponse>("/api/rag/ask", {
+    api<AskResponse>("/api/v1/rag/chat", {
       method: "POST",
-      body: { id: input.id, question: input.question },
+      body: { folderId: input.id, documentId: input.id, question: input.question },
     }),
+
+  processDocumentPipeline: (req: RagProcessRequest) =>
+    api<string>(`/api/v1/rag/process/${req.documentId}`, { method: "POST" }),
+
+  chatWithFolder: (req: RagChatRequest) =>
+    api<RagChatResponse>("/api/v1/rag/chat", { method: "POST", body: req }),
 };
 
 // ================================================================
@@ -204,10 +213,10 @@ export const shareApi = {
 // ================================================================
 
 export const quizApi = {
-  listByDocument: (documentId: number) =>
+  listByDocument: (documentId: string) =>
     api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
 
-  generate: (documentId: number, questionCount = 10) =>
+  generate: (documentId: string, questionCount = 10) =>
     api<Quiz>("/api/quiz/generate", {
       method: "POST",
       body: { documentId, questionCount },
@@ -219,16 +228,16 @@ export const quizApi = {
 // ================================================================
 
 export const flashcardApi = {
-  listByDocument: (documentId: number) =>
+  listByDocument: (documentId: string) =>
     api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
 
-  generate: (documentId: number) =>
+  generate: (documentId: string) =>
     api<Flashcard[]>("/api/flashcard/generate", {
       method: "POST",
       body: { documentId },
     }),
 
-  updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
+  updateProgress: (flashcardId: string, status: FlashcardProgress["status"]) =>
     api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
       method: "PUT",
       body: { status },

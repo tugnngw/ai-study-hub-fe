@@ -30,7 +30,7 @@ export function ReportDocumentDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  documentId: number;
+  documentId: string;
   documentTitle: string;
 }) {
   const report = useReportDocument();

@@ -26,7 +26,7 @@ interface PdfViewerProps {
   url: string;
   fileName?: string;
   className?: string;
-  documentId?: number;
+  documentId?: string;
 }
 
 /**
@@ -91,7 +91,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                 const signedUrl = data?.url || data?.data?.url || data?.signedUrl;
                 if (signedUrl) {
                   try {
-                    arrayBuffer = await fetchBuffer(signedUrl, token);
+                    arrayBuffer = await fetchBuffer(signedUrl, token || undefined);
                   } catch {
                     // signed URL failed, try direct
                     throw new Error("signed URL failed");

@@ -55,11 +55,11 @@ export function AIChat({
   docId,
 }: {
   folderId: string;
-  docId?: number;
+  docId?: string;
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
-  const doc = useDocument(docId ?? 0);
+  const doc = useDocument(docId ?? "");
   const ask = useAskRag();
   const navigate = useNavigate();
 
@@ -91,15 +91,15 @@ export function AIChat({
 
   const submitChat = async () => {
     if (!input.trim()) return;
-    if (!docId) {
-      toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
+    if (!folderId) {
+      toast.info("Chọn thư mục để bắt đầu trò chuyện");
       return;
     }
     const q = input.trim();
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
-      const res = await ask.mutateAsync({ id: docId, question: q });
+       const res = await ask.mutateAsync({ id: folderId, question: q, documentId: docId });
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Đã xảy ra lỗi");
@@ -288,7 +288,7 @@ export function AIChat({
         </div>
         {activeTab === "content" && (
           <div className="flex-1 overflow-y-auto">
-            {docId && doc.data?.status === "ready" ? (
+            {docId && doc.data?.status === "completed" ? (
               <DocumentViewer document={doc.data} />
             ) : doc.data?.status === "processing" ? (
               <div className="flex items-center justify-center h-full">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useFolders, useUploadDocument } from "@/lib/queries";
+import { useFolders, useUploadDocument, useProcessRagPipeline } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +32,7 @@ export function UploadDocumentDialog({
 }) {
   const folders = useFolders();
   const upload = useUploadDocument();
+  const processRag = useProcessRagPipeline();
   const [file, setFile] = useState<File | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -55,14 +56,27 @@ export function UploadDocumentDialog({
     if (!title.trim()) return toast.error("Nhập tiêu đề");
     if (!folderId) return toast.error("Chọn thư mục");
     try {
-      await upload.mutateAsync({
+      const docs = await upload.mutateAsync({
         file,
         folderId,
-
         title,
         description,
       });
-      toast.success("Đã tải lên tài liệu");
+      console.log('[RAG] Upload success, docs:', docs);
+      if (docs && docs.length > 0) {
+        const docId = docs[0].id;
+        console.log('[RAG] Calling process with documentId:', docId);
+        try {
+          await processRag.mutateAsync({ documentId: docId });
+          console.log('[RAG] Process pipeline triggered');
+          toast.success("Đã tải lên và bắt đầu xử lý RAG");
+        } catch (error) {
+          console.error('[RAG] Process failed:', error);
+          toast.error("RAG processing failed: " + (error as Error).message);
+        }
+      } else {
+        toast.success("Đã tải lên tài liệu");
+      }
       onOpenChange(false);
       reset();
     } catch (e) {
@@ -128,8 +142,8 @@ export function UploadDocumentDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Huỷ
           </Button>
-          <Button onClick={submit} disabled={upload.isPending}>
-            {upload.isPending ? "Đang tải lên…" : "Tải lên"}
+          <Button onClick={submit} disabled={upload.isPending || processRag.isPending}>
+            {upload.isPending || processRag.isPending ? "Đang xử lý…" : "Tải lên"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -39,6 +39,10 @@ type Options = {
 // ── Refresh token queue ─────────────────────────────────────
 let refreshPromise: Promise<boolean> | null = null;
 
+const debugLog = (msg: string) => {
+  console.log(`[API] ${msg}`);
+};
+
 async function attemptRefresh(): Promise<boolean> {
   const refreshToken = tokenStore.getRefresh();
   if (!refreshToken) return false;
@@ -73,9 +77,10 @@ export async function api<T = unknown>(
   path: string,
   opts: Options = {},
 ): Promise<T> {
+  debugLog(`${opts.method || 'GET'} ${path}`);
   const doFetch = async (): Promise<Response> => {
     const token = tokenStore.get();
-  console.log('🔑 api request', { path, tokenPresent: !!token });
+    console.log('🔑 api request', { path, tokenPresent: !!token });
     const headers: Record<string, string> = { ...(opts.headers ?? {}) };
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
