@@ -62,7 +62,7 @@ src/
 - `adminKeys.ts` — quản lý query keys tập trung.
 - `useAdminDashboard`, `useAdminUsers`, `useAdminFiles`, `useAdminApprovals`.
 
-**Services (`features/admin/services/`)** — tầng API (hiện trả về mock data, sẵn sàng nối backend):
+**Services (`features/admin/services/`)** — tầng API ở dạng **stub rỗng**, chưa nối backend (mỗi file có comment `// TODO(backend): thay bằng api<T>("/api/admin/...")`):
 - `dashboardApi` — `getStats()`, `getRecentActivity()`.
 - `adminUserApi` — `getUsers()`, `toggleStatus(id)`, `deleteUser(id)`.
 - `adminFileApi` — `getReportedFiles()`, `handleReportDecision(id, decision)`, `getDeletedFiles()`, `getDeletedAccounts()`, `permanentDelete(id, type)`, `restoreItem(id, type)`.
@@ -80,4 +80,6 @@ src/
 
 ## Lưu ý cho bước tiếp theo
 
-Tầng `services/` hiện trả về **mock data** (`Promise.resolve([])` / `Promise.resolve(true)`). Khi nối backend thực, chỉ cần thay phần thân các hàm trong thư mục `services/` mà không phải động đến hooks hay components.
+Tầng `services/` hiện là **stub rỗng**, không có dữ liệu mẫu: các hàm trả về `Promise.resolve([])` (danh sách), `Promise.resolve(true)` (hành động) và `emptyStats` toàn số 0 (dashboard). Vì vậy nếu chạy lên bây giờ, mọi trang admin sẽ hiển thị danh sách trống và thống kê bằng 0.
+
+Để có dữ liệu thật, thay phần thân các hàm trong thư mục `services/` bằng lệnh gọi API backend (theo `// TODO(backend)` ghi sẵn trong mỗi file) — không phải động đến hooks hay components.
