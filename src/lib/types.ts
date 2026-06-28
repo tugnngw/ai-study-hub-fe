@@ -67,7 +67,7 @@ export interface UpdateFolderRequest {
 export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
 export interface Document {
-  id: number;
+  id: string;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;
@@ -117,19 +117,31 @@ export interface ShareRequest {
   visibility: Visibility;
 }
 
-export interface ShareResponse {
-  id: number;
-  folderId: string;
-  ownerId: string;
-  sharedAccountId?: string;
-  visibility: Visibility;
-  createdAt: string;
-}
-
 export interface ShareRecipient {
   accountId: string;
-  email: string;
+  email?: string;
+  username?: string;
   fullName?: string;
+}
+
+export interface ShareResponse {
+  id?: number | string | null;
+  folderId?: string | null;
+  documentId?: string | null;
+  ownerId: string;
+  ownerUsername?: string | null;
+  ownerEmail?: string | null;
+  sharedAccountId?: string | null;
+  sharedUsername?: string | null;
+  sharedEmail?: string | null;
+  visibility: Visibility;
+  shareToken?: string | null;
+  shareLink?: string | null;
+  link?: string | null;
+  createdAt?: string | null;
+  recipients?: ShareRecipient[];
+  documentTitle?: string | null;
+  folderName?: string | null;
 }
 
 export interface SharedDocument extends Document {
@@ -143,7 +155,7 @@ export interface SharedDocument extends Document {
 // =============================================================
 
 export interface AskRequest {
-  id: number;
+  id: string;
   question: string;
 }
 
@@ -163,7 +175,7 @@ export interface ReferencedChunk {
 // =============================================================
 
 export interface Quiz {
-  id: number;
+  id: string;
   documentId: number;
   title: string;
   generatedByAi: boolean;
@@ -172,7 +184,7 @@ export interface Quiz {
 }
 
 export interface Question {
-  id: number;
+  id: string;
   quizId: number;
   content: string;
   optionA: string;
@@ -183,7 +195,7 @@ export interface Question {
 }
 
 export interface QuizAttempt {
-  id: number;
+  id: string;
   quizId: number;
   accountId: string;
   score?: number;
@@ -198,7 +210,7 @@ export interface QuizAttempt {
 // =============================================================
 
 export interface Flashcard {
-  id: number;
+  id: string;
   documentId: number;
   frontContent: string;
   backContent: string;
@@ -219,7 +231,7 @@ export interface FlashcardProgress {
 // =============================================================
 
 export interface ReportDocumentRequest {
-  id: number;
+  id: string;
   reason: string;
   description?: string;
 }

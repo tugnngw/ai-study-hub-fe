@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useDeleteDocument } from "@/lib/queries";
-import { ShareDocumentDialog } from "@/components/share-document-dialog";
+import { ShareDialog } from "@/components/share-dialog";
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 
@@ -20,7 +20,7 @@ export function DocumentActionsMenu({
   className,
   iconClassName,
 }: {
-  documentId: number;
+  documentId: string;
   folderId: string;
   title: string;
   className?: string;
@@ -85,11 +85,12 @@ export function DocumentActionsMenu({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <ShareDocumentDialog
+      <ShareDialog
         open={shareOpen}
         onOpenChange={setShareOpen}
-        documentId={documentId}
-        documentTitle={title}
+        targetId={documentId}
+        targetType="document"
+        targetTitle={title}
       />
       <ReportDocumentDialog
         open={reportOpen}

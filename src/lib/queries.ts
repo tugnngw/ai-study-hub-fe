@@ -20,6 +20,7 @@ import type {
   UpdateFolderRequest,
   AskRequest,
   ReportDocumentRequest,
+  ShareResponse,
 } from "./types";
 
 // ================================================================
@@ -146,7 +147,7 @@ export function useDocumentsByFolder(folderId: string) {
   });
 }
 
-export function useDocument(id: number) {
+export function useDocument(id: string) {
   const enabled = !!id;
   console.log('[TRACE-4] useDocument id:', id, 'enabled:', enabled);
   return useQuery({
@@ -249,7 +250,7 @@ export function useEmptyTrash() {
 
 export const sharedKeys = {
   all: ["shared"] as const,
-  info: (docId: number) => ["share-info", docId] as const,
+  info: (targetId: string) => ["share-info", targetId] as const,
 };
 
 export function useSharedDocuments() {
@@ -259,22 +260,48 @@ export function useSharedDocuments() {
   });
 }
 
-export function useShareInfo(documentId: number, enabled = true) {
+export function useShareInfo(targetId: string, targetType: "document" | "folder", enabled = true) {
   return useQuery({
-    queryKey: sharedKeys.info(documentId),
-    queryFn: () => shareApi.getShareInfo(documentId),
-    enabled: !!documentId && enabled,
+    queryKey: sharedKeys.info(targetId),
+    queryFn: () => shareApi.getShareInfo(targetId, targetType),
+    enabled: !!targetId && enabled,
+    // Silent fail on 401 - don't show error toast
+    useErrorBoundary: false,
   });
 }
 
 export function useShareDocument() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (input: { id: number; email: string }) =>
-      shareApi.shareWithEmail(input.id, input.email),
-    onSuccess: (_d, v) => {
-      qc.invalidateQueries({ queryKey: sharedKeys.info(v.id) });
+    mutationFn: (input: { id: string; value: string }) =>
+      shareApi.share(input.id, "document", input.value),
+    onSuccess: (_data, variables) => {
+      qc.invalidateQueries({ queryKey: sharedKeys.info(variables.id) });
     },
+  });
+}
+
+export function useShareFolder() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: { id: string; value: string }) =>
+      shareApi.share(input.id, "folder", input.value),
+    onSuccess: (_data, variables) => {
+      qc.invalidateQueries({ queryKey: sharedKeys.info(variables.id) });
+    },
+  });
+}
+
+export function useCreateShareLink() {
+  return useMutation({
+    mutationFn: (input: { id: string; type: "document" | "folder" }) =>
+      shareApi.share(input.id, input.type, ""), // empty value creates link only
+  });
+}
+
+export function useRevokeShare() {
+  return useMutation({
+    mutationFn: (shareId: string) => shareApi.revoke(shareId),
   });
 }
 

@@ -75,12 +75,12 @@ export function DocumentWorkspace({
   docId,
 }: {
   folderId: string;
-  docId?: number;
+  docId?: string;
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
-  const isValidDocId = typeof docId === 'number' && !isNaN(docId) && docId > 0;
-  const doc = useDocument(isValidDocId ? docId : 0);;
+  const isValidDocId = Boolean(docId);
+  const doc = useDocument(isValidDocId ? docId : "");
   console.log("DOC DATA", doc.data);
   console.log('[TRACE-3] DocumentWorkspace: docId received:', docId);
   console.log('[TRACE-3.1] isValidDocId:', isValidDocId);

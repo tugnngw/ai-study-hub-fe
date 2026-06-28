@@ -70,11 +70,11 @@ export function AIChat({
   docId,
 }: {
   folderId: string;
-  docId?: number;
+  docId?: string;
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
-  const doc = useDocument(docId ?? 0);
+  const doc = useDocument(docId ?? "");
   const ask = useAskRag();
   const navigate = useNavigate();
 
