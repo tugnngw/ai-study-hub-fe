@@ -30,6 +30,7 @@ export interface AdminUserItem {
   name: string;
   email: string;
   status: UserStatus;
+  plan: PlanId;
 }
 
 // ── Reported / managed files ───────────────────────────
@@ -74,3 +75,65 @@ export interface DeletedAccountItem {
 
 export type TrashItemType = "file" | "account";
 export type TrashAction = "restore" | "delete";
+
+// ── Premium / Gói (plans) ──────────────────────────────
+export type PlanId = "FREE" | "PLUS" | "PRO";
+
+// ── Premium management (admin) ─────────────────────────
+export type PaymentMethod = "MOMO" | "VNPay" | "ACB" | "Thẻ cào";
+export type PremiumRequestStatus = "Pending" | "Approved" | "Rejected";
+
+export interface PremiumRequestItem {
+  id: number;
+  name: string;
+  email: string;
+  plan: Exclude<PlanId, "FREE">; // chỉ PLUS / PRO mới có giao dịch
+  registrationDate: string;
+  paymentMethod: PaymentMethod;
+  status: PremiumRequestStatus;
+}
+
+export interface PremiumStats {
+  totalPremiumUsers: number;
+  totalPremiumTrend: number;
+  pendingRequests: number;
+  pendingRequestsTrend: number;
+  revenueThisMonth: number; // VND
+  revenueTrend: number;
+  expiredSubscriptions: number;
+  expiredTrend: number;
+}
+
+export type PremiumDecision = "approve" | "reject";
+
+// ── Transaction history (user) ─────────────────────────
+export type TransactionStatus = "Thành công" | "Đang xử lý" | "Thất bại";
+
+export interface TransactionItem {
+  id: string;
+  plan: Exclude<PlanId, "FREE">;
+  amount: number; // VND
+  method: PaymentMethod;
+  date: string;
+  status: TransactionStatus;
+}
+
+// ── Plan catalog (trang nâng cấp) ──────────────────────
+export interface PlanOption {
+  id: Exclude<PlanId, "FREE">;
+  name: string;
+  price: number;     // VND / tháng
+  tagline: string;
+  features: string[];
+  highlighted?: boolean;
+}
+
+// ── Phương thức nạp tiền ───────────────────────────────
+export interface TopUpMethod {
+  id: string;
+  category: string;   // "CHUYỂN KHOẢN" | "THẺ ĐIỆN THOẠI"
+  title: string;
+  description: string;
+  instant?: boolean;
+  recommended?: boolean;
+}

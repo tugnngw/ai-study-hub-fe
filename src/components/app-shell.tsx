@@ -12,6 +12,8 @@ import {
   Users,
   Cloud,
   Sparkles,
+  Crown,
+  Receipt,
   Search,
   PanelLeftClose,
   PanelLeft,
@@ -37,6 +39,8 @@ const nav = [
   { to: "/shared", label: "Được chia sẻ", icon: Users },
   { to: "/trash", label: "Thùng rác", icon: Trash2 },
   { to: "/cloud", label: "Lưu trữ Cloud", icon: Cloud },
+  { to: "/premium", label: "Nâng cấp Premium", icon: Crown },
+  { to: "/transactions", label: "Lịch sử giao dịch", icon: Receipt },
 ] as const;
 
 function formatBytes(n: number) {

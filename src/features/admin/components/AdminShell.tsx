@@ -11,6 +11,7 @@ import {
   FileText,
   ClipboardCheck,
   Trash2,
+  Crown,
   ShieldCheck,
   User as UserIcon,
   LogOut,
@@ -36,6 +37,7 @@ const nav = [
   { to: "/admin_panel/files", label: "Quản lý tài liệu", icon: FileText, exact: false },
   { to: "/admin_panel/approvals", label: "Phê duyệt", icon: ClipboardCheck, exact: false },
   { to: "/admin_panel/trash", label: "Thùng rác", icon: Trash2, exact: false },
+  { to: "/admin_panel/premium", label: "Premium", icon: Crown, exact: false },
   { to: "/admin_panel/profile", label: "Hồ sơ", icon: UserIcon, exact: false },
 ] as const;
 

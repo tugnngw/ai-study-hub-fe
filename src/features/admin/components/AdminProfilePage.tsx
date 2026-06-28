@@ -58,7 +58,7 @@ export const AdminProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight font-display">Hồ sơ quản trị</h1>
@@ -70,6 +70,8 @@ export const AdminProfilePage: React.FC = () => {
           </Button>
         )}
       </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
 
       {/* Thông tin tài khoản */}
       <form onSubmit={save}>
@@ -155,6 +157,7 @@ export const AdminProfilePage: React.FC = () => {
           </CardContent>
         </Card>
       </form>
+      </div>
     </div>
   );
 };

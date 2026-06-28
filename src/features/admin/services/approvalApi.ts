@@ -1,7 +1,5 @@
-// src/features/admin/services/approvalApi.ts
-// TODO(backend): thay bằng api<T>("/api/admin/approvals...").
+// TODO(backend): api<T>("/api/admin/approvals...")
 import type { ApprovalItem } from "../types/admin.types";
-
 export const approvalApi = {
   getPendingList: (): Promise<ApprovalItem[]> => Promise.resolve([]),
   approve: (_id: number): Promise<boolean> => Promise.resolve(true),

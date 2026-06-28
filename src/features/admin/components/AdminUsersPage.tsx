@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { PlanBadge } from "./PlanBadge";
 import { useAdminUsers, useToggleUserStatus, useDeleteUser } from "../hooks";
 
 export const AdminUsersPage: React.FC = () => {
@@ -55,6 +56,7 @@ export const AdminUsersPage: React.FC = () => {
               <TableRow>
                 <TableHead>Thành viên</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Gói</TableHead>
                 <TableHead>Trạng thái</TableHead>
                 <TableHead className="text-right">Hành động</TableHead>
               </TableRow>
@@ -62,7 +64,7 @@ export const AdminUsersPage: React.FC = () => {
             <TableBody>
               {filtered.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                  <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
                     Không tìm thấy thành viên
                   </TableCell>
                 </TableRow>
@@ -78,6 +80,7 @@ export const AdminUsersPage: React.FC = () => {
                       </div>
                     </TableCell>
                     <TableCell className="text-muted-foreground">{u.email}</TableCell>
+                    <TableCell><PlanBadge plan={u.plan} /></TableCell>
                     <TableCell>
                       <Badge variant={u.status === "Hoạt động" ? "secondary" : "destructive"}>
                         {u.status}

@@ -16,11 +16,8 @@ function AdminLayoutRoute() {
 
   useEffect(() => {
     if (isLoading) return;
-    if (!isAuthenticated) {
-      navigate({ to: "/auth/login", replace: true });
-    } else if (!isAdmin) {
-      navigate({ to: "/dashboard", replace: true });
-    }
+    if (!isAuthenticated) navigate({ to: "/auth/login", replace: true });
+    else if (!isAdmin) navigate({ to: "/dashboard", replace: true });
   }, [isAuthenticated, isLoading, isAdmin, navigate]);
 
   if (isLoading) {
@@ -33,12 +30,6 @@ function AdminLayoutRoute() {
       </div>
     );
   }
-
   if (!isAuthenticated || !isAdmin) return null;
-
-  return (
-    <AdminShell>
-      <Outlet />
-    </AdminShell>
-  );
+  return <AdminShell><Outlet /></AdminShell>;
 }
