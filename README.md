@@ -139,46 +139,6 @@ Giao dịch chỉ áp dụng cho PLUS và PRO.
 
 ---
 
-## Nối backend (gỡ trạng thái rỗng)
-
-M��i file trong `features/admin/services/` đang trả `Promise.resolve([])` / object rỗng,
-kèm ghi chú `// TODO(backend)`. Khi backend sẵn sàng, thay thân hàm bằng lời gọi
-`api<T>("/api/...")` tương ứng. Ví dụ:
-
-```ts
-// trước
-getUsers: () => Promise.resolve([]),
-// sau
-getUsers: () => api<AdminUserItem[]>("/api/admin/users"),
-```
-
-Endpoint gợi ý: `/api/admin/dashboard`, `/api/admin/users`, `/api/admin/files`,
-`/api/admin/approvals`, `/api/admin/premium`, `/api/payment/...`.
-
----
-
-## Chạy dự án
-
-```bash
-npm install
-npm run dev
-```
-
-> Nếu gặp lỗi **trùng route** sau khi đổi cấu trúc route, xoá file route tree đã sinh
-> và cache rồi chạy lại:
->
-> - macOS/Linux (bash): `rm -f src/routeTree.gen.ts && rm -rf node_modules/.vite && npm run dev`
-> - Windows (PowerShell):
->   ```powershell
->   Remove-Item -Force src\routeTree.gen.ts -ErrorAction SilentlyContinue
->   Remove-Item -Recurse -Force node_modules\.vite -ErrorAction SilentlyContinue
->   npm run dev
->   ```
->
-> `routeTree.gen.ts` được plugin TanStack tự sinh lại từ thư mục `routes/`.
-
----
-
 ## Quy ước kiến trúc
 
 - **features/**: mỗi feature tự quản lý `components / hooks / services / types`.
