@@ -178,21 +178,39 @@ export const ragApi = {
 // ================================================================
 
 export const shareApi = {
-  // List shares where current user is the owner
   listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
-
-  // List shares where current user is shared with
   listSharedWithMe: () => api<ShareResponse[]>("/api/shares/shared-with-me"),
-
-  // Create a new share (share folder with email)
-  shareFolder: (request: ShareRequest) =>
-    api<ShareResponse>("/api/shares", { method: "POST", body: request }),
-
-  // Remove a share by its ID
-  removeShare: (shareId: number) =>
+  getShareInfo: (id: string, type: "document" | "folder") => {
+    const basePath = type === "document" ? "documents" : "folder";
+    return api<ShareResponse>(`/api/${basePath}/${id}/share-info`);
+  },
+  share: (id: string, type: "document" | "folder", value: string) => {
+    const basePath = type === "document" ? "documents" : "folder";
+    const v = (value ?? "").trim();
+    const isEmail = v.includes("@");
+    const body: Record<string, string> = {
+      [type === "document" ? "documentId" : "folderId"]: id,
+      ...(v ? { [isEmail ? "email" : "username"]: v } : {}),
+    };
+    return api<ShareResponse>(`/api/${basePath}/${id}/share`, {
+      method: "POST",
+      body,
+    });
+  },
+  revoke: (shareId: string) =>
     api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
-
-  // Report a document
+  removeFromShared: (shareId: number | string) =>
+    api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
+  saveToMyFolder: (
+    shareId: number | string,
+    folderId: string,
+    title: string,
+    description?: string,
+  ) =>
+    api<void>(`/api/shares/${shareId}/save`, {
+      method: "POST",
+      body: { folderId, title, description },
+    }),
   report: (body: ReportDocumentRequest) =>
     api<void>(`/api/documents/${body.id}/report`, {
       method: "POST",
