@@ -17,6 +17,7 @@ import {
   Search,
   PanelLeftClose,
   PanelLeft,
+  Settings,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useDocuments } from "@/lib/queries";
@@ -201,6 +202,9 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link to="/profile" className="cursor-pointer"><UserIcon className="h-4 w-4 mr-2" /> Hồ sơ</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link to="/admin" className="cursor-pointer"><Settings className="h-4 w-4 mr-2" /> Cài đặt</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">

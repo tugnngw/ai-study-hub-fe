@@ -1,187 +1,121 @@
-# AI Study Hub — Frontend (Admin + Payment/Premium)
+# Trang Chia sẻ (CHỈ folder) — Thay đổi & Điểm nối FE ↔ BE
 
-## Tổng quan
+> **Lưu ý quan trọng:**
+> - Phần Chia sẻ chỉ áp dụng cho **thư mục (folder)**, không chia sẻ file đơn lẻ.
+> - Khi NHẬN một folder chia sẻ, **backend tự lưu** vào "Tài liệu của tôi" của người
+>   nhận — **không có nút "Lưu"** thủ công ở giao diện.
+> - Bản này **không dùng mock** — app gọi thẳng backend (cần backend chạy mới hiển thị).
 
-- Người dùng có `role === "ADMIN"` khi đăng nhập sẽ tự động được chuyển hướng vào
-  khu quản trị `/admin_panel`.
-- Người dùng thường truy cập khu thanh toán qua sidebar: **Nâng cấp Premium** và
-  **Lịch sử giao dịch**.
-
-> **Lưu ý:** Bản này **không còn mock data**. Toàn bộ service trả về dữ liệu rỗng
-> và sẵn sàng nối API thật (xem mục "Nối backend"). Khi chưa có backend, các trang
-> sẽ hiển thị trống — đây là trạng thái mong muốn.
-
----
-
-## So với bản trước (`ai-study-hub-fe-admin-added`)
-
-Bản `ai-study-hub-fe-payment-premium` = bản admin trước **+ tính năng Payment/Premium**.
-
-### Thêm mới
-- `features/payment/` — feature người dùng: Nâng cấp Premium + Lịch sử giao dịch.
-  - `components/PremiumUpgradePage.tsx` — luồng 3 bước: chọn gói → chọn phương thức
-    nạp tiền → màn chuyển khoản ngân hàng (ACB) chờ xác nhận.
-  - `components/TransactionHistoryPage.tsx` — bảng lịch sử mua gói.
-- `features/admin/components/AdminPremiumPage.tsx` — trang **Quản lý Premium** (admin):
-  4 thẻ thống kê + tab lọc (Tất cả / Plus / Pro) + bảng lịch sử giao dịch nâng cấp
-  (chỉ xem, không có nút duyệt).
-- `features/admin/components/PlanBadge.tsx` — badge gói FREE / Plus / Pro dùng chung.
-- `features/admin/services/premiumApi.ts`, `paymentApi.ts` — service Premium/Payment.
-- `features/admin/hooks/usePremium.ts`, `usePayment.ts` — hook TanStack Query.
-- Route: `routes/admin_panel/premium.tsx`, `routes/_authenticated/premium.tsx`,
-  `routes/_authenticated/transactions.tsx`.
-
-### Sửa
-- `features/admin/components/AdminUsersPage.tsx` — thêm cột **Gói** (FREE/Plus/Pro).
-- `features/admin/components/AdminShell.tsx` — thêm mục **Premium** vào sidebar admin.
-- `features/admin/components/AdminProfilePage.tsx` — bố cục 2 cột, giảm khoảng trắng.
-- `features/admin/types/admin.types.ts` — thêm type: `PlanId`, `PremiumRequestItem`,
-  `PremiumStats`, `TransactionItem`, `PlanOption`, `TopUpMethod`… và `plan` cho user.
-- `features/admin/hooks/adminKeys.ts`, `hooks/index.ts`, `services/index.ts` — mở rộng.
-- `components/app-shell.tsx` — thêm 2 link **Nâng cấp Premium** + **Lịch sử giao dịch**.
+Tài liệu gồm 3 phần:
+1. Thay đổi đã làm (Thêm / Sửa / Xóa).
+2. Điểm nối FE ↔ BE (endpoint + shape).
+3. Giải thích luồng Mở (dữ liệu nằm ở đâu).
 
 ---
 
-## Cấu trúc thư mục
+# PHẦN 1 — THAY ĐỔI
 
-```
-src/
-├── components/
-│   └── app-shell.tsx                 # [SỬA] sidebar user + 2 link premium/transactions
-├── features/admin/
-│   ├── index.ts                      # barrel: components/hooks/services/types
-│   ├── types/admin.types.ts          # [SỬA] domain type (gồm Premium/Payment)
-│   ├── services/                     # tầng gọi API (hiện trả rỗng, chờ backend)
-│   │   ├── dashboardApi.ts
-│   │   ├── userApi.ts
-│   │   ├── fileApi.ts
-│   │   ├── approvalApi.ts
-│   │   ├── premiumApi.ts             # [MỚI]
-│   │   ├── paymentApi.ts             # [MỚI]
-│   │   └── index.ts
-│   ├── hooks/                        # tầng data (TanStack Query)
-│   │   ├── adminKeys.ts
-│   │   ├── useAdminDashboard.ts
-│   │   ├── useAdminUsers.ts
-│   │   ├── useAdminFiles.ts
-│   │   ├── useAdminApprovals.ts
-│   │   ├── usePremium.ts             # [MỚI]
-│   │   ├── usePayment.ts             # [MỚI]
-│   │   └── index.ts
-│   └── components/
-│       ├── AdminShell.tsx            # layout + sidebar (đã thêm Premium)
-│       ├── AdminDashboardPage.tsx
-│       ├── AdminUsersPage.tsx        # [SỬA] thêm cột Gói
-│       ├── AdminFilesPage.tsx
-│       ├── AdminApprovalsPage.tsx
-│       ├── AdminTrashPage.tsx
-│       ├── AdminProfilePage.tsx      # [SỬA] bố cục 2 cột
-│       ├── AdminPremiumPage.tsx      # [MỚI] Quản lý Premium
-│       ├── PlanBadge.tsx             # [MỚI] badge gói
-│       └── index.ts
-├── features/payment/                 # [MỚI] feature người dùng
-│   ├── index.ts
-│   └── components/
-│       ├── PremiumUpgradePage.tsx    # luồng nâng cấp + thanh toán
-│       ├── TransactionHistoryPage.tsx
-│       └── index.ts
-└── routes/
-    ├── admin_panel/                  # khu quản trị (path /admin_panel)
-    │   ├── route.tsx                 # guard: chỉ role ADMIN
-    │   ├── index.tsx                 # /admin_panel            → Dashboard
-    │   ├── users.tsx                 # /admin_panel/users
-    │   ├── files.tsx                 # /admin_panel/files
-    │   ├── approvals.tsx             # /admin_panel/approvals
-    │   ├── trash.tsx                 # /admin_panel/trash
-    │   ├── premium.tsx               # /admin_panel/premium     [MỚI]
-    │   └── profile.tsx               # /admin_panel/profile
-    └── _authenticated/
-        ├── premium.tsx               # /premium       (Nâng cấp Premium)   [MỚI]
-        └── transactions.tsx          # /transactions  (Lịch sử giao dịch)  [MỚI]
-```
+## ✅ Thêm mới
+| File | Vai trò |
+|------|---------|
+| `src/features/shares/components/SharePage.tsx` | Trang Chia sẻ theo figma: tìm kiếm, sắp xếp, 3 tab (Tất cả / Được chia sẻ với tôi / Tôi đã chia sẻ), 2 bảng, menu hành động, phân trang, avatar. |
+| `src/features/shares/components/index.ts` | Barrel export components. |
+| `src/features/shares/services/shareApi.ts` | Tầng gọi API: lấy danh sách + hành động (xóa, link, tải). |
+| `src/features/shares/services/index.ts` | Barrel export services. |
+
+## ✏️ Sửa
+| File | Sửa gì |
+|------|--------|
+| `src/features/shares/types/share.types.ts` | Type figma: `SharePerson` (tên + avatar), `SharedWithMeItem`, `SharedByMeItem`, `ShareSort`. (Folder-only — không có `type`/`kind`.) |
+| `src/features/shares/index.ts` | Export thêm `components` + `services`. |
+| `src/routes/_authenticated/shared.tsx` | Render `SharePage` mới (trang cũ đọc sai shape nên trống). |
+| `src/components/app-shell.tsx` | Thêm link "Cài đặt" vào menu avatar (cạnh "Hồ sơ"). |
+
+## 🗑️ Xóa
+- `SaveFileDialog.tsx` (modal "Lưu File") — bỏ vì nhận folder là tự lưu, không cần Lưu thủ công.
+- Nút "Lưu" trong menu bảng "Được chia sẻ với tôi".
+- Toàn bộ lớp mock (`src/lib/mock/`, cờ `VITE_USE_MOCK`).
+- Field `type`/`kind` (file) khỏi types/component/service — chỉ còn folder.
 
 ---
 
-## Tuyến đường (routes)
+# PHẦN 2 — ĐIỂM NỐI FE ↔ BE
 
-### Khu quản trị — `/admin_panel` (yêu cầu `role === "ADMIN"`)
-| Path | Trang |
-|------|-------|
-| `/admin_panel` | Dashboard |
-| `/admin_panel/users` | Quản lý Users (có cột Gói) |
-| `/admin_panel/files` | Quản lý tài liệu (báo cáo vi phạm) |
-| `/admin_panel/approvals` | Phê duyệt tài liệu |
-| `/admin_panel/trash` | Thùng rác |
-| `/admin_panel/premium` | Quản lý Premium (thống kê + lịch sử giao dịch) |
-| `/admin_panel/profile` | Hồ sơ quản trị |
+Tất cả ở `src/features/shares/services/shareApi.ts`; kiểu dữ liệu ở `types/share.types.ts`.
 
-### Khu người dùng — dưới `_authenticated` (yêu cầu đăng nhập)
-| Path | Trang |
-|------|-------|
-| `/premium` | Nâng cấp Premium (chọn gói → nạp tiền → chuyển khoản) |
-| `/transactions` | Lịch sử giao dịch |
-
----
-
-## Luồng đăng nhập admin
-
-1. Đăng nhập tại `/auth/login` bằng tài khoản backend trả về `role: "ADMIN"`.
-2. Trang `/dashboard` phát hiện admin → tự chuyển hướng sang `/admin_panel`.
-3. `routes/admin_panel/route.tsx` chặn: chưa đăng nhập → `/auth/login`;
-   đã đăng nhập nhưng không phải admin → `/dashboard`.
-
----
-
-## Gói (Plan)
-
-Thống nhất 3 gói: **FREE / PLUS / PRO** (`PlanId` trong `admin.types.ts`).
-Giao dịch chỉ áp dụng cho PLUS và PRO.
-
----
-
-## Nối backend (gỡ trạng thái rỗng)
-
-M��i file trong `features/admin/services/` đang trả `Promise.resolve([])` / object rỗng,
-kèm ghi chú `// TODO(backend)`. Khi backend sẵn sàng, thay thân hàm bằng lời gọi
-`api<T>("/api/...")` tương ứng. Ví dụ:
+## 2.1. Lấy danh sách (hiển thị)
+| Method | Endpoint | Trả về |
+|--------|----------|--------|
+| GET | `/api/shares/with-me` | `SharedWithMeItem[]` |
+| GET | `/api/shares/by-me`   | `SharedByMeItem[]` |
 
 ```ts
-// trước
-getUsers: () => Promise.resolve([]),
-// sau
-getUsers: () => api<AdminUserItem[]>("/api/admin/users"),
-```
+interface SharePerson { name: string; avatarUrl?: string | null }
 
-Endpoint gợi ý: `/api/admin/dashboard`, `/api/admin/users`, `/api/admin/files`,
-`/api/admin/approvals`, `/api/admin/premium`, `/api/payment/...`.
+interface SharedWithMeItem {
+  id: number;            // id THẬT của folder (để Xóa đúng — xem 2.2)
+  name: string;          // tên thư mục
+  size: string;          // "11.4mb"
+  items: number;         // số mục trong thư mục
+  sharedBy: SharePerson; // người chia sẻ (tên + avatar)
+  time: string;          // "21 giờ trước"
+  order: number;         // số: lớn = mới hơn -> sắp xếp Mới/Cũ nhất
+}
+interface SharedByMeItem {
+  id: number;
+  name: string;
+  size: string;
+  items: number;
+  sharedWith: SharePerson[]; // người được chia sẻ (cột hiện avatar + tên người đầu, dư "+N")
+  time: string;
+  order: number;
+}
+```
+→ Tên, dung lượng, thời gian, người chia sẻ, danh sách người được chia sẻ, avatar
+đều lấy trực tiếp từ 2 response trên.
+
+## 2.2. Hành động (menu ⋯)
+**Bảng "Được chia sẻ với tôi":** Mở · Tải xuống · Xóa
+**Bảng "Tôi đã chia sẻ":** Mở · Sao chép link · Xóa
+
+| Hành động | Method | Endpoint | Trả về |
+|-----------|--------|----------|--------|
+| **Xóa** | DELETE | `/api/folder/delete/:id` | — |
+| **Sao chép link** | GET | `/api/shares/:id/link` | `{ url }` |
+| **Tải xuống** | GET | `/api/shares/:id/download` | `{ url }` |
+
+**Nút Xóa:** chỉ chia sẻ folder, nên Xóa = `DELETE /api/folder/delete/:id` — đây chính
+là nguồn mà trang `/trash` đọc (`/api/documents/trash`), nên mục bị xóa SẼ xuất hiện
+trong Thùng rác. **Điều kiện:** `id` của mục chia sẻ phải là id folder THẬT.
+
+## 2.3. Hành vi UI đã nối sẵn (FE tự xử)
+- **Sắp xếp Mới/Cũ nhất** → sort client theo `order`.
+- **Phân trang** → 4 mục/trang, tự ẩn khi ≤ 4.
+- **Tìm kiếm** → lọc theo tên thư mục + tên người chia sẻ.
+- **Avatar** → có `avatarUrl` hiện ảnh; rỗng hiện chữ cái đầu.
+- **Cột "Chia sẻ với"** → avatar + tên người đầu, dư ra hiện "+N".
+
+## 2.4. ⚠️ Còn phụ thuộc BE
+- **Sao chép link**: link do BE sinh ở `/api/shares/:id/link`. Dán ra kết quả gì là
+  tùy BE tạo link + có route xử lý link đó hay không.
+- **Mở đúng nội dung trong AI chat**: xem PHẦN 3.
 
 ---
 
-## Chạy dự án
+# PHẦN 3 — LUỒNG MỞ (dữ liệu nằm ở đâu)
 
-```bash
-npm install
-npm run dev
+- **Chưa mở / chưa nhận** — folder nằm ở tài khoản người chia sẻ; người nhận chỉ có
+  "quyền truy cập" (bản ghi share).
+- **Bấm "Mở"** — điều hướng sang AI chat `/ai` và AIChat ĐỌC TRỰC TIẾP folder gốc của
+  người chia sẻ để hỏi đáp (theo quyền). Không tạo bản sao tại bước này.
+- **Tự lưu khi nhận** — khi người nhận thực sự nhận folder, BE tự tạo bản sao vào
+  "Tài liệu của tôi" của họ (không qua thao tác Lưu thủ công).
+
+### Điểm cần BE để "Mở" đúng nội dung
+Hiện FE truyền `folderId: "shared-<id>"` (chuỗi tạm) khi mở. Để AIChat mở đúng folder
+gốc, BE cần trả **folderId THẬT** của mục chia sẻ (thêm vào response 2.1), rồi sửa
+`openInAI` trong `SharePage.tsx`:
+```ts
+// navigate({ to: "/ai", search: { folderId: it.realFolderId } })
 ```
-
-> Nếu gặp lỗi **trùng route** sau khi đổi cấu trúc route, xoá file route tree đã sinh
-> và cache rồi chạy lại:
->
-> - macOS/Linux (bash): `rm -f src/routeTree.gen.ts && rm -rf node_modules/.vite && npm run dev`
-> - Windows (PowerShell):
->   ```powershell
->   Remove-Item -Force src\routeTree.gen.ts -ErrorAction SilentlyContinue
->   Remove-Item -Recurse -Force node_modules\.vite -ErrorAction SilentlyContinue
->   npm run dev
->   ```
->
-> `routeTree.gen.ts` được plugin TanStack tự sinh lại từ thư mục `routes/`.
-
----
-
-## Quy ước kiến trúc
-
-- **features/**: mỗi feature tự quản lý `components / hooks / services / types`.
-- **components/** (gốc): chỉ layout & UI dùng chung (Shadcn `ui/`, `app-shell`).
-- **routes/**: chỉ là lớp presentation, import trang từ `features/`.
-- Không đặt business logic trong `components/`, `hooks/` (kỹ thuật), `lib/`.
+Route `/ai` yêu cầu search `{ folderId: string, docId?: number }`.
