@@ -20,8 +20,10 @@ function CloudPage() {
   const docs = useDocuments();
   // Calculate storage from actual document sizes
   const used = docs.data?.reduce((sum, d) => sum + (d.fileSize ?? 0), 0) ?? 0;
-  const total = 15 * 1024 * 1024 * 1024; // 15 GB limit (or fetch from backend if available)
-  const pct = (used / total) * 100;
+  const total = 1 * 1024 * 1024 * 1024; // 1 GB limit (or fetch from backend if available)
+  // Dung lượng còn lại = tổng dung lượng - dung lượng đã dùng (không cho âm khi vượt quota)
+  const remaining = Math.max(total - used, 0);
+  const pct = Math.min((used / total) * 100, 100);
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -75,7 +77,7 @@ function CloudPage() {
             <div>
               <div className="text-sm text-muted-foreground">Còn trống</div>
               <div className="text-2xl font-semibold">
-                {formatBytes(total - used)}
+                {formatBytes(remaining)}
               </div>
             </div>
           </CardContent>
