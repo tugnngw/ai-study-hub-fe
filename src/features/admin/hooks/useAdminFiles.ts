@@ -1,21 +1,23 @@
 // src/features/admin/hooks/useAdminFiles.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { adminFileApi } from "../services";
-import type { ReportDecision, TrashItemType } from "../types/admin.types";
+import { reportApi } from "../services/reportApi";
+import type { TrashItemType } from "../types/admin.types";
 import { adminKeys } from "./adminKeys";
 
 export function useReportedFiles() {
   return useQuery({
     queryKey: adminKeys.reportedFiles(),
-    queryFn: () => adminFileApi.getReportedFiles(),
+    queryFn: () => reportApi.getReports(),
+    refetchOnWindowFocus: true,
   });
 }
 
 export function useHandleReportDecision() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, decision }: { id: string; decision: ReportDecision }) =>
-        adminFileApi.handleReportDecision(id, decision),
+    mutationFn: ({ id, decision }: { id: string; decision: string }) =>
+        reportApi.handleReportDecision(id, decision as any),
     onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.reportedFiles() }),
   });
 }
