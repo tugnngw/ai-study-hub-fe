@@ -50,13 +50,18 @@ export async function attemptRefresh(): Promise<boolean> {
       body: JSON.stringify({ refreshToken }),
     });
 
+    console.log("🔄 Refresh response:", res.status, await res.text());
+
     if (!res.ok) return false;
 
     const json = await res.json();
-    // Backend returns { accessToken, refreshToken } or { data: { accessToken, refreshToken } }
+    console.log("🔄 Refresh JSON:", json);
+
     const data = json?.data ?? json;
     const newAccess = data?.accessToken;
     const newRefresh = data?.refreshToken;
+
+    console.log("🔄 Parsed newAccess:", newAccess?.substring(0, 20) + "...", "newRefresh:", !!newRefresh);
 
     if (newAccess) {
       tokenStore.set(newAccess);
@@ -64,7 +69,8 @@ export async function attemptRefresh(): Promise<boolean> {
       return true;
     }
     return false;
-  } catch {
+  } catch (e) {
+    console.error("🔄 Refresh error:", e);
     return false;
   }
 }
@@ -75,7 +81,7 @@ export async function api<T = unknown>(
 ): Promise<T> {
   const doFetch = async (): Promise<Response> => {
     const token = tokenStore.get();
-  console.log('🔑 api request', { path, tokenPresent: !!token });
+  console.log('🔑 api request', { path, tokenPresent: !!token, tokenLength: token?.length });
     const headers: Record<string, string> = { ...(opts.headers ?? {}) };
     if (token) headers["Authorization"] = `Bearer ${token}`;
 

@@ -1,229 +1,330 @@
 // src/components/document-viewer/PdfViewer.tsx
-// Enhanced PDF viewer with drag-to-pan, smooth zoom, scroll-based navigation
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import * as pdfjsLib from "pdfjs-dist";
 import {
   Loader2,
   Download,
   ExternalLink,
-  ChevronLeft,
-  ChevronRight,
+  RotateCw,
   ZoomIn,
   ZoomOut,
   Maximize2,
+  ChevronLeft,
+  ChevronRight,
   Hand,
   MousePointer2,
-  Search,
-  MoveRight,
   FileText,
-  Sun,
-  Moon,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { API_BASE, tokenStore } from "@/lib/api";
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = `/pdfjs/pdf.worker.mjs`;
+import { API_BASE } from "@/lib/api";
+import { tokenStore } from "@/lib/api";
 
 interface PdfViewerProps {
   url: string;
   fileName?: string;
   className?: string;
-  documentId?: number;
+  documentId?: string; // UUID
 }
 
+/**
+ * PdfViewer — hiển thị PDF bằng cách sử dụng backend download API để lấy signed URL
+ *
+ * Quy trình:
+ * 1. Gọi backend download API (có Bearer token) để lấy signed URL
+ * 2. Nếu thành công, dùng signed URL để hiển thị PDF qua <embed>
+ * 3. Nếu thất bại, fallback về URL gốc (có thể vẫn hoạt động nếu không private)
+ * 4. Hiển thị lỗi và nút tải xuống nếu mọi thứ đều thất bại
+ */
 export const PdfViewer: React.FC<PdfViewerProps> = ({
-  url,
-  fileName = "document.pdf",
-  className,
-  documentId,
-}) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [pdfDoc, setPdfDoc] = useState<pdfjsLib.PDFDocumentProxy | null>(null);
-  const [pdfData, setPdfData] = useState<Uint8Array | null>(null);
-  const [numPages, setNumPages] = useState<number | null>(null);
-  const [pageNumber, setPageNumber] = useState(1);
+                                                      url,
+                                                      fileName = "document.pdf",
+                                                      className,
+                                                      documentId,
+                                                    }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const canvasRef = React.useRef<HTMLCanvasElement>(null);
+  const [pdfDoc, setPdfDoc] = useState<any>(null);
+  const [pageNum, setPageNum] = useState(1);
+  const [numPages, setNumPages] = useState<number | null>(null);
+  const [renderError, setRenderError] = useState(false);
+  const renderTaskRef = React.useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
-  const [dragging, setDragging] = useState(false);
+  const [isPanMode, setIsPanMode] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [scrollStart, setScrollStart] = useState({ left: 0, top: 0 });
-  const [isPanMode, setIsPanMode] = useState(true);
-  const [showThumbs, setShowThumbs] = useState(false);
 
-  // Fetch PDF binary data
+  // Load PDF.js library dynamically
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+    script.async = true;
+    document.head.appendChild(script);
+    return () => script.remove();
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
+    let objectUrl: string | null = null;
 
-    const loadPdfData = async () => {
+    const loadPdf = async () => {
       setLoading(true);
       setError(null);
-
-      const fetchBuffer = async (fetchUrl: string, authToken?: string) => {
-        const res = await fetch(fetchUrl, {
-          headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const buf = await res.arrayBuffer();
-        if (!buf || buf.byteLength === 0) throw new Error("Empty response");
-        return buf;
-      };
+      setPdfUrl(null);
+      setRenderError(false);
 
       try {
         const token = tokenStore.get();
-        let arrayBuffer: ArrayBuffer | null = null;
+        let blob: Blob | null = null;
 
+        // Step 1: Try backend download API
         if (documentId) {
+          console.log("[PdfViewer] Step 1: Backend download API for doc", documentId);
           try {
             const downloadResp = await fetch(
-              `${API_BASE}/api/documents/${documentId}/download`,
-              {
-                method: "GET",
-                headers: { Authorization: `Bearer ${token}` },
-              }
+                `${API_BASE}/api/documents/${documentId}/download`,
+                {
+                  method: "GET",
+                  headers: { Authorization: `Bearer ${token}` },
+                }
             );
 
             if (downloadResp.ok) {
               const ct = downloadResp.headers.get("content-type") || "";
+              console.log("[PdfViewer] Download OK:", downloadResp.status, ct);
+
               if (ct.includes("json")) {
                 const data = await downloadResp.json();
                 const signedUrl = data?.url || data?.data?.url || data?.signedUrl;
                 if (signedUrl) {
-                  try { arrayBuffer = await fetchBuffer(signedUrl, token); } catch { throw new Error("signed URL failed"); }
-                } else throw new Error("No URL in response");
+                  console.log("[PdfViewer] Fetching signed URL...");
+                  const pdfResp = await fetch(signedUrl, {
+                    headers: token ? { Authorization: `Bearer ${token}` } : {},
+                  });
+                  if (pdfResp.ok) {
+                    const b = await pdfResp.blob();
+                    console.log("[PdfViewer] Signed URL blob:", b.type, b.size);
+                    if (b.size > 0) blob = b;
+                  }
+                }
               } else {
-                arrayBuffer = await downloadResp.arrayBuffer();
-                if (!arrayBuffer || arrayBuffer.byteLength === 0) throw new Error("Empty response");
+                const b = await downloadResp.blob();
+                console.log("[PdfViewer] Backend blob:", b.type, b.size);
+                if (b.size > 0) blob = b;
               }
-            } else throw new Error(`API ${downloadResp.status}`);
-          } catch {
-            try { arrayBuffer = await fetchBuffer(url); } catch { if (!cancelled) setError("Không thể tải PDF. Mở tab mới để xem."); return; }
+            } else {
+              console.warn("[PdfViewer] API failed:", downloadResp.status);
+            }
+          } catch (e) {
+            console.warn("[PdfViewer] API error:", e);
           }
-        } else {
-          try { arrayBuffer = await fetchBuffer(url); } catch { if (!cancelled) setError("Không thể tải PDF."); return; }
         }
 
-        if (!cancelled && arrayBuffer) {
-          setPdfData(new Uint8Array(arrayBuffer));
+        // Step 2: Fetch Cloudinary URL directly
+        if (!blob) {
+          // Try multiple URL formats for Cloudinary
+          const urlsToTry = [url];
+          // Cloudinary PDFs need /raw/upload/ not /image/upload/
+          if (url.includes("/image/upload/")) {
+            urlsToTry.push(url.replace("/image/upload/", "/raw/upload/"));
+            urlsToTry.push(url + "?fl_attachment=true");
+          }
+
+          for (const tryUrl of urlsToTry) {
+            console.log("[PdfViewer] Step 2: Trying URL:", tryUrl.substring(0, 80));
+            try {
+              const directResp = await fetch(tryUrl, {
+                headers: token ? { Authorization: `Bearer ${token}` } : {},
+              });
+              if (directResp.ok) {
+                const b = await directResp.blob();
+                console.log("[PdfViewer] Direct blob:", b.type, b.size, "from:", tryUrl.substring(0, 60));
+                if (b.size > 500) {
+                  blob = b;
+                  break;
+                }
+              } else {
+                console.warn("[PdfViewer] Fetch status:", directResp.status, "for:", tryUrl.substring(0, 60));
+              }
+            } catch (e) {
+              console.warn("[PdfViewer] Fetch error:", e, "for:", tryUrl.substring(0, 60));
+            }
+          }
         }
-      } catch (e: any) {
-        if (!cancelled) setError(e.message || "Không thể tải PDF");
+
+        // Step 3: Create object URL from blob
+        if (blob && blob.size > 500) {
+          objectUrl = URL.createObjectURL(blob);
+          setPdfUrl(objectUrl);
+          console.log("[PdfViewer] Object URL created, size:", blob.size);
+        } else {
+          console.error("[PdfViewer] No valid blob, size:", blob?.size);
+          throw new Error("Không thể tải PDF");
+        }
+      } catch (e) {
+        console.error("[PdfViewer] Load failed:", e);
+        if (!cancelled) {
+          setError(e instanceof Error ? e.message : "Không thể tải PDF");
+        }
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
 
-    loadPdfData();
-    return () => { cancelled = true; };
+    if (documentId) {
+      loadPdf();
+    } else {
+      // Không có documentId, nhưng vẫn cần fetch và tạo blob URL
+      const fetchDirectly = async () => {
+        try {
+          const token = tokenStore.get();
+          const resp = await fetch(url, {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          });
+          if (resp.ok) {
+            const blob = await resp.blob();
+            if (blob.size > 500) {
+              objectUrl = URL.createObjectURL(blob);
+              setPdfUrl(objectUrl);
+            } else {
+              setError("PDF file is invalid (too small)");
+            }
+          } else {
+            setError(`Fetch failed: ${resp.status}`);
+          }
+        } catch (e) {
+          setError(e instanceof Error ? e.message : "Không thể tải PDF");
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchDirectly();
+    }
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
   }, [url, documentId]);
+
+  // Render PDF page using canvas
+  useEffect(() => {
+    if (!pdfDoc || !canvasRef.current || !(window as any).pdfjsLib) return;
+
+    let cancelled = false;
+
+    const renderPage = async () => {
+      try {
+        // Cancel previous render
+        if (renderTaskRef.current) {
+          renderTaskRef.current.cancel();
+          renderTaskRef.current = null;
+        }
+
+        setRenderError(false);
+        const page = await pdfDoc.getPage(pageNum);
+        const viewport = page.getViewport({ scale });
+
+        const canvas = canvasRef.current!;
+        if (!canvas) return;
+
+        const context = canvas.getContext("2d")!;
+        if (!context) return;
+
+        // Clear canvas first
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        context.fillStyle = "white";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Render and track the task
+        const renderTask = page.render({ canvasContext: context, viewport });
+        renderTaskRef.current = renderTask;
+
+        await renderTask.promise;
+
+        if (cancelled) return;
+        renderTaskRef.current = null;
+      } catch (e: any) {
+        // Ignore "Render cancelled" errors
+        if (e?.message?.includes("cancelled")) {
+          console.log("[PdfViewer] Render cancelled");
+          return;
+        }
+        console.error("[PdfViewer] Render error:", e);
+        if (!cancelled) setRenderError(true);
+      }
+    };
+
+    renderPage();
+
+    return () => {
+      cancelled = true;
+      if (renderTaskRef.current) {
+        renderTaskRef.current.cancel();
+        renderTaskRef.current = null;
+      }
+    };
+  }, [pdfDoc, pageNum, scale]);
 
   // Load PDF document
   useEffect(() => {
-    let cancelled = false;
+    if (!pdfUrl || !(window as any).pdfjsLib) return;
+
+    const pdfjsLib = (window as any).pdfjsLib;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
+
     const loadDocument = async () => {
-      if (!pdfData) return;
-      setLoading(true);
-      setError(null);
       try {
-        const doc = await pdfjsLib.getDocument({ data: pdfData }).promise;
-        if (!cancelled) {
-          setPdfDoc(doc);
-          setNumPages(doc.numPages);
-          setPageNumber(1);
-        }
-      } catch (e: any) {
-        if (!cancelled) setError(e.message || "Không thể tải PDF");
-      } finally {
-        if (!cancelled) setLoading(false);
+        const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+        setPdfDoc(pdf);
+        setNumPages(pdf.numPages);
+        setPageNum(1);
+      } catch (e) {
+        console.error("[PdfViewer] PDF load error:", e);
+        setError("Không thể hiển thị PDF. Vui lòng tải xuống để xem.");
       }
     };
+
     loadDocument();
-    return () => { cancelled = true; };
-  }, [pdfData]);
+  }, [pdfUrl]);
 
-  // Render current page
-  const renderPage = useCallback(async () => {
-    if (!pdfDoc || !canvasRef.current) return;
-    const ctx = canvasRef.current.getContext("2d");
-    if (!ctx) return;
-
-    try {
-      const page = await pdfDoc.getPage(pageNumber);
-      const viewport = page.getViewport({ scale });
-
-      const canvas = canvasRef.current;
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = viewport.width * dpr;
-      canvas.height = viewport.height * dpr;
-      canvas.style.width = `${viewport.width}px`;
-      canvas.style.height = `${viewport.height}px`;
-      ctx.scale(dpr, dpr);
-
-      ctx.fillStyle = "white";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      await page.render({ canvasContext: ctx, viewport }).promise;
-    } catch (e: any) {
-      console.error("[PdfViewer] Page render error:", e);
-    }
-  }, [pdfDoc, pageNumber, scale]);
-
-  useEffect(() => { renderPage(); }, [renderPage]);
-
-  // Fit to container width
+  // Fit to container width on page load / doc load
   useEffect(() => {
     if (!pdfDoc || !containerRef.current) return;
-    // Auto-fit on page load
-    const containerWidth = containerRef.current.clientWidth - 64; // padding
-    const baseWidth = pdfDoc.getPage(pageNumber).then((page) => {
+    const fit = async () => {
+      const page = await pdfDoc.getPage(pageNum);
       const vp = page.getViewport({ scale: 1 });
-      const fitScale = (containerWidth / vp.width) * 0.95;
-      setScale(Math.min(Math.max(fitScale, 0.25), 3));
-    });
-  }, [pdfDoc, pageNumber]);
+      const w = containerRef.current!.clientWidth - 48;
+      setScale(Math.min(Math.max((w / vp.width) * 0.95, 0.5), 2.5));
+    };
+    fit();
+  }, [pdfDoc, pageNum]);
 
-  // Zoom
-  const handleZoom = (direction: "in" | "out" | "fit") => {
-    if (direction === "fit") {
-      handleFitToWidth();
-    } else if (direction === "in") {
-      setScale((prev) => Math.min(prev + 0.25, 3));
-    } else {
-      setScale((prev) => Math.max(prev - 0.25, 0.25));
-    }
-  };
-
-  const handleFitToWidth = async () => {
-    if (!pdfDoc || !containerRef.current) return;
-    const page = await pdfDoc.getPage(pageNumber);
-    const vp = page.getViewport({ scale: 1 });
-    const containerWidth = containerRef.current.clientWidth - 64;
-    setScale(Math.min(Math.max(containerWidth / vp.width * 0.95, 0.25), 3));
-  };
-
-  // Scroll-based zoom (Ctrl+scroll)
+  // Ctrl+scroll zoom
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const el = containerRef.current;
+    if (!el) return;
     const handleWheel = (e: WheelEvent) => {
       if (e.ctrlKey || e.metaKey) {
         e.preventDefault();
-        const delta = e.deltaY > 0 ? -0.1 : 0.1;
-        setScale((prev) => Math.min(Math.max(prev + delta, 0.25), 3));
+        setScale((s) => Math.min(Math.max(s + (e.deltaY > 0 ? -0.15 : 0.15), 0.5), 2.5));
       }
     };
-    container.addEventListener("wheel", handleWheel, { passive: false });
-    return () => container.removeEventListener("wheel", handleWheel);
+    el.addEventListener("wheel", handleWheel, { passive: false });
+    return () => el.removeEventListener("wheel", handleWheel);
   }, []);
 
-  // Drag to pan
+  // Pan/drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!isPanMode) return;
-    setDragging(true);
+    if (!isPanMode || scale <= 1) return;
+    setIsDragging(true);
     setDragStart({ x: e.clientX, y: e.clientY });
     if (containerRef.current) {
       setScrollStart({ left: containerRef.current.scrollLeft, top: containerRef.current.scrollTop });
@@ -231,164 +332,169 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!dragging || !containerRef.current) return;
+    if (!isDragging || !containerRef.current) return;
     const dx = e.clientX - dragStart.x;
     const dy = e.clientY - dragStart.y;
     containerRef.current.scrollLeft = scrollStart.left - dx;
     containerRef.current.scrollTop = scrollStart.top - dy;
   };
 
-  const handleMouseUp = () => setDragging(false);
+  const handleMouseUp = () => setIsDragging(false);
+  const handleMouseLeave = () => setIsDragging(false);
 
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!numPages) return;
-      if ((e.key === "ArrowLeft" || e.key === "PageUp") && !e.ctrlKey && !e.metaKey) {
-        setPageNumber((p) => Math.max(1, p - 1));
-      } else if ((e.key === "ArrowRight" || e.key === "PageDown") && !e.ctrlKey && !e.metaKey) {
-        setPageNumber((p) => Math.min(numPages, p + 1));
-      } else if (e.key === "Home") {
-        setPageNumber(1);
-      } else if (e.key === "End") {
-        setPageNumber(numPages);
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [numPages]);
+  // Fit to width handler
+  const handleFitToWidth = async () => {
+    if (!pdfDoc || !containerRef.current) return;
+    const page = await pdfDoc.getPage(pageNum);
+    const vp = page.getViewport({ scale: 1 });
+    const w = containerRef.current.clientWidth - 48;
+    setScale(Math.min(Math.max((w / vp.width) * 0.95, 0.5), 2.5));
+  };
 
-  // Toolbar
+  // Toolbar — sticky inside PDF card header
   const Toolbar = (
-    <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0 flex-wrap gap-1">
-      <div className="flex items-center gap-2 min-w-0">
-        <span className="text-sm font-semibold truncate max-w-[200px]">{fileName}</span>
-        {numPages && <span className="text-xs text-muted-foreground">{numPages} trang</span>}
-      </div>
-
-      <div className="flex items-center gap-1 flex-wrap">
-        {/* Pan mode toggle */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setIsPanMode(!isPanMode)}
-          title={isPanMode ? "Chuyển sang chế độ chọn" : "Chuyển sang chế độ kéo"}
-          className={cn("h-8 w-8 p-0", isPanMode && "bg-accent text-primary")}
-        >
-          {isPanMode ? <Hand className="h-4 w-4" /> : <MousePointer2 className="h-4 w-4" />}
-        </Button>
-
-        <div className="h-5 w-px bg-border mx-1" />
-
-        {/* Zoom */}
-        <Button variant="ghost" size="sm" onClick={() => handleZoom("out")} disabled={scale <= 0.25} className="h-8 w-8 p-0" title="Thu nhỏ">
-          <ZoomOut className="h-4 w-4" />
-        </Button>
-        <Input
-          type="number"
-          min={25}
-          max={300}
-          value={Math.round(scale * 100)}
-          onChange={(e) => {
-            const v = Math.min(Math.max(Number(e.target.value) || 25, 25), 300);
-            setScale(v / 100);
-          }}
-          className="h-7 w-14 px-1 py-0 text-center text-xs"
-        />
-        <Button variant="ghost" size="sm" onClick={() => handleZoom("in")} disabled={scale >= 3} className="h-8 w-8 p-0" title="Phóng to">
-          <ZoomIn className="h-4 w-4" />
-        </Button>
-        <Button variant="ghost" size="sm" onClick={() => handleZoom("fit")} className="h-8 w-8 p-0" title="Vừa khung">
-          <Maximize2 className="h-4 w-4" />
-        </Button>
-
-        <div className="h-5 w-px bg-border mx-1" />
-
-        {/* Page Nav */}
-        <Button variant="ghost" size="sm" onClick={() => setPageNumber((p) => Math.max(1, p - 1))} disabled={pageNumber <= 1} className="h-8 w-8 p-0">
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-        <div className="flex items-center gap-1">
-          <Input
-            type="number" min={1} max={numPages || 1}
-            value={pageNumber}
-            onChange={(e) => {
-              const num = Math.min(Math.max(parseInt(e.target.value) || 1, 1), numPages || 1);
-              setPageNumber(num);
-            }}
-            className="h-7 w-10 px-1 py-0 text-center text-xs"
-          />
-          <span className="text-xs text-muted-foreground">/ {numPages || "—"}</span>
+      <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-1.5 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm gap-1 flex-wrap min-h-[42px]">
+        <div className="flex items-center gap-2 min-w-0">
+          <FileText className="h-4 w-4 text-primary shrink-0" />
+          <span className="text-sm font-semibold truncate max-w-[160px]">{fileName}</span>
+          {numPages && <span className="text-[11px] text-muted-foreground whitespace-nowrap">/ {numPages} trang</span>}
         </div>
-        <Button variant="ghost" size="sm" onClick={() => setPageNumber((p) => Math.min(numPages || 1, p + 1))} disabled={pageNumber >= (numPages || 1)} className="h-8 w-8 p-0">
-          <ChevronRight className="h-4 w-4" />
-        </Button>
 
-        <div className="h-5 w-px bg-border mx-1" />
+        <div className="flex items-center gap-0.5 flex-wrap">
+          {/* Pan mode toggle */}
+          <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsPanMode(!isPanMode)}
+              title={isPanMode ? "Chế độ kéo" : "Chế độ chọn"}
+              className={cn("h-7 w-7 p-0", isPanMode && "bg-accent text-primary")}
+          >
+            {isPanMode ? <Hand className="h-3.5 w-3.5" /> : <MousePointer2 className="h-3.5 w-3.5" />}
+          </Button>
 
-        <Button variant="ghost" size="sm" asChild className="h-8 px-2 text-xs">
-          <a href={url} download target="_blank" rel="noopener noreferrer">
-            <Download className="h-4 w-4 mr-1" />
-            Tải
-          </a>
-        </Button>
-        <Button variant="ghost" size="sm" asChild className="h-8 px-2 text-xs">
-          <a href={url} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="h-4 w-4 mr-1" />
-            Mở mới
-          </a>
-        </Button>
+          <div className="h-4 w-px bg-border mx-1" />
+
+          {/* Zoom controls */}
+          <Button variant="ghost" size="sm" onClick={() => setScale((s) => Math.max(s - 0.15, 0.5))} disabled={scale <= 0.5} className="h-7 w-7 p-0" title="Thu nhỏ">
+            <ZoomOut className="h-3.5 w-3.5" />
+          </Button>
+          <Input
+              type="number"
+              min={50}
+              max={250}
+              value={Math.round(scale * 100)}
+              onChange={(e) => {
+                const v = Math.min(Math.max(Number(e.target.value) || 50, 50), 250);
+                setScale(v / 100);
+              }}
+              className="h-6 w-14 px-1 py-0 text-center text-[11px]"
+          />
+          <Button variant="ghost" size="sm" onClick={() => setScale((s) => Math.min(s + 0.15, 2.5))} disabled={scale >= 2.5} className="h-7 w-7 p-0" title="Phóng to">
+            <ZoomIn className="h-3.5 w-3.5" />
+          </Button>
+          <Button variant="ghost" size="sm" onClick={handleFitToWidth} className="h-7 w-7 p-0" title="Vừa khung">
+            <Maximize2 className="h-3.5 w-3.5" />
+          </Button>
+
+          <div className="h-4 w-px bg-border mx-1" />
+
+          {/* Page navigation */}
+          <Button variant="ghost" size="sm" onClick={() => setPageNum((p) => Math.max(1, p - 1))} disabled={pageNum <= 1} className="h-7 w-7 p-0">
+            <ChevronLeft className="h-3.5 w-3.5" />
+          </Button>
+          <div className="flex items-center gap-1">
+            <Input
+                type="number" min={1} max={numPages || 1}
+                value={pageNum}
+                onChange={(e) => {
+                  const num = Math.min(Math.max(parseInt(e.target.value) || 1, 1), numPages || 1);
+                  setPageNum(num);
+                }}
+                className="h-6 w-10 px-1 py-0 text-center text-[11px]"
+            />
+            <span className="text-[11px] text-muted-foreground">/ {numPages || "—"}</span>
+          </div>
+          <Button variant="ghost" size="sm" onClick={() => setPageNum((p) => Math.min(numPages || 1, p + 1))} disabled={pageNum >= (numPages || 1)} className="h-7 w-7 p-0">
+            <ChevronRight className="h-3.5 w-3.5" />
+          </Button>
+
+          <div className="h-4 w-px bg-border mx-1" />
+
+          {/* Actions */}
+          <Button variant="ghost" size="sm" asChild className="h-7 px-1.5 text-[11px]">
+            <a href={url} download target="_blank" rel="noopener noreferrer">
+              <Download className="h-3.5 w-3.5 mr-1" />
+              Tải
+            </a>
+          </Button>
+          <Button variant="ghost" size="sm" asChild className="h-7 px-1.5 text-[11px]">
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="h-3.5 w-3.5 mr-1" />
+              Mở mới
+            </a>
+          </Button>
+        </div>
       </div>
-    </div>
   );
+
+  // Loading state
+  if (loading) {
+    return (
+        <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+          {Toolbar}
+          <div className="flex-1 flex flex-col items-center justify-center p-8">
+            <Loader2 className="h-8 w-8 animate-spin text-primary mb-3" />
+            <p className="text-sm text-muted-foreground">Đang tải PDF...</p>
+          </div>
+        </Card>
+    );
+  }
 
   // Error state
   if (error) {
     return (
-      <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
-        {Toolbar}
-        <div className="flex-1 flex flex-col items-center justify-center p-8">
-          <p className="text-red-500 text-center mb-4 font-medium">{error}</p>
-          <Button variant="outline" size="sm" asChild>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              <Download className="h-4 w-4 mr-2" /> Tải xuống tệp
-            </a>
-          </Button>
-        </div>
-      </Card>
+        <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+          {Toolbar}
+          <div className="flex-1 flex flex-col items-center justify-center p-8">
+            <p className="text-red-500 text-center mb-4">{error}</p>
+            <Button variant="outline" size="sm" asChild>
+              <a href={url} target="_blank" rel="noopener noreferrer">
+                <Download className="h-4 w-4 mr-2" />
+                Tải xuống
+              </a>
+            </Button>
+          </div>
+        </Card>
     );
   }
 
+  // Main PDF display
   return (
-    <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
-      {Toolbar}
-      <div
-        ref={containerRef}
-        className={cn(
-          "flex-1 overflow-auto bg-muted/40 flex items-start justify-center py-6",
-          isPanMode && "cursor-grab",
-          dragging && "cursor-grabbing",
-        )}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
-      >
-        {loading ? (
-          <div className="flex flex-col items-center justify-center p-12">
-            <Loader2 className="h-10 w-10 animate-spin text-primary mb-3" />
-            <p className="text-sm text-muted-foreground">Đang tải PDF...</p>
-          </div>
-        ) : (
-          <div className="relative bg-white shadow-lg rounded-sm">
-            <canvas ref={canvasRef} className="block" />
-            {/* Page indicator overlay */}
-            <div className="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full">
-              {pageNumber}/{numPages}
-            </div>
-          </div>
-        )}
-      </div>
-    </Card>
+      <Card className={cn("flex flex-col min-h-0", className)} style={{ minHeight: "400px" }}>
+        {Toolbar}
+        <div className="flex-1 relative">
+          {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-background/50">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+          )}
+          {error && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
+                <p className="text-red-500 mb-4">{error}</p>
+              </div>
+          )}
+          {pdfDoc ? (
+              <canvas
+                  ref={canvasRef}
+                  className="w-full h-full border border-border/50 shadow-lg rounded-lg bg-white"
+                  style={{ display: "block" }}
+              />
+          ) : !loading && !error ? (
+              <div className="h-full flex items-center justify-center">
+                <p className="text-muted-foreground">Đang chuẩn bị...</p>
+              </div>
+          ) : null}
+        </div>
+      </Card>
   );
 };

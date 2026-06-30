@@ -3,11 +3,11 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { docKeys } from '@/lib/queries';
 
-export function useDocumentPolling(documentId: number, status: string) {
+export function useDocumentPolling(documentId: string, status: string) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (status !== 'processing' || !documentId || documentId <= 0) return;
+    if (status !== 'processing' || !documentId) return;
 
     console.log('[Polling] Starting polling for document:', documentId);
 

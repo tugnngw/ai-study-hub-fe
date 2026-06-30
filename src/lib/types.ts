@@ -67,7 +67,7 @@ export interface UpdateFolderRequest {
 export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
 export interface Document {
-  id: number;
+  id: string;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;
@@ -145,7 +145,7 @@ export interface SharedDocument extends Document {
 // =============================================================
 
 export interface AskRequest {
-  id: number;
+  id: string;
   question: string;
 }
 
@@ -165,8 +165,8 @@ export interface ReferencedChunk {
 // =============================================================
 
 export interface Quiz {
-  id: number;
-  documentId: number;
+  id: string;
+  documentId: string;
   title: string;
   generatedByAi: boolean;
   createdAt: string;
@@ -201,7 +201,7 @@ export interface QuizAttempt {
 
 export interface Flashcard {
   id: number;
-  documentId: number;
+  documentId: string;
   frontContent: string;
   backContent: string;
   generatedByAi: boolean;
