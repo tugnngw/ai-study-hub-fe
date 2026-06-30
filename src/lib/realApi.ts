@@ -22,6 +22,7 @@ import type {
   Flashcard,
   FlashcardProgress,
 } from "./types";
+import type { QuizItem } from "@/features/quiz/types/quiz.types";
 
 // ================================================================
 // AUTH  →  /api/auth
@@ -212,6 +213,12 @@ export const quizApi = {
       method: "POST",
       body: { documentId, questionCount },
     }),
+
+  // Sinh quiz theo tùy chọn (scope: "all" | documentId, nhiều loại câu hỏi).
+  // TODO(backend): hiện thực POST /api/quiz/generate nhận { scope, types, questionCount }
+  // và trả về QuizItem[] ({ id, type, question, options[], correctAnswers[] }).
+  generateAdvanced: (body: { scope: "all" | number; types: string[]; questionCount: number }) =>
+    api<QuizItem[]>("/api/quiz/generate", { method: "POST", body }),
 };
 
 // ================================================================

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { QuizzesTab } from "@/features/quiz";
+import { QuizzesTab } from "@/components/document-workspace/QuizzesTab";
 import {
   ChevronLeft,
   ChevronRight,

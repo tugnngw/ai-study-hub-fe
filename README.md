@@ -1,91 +1,61 @@
 # Chức năng Quizzes — Thay đổi & Khu vực theo Checklist
 
-> Phạm vi: CHỈ phần Quiz.
 
 ---
 
-## A. CẤU TRÚC (tách lớp giống `features/documents`)
-```
-src/features/quiz/
-├── components/
-│   ├── QuizzesTab.tsx      ← lắp ráp (Setup + Runner)
-│   ├── QuizSetup.tsx       ← màn tùy chọn khởi tạo
-│   ├── QuizRunner.tsx      ← màn làm bài + chấm điểm
-│   ├── quiz-constants.ts   ← nhãn loại câu hỏi
-│   └── index.ts
-├── hooks/
-│   ├── useQuiz.tsx         ← logic: cấu hình → tạo → làm → chấm
-│   └── index.ts
-├── services/
-│   ├── quizApi.ts          ← gọi API /api/quiz/generate
-│   └── index.ts
-├── types/
-│   ├── quiz.types.ts       ← QuizQuestionType, QuizGenerateOptions, QuizItem
-│   └── index.ts
-└── index.ts                ← barrel: export components/hooks/services/types
-```
-
-## B. THAY ĐỔI (Thêm / Sửa / Xóa)
+## A. THAY ĐỔI (Thêm / Sửa / Xóa)
 
 ### ✅ Thêm mới
 | File | Nội dung |
 |------|----------|
-| `features/quiz/components/QuizzesTab.tsx` | Assembler: chọn màn Setup/Runner qua `useQuiz`. |
-| `features/quiz/components/QuizSetup.tsx` | Màn tùy chọn: tài liệu tham chiếu + loại câu hỏi + số câu. |
-| `features/quiz/components/QuizRunner.tsx` | Màn làm bài + chấm điểm (tô xanh/đỏ). |
-| `features/quiz/components/quiz-constants.ts` | `TYPE_LABELS` (nhãn 3 loại câu hỏi). |
-| `features/quiz/hooks/useQuiz.tsx` | Logic quiz (state cấu hình, tạo, chọn đáp án, nộp, chấm điểm). |
-| `features/quiz/services/quizApi.ts` | `quizApi.generate(opts)` → POST /api/quiz/generate. |
-| Các `index.ts` (components/hooks/services) | Barrel export. |
-| `features/quiz/types/quiz.types.ts` (cuối file) | `QuizQuestionType`, `QuizGenerateOptions`, `QuizItem`. |
+| `src/features/quiz/types/quiz.types.ts` (cuối file) | Bổ sung type cho UI quiz: `QuizQuestionType`, `QuizGenerateOptions`, `QuizItem`. |
 
 ### ✏️ Sửa
 | File | Sửa gì |
 |------|--------|
-| `src/components/ui/AIChat.tsx` | Tab "AI Quizzes" render `<QuizzesTab>`; import đổi sang `@/features/quiz`. |
-| `src/features/quiz/index.ts` | Barrel export đủ components/hooks/services/types. |
+| `src/components/document-workspace/QuizzesTab.tsx` | Viết lại: từ mock cứng → 2 màn (Tùy chọn khởi tạo + Làm bài) có chấm điểm. |
+| `src/components/ui/AIChat.tsx` | Tab "AI Quizzes" trước render rỗng → render `<QuizzesTab>`; thêm import. |
+| `src/lib/realApi.ts` | Thêm `quizApi.generateAdvanced({scope,types,questionCount})` trả `QuizItem[]`; import type `QuizItem`. |
 
-### 🗑️ Xóa
-| File | Lý do |
-|------|-------|
-| `src/components/document-workspace/QuizzesTab.tsx` | Chuyển vào `features/quiz/components` (tách lớp). |
-| `quizApi.generateAdvanced` trong `src/lib/realApi.ts` | Trùng — đã có `quizApi` riêng trong feature. |
 
 ---
 
-## C. KHU VỰC CHO TỪNG CHECKLIST
+## B. KHU VỰC CHO TỪNG CHECKLIST
 
 ### ☑ 1. Flow Quizzes + chuyển từ trong session qua Quizzes
 - `src/components/ui/AIChat.tsx`
-  - Nút tab `setActiveTab("quizzes")` (~dòng 245).
-  - `activeTab === "quizzes"` → render `<QuizzesTab folderId docId title>` (~dòng 363–365).
-- `features/quiz/components/QuizzesTab.tsx` — chọn `phase` setup/doing.
-- `features/quiz/hooks/useQuiz.tsx` — `phase`, `generate`, `backToSetup`.
+  - Dòng 245: nút tab `onClick={() => setActiveTab("quizzes")}` — chuyển sang Quizzes.
+  - Dòng 363–365: khi `activeTab === "quizzes"` → render `<QuizzesTab folderId docId title>`.
+- `src/components/document-workspace/QuizzesTab.tsx`
+  - Dòng 76: `if (phase === "setup")` → màn Tùy chọn.
+  - Dòng 145 trở đi: màn Làm bài. Flow: setup → tạo → làm → nộp → chấm.
 
 ### ☑ 2. UI tùy chọn khởi tạo (loại câu hỏi + số câu)
-- `features/quiz/components/QuizSetup.tsx`
-  - Khối "Loại câu hỏi": map `TYPE_LABELS`, chọn nhiều loại (`toggleType`).
-  - "Số câu hỏi": slider 3–20 (`setCount`).
-  - Nút "Tạo Quiz" → `onGenerate`.
-- `features/quiz/components/quiz-constants.ts` — 3 loại câu hỏi.
+- `src/components/document-workspace/QuizzesTab.tsx`
+  - Dòng 12: `TYPE_LABELS` — 3 loại: trắc nghiệm / đúng-sai / nhiều đáp án.
+  - Dòng 113–129: khối "Loại câu hỏi", chọn được nhiều loại (`toggleType`).
+  - Dòng 135–137: "Số câu hỏi" slider (3–20).
+  - Dòng 140: nút "Tạo Quiz" → `generate()`.
 
 ### ☑ 2b. Chọn tài liệu tham chiếu: phổ danh sách folder + tùy chọn All
-- `features/quiz/components/QuizSetup.tsx`
-  - `useDocumentsByFolder(folderId)` — lấy danh sách tài liệu trong thư mục.
-  - Nút "Tất cả tài liệu trong thư mục" (`scope = "all"`) — quiz bao hàm toàn bộ file.
-  - `docs.map(...)` — liệt kê từng tài liệu để chọn 1 file cụ thể.
+- `src/components/document-workspace/QuizzesTab.tsx`
+  - Dòng 8 + 19: `useDocumentsByFolder(folderId)` — lấy danh sách tài liệu trong thư mục.
+  - Dòng 89: nhãn "Tài liệu tham chiếu".
+  - Dòng 96: tùy chọn **"Tất cả tài liệu trong thư mục"** (`scope = "all"`) — quiz bao hàm toàn bộ file.
+  - Dòng 99: `docs.map(...)` — liệt kê từng tài liệu để chọn 1 file cụ thể.
 
 ### ☑ (Thêm) Đồng bộ tài liệu tham chiếu theo tài liệu đang mở
-- `features/quiz/hooks/useQuiz.tsx`: `useEffect(() => setScope(docId ?? "all"), [docId])`.
+- Dòng 27: `useEffect(() => setScope(docId ?? "all"), [docId])` — chọn tài liệu ở tab trên/list trái thì tham chiếu tự đổi theo.
 
 ### ☑ (Thêm) Chấm điểm
-- `features/quiz/hooks/useQuiz.tsx`: `submit()` đặt `submitted`, `score` (useMemo) so `correctAnswers`.
-- `features/quiz/components/QuizRunner.tsx`: hiện "Điểm: X / N", tô xanh (đúng) / đỏ (sai), nút "Làm lại".
+- Dòng 215: "Nộp bài" → `setSubmitted(true)`.
+- Dòng 161: hiển thị "Điểm: X / N".
+- Tô xanh (đúng) / đỏ (sai) từng đáp án; hỗ trợ câu nhiều đáp án.
 
 ---
 
-## D. ĐIỂM NỐI BACKEND
-- `features/quiz/services/quizApi.ts`: `generate(opts)` → `POST /api/quiz/generate`
-  body `{ scope: "all" | documentId, types: QuizQuestionType[], questionCount }`, trả `QuizItem[]`
+## C. ĐIỂM NỐI BACKEND
+- `src/lib/realApi.ts` (dòng 220): `quizApi.generateAdvanced` → `POST /api/quiz/generate`
+  body `{ scope: "all" | documentId, types: string[], questionCount }`, trả `QuizItem[]`
   (`{ id, type, question, options[], correctAnswers[] }`).
-- ⚠️ Backend cần hiện thực endpoint nhận `scope` + `types` (API cũ chỉ có documentId + questionCount).
+- ⚠️ Backend cần hiện thực endpoint này nhận `scope` + `types` (API cũ `generate` chỉ có documentId + questionCount).

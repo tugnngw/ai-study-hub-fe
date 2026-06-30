@@ -6,8 +6,8 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useDocumentsByFolder } from "@/lib/queries";
-import type { QuizItem, QuizQuestionType, QuizGenerateOptions } from "@/features/quiz/types/quiz.types";
 import { quizApi } from "@/lib/realApi";
+import type { QuizItem, QuizQuestionType, QuizGenerateOptions } from "@/features/quiz/types/quiz.types";
 
 const TYPE_LABELS: Record<QuizQuestionType, string> = {
   multiple_choice: "Trắc nghiệm (1 đáp án)",
@@ -21,11 +21,10 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
 
   // ── cấu hình ──
   const [scope, setScope] = useState<"all" | number>(docId ?? "all");
-  // Đồng bộ: khi đổi tài liệu ở tab trên / danh sách trái (docId từ URL đổi),
-  // "Tài liệu tham chiếu" tự chọn theo.
-  useEffect(() => { setScope(docId ?? "all"); }, [docId]);
   const [types, setTypes] = useState<QuizQuestionType[]>(["multiple_choice"]);
   const [count, setCount] = useState(5);
+  // đồng bộ: đổi tài liệu ở tab trên / list trái -> tham chiếu tự đổi theo
+  useEffect(() => { setScope(docId ?? "all"); }, [docId]);
 
   // ── trạng thái ──
   const [phase, setPhase] = useState<"setup" | "doing">("setup");
