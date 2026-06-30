@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_authenticated/documents/$id")({
 function DocumentDetail() {
   const { id } = Route.useParams();
   console.log('[TRACE-1] Route param id:', id, 'type:', typeof id);
-  const docId = Number(id);
+  const docId = id; // UUID, no number conversion
   console.log('[TRACE-2] Converted docId:', docId, 'isNaN:', isNaN(docId));
   const doc = useDocument(docId);
 

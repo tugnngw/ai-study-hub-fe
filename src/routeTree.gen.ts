@@ -23,11 +23,14 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-pas
 import { Route as Admin_panelUsersRouteImport } from './routes/admin_panel/users'
 import { Route as Admin_panelTrashRouteImport } from './routes/admin_panel/trash'
 import { Route as Admin_panelProfileRouteImport } from './routes/admin_panel/profile'
+import { Route as Admin_panelPremiumRouteImport } from './routes/admin_panel/premium'
 import { Route as Admin_panelFilesRouteImport } from './routes/admin_panel/files'
 import { Route as Admin_panelApprovalsRouteImport } from './routes/admin_panel/approvals'
 import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
+import { Route as AuthenticatedTransactionsRouteImport } from './routes/_authenticated/transactions'
 import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedPremiumRouteImport } from './routes/_authenticated/premium'
 import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated/folders'
 import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -106,6 +109,11 @@ const Admin_panelProfileRoute = Admin_panelProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => Admin_panelRouteRoute,
 } as any)
+const Admin_panelPremiumRoute = Admin_panelPremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
 const Admin_panelFilesRoute = Admin_panelFilesRouteImport.update({
   id: '/files',
   path: '/files',
@@ -121,6 +129,12 @@ const AuthenticatedTrashRoute = AuthenticatedTrashRouteImport.update({
   path: '/trash',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTransactionsRoute =
+  AuthenticatedTransactionsRouteImport.update({
+    id: '/transactions',
+    path: '/transactions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
   id: '/shared',
   path: '/shared',
@@ -129,6 +143,11 @@ const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPremiumRoute = AuthenticatedPremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedFoldersRoute = AuthenticatedFoldersRouteImport.update({
@@ -184,11 +203,14 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
+  '/premium': typeof AuthenticatedPremiumRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/shared': typeof AuthenticatedSharedRoute
+  '/transactions': typeof AuthenticatedTransactionsRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
   '/admin_panel/files': typeof Admin_panelFilesRoute
+  '/admin_panel/premium': typeof Admin_panelPremiumRoute
   '/admin_panel/profile': typeof Admin_panelProfileRoute
   '/admin_panel/trash': typeof Admin_panelTrashRoute
   '/admin_panel/users': typeof Admin_panelUsersRoute
@@ -210,11 +232,14 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
+  '/premium': typeof AuthenticatedPremiumRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/shared': typeof AuthenticatedSharedRoute
+  '/transactions': typeof AuthenticatedTransactionsRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
   '/admin_panel/files': typeof Admin_panelFilesRoute
+  '/admin_panel/premium': typeof Admin_panelPremiumRoute
   '/admin_panel/profile': typeof Admin_panelProfileRoute
   '/admin_panel/trash': typeof Admin_panelTrashRoute
   '/admin_panel/users': typeof Admin_panelUsersRoute
@@ -240,11 +265,14 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/_authenticated/folders': typeof AuthenticatedFoldersRouteWithChildren
+  '/_authenticated/premium': typeof AuthenticatedPremiumRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/shared': typeof AuthenticatedSharedRoute
+  '/_authenticated/transactions': typeof AuthenticatedTransactionsRoute
   '/_authenticated/trash': typeof AuthenticatedTrashRoute
   '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
   '/admin_panel/files': typeof Admin_panelFilesRoute
+  '/admin_panel/premium': typeof Admin_panelPremiumRoute
   '/admin_panel/profile': typeof Admin_panelProfileRoute
   '/admin_panel/trash': typeof Admin_panelTrashRoute
   '/admin_panel/users': typeof Admin_panelUsersRoute
@@ -270,11 +298,14 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documents'
     | '/folders'
+    | '/premium'
     | '/profile'
     | '/shared'
+    | '/transactions'
     | '/trash'
     | '/admin_panel/approvals'
     | '/admin_panel/files'
+    | '/admin_panel/premium'
     | '/admin_panel/profile'
     | '/admin_panel/trash'
     | '/admin_panel/users'
@@ -296,11 +327,14 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documents'
     | '/folders'
+    | '/premium'
     | '/profile'
     | '/shared'
+    | '/transactions'
     | '/trash'
     | '/admin_panel/approvals'
     | '/admin_panel/files'
+    | '/admin_panel/premium'
     | '/admin_panel/profile'
     | '/admin_panel/trash'
     | '/admin_panel/users'
@@ -325,11 +359,14 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/documents'
     | '/_authenticated/folders'
+    | '/_authenticated/premium'
     | '/_authenticated/profile'
     | '/_authenticated/shared'
+    | '/_authenticated/transactions'
     | '/_authenticated/trash'
     | '/admin_panel/approvals'
     | '/admin_panel/files'
+    | '/admin_panel/premium'
     | '/admin_panel/profile'
     | '/admin_panel/trash'
     | '/admin_panel/users'
@@ -451,6 +488,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Admin_panelProfileRouteImport
       parentRoute: typeof Admin_panelRouteRoute
     }
+    '/admin_panel/premium': {
+      id: '/admin_panel/premium'
+      path: '/premium'
+      fullPath: '/admin_panel/premium'
+      preLoaderRoute: typeof Admin_panelPremiumRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
     '/admin_panel/files': {
       id: '/admin_panel/files'
       path: '/files'
@@ -472,6 +516,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTrashRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/transactions': {
+      id: '/_authenticated/transactions'
+      path: '/transactions'
+      fullPath: '/transactions'
+      preLoaderRoute: typeof AuthenticatedTransactionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/shared': {
       id: '/_authenticated/shared'
       path: '/shared'
@@ -484,6 +535,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/premium': {
+      id: '/_authenticated/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof AuthenticatedPremiumRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/folders': {
@@ -577,8 +635,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRouteWithChildren
   AuthenticatedFoldersRoute: typeof AuthenticatedFoldersRouteWithChildren
+  AuthenticatedPremiumRoute: typeof AuthenticatedPremiumRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
+  AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRoute
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
 }
 
@@ -589,8 +649,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentsRoute: AuthenticatedDocumentsRouteWithChildren,
   AuthenticatedFoldersRoute: AuthenticatedFoldersRouteWithChildren,
+  AuthenticatedPremiumRoute: AuthenticatedPremiumRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSharedRoute: AuthenticatedSharedRoute,
+  AuthenticatedTransactionsRoute: AuthenticatedTransactionsRoute,
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,
 }
 
@@ -600,6 +662,7 @@ const AuthenticatedRouteRouteWithChildren =
 interface Admin_panelRouteRouteChildren {
   Admin_panelApprovalsRoute: typeof Admin_panelApprovalsRoute
   Admin_panelFilesRoute: typeof Admin_panelFilesRoute
+  Admin_panelPremiumRoute: typeof Admin_panelPremiumRoute
   Admin_panelProfileRoute: typeof Admin_panelProfileRoute
   Admin_panelTrashRoute: typeof Admin_panelTrashRoute
   Admin_panelUsersRoute: typeof Admin_panelUsersRoute
@@ -609,6 +672,7 @@ interface Admin_panelRouteRouteChildren {
 const Admin_panelRouteRouteChildren: Admin_panelRouteRouteChildren = {
   Admin_panelApprovalsRoute: Admin_panelApprovalsRoute,
   Admin_panelFilesRoute: Admin_panelFilesRoute,
+  Admin_panelPremiumRoute: Admin_panelPremiumRoute,
   Admin_panelProfileRoute: Admin_panelProfileRoute,
   Admin_panelTrashRoute: Admin_panelTrashRoute,
   Admin_panelUsersRoute: Admin_panelUsersRoute,
@@ -649,8 +713,8 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
-import type { getRouter } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/router.tsx'
-import type { startInstance } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/start.ts'
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true

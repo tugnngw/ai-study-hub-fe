@@ -121,7 +121,7 @@ export function useDeleteFolder() {
 export const docKeys = {
   all: ["documents"] as const,
   byFolder: (folderId: string) => ["documents", "folder", folderId] as const,
-  detail: (id: number) => ["documents", id] as const,
+  detail: (id: string) => ["documents", id] as const,
   trash: ["documents", "trash"] as const,
 };
 
@@ -140,7 +140,7 @@ export function useDocumentsByFolder(folderId: string) {
   });
 }
 
-export function useDocument(id: number) {
+export function useDocument(id: string) {
   const enabled = !!id;
   console.log('[TRACE-4] useDocument id:', id, 'enabled:', enabled);
   return useQuery({
@@ -182,7 +182,7 @@ export function useUploadDocument() {
 export function useUpdateDocument() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, ...body }: { id: number } & UpdateDocumentRequest) =>
+    mutationFn: ({ id, ...body }: { id: string } & UpdateDocumentRequest) =>
       documentApi.update(id, body),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });

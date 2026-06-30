@@ -5,7 +5,7 @@ import { documentApi } from "../services";
 import { docKeys } from "../types";
 import type { Document } from "../types/document.types";
 
-export function useDocument(id: number) {
+export function useDocument(id: string) {
   const enabled = !!id;
   console.log('[TRACE-4] useDocument id:', id, 'enabled:', enabled);
   return useQuery({
