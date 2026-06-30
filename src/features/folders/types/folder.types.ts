@@ -1,0 +1,20 @@
+// src/features/folders/types/folder.types.ts
+// Folder-related types and interfaces
+
+export interface Folder {
+  id: string;
+  ownerId: string;
+  name: string;
+  aiSummary?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
+}
+
+export interface CreateFolderRequest {
+  name: string;
+}
+
+export interface UpdateFolderRequest {
+  name: string;
+}
