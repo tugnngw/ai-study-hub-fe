@@ -10,7 +10,7 @@ function formatFileSize(bytes: number): string {
 
 export const approvalApi = {
   getPendingList: async (): Promise<ApprovalItem[]> => {
-    const docs = await adminDocumentApi.getByStatus("PENDING");
+    const docs = await adminDocumentApi.getByStatus("COMPLETED");
     return docs.map((doc) => ({
       id: parseInt(doc.id),
       title: doc.title,
