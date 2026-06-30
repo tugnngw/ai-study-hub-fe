@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { QuizzesTab } from "@/features/quiz";
 import {
   ChevronLeft,
   ChevronRight,
@@ -109,9 +110,9 @@ export function AIChat({
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
+    <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)_360px] gap-4 h-[calc(100vh-9rem)] w-full">
       {/* Column 1: folder + file list */}
-      <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
+      <aside className="hidden lg:flex flex-col h-full bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
         <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-2">
           THƯ MỤC ĐANG DÙNG
         </div>
@@ -199,8 +200,9 @@ export function AIChat({
         </Link>
       </aside>
 
+
       {/* Column 2: original content */}
-      <section className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
+      <section className="h-full bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
         <div className="px-4 pt-3 border-b border-border">
           <div className="flex items-center gap-6 overflow-x-auto">
             <button
@@ -360,13 +362,14 @@ export function AIChat({
         )}
         {activeTab === "quizzes" && (
           <div className="flex-1 overflow-y-auto p-6">
-            {/* Nội dung AI Quizzes */}
+            <QuizzesTab folderId={folderId} docId={docId} title={doc.data?.title ?? "tài liệu"} />
           </div>
         )}
       </section>
 
+
       {/* Column 3: chat */}
-      <aside className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
+      <aside className="h-full bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
         <div className="px-4 py-3.5 border-b border-border text-center">
           <div className="text-sm font-semibold font-display truncate">
             {doc.data?.title ?? "Chưa chọn tài liệu"}
