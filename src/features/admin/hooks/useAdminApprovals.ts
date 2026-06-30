@@ -15,7 +15,7 @@ export function useApprovalAction() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, action }: { id: number; action: ApprovalAction }) =>
-      action === "approve" ? approvalApi.approve(id) : approvalApi.reject(id),
+        action === "approve" ? approvalApi.approve(id) : approvalApi.reject(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.approvals() }),
   });
 }
