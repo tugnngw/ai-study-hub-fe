@@ -84,8 +84,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     }
   };
 
-  const openDocId = search?.docId ? Number(search.docId) : undefined;
-  const openDoc = useDocument(openDocId && !isNaN(openDocId) ? openDocId : 0);
+  const openDocId = search?.docId ? String(search.docId) : undefined;
+  const openDoc = useDocument(openDocId || "");
 
   const used = documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
   const total = 15 * 1024 * 1024 * 1024;

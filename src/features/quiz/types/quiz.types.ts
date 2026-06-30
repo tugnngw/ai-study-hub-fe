@@ -3,7 +3,7 @@
 
 export interface Quiz {
   id: number;
-  documentId: number;
+  documentId: string;
   questions: QuizQuestion[];
   createdAt: string;
 }

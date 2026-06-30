@@ -3,7 +3,7 @@
 
 export interface Flashcard {
   id: number;
-  documentId: number;
+  documentId: string;
   question: string;
   answer: string;
   createdAt: string;
