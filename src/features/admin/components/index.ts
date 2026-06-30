@@ -5,6 +5,7 @@ export * from "./AdminUsersPage";
 export * from "./AdminFilesPage";
 export * from "./AdminApprovalsPage";
 export * from "./AdminTrashPage";
+export * from "./AdminDocumentsPage";
 export * from "./AdminProfilePage";
 export * from "./AdminPremiumPage";
 export * from "./PlanBadge";

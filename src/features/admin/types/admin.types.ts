@@ -1,5 +1,4 @@
 // src/features/admin/types/admin.types.ts
-// Admin feature domain types
 
 // ── Dashboard ──────────────────────────────────────────
 export interface AdminStats {
@@ -23,14 +22,33 @@ export interface ActivityItem {
 }
 
 // ── Users ──────────────────────────────────────────────
-export type UserStatus = "Hoạt động" | "Khóa";
+export type UserStatus = "ACTIVE" | "BANNED" | "Hoạt động" | "Khóa";
+export type PlanId = "FREE" | "PLUS" | "PRO";
 
 export interface AdminUserItem {
-  id: number;
+  id: string; // UUID from BE
   name: string;
   email: string;
   status: UserStatus;
   plan: PlanId;
+  role?: string;
+  createdAt?: string;
+  lastLoginAt?: string;
+}
+
+// ── Document ──────────────────────────────────────────
+export type DocumentStatus = "PENDING" | "APPROVED" | "REJECTED" | "DELETED" | "PROCESSING";
+
+export interface DocumentResponse {
+  id: string;
+  title: string;
+  description?: string;
+  status: DocumentStatus;
+  ownerId: string;
+  fileSize?: number;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
 }
 
 // ── Reported / managed files ───────────────────────────
@@ -76,10 +94,7 @@ export interface DeletedAccountItem {
 export type TrashItemType = "file" | "account";
 export type TrashAction = "restore" | "delete";
 
-// ── Premium / Gói (plans) ──────────────────────────────
-export type PlanId = "FREE" | "PLUS" | "PRO";
-
-// ── Premium management (admin) ─────────────────────────
+// ── Premium ─────────────────────────────────────────────
 export type PaymentMethod = "MOMO" | "VNPay" | "ACB" | "Thẻ cào";
 export type PremiumRequestStatus = "Pending" | "Approved" | "Rejected";
 
@@ -87,7 +102,7 @@ export interface PremiumRequestItem {
   id: number;
   name: string;
   email: string;
-  plan: Exclude<PlanId, "FREE">; // chỉ PLUS / PRO mới có giao dịch
+  plan: Exclude<PlanId, "FREE">;
   registrationDate: string;
   paymentMethod: PaymentMethod;
   status: PremiumRequestStatus;
@@ -98,7 +113,7 @@ export interface PremiumStats {
   totalPremiumTrend: number;
   pendingRequests: number;
   pendingRequestsTrend: number;
-  revenueThisMonth: number; // VND
+  revenueThisMonth: number;
   revenueTrend: number;
   expiredSubscriptions: number;
   expiredTrend: number;
@@ -106,32 +121,32 @@ export interface PremiumStats {
 
 export type PremiumDecision = "approve" | "reject";
 
-// ── Transaction history (user) ─────────────────────────
+// ── Transaction ─────────────────────────────────────────
 export type TransactionStatus = "Thành công" | "Đang xử lý" | "Thất bại";
 
 export interface TransactionItem {
   id: string;
   plan: Exclude<PlanId, "FREE">;
-  amount: number; // VND
+  amount: number;
   method: PaymentMethod;
   date: string;
   status: TransactionStatus;
 }
 
-// ── Plan catalog (trang nâng cấp) ──────────────────────
+// ── Plan catalog ──────────────────────────────────────
 export interface PlanOption {
   id: Exclude<PlanId, "FREE">;
   name: string;
-  price: number;     // VND / tháng
+  price: number;
   tagline: string;
   features: string[];
   highlighted?: boolean;
 }
 
-// ── Phương thức nạp tiền ───────────────────────────────
+// ── Top up methods ──────────────────────────────────────
 export interface TopUpMethod {
   id: string;
-  category: string;   // "CHUYỂN KHOẢN" | "THẺ ĐIỆN THOẠI"
+  category: string;
   title: string;
   description: string;
   instant?: boolean;

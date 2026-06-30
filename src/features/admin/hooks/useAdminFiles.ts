@@ -15,7 +15,7 @@ export function useHandleReportDecision() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, decision }: { id: number; decision: ReportDecision }) =>
-      adminFileApi.handleReportDecision(id, decision),
+        adminFileApi.handleReportDecision(id, decision),
     onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.reportedFiles() }),
   });
 }
@@ -38,7 +38,7 @@ export function usePermanentDelete() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, type }: { id: number; type: TrashItemType }) =>
-      adminFileApi.permanentDelete(id, type),
+        adminFileApi.permanentDelete(id, type),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: adminKeys.deletedFiles() });
       qc.invalidateQueries({ queryKey: adminKeys.deletedAccounts() });
@@ -50,7 +50,7 @@ export function useRestoreItem() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, type }: { id: number; type: TrashItemType }) =>
-      adminFileApi.restoreItem(id, type),
+        adminFileApi.restoreItem(id, type),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: adminKeys.deletedFiles() });
       qc.invalidateQueries({ queryKey: adminKeys.deletedAccounts() });
