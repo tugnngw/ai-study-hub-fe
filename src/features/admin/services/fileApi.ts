@@ -22,9 +22,9 @@ function calculateRemainingDays(deletedAt: string): number {
 export const adminFileApi = {
   getReportedFiles: async (): Promise<ReportedFileItem[]> => {
     try {
-      const docs = await adminDocumentApi.getByStatus("PENDING");
+      const docs = await adminDocumentApi.getByStatus("COMPLETED");
       return docs.map((doc) => ({
-        id: parseInt(doc.id),
+        id: doc.id,
         name: doc.title,
         uploader: doc.ownerId || "Unknown",
         size: formatFileSize(doc.fileSize || 0),
@@ -37,12 +37,11 @@ export const adminFileApi = {
     }
   },
 
-  handleReportDecision: async (id: number, decision: ReportDecision): Promise<boolean> => {
-    const docId = String(id);
+  handleReportDecision: async (id: string, decision: ReportDecision): Promise<boolean> => {
     if (decision === "remove") {
-      await adminDocumentApi.reject(docId);
+      await adminDocumentApi.reject(id);
     } else {
-      await adminDocumentApi.approve(docId);
+      await adminDocumentApi.approve(id);
     }
     return true;
   },
@@ -51,7 +50,7 @@ export const adminFileApi = {
     try {
       const docs = await adminDocumentApi.getTrash();
       return docs.map((doc) => ({
-        id: parseInt(doc.id),
+        id: doc.id,
         name: doc.title,
         deletedDate: doc.deletedAt || doc.updatedAt || new Date().toISOString(),
         remainingDays: calculateRemainingDays(doc.deletedAt || doc.updatedAt || new Date().toISOString()),
@@ -62,20 +61,19 @@ export const adminFileApi = {
   },
 
   getDeletedAccounts: async (): Promise<DeletedAccountItem[]> => {
-    // Backend chưa có API này
     return [];
   },
 
-  permanentDelete: async (id: number, type: TrashItemType): Promise<boolean> => {
+  permanentDelete: async (id: string, type: TrashItemType): Promise<boolean> => {
     if (type === "file") {
-      await adminDocumentApi.delete(String(id));
+      await adminDocumentApi.delete(id);
     }
     return true;
   },
 
-  restoreItem: async (id: number, type: TrashItemType): Promise<boolean> => {
+  restoreItem: async (id: string, type: TrashItemType): Promise<boolean> => {
     if (type === "file") {
-      await adminDocumentApi.restore(String(id));
+      await adminDocumentApi.restore(id);
     }
     return true;
   },

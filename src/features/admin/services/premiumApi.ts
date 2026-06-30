@@ -7,7 +7,7 @@ import type {
 export const premiumApi = {
   getStats: () => api<PremiumStats>("/api/admin/premium/stats"),
   getRequests: () => api<PremiumRequestItem[]>("/api/admin/premium/requests"),
-  decide: (id: number, decision: PremiumDecision) =>
+  decide: (id: string, decision: PremiumDecision) =>
     api<boolean>(`/api/admin/premium/requests/${id}/decision`, {
       method: "POST",
       body: { decision },
