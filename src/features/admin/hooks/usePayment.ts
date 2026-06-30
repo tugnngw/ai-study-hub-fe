@@ -4,14 +4,26 @@ import { paymentApi } from "../services";
 import { adminKeys } from "./adminKeys";
 
 export function useTransactions() {
-  return useQuery({ queryKey: adminKeys.transactions(), queryFn: () => paymentApi.getTransactions() });
+  return useQuery({
+    queryKey: adminKeys.transactions(),
+    queryFn: () => paymentApi.getTransactions(),
+  });
 }
 export function usePlanOptions() {
-  return useQuery({ queryKey: adminKeys.planOptions(), queryFn: () => paymentApi.getPlanOptions() });
+  return useQuery({
+    queryKey: adminKeys.planOptions(),
+    queryFn: () => paymentApi.getPlanOptions(),
+  });
 }
 export function useTopUpMethods() {
-  return useQuery({ queryKey: adminKeys.topUpMethods(), queryFn: () => paymentApi.getTopUpMethods() });
+  return useQuery({
+    queryKey: adminKeys.topUpMethods(),
+    queryFn: () => paymentApi.getTopUpMethods(),
+  });
 }
 export function useBankInfo() {
-  return useQuery({ queryKey: adminKeys.bankInfo(), queryFn: () => paymentApi.getBankInfo() });
+  return useQuery({
+    queryKey: adminKeys.bankInfo(),
+    queryFn: () => paymentApi.getBankInfo(),
+  });
 }

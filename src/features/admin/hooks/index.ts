@@ -6,3 +6,4 @@ export * from "./useAdminFiles";
 export * from "./useAdminApprovals";
 export * from "./usePremium";
 export * from "./usePayment";
+export * from "./useAdminDocuments";

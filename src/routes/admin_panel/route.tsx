@@ -31,5 +31,9 @@ function AdminLayoutRoute() {
     );
   }
   if (!isAuthenticated || !isAdmin) return null;
-  return <AdminShell><Outlet /></AdminShell>;
+  return (
+    <AdminShell>
+      <Outlet />
+    </AdminShell>
+  );
 }
