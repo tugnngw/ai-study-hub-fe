@@ -16,6 +16,6 @@ export default defineConfig({
   ssr: {
     // docx-preview uses DOM APIs (document.createElement, appendChild)
     // which are not available during SSR. Mark as external so it only runs client-side.
-    external: ["docx-preview"],
+    noExternal: ["docx-preview"],
   },
 });
