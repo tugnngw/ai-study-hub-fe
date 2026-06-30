@@ -1,0 +1,484 @@
+import { o as e } from "./chunk-CMxvf4Kt.js";
+import { n as t, t as n } from "./jsx-runtime-D0Gpvp3q.js";
+import { t as r } from "./link-BbWDPsL2.js";
+import { l as i } from "./index-CDVqwL1-.js";
+import { t as a } from "./folder-kanban-GiHqoFzz.js";
+import { t as o } from "./pencil-IIPXBv2r.js";
+import { t as s } from "./plus-oenZ_v9l.js";
+import { t as ee } from "./search-C2LZVwX8.js";
+import { t as c } from "./star-CV_N3SkP.js";
+import { t as te } from "./trash-2-CVEVc4it.js";
+import { o as l, t as u } from "./utils-BUTip_f_.js";
+import { n as d, t as f } from "./button-CQzuWDyd.js";
+import { n as p, t as m } from "./card-Ds71aSGU.js";
+import { t as h } from "./input-CDAzVnuz.js";
+import { t as g } from "./label-CsVxXoyT.js";
+import { i as _ } from "./dist-Cc8O5o4E.js";
+import { t as v } from "./dist-DTO6IMEA.js";
+import {
+  a as y,
+  c as b,
+  d as x,
+  f as S,
+  h as C,
+  i as ne,
+  l as re,
+  m as ie,
+  n as ae,
+  o as oe,
+  p as w,
+  r as se,
+  s as ce,
+  t as le,
+  u as ue,
+} from "./dialog-5tbKv0U3.js";
+import { f as de, i as fe, n as pe, y as me } from "./queries-DL6sGd2E.js";
+import { n as he } from "./preferences-DAJJQJU8.js";
+import { t as ge } from "./skeleton-BEGUT5fr.js";
+var T = e(t(), 1),
+  E = n(),
+  D = `AlertDialog`,
+  [_e, ve] = v(D, [C]),
+  O = C(),
+  k = (e) => {
+    let { __scopeAlertDialog: t, ...n } = e,
+      r = O(t);
+    return (0, E.jsx)(ce, { ...r, ...n, modal: !0 });
+  };
+k.displayName = D;
+var ye = `AlertDialogTrigger`,
+  be = T.forwardRef((e, t) => {
+    let { __scopeAlertDialog: n, ...r } = e,
+      i = O(n);
+    return (0, E.jsx)(ie, { ...i, ...r, ref: t });
+  });
+be.displayName = ye;
+var xe = `AlertDialogPortal`,
+  A = (e) => {
+    let { __scopeAlertDialog: t, ...n } = e,
+      r = O(t);
+    return (0, E.jsx)(S, { ...r, ...n });
+  };
+A.displayName = xe;
+var Se = `AlertDialogOverlay`,
+  j = T.forwardRef((e, t) => {
+    let { __scopeAlertDialog: n, ...r } = e,
+      i = O(n);
+    return (0, E.jsx)(x, { ...i, ...r, ref: t });
+  });
+j.displayName = Se;
+var M = `AlertDialogContent`,
+  [Ce, we] = _e(M),
+  N = T.forwardRef((e, t) => {
+    let { __scopeAlertDialog: n, children: r, ...i } = e,
+      a = O(n),
+      o = l(t, T.useRef(null)),
+      s = T.useRef(null);
+    return (0, E.jsx)(Ce, {
+      scope: n,
+      cancelRef: s,
+      children: (0, E.jsx)(re, {
+        role: `alertdialog`,
+        ...a,
+        ...i,
+        ref: o,
+        onOpenAutoFocus: _(i.onOpenAutoFocus, (e) => {
+          (e.preventDefault(), s.current?.focus({ preventScroll: !0 }));
+        }),
+        onPointerDownOutside: (e) => e.preventDefault(),
+        onInteractOutside: (e) => e.preventDefault(),
+        children: r,
+      }),
+    });
+  });
+N.displayName = M;
+var Te = `AlertDialogTitle`,
+  P = T.forwardRef((e, t) => {
+    let { __scopeAlertDialog: n, ...r } = e,
+      i = O(n);
+    return (0, E.jsx)(w, { ...i, ...r, ref: t });
+  });
+P.displayName = Te;
+var Ee = `AlertDialogDescription`,
+  F = T.forwardRef((e, t) => {
+    let { __scopeAlertDialog: n, ...r } = e,
+      i = O(n);
+    return (0, E.jsx)(ue, { ...i, ...r, ref: t });
+  });
+F.displayName = Ee;
+var De = `AlertDialogAction`,
+  I = T.forwardRef((e, t) => {
+    let { __scopeAlertDialog: n, ...r } = e,
+      i = O(n);
+    return (0, E.jsx)(b, { ...i, ...r, ref: t });
+  });
+I.displayName = De;
+var L = `AlertDialogCancel`,
+  R = T.forwardRef((e, t) => {
+    let { __scopeAlertDialog: n, ...r } = e,
+      { cancelRef: i } = we(L, n),
+      a = O(n),
+      o = l(t, i);
+    return (0, E.jsx)(b, { ...a, ...r, ref: o });
+  });
+R.displayName = L;
+var Oe = k,
+  z = A,
+  B = j,
+  V = N,
+  H = I,
+  U = R,
+  W = P,
+  G = F,
+  ke = Oe,
+  Ae = z,
+  K = T.forwardRef(({ className: e, ...t }, n) =>
+    (0, E.jsx)(B, {
+      className: u(
+        `fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0`,
+        e,
+      ),
+      ...t,
+      ref: n,
+    }),
+  );
+K.displayName = B.displayName;
+var q = T.forwardRef(({ className: e, ...t }, n) =>
+  (0, E.jsxs)(Ae, {
+    children: [
+      (0, E.jsx)(K, {}),
+      (0, E.jsx)(V, {
+        ref: n,
+        className: u(
+          `fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:rounded-lg`,
+          e,
+        ),
+        ...t,
+      }),
+    ],
+  }),
+);
+q.displayName = V.displayName;
+var J = ({ className: e, ...t }) =>
+  (0, E.jsx)(`div`, {
+    className: u(`flex flex-col space-y-2 text-center sm:text-left`, e),
+    ...t,
+  });
+J.displayName = `AlertDialogHeader`;
+var Y = ({ className: e, ...t }) =>
+  (0, E.jsx)(`div`, {
+    className: u(
+      `flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2`,
+      e,
+    ),
+    ...t,
+  });
+Y.displayName = `AlertDialogFooter`;
+var X = T.forwardRef(({ className: e, ...t }, n) =>
+  (0, E.jsx)(W, { ref: n, className: u(`text-lg font-semibold`, e), ...t }),
+);
+X.displayName = W.displayName;
+var Z = T.forwardRef(({ className: e, ...t }, n) =>
+  (0, E.jsx)(G, {
+    ref: n,
+    className: u(`text-sm text-muted-foreground`, e),
+    ...t,
+  }),
+);
+Z.displayName = G.displayName;
+var Q = T.forwardRef(({ className: e, ...t }, n) =>
+  (0, E.jsx)(H, { ref: n, className: u(d(), e), ...t }),
+);
+Q.displayName = H.displayName;
+var $ = T.forwardRef(({ className: e, ...t }, n) =>
+  (0, E.jsx)(U, {
+    ref: n,
+    className: u(d({ variant: `outline` }), `mt-2 sm:mt-0`, e),
+    ...t,
+  }),
+);
+$.displayName = U.displayName;
+function je() {
+  let { data: e, isLoading: t } = de(),
+    [n, i] = (0, T.useState)(``),
+    [l, d] = (0, T.useState)(!1),
+    [g, _] = (0, T.useState)(null),
+    [v, y] = (0, T.useState)(null),
+    { isMarked: b, toggle: x } = he(),
+    S = (e ?? [])
+      .filter((e) => e.name.toLowerCase().includes(n.toLowerCase()))
+      .sort((e, t) => Number(b(t.id)) - Number(b(e.id)));
+  return (0, E.jsxs)(`div`, {
+    className: `space-y-6`,
+    children: [
+      (0, E.jsxs)(`div`, {
+        className: `flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3`,
+        children: [
+          (0, E.jsxs)(`div`, {
+            children: [
+              (0, E.jsx)(`h1`, {
+                className: `text-3xl font-semibold tracking-tight`,
+                children: `Folders`,
+              }),
+              (0, E.jsx)(`p`, {
+                className: `text-muted-foreground mt-1`,
+                children: `Organize your documents`,
+              }),
+            ],
+          }),
+          (0, E.jsxs)(f, {
+            onClick: () => {
+              (_(null), d(!0));
+            },
+            children: [
+              (0, E.jsx)(s, { className: `h-4 w-4 mr-2` }),
+              ` New folder`,
+            ],
+          }),
+        ],
+      }),
+      (0, E.jsxs)(`div`, {
+        className: `relative max-w-sm`,
+        children: [
+          (0, E.jsx)(ee, {
+            className: `absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground`,
+          }),
+          (0, E.jsx)(h, {
+            placeholder: `Search folders...`,
+            value: n,
+            onChange: (e) => i(e.target.value),
+            className: `pl-9`,
+          }),
+        ],
+      }),
+      t
+        ? (0, E.jsx)(`div`, {
+            className: `grid gap-4 sm:grid-cols-2 lg:grid-cols-3`,
+            children: Array.from({ length: 6 }).map((e, t) =>
+              (0, E.jsx)(ge, { className: `h-32` }, t),
+            ),
+          })
+        : S.length === 0
+          ? (0, E.jsx)(m, {
+              children: (0, E.jsxs)(p, {
+                className: `py-16 text-center`,
+                children: [
+                  (0, E.jsx)(a, {
+                    className: `h-10 w-10 mx-auto text-muted-foreground/50`,
+                  }),
+                  (0, E.jsx)(`p`, {
+                    className: `mt-4 text-sm text-muted-foreground`,
+                    children: `No folders found.`,
+                  }),
+                ],
+              }),
+            })
+          : (0, E.jsx)(`div`, {
+              className: `grid gap-4 sm:grid-cols-2 lg:grid-cols-3`,
+              children: S.map((e) =>
+                (0, E.jsxs)(
+                  m,
+                  {
+                    className: u(
+                      `group hover:border-primary/40 transition-colors relative`,
+                      b(e.id) &&
+                        `border-amber-400/60 bg-amber-50/40 dark:bg-amber-400/5`,
+                    ),
+                    children: [
+                      b(e.id) &&
+                        (0, E.jsx)(c, {
+                          className: `h-3.5 w-3.5 absolute top-3 right-3 fill-amber-400 text-amber-400`,
+                        }),
+                      (0, E.jsxs)(p, {
+                        className: `p-5`,
+                        children: [
+                          (0, E.jsx)(r, {
+                            to: `/ai`,
+                            search: { folderId: e.id },
+                            className: `block`,
+                            children: (0, E.jsxs)(`div`, {
+                              className: `flex items-start gap-3`,
+                              children: [
+                                (0, E.jsx)(`div`, {
+                                  className: `h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center`,
+                                  children: (0, E.jsx)(a, {
+                                    className: `h-5 w-5 text-primary`,
+                                  }),
+                                }),
+                                (0, E.jsxs)(`div`, {
+                                  className: `flex-1 min-w-0`,
+                                  children: [
+                                    (0, E.jsx)(`div`, {
+                                      className: `font-medium truncate pr-5`,
+                                      children: e.name,
+                                    }),
+                                    (0, E.jsx)(`div`, {
+                                      className: `text-xs text-muted-foreground line-clamp-2 mt-1`,
+                                      children: e.aiSummary || `No summary`,
+                                    }),
+                                  ],
+                                }),
+                              ],
+                            }),
+                          }),
+                          (0, E.jsxs)(`div`, {
+                            className: `flex justify-end gap-1 mt-3 opacity-0 group-hover:opacity-100 transition-opacity`,
+                            children: [
+                              (0, E.jsx)(f, {
+                                size: `sm`,
+                                variant: `ghost`,
+                                onClick: () => x(e.id),
+                                title: b(e.id)
+                                  ? `Bỏ đánh dấu sao`
+                                  : `Đánh dấu sao`,
+                                children: (0, E.jsx)(c, {
+                                  className: u(
+                                    `h-3.5 w-3.5`,
+                                    b(e.id) && `fill-amber-400 text-amber-400`,
+                                  ),
+                                }),
+                              }),
+                              (0, E.jsx)(f, {
+                                size: `sm`,
+                                variant: `ghost`,
+                                onClick: () => {
+                                  (_(e), d(!0));
+                                },
+                                children: (0, E.jsx)(o, {
+                                  className: `h-3.5 w-3.5`,
+                                }),
+                              }),
+                              (0, E.jsx)(f, {
+                                size: `sm`,
+                                variant: `ghost`,
+                                onClick: () => y(e),
+                                children: (0, E.jsx)(te, {
+                                  className: `h-3.5 w-3.5 text-destructive`,
+                                }),
+                              }),
+                            ],
+                          }),
+                        ],
+                      }),
+                    ],
+                  },
+                  e.id,
+                ),
+              ),
+            }),
+      (0, E.jsx)(Me, { open: l, onOpenChange: d, folder: g }),
+      (0, E.jsx)(Ne, { folder: v, onClose: () => y(null) }),
+    ],
+  });
+}
+function Me({ open: e, onOpenChange: t, folder: n }) {
+  let r = pe(),
+    a = me(),
+    [o, s] = (0, T.useState)(n?.name ?? ``);
+  return (
+    e && n && n.name !== o && o === `` && s(n.name),
+    (0, E.jsx)(le, {
+      open: e,
+      onOpenChange: (e) => {
+        (t(e), e || s(``));
+      },
+      children: (0, E.jsxs)(ae, {
+        children: [
+          (0, E.jsxs)(y, {
+            children: [
+              (0, E.jsx)(oe, { children: n ? `Edit folder` : `New folder` }),
+              (0, E.jsx)(se, {
+                children: `Organize related documents together.`,
+              }),
+            ],
+          }),
+          (0, E.jsx)(`div`, {
+            className: `space-y-4`,
+            children: (0, E.jsxs)(`div`, {
+              className: `space-y-2`,
+              children: [
+                (0, E.jsx)(g, { children: `Name` }),
+                (0, E.jsx)(h, {
+                  value: o,
+                  onChange: (e) => s(e.target.value),
+                  placeholder: `e.g. Contracts`,
+                }),
+              ],
+            }),
+          }),
+          (0, E.jsxs)(ne, {
+            children: [
+              (0, E.jsx)(f, {
+                variant: `outline`,
+                onClick: () => t(!1),
+                children: `Cancel`,
+              }),
+              (0, E.jsx)(f, {
+                onClick: async () => {
+                  if (!o.trim()) return i.error(`Name is required`);
+                  try {
+                    (n
+                      ? (await a.mutateAsync({ id: n.id, name: o }),
+                        i.success(`Folder updated`))
+                      : (await r.mutateAsync({ name: o }),
+                        i.success(`Folder created`)),
+                      t(!1),
+                      s(``));
+                  } catch (e) {
+                    i.error(e instanceof Error ? e.message : `Failed`);
+                  }
+                },
+                disabled: r.isPending || a.isPending,
+                children: n ? `Save` : `Create`,
+              }),
+            ],
+          }),
+        ],
+      }),
+    })
+  );
+}
+function Ne({ folder: e, onClose: t }) {
+  let n = fe();
+  return (0, E.jsx)(ke, {
+    open: !!e,
+    onOpenChange: (e) => {
+      e || t();
+    },
+    children: (0, E.jsxs)(q, {
+      children: [
+        (0, E.jsxs)(J, {
+          children: [
+            (0, E.jsx)(X, { children: `Delete folder?` }),
+            (0, E.jsxs)(Z, {
+              children: [
+                `This will delete “`,
+                e?.name,
+                `”. This action cannot be undone.`,
+              ],
+            }),
+          ],
+        }),
+        (0, E.jsxs)(Y, {
+          children: [
+            (0, E.jsx)($, { children: `Cancel` }),
+            (0, E.jsx)(Q, {
+              onClick: async () => {
+                if (e)
+                  try {
+                    (await n.mutateAsync(e.id),
+                      i.success(`Folder deleted`),
+                      t());
+                  } catch (e) {
+                    i.error(e instanceof Error ? e.message : `Failed`);
+                  }
+              },
+              children: `Delete`,
+            }),
+          ],
+        }),
+      ],
+    }),
+  });
+}
+export { je as component };

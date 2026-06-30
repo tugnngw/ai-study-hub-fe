@@ -16,7 +16,10 @@ const labels: Record<PlanId, string> = {
   PRO: "Pro",
 };
 
-export const PlanBadge: React.FC<{ plan: PlanId; className?: string }> = ({ plan, className }) => (
+export const PlanBadge: React.FC<{ plan: PlanId; className?: string }> = ({
+  plan,
+  className,
+}) => (
   <Badge variant="secondary" className={cn(styles[plan], className)}>
     {labels[plan]}
   </Badge>

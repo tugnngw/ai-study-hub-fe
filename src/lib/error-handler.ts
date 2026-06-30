@@ -10,7 +10,10 @@ export function handleApiError(err: unknown, fallbackMsg = "Đã có lỗi xảy
         : fallbackMsg;
 
   // Không spam toast với các lỗi network thông thường
-  if (message?.toLowerCase().includes("fetch") || message === "Failed to fetch") {
+  if (
+    message?.toLowerCase().includes("fetch") ||
+    message === "Failed to fetch"
+  ) {
     toast.error("Không thể kết nối đến server. Vui lòng kiểm tra mạng.");
   } else {
     toast.error(message);

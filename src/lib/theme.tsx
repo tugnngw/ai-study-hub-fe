@@ -12,7 +12,10 @@ type Theme = "light" | "dark";
 const STORAGE_KEY = "ai-study-hub:theme";
 
 function getInitialTheme(): Theme {
-  if (typeof document !== "undefined" && document.documentElement.classList.contains("dark")) {
+  if (
+    typeof document !== "undefined" &&
+    document.documentElement.classList.contains("dark")
+  ) {
     return "dark";
   }
   if (typeof window === "undefined") return "light";

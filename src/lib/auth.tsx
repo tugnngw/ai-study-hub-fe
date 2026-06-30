@@ -7,18 +7,18 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import type { User, RegisterRequest } from "./types";
+import type { User, RegisterRequest, AuthResponse } from "./types";
 import { authApi, accountApi } from "./realApi";
 import { tokenStore } from "./api";
 
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
-  isAuthenticated: boolean; // True if user is logged in, false otherwise
+  isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
-  refresh: () => Promise<void>; // Hàm này sẽ làm mới access token và có thể cả refresh token
+  refresh: () => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
@@ -31,39 +31,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   // --- Initial Auth Check ---
-  // Effect này chạy một lần khi component mount để kiểm tra token và load user
   useEffect(() => {
     const initializeAuth = async () => {
       const accessToken = tokenStore.get();
-      const refreshToken = tokenStore.getRefresh(); // Lấy cả refresh token
+      const refreshToken = tokenStore.getRefresh();
 
-      // Nếu không có cả hai token, user chưa đăng nhập
       if (!accessToken || !refreshToken) {
         setIsLoading(false);
         setUser(null);
         return;
       }
 
-      // Khi có token, thử fetch user info bằng access token hiện tại
       try {
-        const u = await accountApi.me(); // Fetch user info
+        const u = await accountApi.me();
         setUser(u);
       } catch (err: any) {
-        // Nếu fetch user info thất bại (ví dụ: access token hết hạn), thử refresh token
         if (err?.status === 401 || err?.status === 403) {
           try {
-            await refresh(); // Gọi hàm refresh để lấy token mới
-            const u = await accountApi.me(); // Thử fetch user info lại với token mới
+            await refresh();
+            const u = await accountApi.me();
             setUser(u);
           } catch {
-            // Nếu refresh cũng thất bại (ví dụ: refresh token hết hạn/invalid)
-            console.error("Refresh token failed. Clearing tokens and user.");
-            tokenStore.clear(); // Xóa hết token
+            tokenStore.clear();
             setUser(null);
           }
         } else {
-          // Nếu lỗi khác không liên quan đến token hết hạn
-          console.error("Error initializing auth:", err);
           setUser(null);
         }
       } finally {
@@ -72,80 +64,68 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     initializeAuth();
-  }, []); // Dependency array rỗng để chỉ chạy một lần khi mount
+  }, []);
 
   // --- Periodically refresh token (every 10 min) ---
-  // Effect này chạy định kỳ để làm mới access token và refresh token nếu chúng sắp hết hạn
   useEffect(() => {
     const interval = setInterval(async () => {
-      // Chỉ refresh nếu có cả access và refresh token
       if (!tokenStore.get() || !tokenStore.getRefresh()) {
-        // Nếu không có token, có thể user đã logout hoặc phiên hết hạn
         setUser(null);
-        clearInterval(this); // Dừng interval nếu không có token
+        clearInterval(interval);
         return;
       }
       try {
-        // Gọi API refresh token của backend
         const res = await authApi.refresh();
         if (res?.accessToken && res.refreshToken) {
-          tokenStore.set(res.accessToken); // Lưu access token mới
-          tokenStore.setRefresh(res.refreshToken); // Lưu refresh token mới
-          console.log("Tokens refreshed successfully in background.");
-          // Tùy chọn: Re-fetch user info để đảm bảo user context là mới nhất
-          // accountApi.me().then(setUser).catch((err) => console.error("Failed to re-fetch user after refresh:", err));
+          tokenStore.set(res.accessToken);
+          tokenStore.setRefresh(res.refreshToken);
         } else {
-          console.error("Token refresh failed: Backend did not return new tokens.");
-          tokenStore.clear(); // Xóa hết token
+          tokenStore.clear();
           setUser(null);
         }
-      } catch (err: any) {
-        // Xử lý lỗi khi gọi authApi.refresh() (ví dụ: refresh token hết hạn hoặc invalid)
-        console.error("Error during periodic token refresh:", err);
-        tokenStore.clear(); // Xóa hết token
+      } catch {
+        tokenStore.clear();
         setUser(null);
-        // Điều hướng về trang login nếu refresh token hết hạn hoặc invalid
-        // window.location.href = "/auth/login";
       }
-    }, 10 * 60 * 1000); // 10 phút = 600,000 ms
+    }, 10 * 60 * 1000);
 
-    // Cleanup interval on component unmount
     return () => clearInterval(interval);
-  }, []); // Dependency array rỗng để interval chạy độc lập sau khi mount
+  }, []);
 
   // --- Authentication Functions ---
   const login = async (username: string, password: string) => {
-    tokenStore.clear(); // Xóa token cũ trước khi đăng nhập mới
-    const res = await authApi.login({ username, password });
-    // Backend trả về AuthResponse trực tiếp (cấu trúc phẳng: userId, username, email, etc.)
-    // Cần đảm bảo backend trả về cả refreshToken
-    if (res?.accessToken && res.refreshToken) { // Kiểm tra cả 2 token
-      tokenStore.set(res.accessToken);
-      tokenStore.setRefresh(res.refreshToken); // Lưu refresh token
+    // Clear old tokens
+    tokenStore.clear();
 
-      // Giả định User type từ res (cần định nghĩa hoặc lấy từ Resopnse type)
+    const res: AuthResponse = await authApi.login({ username, password });
+
+    const accessToken = res?.accessToken;
+    const refreshToken = res?.refreshToken;
+
+    if (accessToken && refreshToken) {
+      // Lưu token
+      tokenStore.set(accessToken);
+      tokenStore.setRefresh(refreshToken);
+
       const userObj: User = {
         id: res.userId,
         username: res.username,
         email: res.email,
         fullName: res.fullName,
         role: res.role,
-        // Fallback defaults nếu backend không trả về đủ thông tin
         status: "ACTIVE",
         authProvider: "LOCAL",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
       setUser(userObj);
-      console.log('Login successful. Tokens stored.');
     } else {
       throw new Error("Login failed: Missing tokens from backend.");
     }
   };
 
   const register = async (data: RegisterRequest) => {
-    // Backend register trả về AuthResponse, cần lấy token từ đó
-    const res = await authApi.register(data);
+    const res: AuthResponse = await authApi.register(data);
     if (res?.accessToken && res.refreshToken) {
       tokenStore.set(res.accessToken);
       tokenStore.setRefresh(res.refreshToken);
@@ -161,82 +141,53 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         updatedAt: new Date().toISOString(),
       };
       setUser(userObj);
-      console.log('Registration successful. Tokens stored.');
     } else {
       throw new Error("Registration failed: Missing tokens from backend.");
     }
   };
 
   const logout = async () => {
-    // Gọi logout API của backend để clear session/token trên server nếu cần
     try {
-      await authApi.logout(); // Gọi API logout của backend
-    } catch (error: any) {
-      console.error("Logout API call failed, but clearing local tokens anyway:", error);
+      await authApi.logout();
+    } catch {
+      // Ignore logout API error
     }
 
-    // Clear tokens and user context
-    tokenStore.clear(); // Xóa cả access và refresh token khỏi localStorage
-    setUser(null); // Xóa user context
+    tokenStore.clear();
+    setUser(null);
 
-    console.log('User logged out. Tokens cleared.');
-    console.log('DEBUG: After logout - tokens cleared:', {
-      authToken: tokenStore.get(),
-      refreshToken: tokenStore.getRefresh(),
-    });
-
-    // Redirect về trang login sau khi logout để reset UI state hoàn toàn
-    // IMPORTANT: Sử dụng window.location.href để hard reload, tránh state ghost
-    if (typeof window !== 'undefined') {
-      // Hard reload khi logout để reset all state
+    if (typeof window !== "undefined") {
       window.location.href = "/auth/login";
     }
   };
 
-  // Hàm refresh này chủ yếu được gọi bởi setInterval hoặc khi có lỗi 401/403
-  // Nó sẽ làm mới access token và refresh token nếu có thể
-  // Wrap với useCallback để tránh dependency thay đổi trong oauth-success
   const refresh = useCallback(async () => {
     const refreshToken = tokenStore.getRefresh();
     if (!refreshToken) {
-      console.warn("No refresh token available. Cannot refresh access token.");
       throw new Error("No refresh token available.");
     }
 
     try {
-      // Gọi API refresh token của backend
-      // Backend sẽ trả về AuthResponse chứa accessToken và refreshToken mới
-      const res = await authApi.refresh(); // authApi.refresh() sẽ sử dụng tokenStore.getRefresh() nội bộ
+      const res = await authApi.refresh();
       if (res?.accessToken && res.refreshToken) {
         tokenStore.set(res.accessToken);
         tokenStore.setRefresh(res.refreshToken);
-        console.log("Tokens refreshed successfully.");
 
-        // Sau khi refresh token thành công, có thể fetch lại user info để cập nhật context
         try {
           const u = await accountApi.me();
           setUser(u);
-          return; // Trả về để chỉ ra thành công
-        } catch (userFetchError) {
-          console.error("Failed to fetch user info after token refresh:", userFetchError);
-          // Nếu fetch user info sau khi refresh thất bại, vẫn coi là refresh thành công
-          // nhưng user context có thể cũ. Có thể không cần throw error ở đây.
+        } catch {
+          // User fetch failed, but token is refreshed
         }
       } else {
-        console.error("Refresh failed: Backend did not return new tokens.");
         throw new Error("Refresh failed: Backend response invalid.");
       }
-    } catch (error: any) {
-      console.error("Error refreshing token:", error);
-      tokenStore.clear(); // Xóa hết token nếu refresh thất bại (token hết hạn/invalid)
+    } catch (error) {
+      tokenStore.clear();
       setUser(null);
-      // Điều hướng về trang login nếu refresh token hết hạn hoặc invalid
-      // if (error?.status === 401 || error?.status === 403) {
-      //   window.location.href = "/auth/login";
-      // }
-      throw error; // Re-throw error để component gọi refresh biết là thất bại
+      throw error;
     }
-  }, []); // Empty deps: refresh function không thay đổi
+  }, []);
 
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
@@ -251,23 +202,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        isLoading,
-        // isAuthenticated: !!user && !!tokenStore.get(), // Xác thực khi có user VÀ có access token
-        isAuthenticated: !!user, // Chỉ cần user tồn tại là coi như đã xác thực, vì user chỉ set khi có token hợp lệ
-        login,
-        register,
-        logout,
-        refresh, // Hàm refresh có thể cần được gọi khi có lỗi 401/403 hoặc định kỳ
-        requestPasswordReset,
-        verifyResetOtp,
-        resetPassword,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+      <AuthContext.Provider
+          value={{
+            user,
+            isLoading,
+            isAuthenticated: !!user,
+            login,
+            register,
+            logout,
+            refresh,
+            requestPasswordReset,
+            verifyResetOtp,
+            resetPassword,
+          }}
+      >
+        {children}
+      </AuthContext.Provider>
   );
 }
 
