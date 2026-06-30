@@ -4,7 +4,7 @@
 export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
 export interface Document {
-  id: number;
+  id: string;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;

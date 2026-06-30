@@ -3,7 +3,7 @@ import { z } from "zod";
 import { DocumentWorkspace } from "@/components/document-workspace";
 
 const searchSchema = z.object({
-  docId: z.coerce.number().optional(),
+  docId: z.string().optional(),
 });
 
 export const Route = createFileRoute("/_authenticated/folders/$id")({

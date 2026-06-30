@@ -4,7 +4,7 @@ import { AIChat } from "@/components/ui/AIChat";
 
 const searchSchema = z.object({
   folderId: z.string(),
-  docId: z.coerce.number().optional(),
+  docId: z.string().optional(),
 });
 
 export const Route = createFileRoute("/_authenticated/ai")({

@@ -15,7 +15,7 @@ export const documentApi = {
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
 
-  getById: (id: number) => {
+  getById: (id: string) => {
     console.log('[TRACE-6] documentApi.getById called with id:', id);
     return api<Document>(`/api/documents/${id}`);
   },
@@ -39,20 +39,20 @@ export const documentApi = {
     });
   },
 
-  update: (id: number, body: UpdateDocumentRequest) =>
+  update: (id: string, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
-  delete: (id: number) =>
+  delete: (id: string) =>
     api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
-  getDownloadUrl: (id: number) =>
+  getDownloadUrl: (id: string) =>
     api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   listTrash: () => api<Document[]>("/api/documents/trash"),
 
-  restoreFromTrash: (id: number) =>
+  restoreFromTrash: (id: string) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
 
-  emptyTrash: (id: number) =>
+  emptyTrash: (id: string) =>
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
 };
