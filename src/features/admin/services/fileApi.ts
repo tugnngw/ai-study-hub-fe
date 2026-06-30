@@ -1,5 +1,6 @@
 // src/features/admin/services/fileApi.ts
 import { adminDocumentApi } from "./documentApi";
+import { reportApi } from "./reportApi";
 import type {
   ReportedFileItem,
   ReportDecision,
@@ -22,15 +23,16 @@ function calculateRemainingDays(deletedAt: string): number {
 export const adminFileApi = {
   getReportedFiles: async (): Promise<ReportedFileItem[]> => {
     try {
-      const docs = await adminDocumentApi.getByStatus("COMPLETED");
-      return docs.map((doc) => ({
-        id: doc.id,
-        name: doc.title,
-        uploader: doc.ownerId || "Unknown",
-        size: formatFileSize(doc.fileSize || 0),
+      const reports = await reportApi.getReports();
+      return reports.map((r) => ({
+        id: r.documentId,
+        name: r.documentTitle || "Unknown",
+        uploader: r.reporterId || "Unknown",
+        size: "N/A",
         reports: 1,
-        reporter: "System",
-        reason: "Báo cáo từ người dùng",
+        reporter: r.reporterUsername || "Unknown",
+        reason: r.reason,
+        createdAt: r.createdAt,
       }));
     } catch {
       return [];
