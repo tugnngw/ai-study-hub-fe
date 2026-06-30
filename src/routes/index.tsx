@@ -1,5 +1,4 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect } from "react";
 import { Sparkles, Bot, Share2, Cloud, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -32,21 +31,8 @@ const features = [
 ];
 
 function WelcomePage() {
-  // Trang chủ luôn hiển thị ở chế độ sáng, bất kể người dùng đã từng bật
-  // dark mode ở các trang khác (đăng nhập trước đó). Tạm gỡ class "dark"
-  // khỏi <html> trong lúc trang này đang hiển thị, rồi khôi phục lại khi
-  // rời đi để không ảnh hưởng tới các trang còn lại.
-  useEffect(() => {
-    const root = document.documentElement;
-    const hadDark = root.classList.contains("dark");
-    if (hadDark) root.classList.remove("dark");
-    return () => {
-      if (hadDark) root.classList.add("dark");
-    };
-  }, []);
-
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="force-light min-h-screen flex flex-col bg-background">
       {/* Header */}
       <header className="border-b border-border/60 sticky top-0 z-30 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
