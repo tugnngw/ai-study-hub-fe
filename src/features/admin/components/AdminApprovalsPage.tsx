@@ -1,7 +1,7 @@
 // src/features/admin/components/AdminApprovalsPage.tsx
 import React from "react";
 import { toast } from "sonner";
-import { FileText, Check, X } from "lucide-react";
+import { FileText, Check, X, Flag, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { useApprovals, useApprovalAction } from "../hooks";
 import type { ApprovalAction } from "../types/admin.types";
 
@@ -20,13 +21,13 @@ export const AdminApprovalsPage: React.FC = () => {
   const { data: list = [] } = useApprovals();
   const action = useApprovalAction();
 
-  const handle = (id: number, act: ApprovalAction) =>
+  const handle = (id: string, act: ApprovalAction) =>
     action.mutate(
       { id, action: act },
       {
         onSuccess: () =>
           toast.success(
-            act === "approve" ? "Đã duyệt tài liệu" : "Đã từ chối tài liệu",
+            act === "approve" ? "Đã bỏ qua báo cáo" : "Đã xử lý báo cáo",
           ),
       },
     );
@@ -35,16 +36,16 @@ export const AdminApprovalsPage: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight font-display">
-          Phê duyệt tài liệu
+          Báo cáo File
         </h1>
         <p className="text-muted-foreground mt-1 text-sm">
-          Xét duyệt các tài liệu đang chờ
+          Xử lý các file bị người dùng báo cáo vi phạm
         </p>
       </div>
 
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-base">Đang chờ duyệt</CardTitle>
+          <CardTitle className="text-base">File bị báo cáo</CardTitle>
           <span className="text-sm text-muted-foreground">
             {list.length} mục
           </span>
@@ -53,9 +54,10 @@ export const AdminApprovalsPage: React.FC = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Tên tài liệu</TableHead>
+                <TableHead>File</TableHead>
                 <TableHead>Người tải lên</TableHead>
-                <TableHead>Ngày gửi</TableHead>
+                <TableHead>Lý do báo cáo</TableHead>
+                <TableHead>Người báo cáo</TableHead>
                 <TableHead className="text-right">Hành động</TableHead>
               </TableRow>
             </TableHeader>
@@ -63,39 +65,54 @@ export const AdminApprovalsPage: React.FC = () => {
               {list.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={4}
+                    colSpan={5}
                     className="h-24 text-center text-muted-foreground"
                   >
-                    Không có tài liệu chờ duyệt
+                    Không có báo cáo nào
                   </TableCell>
                 </TableRow>
               ) : (
-                list.map((item) => (
+                list.map((item: any) => (
                   <TableRow key={item.id}>
                     <TableCell>
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                          <FileText className="h-4 w-4" />
+                        <div className="h-9 w-9 rounded-lg bg-destructive/10 text-destructive flex items-center justify-center shrink-0">
+                          <Flag className="h-4 w-4" />
                         </div>
-                        <span className="font-medium truncate">
-                          {item.title}
-                        </span>
+                        <div className="min-w-0">
+                          <span className="font-medium truncate block">
+                            {item.title}
+                          </span>
+                          <span className="text-xs text-muted-foreground truncate block">
+                            {item.date}
+                          </span>
+                        </div>
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2.5">
                         <Avatar className="h-7 w-7">
                           <AvatarFallback className="bg-muted text-xs">
-                            {item.uploader.charAt(0)}
+                            {item.uploader?.charAt(0) || "U"}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-muted-foreground">
+                        <span className="text-muted-foreground truncate">
                           {item.uploader}
                         </span>
                       </div>
                     </TableCell>
+                    <TableCell>
+                      <div className="max-w-xs">
+                        <div className="flex items-start gap-2">
+                          <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                          <span className="text-sm line-clamp-2">
+                            {item.reason || "Không có lý do"}
+                          </span>
+                        </div>
+                      </div>
+                    </TableCell>
                     <TableCell className="text-muted-foreground">
-                      {item.date}
+                      {item.reporter || "Anonymous"}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
@@ -105,13 +122,13 @@ export const AdminApprovalsPage: React.FC = () => {
                           className="text-destructive hover:text-destructive"
                           onClick={() => handle(item.id, "reject")}
                         >
-                          <X /> Từ chối
+                          <X /> Xóa file
                         </Button>
                         <Button
                           size="sm"
                           onClick={() => handle(item.id, "approve")}
                         >
-                          <Check /> Duyệt
+                          <Check /> Bỏ qua
                         </Button>
                       </div>
                     </TableCell>

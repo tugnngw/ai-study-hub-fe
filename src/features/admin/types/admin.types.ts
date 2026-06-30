@@ -37,7 +37,7 @@ export interface AdminUserItem {
 }
 
 // ── Document ──────────────────────────────────────────
-export type DocumentStatus = "PENDING" | "APPROVED" | "REJECTED" | "DELETED" | "PROCESSING";
+export type DocumentStatus = "COMPLETED" | "READY" | "REJECT" | "DELETED" | "PROCESSING" | "FAILED";
 
 export interface DocumentResponse {
   id: string;
@@ -62,7 +62,7 @@ export interface ReportedFileItem {
   reason: string;
 }
 
-export type ReportDecision = "remove" | "reject";
+export type ReportDecision = "approve" | "reject";
 
 // ── Approval queue ─────────────────────────────────────
 export interface ApprovalItem {
@@ -71,6 +71,8 @@ export interface ApprovalItem {
   uploader: string;
   date: string;
   size: string;
+  reason?: string;
+  reporter?: string;
 }
 
 export type ApprovalAction = "approve" | "reject";

@@ -53,7 +53,7 @@ const nav = [
   },
   {
     to: "/admin_panel/approvals",
-    label: "Phê duyệt",
+    label: "Báo cáo file",
     icon: ClipboardCheck,
     exact: false,
   },

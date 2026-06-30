@@ -192,9 +192,9 @@ export const shareApi = {
   removeShare: (shareId: string): Promise<void> =>
       api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
   report: (body: ReportDocumentRequest): Promise<void> =>
-      api<void>(`/api/documents/${body.id}/report`, {
+      api<void>(`/api/reports`, {
         method: "POST",
-        body: { reason: body.reason, description: body.description },
+        body: { documentId: body.id, reason: body.reason, description: body.description },
       }),
 };
 
