@@ -7,11 +7,11 @@ import type { Document } from "../types/document.types";
 
 export function useDocument(id: string) {
   const enabled = !!id;
-  console.log('[TRACE-4] useDocument id:', id, 'enabled:', enabled);
+  console.log("[TRACE-4] useDocument id:", id, "enabled:", enabled);
   return useQuery({
     queryKey: docKeys.detail(id),
     queryFn: () => {
-      console.log('[TRACE-5] queryFn executing for id:', id);
+      console.log("[TRACE-5] queryFn executing for id:", id);
       return documentApi.getById(id);
     },
     enabled: enabled,
@@ -19,7 +19,7 @@ export function useDocument(id: string) {
     refetchInterval: (query) => {
       const data = query.state.data as Document | undefined;
       if (data?.status === "processing") {
-        console.log('[Polling] Document is processing, polling every 3s');
+        console.log("[Polling] Document is processing, polling every 3s");
         return 3000; // Poll every 3 seconds
       }
       return false;

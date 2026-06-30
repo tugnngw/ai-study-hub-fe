@@ -16,7 +16,7 @@ export const documentApi = {
     api<Document[]>(`/api/documents/folder/${folderId}`),
 
   getById: (id: string) => {
-    console.log('[TRACE-6] documentApi.getById called with id:', id);
+    console.log("[TRACE-6] documentApi.getById called with id:", id);
     return api<Document>(`/api/documents/${id}`);
   },
 

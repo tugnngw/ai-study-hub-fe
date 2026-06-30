@@ -9,7 +9,9 @@ export const ragApi = {
     api<void>(`/api/v1/rag/process/${documentId}`, { method: "POST" }),
 
   getDocumentStatus: (documentId: string) =>
-    api<{ documentId: string; status: string }>(`/api/v1/rag/status/${documentId}`),
+    api<{ documentId: string; status: string }>(
+      `/api/v1/rag/status/${documentId}`,
+    ),
 
   chat: (body: { documentId: string; question: string }) =>
     api<{ answer: string; sources: unknown[] }>(`/api/v1/rag/chat`, {

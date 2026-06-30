@@ -1,2 +1,2 @@
 // Quiz feature
-export * from './types';
+export * from "./types";

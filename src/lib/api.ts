@@ -1,22 +1,31 @@
 // src/lib/api.ts
 export const API_BASE =
-  (import.meta.env.VITE_API_BASE as string | undefined) ??
-  "http://localhost:4040";
+    (import.meta.env.VITE_API_BASE as string | undefined) ??
+    "http://localhost:4040";
 
 const TOKEN_KEY = "auth_token";
 const REFRESH_KEY = "refresh_token";
 
 export const tokenStore = {
-  get: () =>
-    typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY),
-  set: (t: string) => localStorage.setItem(TOKEN_KEY, t),
+  get: () => {
+    if (typeof window === "undefined") return null;
+    const token = localStorage.getItem(TOKEN_KEY);
+    return token;
+  },
+  set: (t: string) => {
+    localStorage.setItem(TOKEN_KEY, t);
+  },
   clear: () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(REFRESH_KEY);
   },
-  getRefresh: () =>
-    typeof window === "undefined" ? null : localStorage.getItem(REFRESH_KEY),
-  setRefresh: (t: string) => localStorage.setItem(REFRESH_KEY, t),
+  getRefresh: () => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem(REFRESH_KEY);
+  },
+  setRefresh: (t: string) => {
+    localStorage.setItem(REFRESH_KEY, t);
+  },
 };
 
 export class ApiError extends Error {
@@ -36,7 +45,6 @@ type Options = {
   headers?: Record<string, string>;
 };
 
-// ── Refresh token queue ─────────────────────────────────────
 let refreshPromise: Promise<boolean> | null = null;
 
 export async function attemptRefresh(): Promise<boolean> {
@@ -50,18 +58,12 @@ export async function attemptRefresh(): Promise<boolean> {
       body: JSON.stringify({ refreshToken }),
     });
 
-    console.log("🔄 Refresh response:", res.status, await res.text());
-
     if (!res.ok) return false;
 
     const json = await res.json();
-    console.log("🔄 Refresh JSON:", json);
-
     const data = json?.data ?? json;
-    const newAccess = data?.accessToken;
+    const newAccess = data?.accessToken ?? data?.token;
     const newRefresh = data?.refreshToken;
-
-    console.log("🔄 Parsed newAccess:", newAccess?.substring(0, 20) + "...", "newRefresh:", !!newRefresh);
 
     if (newAccess) {
       tokenStore.set(newAccess);
@@ -70,20 +72,21 @@ export async function attemptRefresh(): Promise<boolean> {
     }
     return false;
   } catch (e) {
-    console.error("🔄 Refresh error:", e);
+    console.error("Refresh error:", e);
     return false;
   }
 }
 
 export async function api<T = unknown>(
-  path: string,
-  opts: Options = {},
+    path: string,
+    opts: Options = {},
 ): Promise<T> {
   const doFetch = async (): Promise<Response> => {
     const token = tokenStore.get();
-  console.log('🔑 api request', { path, tokenPresent: !!token, tokenLength: token?.length });
     const headers: Record<string, string> = { ...(opts.headers ?? {}) };
-    if (token) headers["Authorization"] = `Bearer ${token}`;
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
 
     let body: BodyInit | undefined;
     if (opts.formData) {
@@ -102,9 +105,7 @@ export async function api<T = unknown>(
 
   let res = await doFetch();
 
-  // ── Auto-refresh on 401 ─────────────────────────────
   if (res.status === 401) {
-    // Deduplicate concurrent refresh calls
     if (!refreshPromise) {
       refreshPromise = attemptRefresh().finally(() => {
         refreshPromise = null;
@@ -114,10 +115,8 @@ export async function api<T = unknown>(
     const refreshed = await refreshPromise;
 
     if (refreshed) {
-      // Retry the original request with new token
       res = await doFetch();
     } else {
-      // Refresh failed — clear everything
       tokenStore.clear();
       throw new ApiError(401, "Session expired. Please log in again.");
     }
@@ -125,26 +124,20 @@ export async function api<T = unknown>(
 
   const ct = res.headers.get("content-type") ?? "";
   const json = ct.includes("application/json")
-    ? await res.json().catch(() => null)
-    : null;
+      ? await res.json().catch(() => null)
+      : null;
 
   if (!res.ok) {
     const message =
-      (json &&
-        typeof json === "object" &&
-        "message" in json &&
-        String((json as { message: unknown }).message)) ||
-      `Request failed (${res.status})`;
+        (json &&
+            typeof json === "object" &&
+            "message" in json &&
+            String((json as { message: unknown }).message)) ||
+        `Request failed (${res.status})`;
 
-    // Do NOT clear token on 403 – user may simply lack permission.
-    // Token clearing is only for 401 (unauthenticated) after refresh failure.
-    // 403 means the request was understood but the user lacks required rights.
-    // Let the UI handle the error (e.g., show a permission dialog).
     throw new ApiError(res.status, message, json);
   }
 
-
-  // Unwrap ApiResponse<T> { code, message, data } -> T
   const result = (json as any)?.data !== undefined ? (json as any).data : json;
   return result as T;
 }

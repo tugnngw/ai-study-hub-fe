@@ -58,8 +58,14 @@ function useIdSet(store: ReturnType<typeof createIdSetStore>) {
     store.getSnapshot,
     () => new Set<string>(),
   );
-  const isMarked = useCallback((id: string | number) => ids.has(String(id)), [ids]);
-  const toggle = useCallback((id: string | number) => store.toggle(String(id)), []);
+  const isMarked = useCallback(
+    (id: string | number) => ids.has(String(id)),
+    [ids],
+  );
+  const toggle = useCallback(
+    (id: string | number) => store.toggle(String(id)),
+    [],
+  );
   return { ids, isMarked, toggle };
 }
 
