@@ -12,7 +12,7 @@ export const approvalApi = {
   getPendingList: async (): Promise<ApprovalItem[]> => {
     const docs = await adminDocumentApi.getByStatus("COMPLETED");
     return docs.map((doc) => ({
-      id: parseInt(doc.id),
+      id: doc.id,
       title: doc.title,
       uploader: doc.ownerId || "Unknown",
       date: new Date(doc.createdAt).toLocaleDateString("vi-VN"),
@@ -20,13 +20,13 @@ export const approvalApi = {
     }));
   },
 
-  approve: async (id: number): Promise<boolean> => {
-    await adminDocumentApi.approve(String(id));
+  approve: async (id: string): Promise<boolean> => {
+    await adminDocumentApi.approve(id);
     return true;
   },
 
-  reject: async (id: number): Promise<boolean> => {
-    await adminDocumentApi.reject(String(id));
+  reject: async (id: string): Promise<boolean> => {
+    await adminDocumentApi.reject(id);
     return true;
   },
 };
