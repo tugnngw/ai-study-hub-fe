@@ -1,5 +1,5 @@
 // src/features/admin/services/approvalApi.ts
-import { adminDocumentApi } from "./documentApi";
+import { reportApi } from "./reportApi";
 import type { ApprovalItem } from "../types/admin.types";
 
 function formatFileSize(bytes: number): string {
@@ -10,23 +10,29 @@ function formatFileSize(bytes: number): string {
 
 export const approvalApi = {
   getPendingList: async (): Promise<ApprovalItem[]> => {
-    const docs = await adminDocumentApi.getByStatus("COMPLETED");
-    return docs.map((doc) => ({
-      id: doc.id,
-      title: doc.title,
-      uploader: doc.ownerId || "Unknown",
-      date: new Date(doc.createdAt).toLocaleDateString("vi-VN"),
-      size: doc.fileSize ? formatFileSize(doc.fileSize) : "0 KB",
-    }));
+    try {
+      const reports = await reportApi.getReports();
+      return reports.map((r) => ({
+        id: r.id,
+        title: r.name || "Unknown",
+        uploader: r.uploader,
+        date: new Date(r.createdAt).toLocaleDateString("vi-VN"),
+        size: r.size,
+        reporter: r.reporter,
+        reason: r.reason,
+      }));
+    } catch {
+      return [];
+    }
   },
 
   approve: async (id: string): Promise<boolean> => {
-    await adminDocumentApi.approve(id);
+    await reportApi.handleReportDecision(id, "approve");
     return true;
   },
 
   reject: async (id: string): Promise<boolean> => {
-    await adminDocumentApi.reject(id);
+    await reportApi.handleReportDecision(id, "reject");
     return true;
   },
 };
