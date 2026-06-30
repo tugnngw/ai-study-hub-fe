@@ -25,18 +25,18 @@ export interface ShareRecipient {
 // ── Trang Chia sẻ (figma) — CHỈ chia sẻ folder ─────────
 // Người liên quan (người chia sẻ / người được chia sẻ)
 export interface SharePerson {
-  name: string;            // tên hiển thị
+  name: string; // tên hiển thị
   avatarUrl?: string | null; // ảnh đại diện (backend trả; rỗng → hiện chữ cái đầu)
 }
 
 export interface SharedWithMeItem {
-  id: number;              // id THẬT của folder
-  name: string;            // tên thư mục
-  size: string;            // "11.4mb"
-  items: number;           // số mục trong thư mục
-  sharedBy: SharePerson;   // người đã chia sẻ (tên + avatar)
-  time: string;            // "21 giờ trước"
-  order: number;           // mốc thời gian (số) để sắp xếp
+  id: number; // id THẬT của folder
+  name: string; // tên thư mục
+  size: string; // "11.4mb"
+  items: number; // số mục trong thư mục
+  sharedBy: SharePerson; // người đã chia sẻ (tên + avatar)
+  time: string; // "21 giờ trước"
+  order: number; // mốc thời gian (số) để sắp xếp
 }
 
 export interface SharedByMeItem {

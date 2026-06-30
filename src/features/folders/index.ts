@@ -1,2 +1,2 @@
 // Folders feature - handles folder management, organization
-export * from './types';
+export * from "./types";

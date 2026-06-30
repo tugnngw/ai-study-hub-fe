@@ -2,7 +2,13 @@
 import type { SharePerson } from "../types/share.types";
 import { avatarColor, initial } from "./avatar-utils";
 
-export function PersonAvatar({ person, size = 28 }: { person: SharePerson; size?: number }) {
+export function PersonAvatar({
+  person,
+  size = 28,
+}: {
+  person: SharePerson;
+  size?: number;
+}) {
   const { name, avatarUrl } = person;
   if (avatarUrl) {
     return (
