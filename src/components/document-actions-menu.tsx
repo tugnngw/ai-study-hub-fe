@@ -20,7 +20,7 @@ export function DocumentActionsMenu({
   className,
   iconClassName,
 }: {
-  documentId: number;
+  documentId: string;
   folderId: string;
   title: string;
   className?: string;
