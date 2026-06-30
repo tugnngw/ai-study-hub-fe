@@ -1,5 +1,4 @@
 // src/lib/api.ts
-import { MOCK_MODE, mockRequest } from "./mockApi";
 
 export const API_BASE =
   (import.meta.env.VITE_API_BASE as string | undefined) ??
@@ -75,16 +74,6 @@ export async function api<T = unknown>(
   path: string,
   opts: Options = {},
 ): Promise<T> {
-  if (MOCK_MODE) {
-    // No real backend available — serve canned data so the UI (login,
-    // AIChat file viewing, flashcards, etc.) can be exercised standalone.
-    let body = opts.body;
-    if (opts.formData) {
-      body = Object.fromEntries(opts.formData.entries());
-    }
-    return mockRequest<T>(path, { method: opts.method, body });
-  }
-
   const doFetch = async (): Promise<Response> => {
     const token = tokenStore.get();
   console.log('🔑 api request', { path, tokenPresent: !!token });

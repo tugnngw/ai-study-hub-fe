@@ -1,5 +1,6 @@
 // src/features/shares/components/SharedWithMeTable.tsx
-import { FolderOpen, Download, Trash2, Star } from "lucide-react";
+import { useState } from "react";
+import { FolderOpen, Download, Trash2, Star, Save } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useStarredSharedDocuments } from "@/lib/preferences";
@@ -8,6 +9,7 @@ import { ItemIcon } from "./ItemIcon";
 import { PersonAvatar } from "./PersonAvatar";
 import { RowMenu } from "./RowMenu";
 import { Pager } from "./Pager";
+import { SaveFileDialog } from "./SaveFileDialog";
 
 interface Props {
   items: SharedWithMeItem[];
@@ -22,6 +24,7 @@ interface Props {
 
 export function SharedWithMeTable({ items, count, page, totalPages, onPage, onOpen, onDownload, onRemove }: Props) {
   const { isMarked: isStarred, toggle: toggleStar } = useStarredSharedDocuments();
+  const [saving, setSaving] = useState<SharedWithMeItem | null>(null);
   const sortedItems = [...items].sort(
     (a, b) => Number(isStarred(b.id)) - Number(isStarred(a.id)),
   );
@@ -64,6 +67,7 @@ export function SharedWithMeTable({ items, count, page, totalPages, onPage, onOp
                 <div className="text-sm text-muted-foreground">{it.time}</div>
                 <RowMenu items={[
                   { icon: <FolderOpen className="h-4 w-4" />, label: "Mở", onClick: () => onOpen(it.id) },
+                  { icon: <Save className="h-4 w-4" />, label: "Lưu", onClick: () => setSaving(it) },
                   { icon: <Download className="h-4 w-4" />, label: "Tải xuống", onClick: () => onDownload(it.id, it.name) },
                   { icon: <Trash2 className="h-4 w-4" />, label: "Xóa", danger: true, onClick: () => onRemove(it.id, it.name) },
                   {
@@ -78,6 +82,11 @@ export function SharedWithMeTable({ items, count, page, totalPages, onPage, onOp
         </CardContent>
       </Card>
       <Pager page={page} totalPages={totalPages} onChange={onPage} />
+      <SaveFileDialog
+        open={!!saving}
+        onOpenChange={(v) => !v && setSaving(null)}
+        target={saving ? { id: saving.id, kind: "folder", name: saving.name } : null}
+      />
     </section>
   );
 }

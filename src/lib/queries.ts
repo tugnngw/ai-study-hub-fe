@@ -316,6 +316,16 @@ export function useReportDocument() {
   });
 }
 
+export function useReportFolder() {
+  return useMutation({
+    mutationFn: (input: { folderId: string; reason: string; description?: string }) => {
+      // Placeholder: BE doesn't have a folder-level report endpoint yet.
+      console.log("useReportFolder called:", input);
+      return Promise.resolve({});
+    },
+  });
+}
+
 // ================================================================
 // RAG
 // ================================================================

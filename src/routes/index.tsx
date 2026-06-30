@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Bot, Share2, Cloud, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useForceLightTheme } from "@/lib/theme";
 
 export const Route = createFileRoute("/")({
   component: WelcomePage,
@@ -31,8 +32,12 @@ const features = [
 ];
 
 function WelcomePage() {
+  // Trang chủ luôn hiển thị ở chế độ sáng, bất kể người dùng đã từng bật
+  // dark mode ở nơi khác.
+  useForceLightTheme();
+
   return (
-    <div className="force-light min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
       <header className="border-b border-border/60 sticky top-0 z-30 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">

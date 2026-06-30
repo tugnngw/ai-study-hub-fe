@@ -44,13 +44,13 @@ function formatBytes(n: number) {
 function fileTone(d: Document) {
   const name = (d.title ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
-    return { icon: "text-red-500", soft: "bg-red-50" };
+    return { icon: "text-red-500 dark:text-red-400", soft: "bg-red-50 dark:bg-red-400/10" };
   if (
     name.endsWith(".doc") ||
     name.endsWith(".docx") ||
     d.mimeType?.includes("word")
   )
-    return { icon: "text-blue-500", soft: "bg-blue-50" };
+    return { icon: "text-blue-500 dark:text-blue-400", soft: "bg-blue-50 dark:bg-blue-400/10" };
   return { icon: "text-primary", soft: "bg-muted" };
 }
 
@@ -160,7 +160,7 @@ export function AIChat({
                 className={cn(
                   "group flex items-center gap-2 rounded-lg pl-2 pr-1 py-2 transition-colors",
                   active
-                    ? "bg-red-50 border-l-2 border-red-400"
+                    ? "bg-primary/10 dark:bg-primary/15 border-l-2 border-primary"
                     : "hover:bg-accent border-l-2 border-transparent",
                 )}
               >

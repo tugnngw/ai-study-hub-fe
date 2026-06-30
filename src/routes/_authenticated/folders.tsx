@@ -1,12 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { FolderKanban, Plus, Search, Trash2, Pencil, Star } from "lucide-react";
+import { FolderKanban, Plus, Search, Star } from "lucide-react";
 import { toast } from "sonner";
 import {
   useCreateFolder,
   useDeleteFolder,
   useFolders,
   useUpdateFolder,
+  useReportFolder,
 } from "@/lib/queries";
 import { useStarredFolders } from "@/lib/preferences";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Dialog,
   DialogContent,
@@ -32,6 +35,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { ShareDocumentDialog } from "@/components/share-document-dialog";
+import { FolderActionsMenu } from "@/components/folder-actions-menu";
 import type { Folder } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -45,6 +50,8 @@ function FoldersPage() {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Folder | null>(null);
   const [deleting, setDeleting] = useState<Folder | null>(null);
+  const [sharing, setSharing] = useState<Folder | null>(null);
+  const [reporting, setReporting] = useState<Folder | null>(null);
   const { isMarked: isStarred, toggle: toggleStar } = useStarredFolders();
 
   const filtered = (data ?? [])
@@ -104,8 +111,22 @@ function FoldersPage() {
               )}
             >
               {isStarred(f.id) && (
-                <Star className="h-3.5 w-3.5 absolute top-3 right-3 fill-amber-400 text-amber-400" />
+                <Star className="h-3.5 w-3.5 absolute top-3 right-10 fill-amber-400 text-amber-400" />
               )}
+              <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                <FolderActionsMenu
+                  folderId={f.id}
+                  starred={isStarred(f.id)}
+                  onToggleStar={() => toggleStar(f.id)}
+                  onRename={() => {
+                    setEditing(f);
+                    setOpen(true);
+                  }}
+                  onShare={() => setSharing(f)}
+                  onReport={() => setReporting(f)}
+                  onDelete={() => setDeleting(f)}
+                />
+              </div>
               <CardContent className="p-5">
                 <Link to="/ai" search={{ folderId: f.id }} className="block">
                   <div className="flex items-start gap-3">
@@ -113,45 +134,13 @@ function FoldersPage() {
                       <FolderKanban className="h-5 w-5 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium truncate pr-5">{f.name}</div>
+                      <div className="font-medium truncate pr-9">{f.name}</div>
                       <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
                         {f.aiSummary || "No summary"}
                       </div>
                     </div>
                   </div>
                 </Link>
-                <div className="flex justify-end gap-1 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => toggleStar(f.id)}
-                    title={isStarred(f.id) ? "Bỏ đánh dấu sao" : "Đánh dấu sao"}
-                  >
-                    <Star
-                      className={cn(
-                        "h-3.5 w-3.5",
-                        isStarred(f.id) && "fill-amber-400 text-amber-400",
-                      )}
-                    />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      setEditing(f);
-                      setOpen(true);
-                    }}
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setDeleting(f)}
-                  >
-                    <Trash2 className="h-3.5 w-3.5 text-destructive" />
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           ))}
@@ -160,6 +149,13 @@ function FoldersPage() {
 
       <FolderFormDialog open={open} onOpenChange={setOpen} folder={editing} />
       <DeleteFolderDialog folder={deleting} onClose={() => setDeleting(null)} />
+      <ShareDocumentDialog
+        open={!!sharing}
+        onOpenChange={(v) => !v && setSharing(null)}
+        documentTitle={sharing?.name ?? ""}
+        folderId={sharing?.id ?? ""}
+      />
+      <ReportFolderDialog folder={reporting} onClose={() => setReporting(null)} />
     </div>
   );
 }
@@ -235,6 +231,114 @@ function FolderFormDialog({
             disabled={create.isPending || update.isPending}
           >
             {folder ? "Save" : "Create"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function ReportFolderDialog({
+  folder,
+  onClose,
+}: {
+  folder: Folder | null;
+  onClose: () => void;
+}) {
+  const report = useReportFolder();
+  const [reason, setReason] = useState("");
+  const [description, setDescription] = useState("");
+
+  const reset = () => {
+    setReason("");
+    setDescription("");
+  };
+
+  const submit = async () => {
+    if (!folder) return;
+    if (!reason) {
+      toast.error("Vui lòng chọn lý do báo cáo");
+      return;
+    }
+    try {
+      await report.mutateAsync({
+        folderId: folder.id,
+        reason,
+        description: description.trim() || undefined,
+      });
+      toast.success("Đã gửi báo cáo, cảm ơn bạn!");
+      reset();
+      onClose();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Gửi báo cáo thất bại");
+    }
+  };
+
+  return (
+    <Dialog
+      open={!!folder}
+      onOpenChange={(v) => {
+        if (!v) {
+          reset();
+          onClose();
+        }
+      }}
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="truncate">
+            Báo cáo &ldquo;{folder?.name}&rdquo;
+          </DialogTitle>
+          <DialogDescription>
+            Cho chúng tôi biết vấn đề bạn gặp phải với thư mục này.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>Lý do báo cáo</Label>
+            <RadioGroup value={reason} onValueChange={setReason} className="space-y-2">
+              {[
+                { value: "copyright", label: "Nội dung vi phạm bản quyền" },
+                { value: "misinformation", label: "Thông tin sai lệch / gây hiểu lầm" },
+                { value: "inappropriate", label: "Nội dung không phù hợp / phản cảm" },
+                { value: "privacy", label: "Vi phạm quyền riêng tư" },
+                { value: "other", label: "Lý do khác" },
+              ].map((r) => (
+                <label
+                  key={r.value}
+                  className="flex items-center gap-2 text-sm rounded-md border border-border/60 px-3 py-2 cursor-pointer hover:bg-accent/40"
+                >
+                  <RadioGroupItem value={r.value} />
+                  {r.label}
+                </label>
+              ))}
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-2">
+            <Label>Mô tả thêm (tùy chọn)</Label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Cung cấp chi tiết để chúng tôi xử lý nhanh hơn..."
+              rows={3}
+            />
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => {
+              reset();
+              onClose();
+            }}
+          >
+            Hủy
+          </Button>
+          <Button variant="destructive" onClick={submit} disabled={report.isPending}>
+            {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>
       </DialogContent>

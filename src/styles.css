@@ -279,59 +279,6 @@
 }
 
 @layer base {
-  /* Used to opt a subtree (e.g. the public landing page) out of dark mode:
-     re-declares the light-theme variable values so they win over any
-     inherited `.dark` values from an ancestor (e.g. <html class="dark">). */
-  .force-light {
-    color-scheme: light;
-    --background: oklch(0.99 0.005 290);
-    --foreground: oklch(0.18 0.04 270);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.18 0.04 270);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.18 0.04 270);
-    --primary: oklch(0.5 0.22 275);
-    --primary-foreground: oklch(0.99 0.005 290);
-    --secondary: oklch(0.96 0.02 285);
-    --secondary-foreground: oklch(0.28 0.08 275);
-    --muted: oklch(0.965 0.012 285);
-    --muted-foreground: oklch(0.5 0.04 275);
-    --accent: oklch(0.95 0.03 290);
-    --accent-foreground: oklch(0.28 0.1 280);
-    --destructive: oklch(0.58 0.22 25);
-    --destructive-foreground: oklch(0.99 0 0);
-    --border: oklch(0.92 0.015 285);
-    --input: oklch(0.92 0.015 285);
-    --ring: oklch(0.5 0.22 275);
-    --brand: oklch(0.5 0.22 275);
-    --brand-foreground: oklch(0.99 0.005 290);
-    --brand-soft: oklch(0.95 0.035 285);
-    --violet: oklch(0.58 0.24 305);
-    --violet-soft: oklch(0.95 0.04 305);
-    --gradient-brand: linear-gradient(
-      135deg,
-      oklch(0.55 0.23 275),
-      oklch(0.6 0.24 305)
-    );
-    --gradient-soft: linear-gradient(
-      135deg,
-      oklch(0.97 0.03 285),
-      oklch(0.97 0.035 305)
-    );
-    --gradient-page:
-      radial-gradient(at 0% 0%, oklch(0.96 0.04 285) 0%, transparent 50%),
-      radial-gradient(at 100% 0%, oklch(0.96 0.04 320) 0%, transparent 50%);
-    --shadow-soft:
-      0 1px 2px oklch(0.5 0.22 275 / 0.04),
-      0 8px 24px -8px oklch(0.5 0.22 275 / 0.12);
-    --shadow-brand: 0 8px 30px -8px oklch(0.5 0.22 275 / 0.45);
-    background: var(--color-background);
-    background-image: var(--gradient-page);
-    color: var(--color-foreground);
-  }
-}
-
-@layer base {
   * {
     border-color: var(--color-border);
   }
