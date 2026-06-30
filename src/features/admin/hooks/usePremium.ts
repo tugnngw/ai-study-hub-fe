@@ -19,7 +19,7 @@ export function usePremiumRequests() {
 export function usePremiumDecision() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, decision }: { id: number; decision: PremiumDecision }) =>
+    mutationFn: ({ id, decision }: { id: string; decision: PremiumDecision }) =>
       premiumApi.decide(id, decision),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: adminKeys.premiumRequests() });
