@@ -77,6 +77,18 @@ export interface ApprovalItem {
 
 export type ApprovalAction = "approve" | "reject";
 
+// ── Report history ─────────────────────────────────────
+export interface ReportHistoryItem {
+  id: string;
+  title: string;
+  uploader: string;
+  date: string;
+  reason?: string;
+  reporter?: string;
+  status: string;
+  decision?: string;
+}
+
 // ── Trash ──────────────────────────────────────────────
 export interface DeletedFileItem {
   id: string;

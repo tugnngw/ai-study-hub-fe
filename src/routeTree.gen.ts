@@ -22,6 +22,7 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as Admin_panelUsersRouteImport } from './routes/admin_panel/users'
 import { Route as Admin_panelTrashRouteImport } from './routes/admin_panel/trash'
+import { Route as Admin_panelReport_historyRouteImport } from './routes/admin_panel/report_history'
 import { Route as Admin_panelProfileRouteImport } from './routes/admin_panel/profile'
 import { Route as Admin_panelPremiumRouteImport } from './routes/admin_panel/premium'
 import { Route as Admin_panelFilesRouteImport } from './routes/admin_panel/files'
@@ -104,6 +105,12 @@ const Admin_panelTrashRoute = Admin_panelTrashRouteImport.update({
   path: '/trash',
   getParentRoute: () => Admin_panelRouteRoute,
 } as any)
+const Admin_panelReport_historyRoute =
+  Admin_panelReport_historyRouteImport.update({
+    id: '/report_history',
+    path: '/report_history',
+    getParentRoute: () => Admin_panelRouteRoute,
+  } as any)
 const Admin_panelProfileRoute = Admin_panelProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -212,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/admin_panel/files': typeof Admin_panelFilesRoute
   '/admin_panel/premium': typeof Admin_panelPremiumRoute
   '/admin_panel/profile': typeof Admin_panelProfileRoute
+  '/admin_panel/report_history': typeof Admin_panelReport_historyRoute
   '/admin_panel/trash': typeof Admin_panelTrashRoute
   '/admin_panel/users': typeof Admin_panelUsersRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -241,6 +249,7 @@ export interface FileRoutesByTo {
   '/admin_panel/files': typeof Admin_panelFilesRoute
   '/admin_panel/premium': typeof Admin_panelPremiumRoute
   '/admin_panel/profile': typeof Admin_panelProfileRoute
+  '/admin_panel/report_history': typeof Admin_panelReport_historyRoute
   '/admin_panel/trash': typeof Admin_panelTrashRoute
   '/admin_panel/users': typeof Admin_panelUsersRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -274,6 +283,7 @@ export interface FileRoutesById {
   '/admin_panel/files': typeof Admin_panelFilesRoute
   '/admin_panel/premium': typeof Admin_panelPremiumRoute
   '/admin_panel/profile': typeof Admin_panelProfileRoute
+  '/admin_panel/report_history': typeof Admin_panelReport_historyRoute
   '/admin_panel/trash': typeof Admin_panelTrashRoute
   '/admin_panel/users': typeof Admin_panelUsersRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -307,6 +317,7 @@ export interface FileRouteTypes {
     | '/admin_panel/files'
     | '/admin_panel/premium'
     | '/admin_panel/profile'
+    | '/admin_panel/report_history'
     | '/admin_panel/trash'
     | '/admin_panel/users'
     | '/auth/forgot-password'
@@ -336,6 +347,7 @@ export interface FileRouteTypes {
     | '/admin_panel/files'
     | '/admin_panel/premium'
     | '/admin_panel/profile'
+    | '/admin_panel/report_history'
     | '/admin_panel/trash'
     | '/admin_panel/users'
     | '/auth/forgot-password'
@@ -368,6 +380,7 @@ export interface FileRouteTypes {
     | '/admin_panel/files'
     | '/admin_panel/premium'
     | '/admin_panel/profile'
+    | '/admin_panel/report_history'
     | '/admin_panel/trash'
     | '/admin_panel/users'
     | '/auth/forgot-password'
@@ -479,6 +492,13 @@ declare module '@tanstack/react-router' {
       path: '/trash'
       fullPath: '/admin_panel/trash'
       preLoaderRoute: typeof Admin_panelTrashRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/report_history': {
+      id: '/admin_panel/report_history'
+      path: '/report_history'
+      fullPath: '/admin_panel/report_history'
+      preLoaderRoute: typeof Admin_panelReport_historyRouteImport
       parentRoute: typeof Admin_panelRouteRoute
     }
     '/admin_panel/profile': {
@@ -664,6 +684,7 @@ interface Admin_panelRouteRouteChildren {
   Admin_panelFilesRoute: typeof Admin_panelFilesRoute
   Admin_panelPremiumRoute: typeof Admin_panelPremiumRoute
   Admin_panelProfileRoute: typeof Admin_panelProfileRoute
+  Admin_panelReport_historyRoute: typeof Admin_panelReport_historyRoute
   Admin_panelTrashRoute: typeof Admin_panelTrashRoute
   Admin_panelUsersRoute: typeof Admin_panelUsersRoute
   Admin_panelIndexRoute: typeof Admin_panelIndexRoute
@@ -674,6 +695,7 @@ const Admin_panelRouteRouteChildren: Admin_panelRouteRouteChildren = {
   Admin_panelFilesRoute: Admin_panelFilesRoute,
   Admin_panelPremiumRoute: Admin_panelPremiumRoute,
   Admin_panelProfileRoute: Admin_panelProfileRoute,
+  Admin_panelReport_historyRoute: Admin_panelReport_historyRoute,
   Admin_panelTrashRoute: Admin_panelTrashRoute,
   Admin_panelUsersRoute: Admin_panelUsersRoute,
   Admin_panelIndexRoute: Admin_panelIndexRoute,

@@ -1,5 +1,5 @@
 // src/features/admin/components/AdminApprovalsPage.tsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { FileText, Check, X, Flag, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,19 +18,47 @@ import { useApprovals, useApprovalAction } from "../hooks";
 import type { ApprovalAction } from "../types/admin.types";
 
 export const AdminApprovalsPage: React.FC = () => {
-  const { data: list = [] } = useApprovals();
+  const query = useApprovals();
   const action = useApprovalAction();
+  const [list, setList] = useState<(typeof query.data)[number][] | []>(query.data || []);
+  const [_, setForceUpdate] = useState(0);
 
-  const handle = (id: string, act: ApprovalAction) =>
-    action.mutate(
+  useEffect(() => {
+    if (query.data) {
+      const newData = query.data || [];
+      setList(newData);
+      console.log("[AdminApprovalsPage] data changed, list.length:", newData.length);
+    }
+  }, [query.data]);
+
+  useEffect(() => {
+    if (action.isSuccess) {
+      console.log("[AdminApprovalsPage] mutation success, forcing list refresh");
+      setForceUpdate(prev => prev + 1);
+    }
+  }, [action.isSuccess]);
+
+  console.log("[AdminApprovalsPage] render, list.length:", list.length, "query.status:", query.status);
+
+  const handle = (id: string, act: ApprovalAction) => {
+    console.log("[AdminApprovalsPage] handle called:", { id, act });
+    return action.mutate(
       { id, action: act },
       {
-        onSuccess: () =>
+        onSuccess: () => {
+          console.log("[AdminApprovalsPage] mutation success");
           toast.success(
-            act === "approve" ? "Đã bỏ qua báo cáo" : "Đã xử lý báo cáo",
-          ),
+            act === "approve" ? "Đã chấp nhận báo cáo" : "Đã từ chối file",
+          );
+          setForceUpdate(prev => prev + 1);
+        },
+        onError: (err) => {
+          console.error("[AdminApprovalsPage] mutation error:", err);
+          toast.error("Xử lý thất bại");
+        },
       },
     );
+  };
 
   return (
     <div className="space-y-6">
@@ -116,20 +144,20 @@ export const AdminApprovalsPage: React.FC = () => {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                        <Button
+                         <Button
                           variant="outline"
                           size="sm"
                           className="text-destructive hover:text-destructive"
                           onClick={() => handle(item.id, "reject")}
                         >
-                          <X /> Xóa file
+                          <X /> Từ chối file
                         </Button>
-                        <Button
-                          size="sm"
-                          onClick={() => handle(item.id, "approve")}
-                        >
-                          <Check /> Bỏ qua
-                        </Button>
+                         <Button
+                           size="sm"
+                           onClick={() => handle(item.id, "approve")}
+                         >
+                           <Check /> Chấp nhận báo cáo
+                         </Button>
                       </div>
                     </TableCell>
                   </TableRow>
