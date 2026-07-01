@@ -24,6 +24,7 @@ import type {
   FlashcardProgress,
 } from "./types";
 import type { QuizItem } from "@/features/quiz/types/quiz.types";
+import type { GenerateSummaryRequest, GenerateSummaryResponse } from "./types";
 
 // ================================================================
 // AUTH  →  /api/auth
@@ -191,47 +192,67 @@ export const shareApi = {
       api<ShareResponse>("/api/shares", { method: "POST", body: request }),
   removeShare: (shareId: string): Promise<void> =>
       api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
+  saveToMyFolder: (shareId: string, folderId: string, title: string, description?: string): Promise<ShareResponse> =>
+      api<ShareResponse>(`/api/shares/${shareId}/save`, {
+        method: "POST",
+        body: { folderId, title, description },
+      }),
   report: (body: ReportDocumentRequest): Promise<void> =>
       api<void>(`/api/reports`, {
         method: "POST",
         body: { documentId: body.id, reason: body.reason, description: body.description },
       }),
 };
-
 // ================================================================
 // QUIZ  →  /api/quiz
 // ================================================================
 
 export const quizApi = {
   listByDocument: (documentId: string): Promise<Quiz[]> =>
-      api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
-  generate: (documentId: string, questionCount = 10): Promise<Quiz> =>
-      api<Quiz>("/api/quiz/generate", {
-        method: "POST",
-        body: { documentId, questionCount },
-      }),
+      api<Quiz[]>(`/api/quizzes?documentId=${documentId}`),
+  generate: (input: { documentIds: string[]; numberOfQuestions?: number } | string, questionCount = 10): Promise<Quiz> => {
+    const body = typeof input === "string" 
+      ? { documentId: input, questionCount }
+      : { documentIds: input.documentIds, numberOfQuestions: input.numberOfQuestions ?? questionCount };
+    return api<Quiz>("/api/quizzes/generate", {
+      method: "POST",
+      body,
+    });
+  },
   generateAdvanced: (body: {
     scope: "all" | string;
     types: string[];
     questionCount: number;
-  }): Promise<QuizItem[]> => api<QuizItem[]>("/api/quiz/generate", { method: "POST", body }),
+  }): Promise<QuizItem[]> => api<QuizItem[]>("/api/quizzes/generate", { method: "POST", body }),
 };
 
 // ================================================================
-// FLASHCARD  →  /api/flashcard
+// FLASHCARD  →  /api/flashcards
 // ================================================================
 
 export const flashcardApi = {
   listByDocument: (documentId: string): Promise<Flashcard[]> =>
-      api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
-  generate: (documentId: string): Promise<Flashcard[]> =>
-      api<Flashcard[]>("/api/flashcard/generate", {
-        method: "POST",
-        body: { documentId },
-      }),
+      api<Flashcard[]>(`/api/flashcards?documentId=${documentId}`),
+  generate: (input: { documentIds: string[]; numberOfCards?: number } | string): Promise<Flashcard[]> => {
+    const body = typeof input === "string"
+      ? { documentId: input }
+      : { documentIds: input.documentIds, numberOfCards: input.numberOfCards };
+    return api<Flashcard[]>("/api/flashcards/generate", {
+      method: "POST",
+      body,
+    });
+  },
   updateProgress: (flashcardId: string, status: FlashcardProgress["status"]): Promise<FlashcardProgress> =>
       api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
         method: "PUT",
         body: { status },
       }),
+};
+
+export const summaryApi = {
+  generate: (request: GenerateSummaryRequest) =>
+    api<GenerateSummaryResponse>("/api/ai/summary", {
+      method: "POST",
+      body: request,
+    }),
 };
