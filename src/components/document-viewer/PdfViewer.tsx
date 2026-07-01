@@ -39,11 +39,11 @@ interface PdfViewerProps {
  * 4. Hiển thị lỗi và nút tải xuống nếu mọi thứ đều thất bại
  */
 export const PdfViewer: React.FC<PdfViewerProps> = ({
-                                                      url,
-                                                      fileName = "document.pdf",
-                                                      className,
-                                                      documentId,
-                                                    }) => {
+  url,
+  fileName = "document.pdf",
+  className,
+  documentId,
+}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -88,11 +88,11 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
           console.log("[PdfViewer] Step 1: Backend download API for doc", documentId);
           try {
             const downloadResp = await fetch(
-                `${API_BASE}/api/documents/${documentId}/download`,
-                {
-                  method: "GET",
-                  headers: { Authorization: `Bearer ${token}` },
-                }
+              `${API_BASE}/api/documents/${documentId}/download`,
+              {
+                method: "GET",
+                headers: { Authorization: `Bearer ${token}` },
+              }
             );
 
             if (downloadResp.ok) {
@@ -353,148 +353,148 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 
   // Toolbar — sticky inside PDF card header
   const Toolbar = (
-      <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-1.5 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm gap-1 flex-wrap min-h-[42px]">
-        <div className="flex items-center gap-2 min-w-0">
-          <FileText className="h-4 w-4 text-primary shrink-0" />
-          <span className="text-sm font-semibold truncate max-w-[160px]">{fileName}</span>
-          {numPages && <span className="text-[11px] text-muted-foreground whitespace-nowrap">/ {numPages} trang</span>}
-        </div>
-
-        <div className="flex items-center gap-0.5 flex-wrap">
-          {/* Pan mode toggle */}
-          <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsPanMode(!isPanMode)}
-              title={isPanMode ? "Chế độ kéo" : "Chế độ chọn"}
-              className={cn("h-7 w-7 p-0", isPanMode && "bg-accent text-primary")}
-          >
-            {isPanMode ? <Hand className="h-3.5 w-3.5" /> : <MousePointer2 className="h-3.5 w-3.5" />}
-          </Button>
-
-          <div className="h-4 w-px bg-border mx-1" />
-
-          {/* Zoom controls */}
-          <Button variant="ghost" size="sm" onClick={() => setScale((s) => Math.max(s - 0.15, 0.5))} disabled={scale <= 0.5} className="h-7 w-7 p-0" title="Thu nhỏ">
-            <ZoomOut className="h-3.5 w-3.5" />
-          </Button>
-          <Input
-              type="number"
-              min={50}
-              max={250}
-              value={Math.round(scale * 100)}
-              onChange={(e) => {
-                const v = Math.min(Math.max(Number(e.target.value) || 50, 50), 250);
-                setScale(v / 100);
-              }}
-              className="h-6 w-14 px-1 py-0 text-center text-[11px]"
-          />
-          <Button variant="ghost" size="sm" onClick={() => setScale((s) => Math.min(s + 0.15, 2.5))} disabled={scale >= 2.5} className="h-7 w-7 p-0" title="Phóng to">
-            <ZoomIn className="h-3.5 w-3.5" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={handleFitToWidth} className="h-7 w-7 p-0" title="Vừa khung">
-            <Maximize2 className="h-3.5 w-3.5" />
-          </Button>
-
-          <div className="h-4 w-px bg-border mx-1" />
-
-          {/* Page navigation */}
-          <Button variant="ghost" size="sm" onClick={() => setPageNum((p) => Math.max(1, p - 1))} disabled={pageNum <= 1} className="h-7 w-7 p-0">
-            <ChevronLeft className="h-3.5 w-3.5" />
-          </Button>
-          <div className="flex items-center gap-1">
-            <Input
-                type="number" min={1} max={numPages || 1}
-                value={pageNum}
-                onChange={(e) => {
-                  const num = Math.min(Math.max(parseInt(e.target.value) || 1, 1), numPages || 1);
-                  setPageNum(num);
-                }}
-                className="h-6 w-10 px-1 py-0 text-center text-[11px]"
-            />
-            <span className="text-[11px] text-muted-foreground">/ {numPages || "—"}</span>
-          </div>
-          <Button variant="ghost" size="sm" onClick={() => setPageNum((p) => Math.min(numPages || 1, p + 1))} disabled={pageNum >= (numPages || 1)} className="h-7 w-7 p-0">
-            <ChevronRight className="h-3.5 w-3.5" />
-          </Button>
-
-          <div className="h-4 w-px bg-border mx-1" />
-
-          {/* Actions */}
-          <Button variant="ghost" size="sm" asChild className="h-7 px-1.5 text-[11px]">
-            <a href={url} download target="_blank" rel="noopener noreferrer">
-              <Download className="h-3.5 w-3.5 mr-1" />
-              Tải
-            </a>
-          </Button>
-          <Button variant="ghost" size="sm" asChild className="h-7 px-1.5 text-[11px]">
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              <ExternalLink className="h-3.5 w-3.5 mr-1" />
-              Mở mới
-            </a>
-          </Button>
-        </div>
+    <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-1.5 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm gap-1 flex-wrap min-h-[42px]">
+      <div className="flex items-center gap-2 min-w-0">
+        <FileText className="h-4 w-4 text-primary shrink-0" />
+        <span className="text-sm font-semibold truncate max-w-[160px]">{fileName}</span>
+        {numPages && <span className="text-[11px] text-muted-foreground whitespace-nowrap">/ {numPages} trang</span>}
       </div>
+
+      <div className="flex items-center gap-0.5 flex-wrap">
+        {/* Pan mode toggle */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setIsPanMode(!isPanMode)}
+          title={isPanMode ? "Chế độ kéo" : "Chế độ chọn"}
+          className={cn("h-7 w-7 p-0", isPanMode && "bg-accent text-primary")}
+        >
+          {isPanMode ? <Hand className="h-3.5 w-3.5" /> : <MousePointer2 className="h-3.5 w-3.5" />}
+        </Button>
+
+        <div className="h-4 w-px bg-border mx-1" />
+
+        {/* Zoom controls */}
+        <Button variant="ghost" size="sm" onClick={() => setScale((s) => Math.max(s - 0.15, 0.5))} disabled={scale <= 0.5} className="h-7 w-7 p-0" title="Thu nhỏ">
+          <ZoomOut className="h-3.5 w-3.5" />
+        </Button>
+        <Input
+          type="number"
+          min={50}
+          max={250}
+          value={Math.round(scale * 100)}
+          onChange={(e) => {
+            const v = Math.min(Math.max(Number(e.target.value) || 50, 50), 250);
+            setScale(v / 100);
+          }}
+          className="h-6 w-14 px-1 py-0 text-center text-[11px]"
+        />
+        <Button variant="ghost" size="sm" onClick={() => setScale((s) => Math.min(s + 0.15, 2.5))} disabled={scale >= 2.5} className="h-7 w-7 p-0" title="Phóng to">
+          <ZoomIn className="h-3.5 w-3.5" />
+        </Button>
+        <Button variant="ghost" size="sm" onClick={handleFitToWidth} className="h-7 w-7 p-0" title="Vừa khung">
+          <Maximize2 className="h-3.5 w-3.5" />
+        </Button>
+
+        <div className="h-4 w-px bg-border mx-1" />
+
+        {/* Page navigation */}
+        <Button variant="ghost" size="sm" onClick={() => setPageNum((p) => Math.max(1, p - 1))} disabled={pageNum <= 1} className="h-7 w-7 p-0">
+          <ChevronLeft className="h-3.5 w-3.5" />
+        </Button>
+        <div className="flex items-center gap-1">
+          <Input
+            type="number" min={1} max={numPages || 1}
+            value={pageNum}
+            onChange={(e) => {
+              const num = Math.min(Math.max(parseInt(e.target.value) || 1, 1), numPages || 1);
+              setPageNum(num);
+            }}
+            className="h-6 w-10 px-1 py-0 text-center text-[11px]"
+          />
+          <span className="text-[11px] text-muted-foreground">/ {numPages || "—"}</span>
+        </div>
+        <Button variant="ghost" size="sm" onClick={() => setPageNum((p) => Math.min(numPages || 1, p + 1))} disabled={pageNum >= (numPages || 1)} className="h-7 w-7 p-0">
+          <ChevronRight className="h-3.5 w-3.5" />
+        </Button>
+
+        <div className="h-4 w-px bg-border mx-1" />
+
+        {/* Actions */}
+        <Button variant="ghost" size="sm" asChild className="h-7 px-1.5 text-[11px]">
+          <a href={url} download target="_blank" rel="noopener noreferrer">
+            <Download className="h-3.5 w-3.5 mr-1" />
+            Tải
+          </a>
+        </Button>
+        <Button variant="ghost" size="sm" asChild className="h-7 px-1.5 text-[11px]">
+          <a href={url} target="_blank" rel="noopener noreferrer">
+            <ExternalLink className="h-3.5 w-3.5 mr-1" />
+            Mở mới
+          </a>
+        </Button>
+      </div>
+    </div>
   );
 
   // Loading state
   if (loading) {
     return (
-        <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
-          {Toolbar}
-          <div className="flex-1 flex flex-col items-center justify-center p-8">
-            <Loader2 className="h-8 w-8 animate-spin text-primary mb-3" />
-            <p className="text-sm text-muted-foreground">Đang tải PDF...</p>
-          </div>
-        </Card>
+      <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+        {Toolbar}
+        <div className="flex-1 flex flex-col items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary mb-3" />
+          <p className="text-sm text-muted-foreground">Đang tải PDF...</p>
+        </div>
+      </Card>
     );
   }
 
   // Error state
   if (error) {
     return (
-        <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
-          {Toolbar}
-          <div className="flex-1 flex flex-col items-center justify-center p-8">
-            <p className="text-red-500 text-center mb-4">{error}</p>
-            <Button variant="outline" size="sm" asChild>
-              <a href={url} target="_blank" rel="noopener noreferrer">
-                <Download className="h-4 w-4 mr-2" />
-                Tải xuống
-              </a>
-            </Button>
-          </div>
-        </Card>
+      <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+        {Toolbar}
+        <div className="flex-1 flex flex-col items-center justify-center p-8">
+          <p className="text-red-500 text-center mb-4">{error}</p>
+          <Button variant="outline" size="sm" asChild>
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              <Download className="h-4 w-4 mr-2" />
+              Tải xuống
+            </a>
+          </Button>
+        </div>
+      </Card>
     );
   }
 
   // Main PDF display
   return (
-      <Card className={cn("flex flex-col min-h-0", className)} style={{ minHeight: "400px" }}>
-        {Toolbar}
-        <div className="flex-1 relative">
-          {loading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-background/50">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-              </div>
-          )}
-          {error && (
-              <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
-                <p className="text-red-500 mb-4">{error}</p>
-              </div>
-          )}
-          {pdfDoc ? (
-              <canvas
-                  ref={canvasRef}
-                  className="w-full h-full border border-border/50 shadow-lg rounded-lg bg-white"
-                  style={{ display: "block" }}
-              />
-          ) : !loading && !error ? (
-              <div className="h-full flex items-center justify-center">
-                <p className="text-muted-foreground">Đang chuẩn bị...</p>
-              </div>
-          ) : null}
-        </div>
-      </Card>
+    <Card className={cn("flex flex-col min-h-0", className)} style={{ minHeight: "400px" }}>
+      {Toolbar}
+      <div className="flex-1 relative">
+        {loading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/50">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        )}
+        {error && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
+            <p className="text-red-500 mb-4">{error}</p>
+          </div>
+        )}
+        {pdfDoc ? (
+          <canvas
+            ref={canvasRef}
+            className="w-full h-full border border-border/50 shadow-lg rounded-lg bg-white"
+            style={{ display: "block" }}
+          />
+        ) : !loading && !error ? (
+          <div className="h-full flex items-center justify-center">
+            <p className="text-muted-foreground">Đang chuẩn bị...</p>
+          </div>
+        ) : null}
+      </div>
+    </Card>
   );
 };

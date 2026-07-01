@@ -12,56 +12,73 @@ export function SharePage() {
   const actions = useShareActions({
     onRemovedWithMe: s.removeWithMeLocal,
     onRemovedByMe: s.removeByMeLocal,
+    onOpenInAI: (folderId) => {
+      // Handle opening in AI with folderId
+    },
   });
 
   const showWithMe = tab === "all" || tab === "with-me";
   const showByMe = tab === "all" || tab === "by-me";
 
+  const handleOpenWithMe = (shareToken: string, savedFolderId?: string) => {
+    actions.openInAI(shareToken, savedFolderId);
+  };
+
+  const handleOpenByMe = (shareToken: string, savedFolderId?: string) => {
+    actions.openInAI(shareToken, savedFolderId);
+  };
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight font-display">
-          Chia sẻ
-        </h1>
-        <p className="text-muted-foreground mt-1 text-sm">
-          Quản lý tài liệu bạn được chia sẻ và những tài liệu bạn đã chia sẻ
-        </p>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight font-display">
+            Chia sẻ
+          </h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Quản lý tài liệu bạn được chia sẻ và những tài liệu bạn đã chia sẻ
+          </p>
+        </div>
+
+        <ShareToolbar
+            q={s.q}
+            onQ={s.setQ}
+            sort={s.sort}
+            onSort={s.setSort}
+            tab={tab}
+            onTab={setTab}
+        />
+
+        {showWithMe && (
+            <SharedWithMeTable
+                items={s.pagedWithMe}
+                count={s.withMeCount}
+                page={s.pageWithMe}
+                totalPages={s.totalPagesWithMe}
+                onPage={s.setPageWithMe}
+                onOpen={(id) => {
+                  const item = s.pagedWithMe.find((it) => it.id === id);
+                  handleOpenWithMe(id, item?.savedFolderId);
+                }}
+                onDownload={actions.download}
+                onRemove={actions.removeWithMe}
+            />
+        )}
+
+        {showByMe && (
+            <SharedByMeTable
+                items={s.pagedByMe}
+                count={s.byMeCount}
+                page={s.pageByMe}
+                totalPages={s.totalPagesByMe}
+                onPage={s.setPageByMe}
+                onOpen={(id) => {
+                  const item = s.pagedByMe.find((it) => it.id === id);
+                  handleOpenByMe(id, item?.savedFolderId);
+                }}
+                onCopyLink={actions.copyLink}
+                onRemove={actions.removeByMe}
+            />
+        )}
       </div>
-
-      <ShareToolbar
-        q={s.q}
-        onQ={s.setQ}
-        sort={s.sort}
-        onSort={s.setSort}
-        tab={tab}
-        onTab={setTab}
-      />
-
-      {showWithMe && (
-        <SharedWithMeTable
-          items={s.pagedWithMe}
-          count={s.withMeCount}
-          page={s.pageWithMe}
-          totalPages={s.totalPagesWithMe}
-          onPage={s.setPageWithMe}
-          onOpen={actions.openInAI}
-          onDownload={actions.download}
-          onRemove={actions.removeWithMe}
-        />
-      )}
-
-      {showByMe && (
-        <SharedByMeTable
-          items={s.pagedByMe}
-          count={s.byMeCount}
-          page={s.pageByMe}
-          totalPages={s.totalPagesByMe}
-          onPage={s.setPageByMe}
-          onOpen={actions.openInAI}
-          onCopyLink={actions.copyLink}
-          onRemove={actions.removeByMe}
-        />
-      )}
-    </div>
   );
 }

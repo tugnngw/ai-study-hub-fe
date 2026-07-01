@@ -29,15 +29,15 @@ import {
 const NEW_FOLDER_VALUE = "__new__";
 
 export function SaveSharedDocumentDialog({
-  open,
-  onOpenChange,
-  sharedId,
-  defaultTitle,
-  defaultDescription,
-}: {
+                                           open,
+                                           onOpenChange,
+                                           sharedId,
+                                           defaultTitle,
+                                           defaultDescription,
+                                         }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  sharedId: number;
+  sharedId: string;
   defaultTitle: string;
   defaultDescription?: string;
 }) {
@@ -100,69 +100,69 @@ export function SaveSharedDocumentDialog({
   const isPending = createFolder.isPending || save.isPending;
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Lưu tài liệu</DialogTitle>
-          <DialogDescription>
-            Lưu tài liệu được chia sẻ vào thư mục của bạn.
-          </DialogDescription>
-        </DialogHeader>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Lưu tài liệu</DialogTitle>
+            <DialogDescription>
+              Lưu tài liệu được chia sẻ vào thư mục của bạn.
+            </DialogDescription>
+          </DialogHeader>
 
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label>Thư mục lưu trữ</Label>
-            <Select value={folderId} onValueChange={setFolderId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Chọn thư mục" />
-              </SelectTrigger>
-              <SelectContent>
-                {(folders.data ?? []).map((f) => (
-                  <SelectItem key={f.id} value={String(f.id)}>
-                    {f.name}
-                  </SelectItem>
-                ))}
-                <SelectItem value={NEW_FOLDER_VALUE}>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label>Thư mục lưu trữ</Label>
+              <Select value={folderId} onValueChange={setFolderId}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Chọn thư mục" />
+                </SelectTrigger>
+                <SelectContent>
+                  {(folders.data ?? []).map((f) => (
+                      <SelectItem key={f.id} value={String(f.id)}>
+                        {f.name}
+                      </SelectItem>
+                  ))}
+                  <SelectItem value={NEW_FOLDER_VALUE}>
                   <span className="flex items-center gap-1.5">
                     <Plus className="h-3.5 w-3.5" /> Tạo thư mục mới
                   </span>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            {folderId === NEW_FOLDER_VALUE && (
-              <Input
-                placeholder="Tên thư mục mới"
-                value={newFolderName}
-                onChange={(e) => setNewFolderName(e.target.value)}
-                className="mt-2"
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              {folderId === NEW_FOLDER_VALUE && (
+                  <Input
+                      placeholder="Tên thư mục mới"
+                      value={newFolderName}
+                      onChange={(e) => setNewFolderName(e.target.value)}
+                      className="mt-2"
+                  />
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label>Tiêu đề</Label>
+              <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Mô tả</Label>
+              <Textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  rows={3}
               />
-            )}
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <Label>Tiêu đề</Label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-          </div>
-
-          <div className="space-y-2">
-            <Label>Mô tả</Label>
-            <Textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              rows={3}
-            />
-          </div>
-        </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Hủy
-          </Button>
-          <Button onClick={submit} disabled={isPending}>
-            {isPending ? "Đang lưu..." : "Lưu"}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => onOpenChange(false)}>
+              Hủy
+            </Button>
+            <Button onClick={submit} disabled={isPending}>
+              {isPending ? "Đang lưu..." : "Lưu"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
   );
 }
