@@ -106,11 +106,29 @@ export interface ShareRequest {
 
 export interface ShareResponse {
   id: string;
-  folderId: string;
-  sharedEmail?: string;
-  sharedUsername?: string;
-  visibility: "private" | "public";
+  folderId: string | null;
+  documentId: string | null;
+  ownerId: string;
+  ownerUsername: string;
+  ownerEmail: string;
+  sharedAccountId: string | null;
+  sharedUsername: string | null;
+  sharedEmail: string | null;
+  visibility: string;
+  shareToken: string;
+  shareLink: string;
   createdAt: string;
+  recipients: ShareRecipient[];
+  documentTitle: string | null;
+  folderName: string | null;
+  fileCount: number | null;
+}
+
+export interface ShareRecipient {
+  accountId: string;
+  email: string;
+  username: string;
+  fullName: string;
 }
 
 export interface AskRequest {

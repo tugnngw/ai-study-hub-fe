@@ -88,7 +88,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const openDoc = useDocument(openDocId || "");
 
   const used = documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
-  const total = 15 * 1024 * 1024 * 1024;
+  const total = 1 * 1024 * 1024 * 1024;
   const pct = Math.min(100, (used / total) * 100);
 
   const handleLogout = async () => {

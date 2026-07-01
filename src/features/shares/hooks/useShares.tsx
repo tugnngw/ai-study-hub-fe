@@ -89,9 +89,9 @@ export function useShares() {
     setPageByMe,
     totalPagesByMe: Math.max(1, Math.ceil(filteredByMe.length / PAGE_SIZE)),
     // cập nhật state sau khi xóa
-    removeWithMeLocal: (id: number) =>
+    removeWithMeLocal: (id: string) =>
       setWithMe((l) => l.filter((x) => x.id !== id)),
-    removeByMeLocal: (id: number) =>
+    removeByMeLocal: (id: string) =>
       setByMe((l) => l.filter((x) => x.id !== id)),
   };
 }

@@ -12,10 +12,21 @@ export function SharePage() {
   const actions = useShareActions({
     onRemovedWithMe: s.removeWithMeLocal,
     onRemovedByMe: s.removeByMeLocal,
+    onOpenInAI: (folderId) => {
+      // Handle opening in AI with folderId
+    },
   });
 
   const showWithMe = tab === "all" || tab === "with-me";
   const showByMe = tab === "all" || tab === "by-me";
+
+  const handleOpenWithMe = (shareToken: string, savedFolderId?: string) => {
+    actions.openInAI(shareToken, savedFolderId);
+  };
+
+  const handleOpenByMe = (shareToken: string, savedFolderId?: string) => {
+    actions.openInAI(shareToken, savedFolderId);
+  };
 
   return (
     <div className="space-y-6">
@@ -44,7 +55,10 @@ export function SharePage() {
           page={s.pageWithMe}
           totalPages={s.totalPagesWithMe}
           onPage={s.setPageWithMe}
-          onOpen={actions.openInAI}
+          onOpen={(id) => {
+            const item = s.pagedWithMe.find((it) => it.id === id);
+            handleOpenWithMe(id, item?.savedFolderId);
+          }}
           onDownload={actions.download}
           onRemove={actions.removeWithMe}
         />
@@ -57,7 +71,10 @@ export function SharePage() {
           page={s.pageByMe}
           totalPages={s.totalPagesByMe}
           onPage={s.setPageByMe}
-          onOpen={actions.openInAI}
+          onOpen={(id) => {
+            const item = s.pagedByMe.find((it) => it.id === id);
+            handleOpenByMe(id, item?.savedFolderId);
+          }}
           onCopyLink={actions.copyLink}
           onRemove={actions.removeByMe}
         />

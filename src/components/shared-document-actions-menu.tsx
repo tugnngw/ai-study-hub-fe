@@ -18,7 +18,7 @@ export function SharedDocumentActionsMenu({
   className,
   iconClassName,
 }: {
-  sharedId: number;
+  sharedId: string;
   title: string;
   description?: string;
   className?: string;

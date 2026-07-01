@@ -191,6 +191,11 @@ export const shareApi = {
       api<ShareResponse>("/api/shares", { method: "POST", body: request }),
   removeShare: (shareId: string): Promise<void> =>
       api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
+  saveToMyFolder: (shareId: string, folderId: string, title: string, description?: string): Promise<ShareResponse> =>
+      api<ShareResponse>(`/api/shares/${shareId}/save`, {
+        method: "POST",
+        body: { folderId, title, description },
+      }),
   report: (body: ReportDocumentRequest): Promise<void> =>
       api<void>(`/api/reports`, {
         method: "POST",

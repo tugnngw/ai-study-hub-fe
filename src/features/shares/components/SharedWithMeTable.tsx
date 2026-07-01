@@ -15,9 +15,9 @@ interface Props {
   page: number;
   totalPages: number;
   onPage: (p: number) => void;
-  onOpen: (id: number) => void;
-  onDownload: (id: number, name: string) => void;
-  onRemove: (id: number, name: string) => void;
+  onOpen: (id: string) => void;
+  onDownload: (id: string, name: string) => void;
+  onRemove: (id: string, name: string) => void;
 }
 
 export function SharedWithMeTable({

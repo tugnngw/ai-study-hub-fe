@@ -15,6 +15,7 @@ import type {
   Document,
   Folder,
   SharedDocument,
+  ShareResponse,
   UploadDocumentRequest,
   UpdateDocumentRequest,
   CreateFolderRequest,
@@ -290,7 +291,7 @@ export function useShareFolder() {
 export function useDeleteSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (shareId: number) => shareApi.removeShare(shareId),
+    mutationFn: (shareId: string) => shareApi.removeShare(shareId),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: sharedKeys.all });
       qc.invalidateQueries({ queryKey: sharedKeys.owned });
@@ -302,18 +303,16 @@ export function useSaveSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: {
-      sharedId: number;
+      sharedId: string;
       folderId: string;
       title: string;
       description?: string;
     }) => {
-      // Placeholder: BE doesn't have a "save shared doc" endpoint yet.
-      // For now, just simulate success.
-      console.log("useSaveSharedDocument called:", input);
-      return Promise.resolve({});
+      return shareApi.saveToMyFolder(input.sharedId, input.folderId, input.title, input.description);
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
+      qc.invalidateQueries({ queryKey: sharedKeys.all });
     },
   });
 }

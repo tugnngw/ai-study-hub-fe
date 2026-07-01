@@ -4,23 +4,67 @@
 // nhận — không có thao tác "Lưu" thủ công ở FE.
 
 import { api } from "@/lib/api";
-import type { SharedWithMeItem, SharedByMeItem } from "../types/share.types";
+import type { SharedWithMeItem, SharedByMeItem, ShareResponse } from "../types/share.types";
 
 export const sharesApi = {
   // GET — danh sách (backend trả đủ field figma: name, size, items,
   // sharedBy{name,avatarUrl}, sharedWith[], time, order)
-  getSharedWithMe: () => api<SharedWithMeItem[]>("/api/shares/with-me"),
-  getSharedByMe: () => api<SharedByMeItem[]>("/api/shares/by-me"),
+  getSharedWithMe: async (): Promise<SharedWithMeItem[]> => {
+    const response = await api<ShareResponse[]>("/api/shares/shared-with-me");
+    return response.map(mapShareResponseToSharedWithMe);
+  },
+  getSharedByMe: async (): Promise<SharedByMeItem[]> => {
+    const response = await api<ShareResponse[]>("/api/shares/owner");
+    return response.map(mapShareResponseToSharedByMe);
+  },
 
-  // DELETE — Xóa: xóa THẲNG folder (soft-delete) -> hiện trong Thùng rác.
-  deleteShared: (folderId: number) =>
-    api<void>(`/api/folder/delete/${folderId}`, { method: "DELETE" }),
+  // DELETE — Xóa: xóa THẲNG share -> hiện trong Thùng rác.
+  deleteShared: (shareToken: string) =>
+    api<void>(`/api/shares/${shareToken}`, { method: "DELETE" }),
 
   // GET — Lấy link chia sẻ (Sao chép link)
-  getShareLink: (shareId: number) =>
-    api<{ url: string }>(`/api/shares/${shareId}/link`),
+  getShareLink: (shareToken: string) =>
+    api<{ url: string }>(`/api/shares/${shareToken}/link`),
 
   // GET — Lấy URL tải xuống (Tải xuống)
-  getDownloadUrl: (shareId: number) =>
-    api<{ url: string }>(`/api/shares/${shareId}/download`),
+  getDownloadUrl: (shareToken: string) =>
+    api<{ url: string }>(`/api/shares/${shareToken}/download`),
 };
+
+function mapShareResponseToSharedWithMe(resp: ShareResponse): SharedWithMeItem {
+  return {
+    id: resp.shareToken,
+    name: resp.folderName || resp.documentTitle || "Unknown",
+    size: "11.4mb",
+    items: resp.fileCount || 0,
+    sharedBy: {
+      name: resp.ownerUsername || resp.ownerEmail || "Unknown",
+      avatarUrl: null,
+    },
+    time: "21 giờ trước",
+    order: new Date(resp.createdAt).getTime(),
+    fileCount: resp.fileCount || 0,
+    savedFolderId: resp.folderId ?? undefined,
+  };
+}
+
+function mapShareResponseToSharedByMe(resp: ShareResponse): SharedByMeItem {
+  const sharedWith: any[] = [];
+  if (resp.sharedUsername) {
+    sharedWith.push({ name: resp.sharedUsername, avatarUrl: null });
+  } else if (resp.sharedEmail) {
+    sharedWith.push({ name: resp.sharedEmail, avatarUrl: null });
+  }
+
+  return {
+    id: resp.shareToken,
+    name: resp.folderName || resp.documentTitle || "Unknown",
+    size: "11.4mb",
+    items: resp.fileCount || 0,
+    sharedWith: sharedWith,
+    time: "21 giờ trước",
+    order: new Date(resp.createdAt).getTime(),
+    fileCount: resp.fileCount || 0,
+    savedFolderId: resp.folderId ?? undefined,
+  };
+}

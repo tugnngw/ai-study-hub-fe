@@ -37,7 +37,7 @@ export function SaveSharedDocumentDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  sharedId: number;
+  sharedId: string;
   defaultTitle: string;
   defaultDescription?: string;
 }) {
