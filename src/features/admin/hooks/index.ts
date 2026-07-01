@@ -4,6 +4,7 @@ export * from "./useAdminDashboard";
 export * from "./useAdminUsers";
 export * from "./useAdminFiles";
 export * from "./useAdminApprovals";
+export * from "./useAdminReportHistory";
 export * from "./usePremium";
 export * from "./usePayment";
 export * from "./useAdminDocuments";

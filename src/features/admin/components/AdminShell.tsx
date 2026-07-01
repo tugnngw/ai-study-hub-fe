@@ -10,7 +10,7 @@ import {
   Users,
   FileText,
   ClipboardCheck,
-  // Trash2, // ❌ ĐÃ XÓA - không import nữa
+  History,
   Crown,
   ShieldCheck,
   User as UserIcon,
@@ -55,6 +55,12 @@ const nav = [
     to: "/admin_panel/approvals",
     label: "Báo cáo file",
     icon: ClipboardCheck,
+    exact: false,
+  },
+  {
+    to: "/admin_panel/report_history",
+    label: "Lịch sử báo cáo",
+    icon: History,
     exact: false,
   },
   // { to: "/admin_panel/trash", label: "Thùng rác", icon: Trash2, exact: false }, // ❌ ĐÃ XÓA

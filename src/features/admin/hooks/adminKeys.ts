@@ -11,6 +11,7 @@ export const adminKeys = {
   documents: (tab?: string) => [...adminKeys.all, "documents", tab ?? "all"] as const,
   deletedFiles: () => [...adminKeys.all, "trash", "files"] as const,
   deletedAccounts: () => [...adminKeys.all, "trash", "accounts"] as const,
+  reportHistory: () => [...adminKeys.all, "report-history"] as const,
   premiumStats: () => [...adminKeys.all, "premium", "stats"] as const,
   premiumRequests: () => [...adminKeys.all, "premium", "requests"] as const,
   transactions: () => [...adminKeys.all, "payment", "transactions"] as const,
