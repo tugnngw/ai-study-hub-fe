@@ -14,20 +14,20 @@ import { UploadDialog } from "./DocumentWorkspace";
 type Tab = "original" | "notes" | "summary" | "flashcards" | "quizzes";
 
 export function ContentPanel({
-                                 folderId,
-                                 docId,
-                                 tab,
-                                 setTab,
-                                 notes,
-                                 setNotes,
-                                 folder,
-                                 folderDocs,
-                                 doc,
-                                 uploadOpen,
-                                 setUploadOpen,
-                                 download,
-                                 del,
-                             }: {
+    folderId,
+    docId,
+    tab,
+    setTab,
+    notes,
+    setNotes,
+    folder,
+    folderDocs,
+    doc,
+    uploadOpen,
+    setUploadOpen,
+    download,
+    del,
+}: {
     folderId: string;
     docId?: string;
     tab: Tab;

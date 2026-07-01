@@ -1,5 +1,6 @@
 // src/lib/queries.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import type { GenerateSummaryRequest, GenerateSummaryResponse } from "./types";
 import {
   accountApi,
   authApi,
@@ -9,6 +10,7 @@ import {
   quizApi,
   ragApi,
   shareApi,
+  summaryApi,
 } from "./realApi";
 import { tokenStore } from "./api";
 import type {
@@ -153,7 +155,7 @@ export function useDocument(id: string) {
     // Thêm polling khi document đang processing
     refetchInterval: (query) => {
       const data = query.state.data as Document | undefined;
-      if (data?.status === "processing") {
+      if (data?.status === "PROCESSING") {
         console.log("[Polling] Document is processing, polling every 3s");
         return 3000; // Poll every 3 seconds
       }
@@ -274,12 +276,12 @@ export function useShareFolder() {
       username?: string;
       email?: string;
     }) =>
-      shareApi.shareFolder({
-        folderId: request.folderId,
-        username: request.username,
-        email: request.email,
-        visibility: "private",
-      }),
+        shareApi.shareFolder({
+          folderId: request.folderId,
+          username: request.username,
+          email: request.email,
+          visibility: "private",
+        }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: sharedKeys.all });
       qc.invalidateQueries({ queryKey: sharedKeys.owned });
@@ -290,7 +292,7 @@ export function useShareFolder() {
 export function useDeleteSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (shareId: number) => shareApi.removeShare(shareId),
+    mutationFn: (shareId: string) => shareApi.removeShare(shareId),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: sharedKeys.all });
       qc.invalidateQueries({ queryKey: sharedKeys.owned });
@@ -302,18 +304,16 @@ export function useSaveSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: {
-      sharedId: number;
+      sharedId: string;
       folderId: string;
       title: string;
       description?: string;
     }) => {
-      // Placeholder: BE doesn't have a "save shared doc" endpoint yet.
-      // For now, just simulate success.
-      console.log("useSaveSharedDocument called:", input);
-      return Promise.resolve({});
+      return shareApi.saveToMyFolder(input.sharedId, input.folderId, input.title, input.description);
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
+      qc.invalidateQueries({ queryKey: sharedKeys.all });
     },
   });
 }
@@ -344,6 +344,21 @@ export function useUploadRag() {
 }
 
 // ================================================================
+// SUMMARY
+// ================================================================
+
+export function useGenerateSummary() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: GenerateSummaryRequest) =>
+      summaryApi.generate(input),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["summaries"] });
+    },
+  });
+}
+
+// ================================================================
 // QUIZ
 // ================================================================
 
@@ -362,10 +377,15 @@ export function useQuizByDocument(documentId: string) {
 export function useGenerateQuiz() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (input: { documentId: string; questionCount?: number }) =>
-      quizApi.generate(input.documentId, input.questionCount),
-    onSuccess: (_d, v) =>
-      qc.invalidateQueries({ queryKey: quizKeys.byDocument(v.documentId) }),
+    mutationFn: (input: GenerateQuizRequest) =>
+      quizApi.generate(input),
+    onSuccess: (data) => {
+      qc.invalidateQueries({ queryKey: ["quizzes"] });
+      // Also invalidate the specific document key if a single document was used
+      if (data?.id != null) {
+        qc.invalidateQueries({ queryKey: quizKeys.byDocument(String(data.id)) });
+      }
+    },
   });
 }
 
@@ -388,9 +408,11 @@ export function useFlashcardsByDocument(documentId: string) {
 export function useGenerateFlashcards() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (documentId: string) => flashcardApi.generate(documentId),
-    onSuccess: (_d, documentId) =>
-      qc.invalidateQueries({ queryKey: flashcardKeys.byDocument(documentId) }),
+    mutationFn: (input: GenerateFlashcardsRequest) =>
+      flashcardApi.generate(input),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["flashcards"] });
+    },
   });
 }
 
@@ -402,7 +424,6 @@ export function useUpdateFlashcardProgress() {
     }: {
       flashcardId: number;
       status: "new" | "learning" | "mastered";
-      documentId?: string;
     }) => flashcardApi.updateProgress(flashcardId, status),
   });
 }
