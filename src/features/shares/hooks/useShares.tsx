@@ -25,15 +25,15 @@ export function useShares() {
     let alive = true;
     setLoading(true);
     Promise.all([sharesApi.getSharedWithMe(), sharesApi.getSharedByMe()])
-      .then(([a, b]) => {
-        if (alive) {
-          setWithMe(a);
-          setByMe(b);
-        }
-      })
-      .finally(() => {
-        if (alive) setLoading(false);
-      });
+        .then(([a, b]) => {
+          if (alive) {
+            setWithMe(a);
+            setByMe(b);
+          }
+        })
+        .finally(() => {
+          if (alive) setLoading(false);
+        });
     return () => {
       alive = false;
     };
@@ -47,27 +47,27 @@ export function useShares() {
 
   const match = (s: string) => s.toLowerCase().includes(q.toLowerCase());
   const sortFn = <T extends { order: number }>(a: T, b: T) =>
-    sort === "newest" ? b.order - a.order : a.order - b.order;
+      sort === "newest" ? b.order - a.order : a.order - b.order;
 
   const filteredWithMe = useMemo(
-    () =>
-      withMe
-        .filter((x) => match(x.name) || match(x.sharedBy.name))
-        .sort(sortFn),
-    [withMe, q, sort],
+      () =>
+          withMe
+              .filter((x) => match(x.name) || match(x.sharedBy.name))
+              .sort(sortFn),
+      [withMe, q, sort],
   );
   const filteredByMe = useMemo(
-    () => byMe.filter((x) => match(x.name)).sort(sortFn),
-    [byMe, q, sort],
+      () => byMe.filter((x) => match(x.name)).sort(sortFn),
+      [byMe, q, sort],
   );
 
   const pagedWithMe = filteredWithMe.slice(
-    (pageWithMe - 1) * PAGE_SIZE,
-    pageWithMe * PAGE_SIZE,
+      (pageWithMe - 1) * PAGE_SIZE,
+      pageWithMe * PAGE_SIZE,
   );
   const pagedByMe = filteredByMe.slice(
-    (pageByMe - 1) * PAGE_SIZE,
-    pageByMe * PAGE_SIZE,
+      (pageByMe - 1) * PAGE_SIZE,
+      pageByMe * PAGE_SIZE,
   );
 
   return {
@@ -89,9 +89,9 @@ export function useShares() {
     setPageByMe,
     totalPagesByMe: Math.max(1, Math.ceil(filteredByMe.length / PAGE_SIZE)),
     // cập nhật state sau khi xóa
-    removeWithMeLocal: (id: number) =>
-      setWithMe((l) => l.filter((x) => x.id !== id)),
-    removeByMeLocal: (id: number) =>
-      setByMe((l) => l.filter((x) => x.id !== id)),
+    removeWithMeLocal: (id: string) =>
+        setWithMe((l) => l.filter((x) => x.id !== id)),
+    removeByMeLocal: (id: string) =>
+        setByMe((l) => l.filter((x) => x.id !== id)),
   };
 }

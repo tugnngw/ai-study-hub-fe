@@ -106,11 +106,29 @@ export interface ShareRequest {
 
 export interface ShareResponse {
   id: string;
-  folderId: string;
-  sharedEmail?: string;
-  sharedUsername?: string;
-  visibility: "private" | "public";
+  folderId: string | null;
+  documentId: string | null;
+  ownerId: string;
+  ownerUsername: string;
+  ownerEmail: string;
+  sharedAccountId: string | null;
+  sharedUsername: string | null;
+  sharedEmail: string | null;
+  visibility: string;
+  shareToken: string;
+  shareLink: string;
   createdAt: string;
+  recipients: ShareRecipient[];
+  documentTitle: string | null;
+  folderName: string | null;
+  fileCount: number | null;
+}
+
+export interface ShareRecipient {
+  accountId: string;
+  email: string;
+  username: string;
+  fullName: string;
 }
 
 export interface AskRequest {
@@ -147,9 +165,36 @@ export interface Flashcard {
   createdAt: string;
 }
 
+
+// =============================================================
+// 9. AI SUMMARY
+// =============================================================
+
+export interface GenerateSummaryRequest {
+  documentIds: string[];
+  force?: boolean;
+}
+
+export interface GenerateSummaryResponse {
+  markdown: string;
+}
+
 export interface FlashcardProgress {
   id: string;
   flashcardId: string;
   status: "new" | "learning" | "mastered";
   lastReviewed: string;
+}
+// =============================================================
+// 10. AI GENERATION REQUESTS
+// =============================================================
+
+export interface GenerateFlashcardsRequest {
+  documentIds: string[];
+  numberOfCards?: number;
+}
+
+export interface GenerateQuizRequest {
+  documentIds: string[];
+  numberOfQuestions?: number;
 }

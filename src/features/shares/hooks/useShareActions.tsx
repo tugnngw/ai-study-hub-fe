@@ -5,18 +5,18 @@ import { toast } from "sonner";
 import { sharesApi } from "../services";
 
 export function useShareActions(opts?: {
-  onRemovedWithMe?: (id: number) => void;
-  onRemovedByMe?: (id: number) => void;
+  onRemovedWithMe?: (id: string) => void;
+  onRemovedByMe?: (id: string) => void;
+  onOpenInAI?: (folderId: string) => void;
 }) {
   const navigate = useNavigate();
 
   // Mở folder trong AI chat. /ai yêu cầu search { folderId, docId? }.
-  // TODO(backend): thay "shared-<id>" bằng folderId THẬT của mục chia sẻ.
-  const openInAI = (id: number) => {
-    navigate({ to: "/ai", search: { folderId: `shared-${id}` } });
+  const openInAI = (id: string, folderId?: string) => {
+    navigate({ to: "/ai", search: { folderId: folderId ?? `shared-${id}` } });
   };
 
-  const download = async (id: number, name: string) => {
+  const download = async (id: string, name: string) => {
     try {
       const { url } = await sharesApi.getDownloadUrl(id);
       const a = document.createElement("a");
@@ -34,7 +34,7 @@ export function useShareActions(opts?: {
   };
 
   // Xóa = xóa thẳng folder (soft-delete) -> hiện trong Thùng rác.
-  const removeWithMe = async (id: number, name: string) => {
+  const removeWithMe = async (id: string, name: string) => {
     try {
       await sharesApi.deleteShared(id);
       opts?.onRemovedWithMe?.(id);
@@ -43,7 +43,7 @@ export function useShareActions(opts?: {
       toast.error("Không xóa được");
     }
   };
-  const removeByMe = async (id: number, name: string) => {
+  const removeByMe = async (id: string, name: string) => {
     try {
       await sharesApi.deleteShared(id);
       opts?.onRemovedByMe?.(id);
@@ -53,7 +53,7 @@ export function useShareActions(opts?: {
     }
   };
 
-  const copyLink = async (id: number, name: string) => {
+  const copyLink = async (id: string, name: string) => {
     try {
       const { url } = await sharesApi.getShareLink(id);
       await navigator.clipboard?.writeText(url);

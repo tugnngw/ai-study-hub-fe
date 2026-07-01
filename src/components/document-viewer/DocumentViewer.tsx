@@ -43,7 +43,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
     publicId: document.publicId,
   });
 
-  if (document.status === "processing") {
+  if (document.status === "PROCESSING") {
     return (
       <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
         <div className="flex-1 flex flex-col items-center justify-center p-8">
@@ -54,8 +54,8 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
       </Card>
     );
   }
-  
-  if (document.status === "failed") {
+
+  if (document.status === "REJECT") {
     return (
       <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
         <div className="flex-1 flex flex-col items-center justify-center p-8">
@@ -95,7 +95,7 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   // Detect file type with priority: mimeType > extension
   const fileType = detectFileType(document.mimeType, fileUrl);
   console.log('[Debug Flow] DocumentViewer: Detected File Type:', fileType);
-  const fileName =document.title || extractFileName(fileUrl);
+  const fileName = document.title || extractFileName(fileUrl);
 
   // Render appropriate viewer based on detected type
   switch (fileType) {
