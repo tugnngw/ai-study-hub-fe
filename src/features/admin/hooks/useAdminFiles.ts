@@ -18,7 +18,10 @@ export function useHandleReportDecision() {
   return useMutation({
     mutationFn: ({ id, decision }: { id: string; decision: string }) =>
         reportApi.handleReportDecision(id, decision as any),
-    onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.reportedFiles() }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: adminKeys.reportedFiles() });
+      qc.invalidateQueries({ queryKey: adminKeys.approvals() });
+    },
   });
 }
 
