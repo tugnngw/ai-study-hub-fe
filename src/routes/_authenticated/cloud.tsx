@@ -4,6 +4,7 @@ import { useDocuments } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/lib/auth";
+import { useEffect } from "react";
 
 export const Route = createFileRoute("/_authenticated/cloud")({
   component: CloudPage,
@@ -18,7 +19,11 @@ function formatBytes(n: number) {
 
 function CloudPage() {
   const docs = useDocuments();
-  const { user } = useAuth();
+  const { user, reloadUser } = useAuth();
+
+  useEffect(() => {
+    reloadUser().catch(console.error);
+  }, [reloadUser]);
 
   const used = docs.data?.reduce((sum, d) => sum + (d.fileSize ?? 0), 0) ?? 0;
   const total = (user?.storageGb || 1) * 1024 * 1024 * 1024;
