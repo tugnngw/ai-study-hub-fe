@@ -19,6 +19,7 @@ interface AuthContextValue {
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
+  reloadUser: () => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
@@ -46,18 +47,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const u = await accountApi.me();
         setUser(u);
       } catch (err: any) {
-        if (err?.status === 401 || err?.status === 403) {
-          try {
-            await refresh();
-            const u = await accountApi.me();
-            setUser(u);
-          } catch {
-            tokenStore.clear();
-            setUser(null);
-          }
-        } else {
-          setUser(null);
-        }
+        console.error("Auth initialization failed, clearing session:", err);
+        tokenStore.clear();
+        setUser(null);
       } finally {
         setIsLoading(false);
       }
@@ -189,6 +181,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const reloadUser = async () => {
+    try {
+      const u = await accountApi.me();
+      setUser(u);
+    } catch (error) {
+      console.error("Reload user failed:", error);
+      throw error;
+    }
+  };
+
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
   };
@@ -211,6 +213,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             register,
             logout,
             refresh,
+            reloadUser,
             requestPasswordReset,
             verifyResetOtp,
             resetPassword,
