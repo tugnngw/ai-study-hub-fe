@@ -1,9 +1,6 @@
-// src/features/documents/hooks/useDocuments.tsx
-
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { documentApi } from "../services";
-import { docKeys } from "../types"; // Assuming docKeys will be in types
-import type { Document } from "../types/document.types"; // Specific type import
+import { docKeys } from "../types";
 
 export function useDocuments() {
   return useQuery({
