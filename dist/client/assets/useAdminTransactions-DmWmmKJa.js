@@ -1,0 +1,1 @@
+import{t as e}from"./useQuery-DdP05iP1.js";import{t}from"./paymentApi-D20d_Vqm.js";import{t as n}from"./adminKeys-D7DU-FG0.js";function r(r=0,i=20){return e({queryKey:n.transactions(r,i),queryFn:()=>t.getAllTransactions(r,i)})}export{r as t};
