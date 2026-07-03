@@ -87,8 +87,16 @@ function StatCard({
 }
 
 export const AdminDashboardPage: React.FC = () => {
-  const { data: stats } = useAdminStats();
-  const { data: activity = [] } = useAdminActivity();
+  const { data: stats, isLoading: statsLoading, error: statsError } = useAdminStats();
+  const { data: activity = [], isLoading: activityLoading, error: activityError } = useAdminActivity();
+
+  if (statsError || activityError) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <p className="text-destructive">Không thể tải dữ liệu dashboard</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
