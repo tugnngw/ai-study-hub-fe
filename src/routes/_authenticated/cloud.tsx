@@ -3,8 +3,7 @@ import { Cloud, Database, HardDrive } from "lucide-react";
 import { useDocuments } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { useEffect, useState } from "react";
-import { accountApi } from "@/features/auth/services";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/_authenticated/cloud")({
   component: CloudPage,
@@ -19,18 +18,10 @@ function formatBytes(n: number) {
 
 function CloudPage() {
   const docs = useDocuments();
-  const [storageGb, setStorageGb] = useState(1);
-
-  useEffect(() => {
-    accountApi.me().then(user => {
-      if (user?.storageGb) {
-        setStorageGb(user.storageGb);
-      }
-    }).catch(() => {});
-  }, []);
+  const { user } = useAuth();
 
   const used = docs.data?.reduce((sum, d) => sum + (d.fileSize ?? 0), 0) ?? 0;
-  const total = storageGb * 1024 * 1024 * 1024;
+  const total = (user?.storageGb || 1) * 1024 * 1024 * 1024;
   const pct = Math.min((used / total) * 100, 100);
   const free = total - used;
   const isOverLimit = used > total;
