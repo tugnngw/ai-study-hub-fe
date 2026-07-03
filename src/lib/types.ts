@@ -36,6 +36,7 @@ export interface User {
   status: string;
   authProvider: string;
   plan?: "FREE" | "BASIC" | "PRO" | "PREMIUM";
+  storageGb?: number;
   createdAt: string;
   updatedAt: string;
 }

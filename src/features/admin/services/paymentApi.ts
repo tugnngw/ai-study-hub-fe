@@ -72,7 +72,7 @@ export const paymentApi = {
       method: "POST",
       body: { planId: PLAN_ID_MAP[planId] || 2 },
     }),
-  getTransactions: () => api<TransactionItem[]>("/api/payment/transactions"),
+  getTransactions: () => api<TransactionItem[]>("/api/payment/my-transactions"),
   getAllTransactions: (page: number = 0, size: number = 20) =>
     api<PaginatedResponse<AdminTransactionResponse>>(
       `/api/admin/transactions?page=${page}&size=${size}`
