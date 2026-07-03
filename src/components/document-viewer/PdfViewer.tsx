@@ -30,7 +30,7 @@ interface PdfViewerProps {
 }
 
 /**
- * PdfViewer — hiển thị PDF bằng cách sử dụng backend download API để lấy signed URL
+ * PdfViewer — hiển thị PDF bằng cách sử/dụng backend download API để lấy signed URL
  *
  * Quy trình:
  * 1. Gọi backend download API (có Bearer token) để lấy signed URL
@@ -472,7 +472,15 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   return (
     <Card className={cn("flex flex-col min-h-0", className)} style={{ minHeight: "400px" }}>
       {Toolbar}
-      <div className="flex-1 relative">
+      <div
+        ref={containerRef}
+        className="flex-1 relative overflow-hidden"
+        style={{ minHeight: "400px", width: "calc(100% - 32px)", marginLeft: "16px", marginRight: "16px" }} // Adjusted for padding
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+      >
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center bg-background/50">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -486,8 +494,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         {pdfDoc ? (
           <canvas
             ref={canvasRef}
-            className="w-full h-full border border-border/50 shadow-lg rounded-lg bg-white"
-            style={{ display: "block" }}
+            className="w-full h-full border border-border/50 shadow-lg bg-white"
+            style={{ display: "block", transformOrigin: "top left", transform: `scale(${scale})`, marginLeft: `${scrollStart.left}px`, marginTop: `${scrollStart.top}px` }}
           />
         ) : !loading && !error ? (
           <div className="h-full flex items-center justify-center">

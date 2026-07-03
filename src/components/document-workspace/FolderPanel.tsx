@@ -23,10 +23,10 @@ export function FolderPanel({
                         THƯ MỤC ĐANG DÙNG
                     </div>
                     <div className="text-sm font-semibold font-display">
-                        {folder.data?.name ?? "—"}
+                        {folder.data?.name || "—"}
                     </div>
                     <div className="text-xs text-muted-foreground mt-0.5">
-                        {folderDocs.data?.length ?? 0} tài liệu
+                        {folderDocs.data?.length || 0} tài liệu
                     </div>
                 </div>
             )}

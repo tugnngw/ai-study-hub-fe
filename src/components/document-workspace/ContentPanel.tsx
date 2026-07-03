@@ -96,44 +96,6 @@ export function ContentPanel({
                 ))}
             </div>
 
-            {tab === "original" && (folderDocs.data?.length ?? 0) > 0 && (
-                <div className="flex gap-2 px-4 py-2.5 border-b border-border overflow-x-auto items-center">
-                    <button
-                        onClick={() =>
-                            navigate({
-                                to: "/folders/$id",
-                                params: { id: String(folderId) },
-                                search: {},
-                            })
-                        }
-                        className={cn(
-                            "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
-                            !docId
-                                ? "bg-gradient-brand text-white"
-                                : "bg-muted text-foreground hover:bg-accent",
-                        )}
-                    >
-                        Tất cả
-                    </button>
-                    {(folderDocs.data ?? []).map((d: any) => (
-                        <Link
-                            key={d.id}
-                            to="/folders/$id"
-                            params={{ id: String(folderId) }}
-                            search={{ docId: d.id }}
-                            className={cn(
-                                "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
-                                d.id === docId
-                                    ? "bg-gradient-brand text-white"
-                                    : "bg-brand-soft text-primary hover:bg-accent",
-                            )}
-                        >
-                            {d.title}
-                        </Link>
-                    ))}
-                </div>
-            )}
-
             {tab === "original" && docId && (
                 <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30">
                     <div className="flex items-center gap-3">

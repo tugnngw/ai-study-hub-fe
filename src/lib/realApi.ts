@@ -215,7 +215,7 @@ export const quizApi = {
   generate: (input: { documentIds: string[]; numberOfQuestions?: number } | string, questionCount = 10): Promise<Quiz> => {
     const body = typeof input === "string" 
       ? { documentId: input, questionCount }
-      : { documentIds: input.documentIds, numberOfQuestions: input.numberOfQuestions ?? questionCount };
+      : { documentId: input.documentIds[0], numberOfQuestions: input.numberOfQuestions ?? questionCount };
     return api<Quiz>("/api/quizzes/generate", {
       method: "POST",
       body,
@@ -238,7 +238,7 @@ export const flashcardApi = {
   generate: (input: { documentIds: string[]; numberOfCards?: number } | string): Promise<Flashcard[]> => {
     const body = typeof input === "string"
       ? { documentId: input }
-      : { documentIds: input.documentIds, numberOfCards: input.numberOfCards };
+      : { documentId: input.documentIds[0], numberOfCards: input.numberOfCards };
     return api<Flashcard[]>("/api/flashcards/generate", {
       method: "POST",
       body,
