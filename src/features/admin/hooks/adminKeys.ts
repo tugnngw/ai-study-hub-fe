@@ -14,6 +14,8 @@ export const adminKeys = {
   reportHistory: () => [...adminKeys.all, "report-history"] as const,
   premiumStats: () => [...adminKeys.all, "premium", "stats"] as const,
   premiumRequests: () => [...adminKeys.all, "premium", "requests"] as const,
-  transactions: () => [...adminKeys.all, "payment", "transactions"] as const,
+  transactions: (page?: number, size?: number) => [...adminKeys.all, "payment", "transactions", page ?? 0, size ?? 20] as const,
+  transactionsByUser: (accountId: string, page?: number, size?: number) => [...adminKeys.all, "payment", "transactions", "user", accountId, page ?? 0, size ?? 20] as const,
+  transactionsByStatus: (status: string, page?: number, size?: number) => [...adminKeys.all, "payment", "transactions", "status", status, page ?? 0, size ?? 20] as const,
   planOptions: () => [...adminKeys.all, "payment", "plans"] as const,
 };
