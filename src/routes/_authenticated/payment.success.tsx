@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { accountApi } from '@/features/auth/services';
+import { useAuth } from '@/lib/auth';
 
 export const Route = createFileRoute("/_authenticated/payment/success")({
   component: PaymentSuccessPage,
@@ -10,6 +10,7 @@ export const Route = createFileRoute("/_authenticated/payment/success")({
 
 function PaymentSuccessPage() {
   const navigate = useNavigate();
+  const { reloadUser } = useAuth();
   const [reloading, setReloading] = useState(true);
 
   useEffect(() => {
@@ -17,7 +18,7 @@ function PaymentSuccessPage() {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       try {
-        await accountApi.me();
+        await reloadUser();
         console.log("✅ User info reloaded after payment");
       } catch (err) {
         console.error("❌ Failed to reload user:", err);
@@ -27,7 +28,7 @@ function PaymentSuccessPage() {
     };
 
     reloadUserInfo();
-  }, []);
+  }, [reloadUser]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 space-y-6">
