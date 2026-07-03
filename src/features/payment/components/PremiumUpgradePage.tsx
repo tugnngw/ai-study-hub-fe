@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { paymentApi } from "@/features/admin/services/paymentApi";
 import type { PlanOption } from "@/features/admin/types/admin.types";
-import { useAuth } from "@/features/auth/hooks/useAuth";
+import { accountApi } from "@/features/auth/services";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
 
@@ -19,11 +19,18 @@ const planNameToEnum: Record<string, string> = {
 export function PremiumUpgradePage() {
   const [plans, setPlans] = useState<PlanOption[]>([]);
   const [loading, setLoading] = useState(false);
-  const { user, refresh } = useAuth();
-  const currentPlan = user?.plan?.toUpperCase() || "FREE";
+  const [currentPlan, setCurrentPlan] = useState<string>("FREE");
 
   useEffect(() => {
-    paymentApi.getPlanOptions().then(setPlans);
+    Promise.all([
+      paymentApi.getPlanOptions(),
+      accountApi.me().catch(() => null)
+    ]).then(([plansData, userData]) => {
+      setPlans(plansData);
+      if (userData?.plan) {
+        setCurrentPlan(userData.plan.toUpperCase());
+      }
+    });
   }, []);
 
   const handlePayment = async (selectedPlan: PlanOption) => {
@@ -36,6 +43,14 @@ export function PremiumUpgradePage() {
     } catch (error) {
       toast.error("Lỗi tạo link thanh toán");
       setLoading(false);
+    }
+  };
+
+  const handleRefresh = async () => {
+    const userData = await accountApi.me().catch(() => null);
+    if (userData?.plan) {
+      setCurrentPlan(userData.plan.toUpperCase());
+      toast.success("Đã cập nhật thông tin gói");
     }
   };
 

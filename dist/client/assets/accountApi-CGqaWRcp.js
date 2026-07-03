@@ -1,0 +1,1 @@
+import{n as e}from"./api-CqMFJmLD.js";var t={me:()=>e(`/api/account/me`)};export{t};
