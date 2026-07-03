@@ -3,6 +3,8 @@ import { Cloud, Database, HardDrive } from "lucide-react";
 import { useDocuments } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useEffect, useState } from "react";
+import { accountApi } from "@/features/auth/services";
 
 export const Route = createFileRoute("/_authenticated/cloud")({
   component: CloudPage,
@@ -17,11 +19,19 @@ function formatBytes(n: number) {
 
 function CloudPage() {
   const docs = useDocuments();
+  const [storageGb, setStorageGb] = useState(1);
 
-  // Tính dung lượng đã dùng
+  useEffect(() => {
+    accountApi.me().then(user => {
+      if (user?.storageGb) {
+        setStorageGb(user.storageGb);
+      }
+    }).catch(() => {});
+  }, []);
+
   const used = docs.data?.reduce((sum, d) => sum + (d.fileSize ?? 0), 0) ?? 0;
-  const total = 1 * 1024 * 1024 * 1024; // 1 GB
-  const pct = Math.min((used / total) * 100, 100); // Giới hạn tối đa 100%
+  const total = storageGb * 1024 * 1024 * 1024;
+  const pct = Math.min((used / total) * 100, 100);
   const free = total - used;
   const isOverLimit = used > total;
 
