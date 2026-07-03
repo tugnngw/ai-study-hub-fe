@@ -142,7 +142,7 @@ export interface TransactionItem {
   id: string;
   plan: Exclude<PlanId, "FREE">;
   amount: number;
-  method: PaymentMethod;
+  method: string; // Changed from PaymentMethod to string
   date: string;
   status: TransactionStatus;
 }

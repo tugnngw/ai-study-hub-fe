@@ -16,6 +16,4 @@ export const adminKeys = {
   premiumRequests: () => [...adminKeys.all, "premium", "requests"] as const,
   transactions: () => [...adminKeys.all, "payment", "transactions"] as const,
   planOptions: () => [...adminKeys.all, "payment", "plans"] as const,
-  topUpMethods: () => [...adminKeys.all, "payment", "topup-methods"] as const,
-  bankInfo: () => [...adminKeys.all, "payment", "bank-info"] as const,
 };
