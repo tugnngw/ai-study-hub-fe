@@ -17,17 +17,16 @@ interface PaymentResponse {
   amount: number;
 }
 
-interface AdminTransactionResponse {
-  id: number;
+interface UserTransactionResponse {
+  id: string;
   accountId: string;
-  userEmail: string;
-  userName: string;
   planName: string;
   amount: number;
   status: string;
   description: string;
   transactionId: string;
   payosOrderCode: number;
+  paymentMethod: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -72,7 +71,8 @@ export const paymentApi = {
       method: "POST",
       body: { planId: PLAN_ID_MAP[planId] || 2 },
     }),
-  getTransactions: () => api<TransactionItem[]>("/api/payment/my-transactions"),
+  getTransactions: (): Promise<UserTransactionResponse[]> => 
+    api<UserTransactionResponse[]>("/api/payment/my-transactions"),
   getAllTransactions: (page: number = 0, size: number = 20) =>
     api<PaginatedResponse<AdminTransactionResponse>>(
       `/api/admin/transactions?page=${page}&size=${size}`
