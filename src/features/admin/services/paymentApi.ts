@@ -17,6 +17,29 @@ interface PaymentResponse {
   amount: number;
 }
 
+interface AdminTransactionResponse {
+  id: number;
+  accountId: string;
+  userEmail: string;
+  userName: string;
+  planName: string;
+  amount: number;
+  status: string;
+  description: string;
+  transactionId: string;
+  payosOrderCode: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface PaginatedResponse<T> {
+  content: T[];
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+}
+
 const PLAN_ID_MAP: Record<string, number> = {
   PRO: 2,
   PLUS: 3,
@@ -25,9 +48,8 @@ const PLAN_ID_MAP: Record<string, number> = {
 export const paymentApi = {
   getPlanOptions: async (): Promise<PlanOption[]> => {
     const plans = await api<BackendPlan[]>("/api/payment/plans");
-    // Filter active plans and exclude 'Basic' if not needed on UI (we map Pro/Premium)
     return plans
-      .filter((p) => p.name !== "Basic" && p.isActive)
+      .filter((p) => p.name !== "Free" && p.name !== "Basic" && p.isActive)
       .map((p) => {
         const isPremium = p.name === "Premium";
         return {
@@ -51,4 +73,34 @@ export const paymentApi = {
       body: { planId: PLAN_ID_MAP[planId] || 2 },
     }),
   getTransactions: () => api<TransactionItem[]>("/api/payment/transactions"),
+  getAllTransactions: (page: number = 0, size: number = 20) =>
+    api<PaginatedResponse<AdminTransactionResponse>>("/api/admin/transactions", {
+      method: "GET",
+      body: new URLSearchParams({
+        page: String(page),
+        size: String(size),
+      }).toString(),
+    }),
+  getTransactionsByUser: (accountId: string, page: number = 0, size: number = 20) =>
+    api<PaginatedResponse<AdminTransactionResponse>>(
+      `/api/admin/transactions/user/${accountId}`,
+      {
+        method: "GET",
+        body: new URLSearchParams({
+          page: String(page),
+          size: String(size),
+        }).toString(),
+      },
+    ),
+  getTransactionsByStatus: (status: string, page: number = 0, size: number = 20) =>
+    api<PaginatedResponse<AdminTransactionResponse>>(
+      `/api/admin/transactions/status/${status}`,
+      {
+        method: "GET",
+        body: new URLSearchParams({
+          page: String(page),
+          size: String(size),
+        }).toString(),
+      },
+    ),
 };
