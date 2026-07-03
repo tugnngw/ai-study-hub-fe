@@ -1,6 +1,6 @@
 // src/components/app-shell.tsx
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import {
   LayoutDashboard,
   FolderKanban,
@@ -67,13 +67,20 @@ function getInitialCollapsed(): boolean {
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const { user, logout } = useAuth();
+  const { user, logout, reloadUser } = useAuth();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const search = useRouterState({ select: (s) => s.location.search }) as { docId?: number | string };
   const { data: documents } = useDocuments();
   const [collapsed, setCollapsedState] = useState(getInitialCollapsed);
   const { theme, toggleTheme } = useTheme();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      reloadUser().catch(() => {});
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [reloadUser]);
 
   const setCollapsed = (value: boolean) => {
     setCollapsedState(value);
