@@ -38,6 +38,8 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedCloudRouteImport } from './routes/_authenticated/cloud'
 import { Route as AuthenticatedAiRouteImport } from './routes/_authenticated/ai'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedPaymentSuccessRouteImport } from './routes/_authenticated/payment.success'
+import { Route as AuthenticatedPaymentCancelRouteImport } from './routes/_authenticated/payment.cancel'
 import { Route as AuthenticatedFoldersIdRouteImport } from './routes/_authenticated/folders.$id'
 import { Route as AuthenticatedDocumentsIdRouteImport } from './routes/_authenticated/documents.$id'
 
@@ -187,6 +189,18 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedPaymentSuccessRoute =
+  AuthenticatedPaymentSuccessRouteImport.update({
+    id: '/payment/success',
+    path: '/payment/success',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPaymentCancelRoute =
+  AuthenticatedPaymentCancelRouteImport.update({
+    id: '/payment/cancel',
+    path: '/payment/cancel',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedFoldersIdRoute = AuthenticatedFoldersIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -230,6 +244,8 @@ export interface FileRoutesByFullPath {
   '/auth/': typeof AuthIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
+  '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
+  '/payment/success': typeof AuthenticatedPaymentSuccessRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -260,6 +276,8 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
+  '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
+  '/payment/success': typeof AuthenticatedPaymentSuccessRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -294,6 +312,8 @@ export interface FileRoutesById {
   '/auth/': typeof AuthIndexRoute
   '/_authenticated/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/_authenticated/folders/$id': typeof AuthenticatedFoldersIdRoute
+  '/_authenticated/payment/cancel': typeof AuthenticatedPaymentCancelRoute
+  '/_authenticated/payment/success': typeof AuthenticatedPaymentSuccessRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -328,6 +348,8 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/documents/$id'
     | '/folders/$id'
+    | '/payment/cancel'
+    | '/payment/success'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -358,6 +380,8 @@ export interface FileRouteTypes {
     | '/auth'
     | '/documents/$id'
     | '/folders/$id'
+    | '/payment/cancel'
+    | '/payment/success'
   id:
     | '__root__'
     | '/'
@@ -391,6 +415,8 @@ export interface FileRouteTypes {
     | '/auth/'
     | '/_authenticated/documents/$id'
     | '/_authenticated/folders/$id'
+    | '/_authenticated/payment/cancel'
+    | '/_authenticated/payment/success'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -606,6 +632,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/payment/success': {
+      id: '/_authenticated/payment/success'
+      path: '/payment/success'
+      fullPath: '/payment/success'
+      preLoaderRoute: typeof AuthenticatedPaymentSuccessRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/payment/cancel': {
+      id: '/_authenticated/payment/cancel'
+      path: '/payment/cancel'
+      fullPath: '/payment/cancel'
+      preLoaderRoute: typeof AuthenticatedPaymentCancelRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/folders/$id': {
       id: '/_authenticated/folders/$id'
       path: '/$id'
@@ -660,6 +700,8 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
   AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRoute
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
+  AuthenticatedPaymentCancelRoute: typeof AuthenticatedPaymentCancelRoute
+  AuthenticatedPaymentSuccessRoute: typeof AuthenticatedPaymentSuccessRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -674,6 +716,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSharedRoute: AuthenticatedSharedRoute,
   AuthenticatedTransactionsRoute: AuthenticatedTransactionsRoute,
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,
+  AuthenticatedPaymentCancelRoute: AuthenticatedPaymentCancelRoute,
+  AuthenticatedPaymentSuccessRoute: AuthenticatedPaymentSuccessRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

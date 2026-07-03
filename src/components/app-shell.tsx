@@ -88,7 +88,17 @@ export function AppShell({ children }: { children: ReactNode }) {
   const openDoc = useDocument(openDocId || "");
 
   const used = documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
-  const total = 1 * 1024 * 1024 * 1024;
+  
+  const getQuotaBytes = (planName?: string) => {
+    switch (planName?.toUpperCase()) {
+      case "BASIC": return 5 * 1024 * 1024 * 1024;
+      case "PRO": return 20 * 1024 * 1024 * 1024;
+      case "PREMIUM": return 100 * 1024 * 1024 * 1024;
+      default: return 1 * 1024 * 1024 * 1024; // FREE
+    }
+  };
+  
+  const total = getQuotaBytes(user?.plan);
   const pct = Math.min(100, (used / total) * 100);
 
   const handleLogout = async () => {
@@ -228,7 +238,14 @@ export function AppShell({ children }: { children: ReactNode }) {
                       {initial}
                     </div>
                     <div className="hidden sm:flex flex-col items-start leading-tight">
-                      <span className="text-xs font-medium">{user?.fullName ?? "User"}</span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-xs font-medium">{user?.fullName ?? "User"}</span>
+                        {user?.plan && user.plan !== "FREE" && (
+                          <span className="text-[9px] font-bold bg-amber-500/10 text-amber-600 px-1.5 py-0.5 rounded-full border border-amber-500/20">
+                            {user.plan}
+                          </span>
+                        )}
+                      </div>
                       <span className="text-[10px] text-muted-foreground">@{user?.username ?? "user"}</span>
                     </div>
                   </button>

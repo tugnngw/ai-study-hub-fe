@@ -35,6 +35,7 @@ export interface User {
   role: string;
   status: string;
   authProvider: string;
+  plan?: "FREE" | "BASIC" | "PRO" | "PREMIUM";
   createdAt: string;
   updatedAt: string;
 }
