@@ -74,33 +74,15 @@ export const paymentApi = {
     }),
   getTransactions: () => api<TransactionItem[]>("/api/payment/transactions"),
   getAllTransactions: (page: number = 0, size: number = 20) =>
-    api<PaginatedResponse<AdminTransactionResponse>>("/api/admin/transactions", {
-      method: "GET",
-      body: new URLSearchParams({
-        page: String(page),
-        size: String(size),
-      }).toString(),
-    }),
+    api<PaginatedResponse<AdminTransactionResponse>>(
+      `/api/admin/transactions?page=${page}&size=${size}`
+    ),
   getTransactionsByUser: (accountId: string, page: number = 0, size: number = 20) =>
     api<PaginatedResponse<AdminTransactionResponse>>(
-      `/api/admin/transactions/user/${accountId}`,
-      {
-        method: "GET",
-        body: new URLSearchParams({
-          page: String(page),
-          size: String(size),
-        }).toString(),
-      },
+      `/api/admin/transactions/user/${accountId}?page=${page}&size=${size}`
     ),
   getTransactionsByStatus: (status: string, page: number = 0, size: number = 20) =>
     api<PaginatedResponse<AdminTransactionResponse>>(
-      `/api/admin/transactions/status/${status}`,
-      {
-        method: "GET",
-        body: new URLSearchParams({
-          page: String(page),
-          size: String(size),
-        }).toString(),
-      },
+      `/api/admin/transactions/status/${status}?page=${page}&size=${size}`
     ),
 };
