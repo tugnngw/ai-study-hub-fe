@@ -8,3 +8,4 @@ export * from "./useAdminReportHistory";
 export * from "./usePremium";
 export * from "./usePayment";
 export * from "./useAdminDocuments";
+export * from "./useAdminTransactions";

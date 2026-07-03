@@ -9,4 +9,5 @@ export * from "./AdminTrashPage";
 export * from "./AdminDocumentsPage";
 export * from "./AdminProfilePage";
 export * from "./AdminPremiumPage";
+export * from "./AdminTransactionsPage";
 export * from "./PlanBadge";

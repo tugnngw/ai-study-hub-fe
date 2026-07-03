@@ -20,11 +20,11 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { usePremiumStats, usePremiumRequests } from "../hooks";
-import type { PremiumRequestStatus } from "../types/admin.types";
-import { PlanBadge } from "./PlanBadge";
+import { useAdminTransactions } from "../hooks";
+import { Loader2 } from "lucide-react";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
+const fmtDate = (date: string) => new Date(date).toLocaleString("vi-VN");
 
 function StatCard({
   label,
@@ -74,26 +74,37 @@ function StatCard({
   );
 }
 
-const statusBadge: Record<
-  PremiumRequestStatus,
-  { label: string; cls: string }
-> = {
-  Pending: { label: "Pending", cls: "bg-amber-500/10 text-amber-600" },
-  Approved: { label: "Approved", cls: "bg-emerald-500/10 text-emerald-600" },
-  Rejected: { label: "Rejected", cls: "bg-destructive/10 text-destructive" },
+const statusBadge: Record<string, { label: string; cls: string }> = {
+  PENDING: { label: "Chờ xử lý", cls: "bg-amber-500/10 text-amber-600" },
+  PAID: { label: "Thành công", cls: "bg-emerald-500/10 text-emerald-600" },
+  FAILED: { label: "Thất bại", cls: "bg-destructive/10 text-destructive" },
+  CANCELLED: { label: "Đã hủy", cls: "bg-gray-500/10 text-gray-600" },
 };
 
-type TabKey = "all" | "PLUS" | "PRO";
+type TabKey = "all" | "PAID" | "PENDING";
 
 export const AdminPremiumPage: React.FC = () => {
-  const { data: stats } = usePremiumStats();
-  const { data: requests = [] } = usePremiumRequests();
   const [tab, setTab] = useState<TabKey>("all");
+  const { data, isLoading } = useAdminTransactions(0, 50);
+
+  const transactions = data?.content || [];
+  const totalPaid = transactions.filter(t => t.status === "PAID").length;
+  const totalRevenue = transactions
+    .filter(t => t.status === "PAID")
+    .reduce((sum, t) => sum + t.amount, 0);
 
   const filtered = useMemo(
-    () => (tab === "all" ? requests : requests.filter((r) => r.plan === tab)),
-    [requests, tab],
+    () => (tab === "all" ? transactions : transactions.filter((t) => t.status === tab)),
+    [transactions, tab],
   );
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -109,29 +120,29 @@ export const AdminPremiumPage: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard
           label="Total Premium Users"
-          value={String(stats?.totalPremiumUsers ?? "—")}
-          trend={stats?.totalPremiumTrend ?? 0}
+          value={String(totalPaid)}
+          trend={0}
           icon={<Crown className="h-5 w-5" />}
           tone="bg-primary/10 text-primary"
         />
         <StatCard
           label="Pending Requests"
-          value={String(stats?.pendingRequests ?? "—")}
-          trend={stats?.pendingRequestsTrend ?? 0}
+          value={String(transactions.filter(t => t.status === "PENDING").length)}
+          trend={0}
           icon={<Clock className="h-5 w-5" />}
           tone="bg-amber-500/10 text-amber-600"
         />
         <StatCard
           label="Revenue This Month"
-          value={stats ? fmtVnd(stats.revenueThisMonth) : "—"}
-          trend={stats?.revenueTrend ?? 0}
+          value={fmtVnd(totalRevenue)}
+          trend={0}
           icon={<Wallet className="h-5 w-5" />}
           tone="bg-emerald-500/10 text-emerald-600"
         />
         <StatCard
-          label="Expired Subscriptions"
-          value={String(stats?.expiredSubscriptions ?? "—")}
-          trend={stats?.expiredTrend ?? 0}
+          label="Total Transactions"
+          value={String(transactions.length)}
+          trend={0}
           icon={<XCircle className="h-5 w-5" />}
           tone="bg-destructive/10 text-destructive"
         />
@@ -140,13 +151,13 @@ export const AdminPremiumPage: React.FC = () => {
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
           <CardTitle className="text-base">
-            Lịch sử giao dịch nâng cấp
+            Lịch sử giao dịch thanh toán
           </CardTitle>
           <Tabs value={tab} onValueChange={(v) => setTab(v as TabKey)}>
             <TabsList>
               <TabsTrigger value="all">Tất cả</TabsTrigger>
-              <TabsTrigger value="PLUS">Plus</TabsTrigger>
-              <TabsTrigger value="PRO">Pro</TabsTrigger>
+              <TabsTrigger value="PAID">Thành công</TabsTrigger>
+              <TabsTrigger value="PENDING">Chờ xử lý</TabsTrigger>
             </TabsList>
           </Tabs>
         </CardHeader>
@@ -154,12 +165,12 @@ export const AdminPremiumPage: React.FC = () => {
           <Table>
             <TableHeader>
               <TableRow className="[&>th]:text-[14px] [&>th]:font-semibold [&>th]:text-foreground">
-                <TableHead>Name</TableHead>
+                <TableHead>User</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Plan</TableHead>
-                <TableHead>Registration Date</TableHead>
-                <TableHead>Payment Proof</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>Gói</TableHead>
+                <TableHead>Số tiền</TableHead>
+                <TableHead>Trạng thái</TableHead>
+                <TableHead>Ngày tạo</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -173,27 +184,24 @@ export const AdminPremiumPage: React.FC = () => {
                   </TableCell>
                 </TableRow>
               ) : (
-                filtered.map((r) => {
-                  const s = statusBadge[r.status];
+                filtered.map((tx) => {
+                  const s = statusBadge[tx.status] || statusBadge.PENDING;
                   return (
                     <TableRow
-                      key={r.id}
+                      key={tx.id}
                       className="[&>td]:py-4 [&>td]:text-[15px]"
                     >
-                      <TableCell className="font-semibold">{r.name}</TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {r.email}
-                      </TableCell>
-                      <TableCell>
-                        <PlanBadge plan={r.plan} />
+                      <TableCell className="font-semibold">
+                        {tx.userName || "N/A"}
                       </TableCell>
                       <TableCell className="text-muted-foreground">
-                        {r.registrationDate}
+                        {tx.userEmail || "N/A"}
                       </TableCell>
                       <TableCell>
-                        <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-                          <FileCheck className="h-4 w-4" /> {r.paymentMethod}
-                        </span>
+                        <Badge variant="outline">{tx.planName}</Badge>
+                      </TableCell>
+                      <TableCell className="font-semibold">
+                        {fmtVnd(tx.amount)}
                       </TableCell>
                       <TableCell>
                         <Badge
@@ -202,6 +210,9 @@ export const AdminPremiumPage: React.FC = () => {
                         >
                           {s.label}
                         </Badge>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm">
+                        {fmtDate(tx.createdAt)}
                       </TableCell>
                     </TableRow>
                   );
