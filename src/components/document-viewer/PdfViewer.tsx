@@ -99,19 +99,24 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
               const ct = downloadResp.headers.get("content-type") || "";
               console.log("[PdfViewer] Download OK:", downloadResp.status, ct);
 
-              if (ct.includes("json")) {
-                const data = await downloadResp.json();
-                const signedUrl = data?.url || data?.data?.url || data?.signedUrl;
-                if (signedUrl) {
-                  console.log("[PdfViewer] Fetching signed URL...");
-                  const pdfResp = await fetch(signedUrl, {
-                    headers: token ? { Authorization: `Bearer ${token}` } : {},
-                  });
-                  if (pdfResp.ok) {
-                    const b = await pdfResp.blob();
-                    console.log("[PdfViewer] Signed URL blob:", b.type, b.size);
-                    if (b.size > 0) blob = b;
+              if (ct.includes("json") || ct.includes("text")) {
+                const text = await downloadResp.text();
+                try {
+                  const data = JSON.parse(text);
+                  const signedUrl = data?.url || data?.data?.url || data?.signedUrl || data?.cloudinaryUrl;
+                  if (signedUrl) {
+                    console.log("[PdfViewer] Fetching signed URL from JSON...");
+                    const pdfResp = await fetch(signedUrl, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+                    if (pdfResp.ok) {
+                      const b = await pdfResp.blob();
+                      console.log("[PdfViewer] Signed URL blob:", b.type, b.size);
+                      if (b.size > 0) blob = b;
+                    }
                   }
+                } catch {
+                  // Not JSON, try direct blob
+                  const b = new Blob([text], { type: "application/pdf" });
+                  if (b.size > 500) blob = b;
                 }
               } else {
                 const b = await downloadResp.blob();
