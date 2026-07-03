@@ -214,8 +214,8 @@ export const quizApi = {
       api<Quiz[]>(`/api/quizzes?documentId=${documentId}`),
   generate: (input: { documentIds: string[]; numberOfQuestions?: number } | string, questionCount = 10): Promise<Quiz> => {
     const body = typeof input === "string" 
-      ? { documentId: input, questionCount }
-      : { documentId: input.documentIds[0], numberOfQuestions: input.numberOfQuestions ?? questionCount };
+      ? { documentIds: [input], numberOfQuestions: questionCount }
+      : { documentIds: input.documentIds, numberOfQuestions: input.numberOfQuestions ?? questionCount };
     return api<Quiz>("/api/quizzes/generate", {
       method: "POST",
       body,
@@ -237,8 +237,8 @@ export const flashcardApi = {
       api<Flashcard[]>(`/api/flashcards?documentId=${documentId}`),
   generate: (input: { documentIds: string[]; numberOfCards?: number } | string): Promise<Flashcard[]> => {
     const body = typeof input === "string"
-      ? { documentId: input }
-      : { documentId: input.documentIds[0], numberOfCards: input.numberOfCards };
+      ? { documentIds: [input] }
+      : { documentIds: input.documentIds, numberOfCards: input.numberOfCards };
     return api<Flashcard[]>("/api/flashcards/generate", {
       method: "POST",
       body,
