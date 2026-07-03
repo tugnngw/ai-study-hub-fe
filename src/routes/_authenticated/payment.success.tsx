@@ -15,13 +15,18 @@ function PaymentSuccessPage() {
 
   useEffect(() => {
     const reloadUserInfo = async () => {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
       try {
         await reloadUser();
         console.log("✅ User info reloaded after payment");
       } catch (err) {
         console.error("❌ Failed to reload user:", err);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        try {
+          await reloadUser();
+          console.log("✅ User info reloaded on retry");
+        } catch (retryErr) {
+          console.error("❌ Retry failed:", retryErr);
+        }
       } finally {
         setReloading(false);
       }

@@ -90,22 +90,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const refreshToken = res?.refreshToken;
 
     if (accessToken && refreshToken) {
-      // Lưu token
       tokenStore.set(accessToken);
       tokenStore.setRefresh(refreshToken);
 
-      const userObj: User = {
-        id: res.userId,
-        username: res.username,
-        email: res.email,
-        fullName: res.fullName,
-        role: res.role,
-        status: "ACTIVE",
-        authProvider: "LOCAL",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      setUser(userObj);
+      try {
+        const fullUser = await accountApi.me();
+        setUser(fullUser);
+        console.log("✅ Login success, user loaded with storageGb:", fullUser.storageGb);
+      } catch (error) {
+        console.error("Failed to fetch full user info after login:", error);
+        const userObj: User = {
+          id: res.userId,
+          username: res.username,
+          email: res.email,
+          fullName: res.fullName,
+          role: res.role,
+          status: "ACTIVE",
+          authProvider: "LOCAL",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        setUser(userObj);
+      }
     } else {
       throw new Error("Login failed: Missing tokens from backend.");
     }
@@ -116,18 +122,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (res?.accessToken && res.refreshToken) {
       tokenStore.set(res.accessToken);
       tokenStore.setRefresh(res.refreshToken);
-      const userObj: User = {
-        id: res.userId,
-        username: res.username,
-        email: res.email,
-        fullName: res.fullName,
-        role: res.role,
-        status: "ACTIVE",
-        authProvider: "LOCAL",
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      setUser(userObj);
+      
+      try {
+        const fullUser = await accountApi.me();
+        setUser(fullUser);
+        console.log("✅ Register success, user loaded with storageGb:", fullUser.storageGb);
+      } catch (error) {
+        console.error("Failed to fetch full user info after register:", error);
+        const userObj: User = {
+          id: res.userId,
+          username: res.username,
+          email: res.email,
+          fullName: res.fullName,
+          role: res.role,
+          status: "ACTIVE",
+          authProvider: "LOCAL",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        setUser(userObj);
+      }
     } else {
       throw new Error("Registration failed: Missing tokens from backend.");
     }
