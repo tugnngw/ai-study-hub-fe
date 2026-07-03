@@ -137,7 +137,38 @@ export function useDocuments() {
 export function useDocumentsByFolder(folderId: string) {
   return useQuery({
     queryKey: docKeys.byFolder(folderId),
-    queryFn: () => documentApi.listByFolder(folderId),
+    queryFn: async () => {
+      try {
+        return await documentApi.listByFolder(folderId);
+      } catch (err: unknown) {
+        const status = (err as { status?: number }).status;
+        if (status === 401 || status === 403) {
+          console.log("[useDocumentsByFolder] Owner folder access failed, falling back to shared documents");
+          // Fallback: get all shared documents and filter by folderId
+          const sharedItems = await shareApi.listSharedWithMe();
+          // Filter shares that belong to this folder and convert to Document-like objects
+          const docs: Document[] = sharedItems
+            .filter(share => share.folderId === folderId && share.documentId)
+            .map(share => ({
+              id: share.documentId!,
+              ownerId: share.ownerId, // This is the owner's ID, not the current user's
+              folderId: share.folderId!,
+              title: share.documentTitle || "Untitled Document",
+              description: null,
+              summary: null,
+              status: "READY", // Assume shared docs are ready to view
+              cloudinaryUrl: share.cloudinaryUrl,
+              publicId: null,
+              mimeType: null, // We don't have this from share, but PDF viewer can work with cloudinaryUrl
+              subjectId: null,
+              createdAt: share.createdAt,
+              updatedAt: share.createdAt,
+            }));
+          return docs;
+        }
+        throw err;
+      }
+    },
     enabled: !!folderId,
   });
 }
@@ -147,9 +178,18 @@ export function useDocument(id: string) {
   console.log("[TRACE-4] useDocument id:", id, "enabled:", enabled);
   return useQuery({
     queryKey: docKeys.detail(id),
-    queryFn: () => {
+    queryFn: async () => {
       console.log("[TRACE-5] queryFn executing for id:", id);
-      return documentApi.getById(id);
+      try {
+        return await documentApi.getById(id);
+      } catch (err: unknown) {
+        const status = (err as { status?: number }).status;
+        if (status === 401 || status === 403) {
+          console.log("[useDocument] Owner fetch failed, trying shared endpoint");
+          return documentApi.getSharedById(id);
+        }
+        throw err;
+      }
     },
     enabled: enabled,
     // Thêm polling khi document đang processing
@@ -164,7 +204,7 @@ export function useDocument(id: string) {
     // Refetch khi focus nếu đang processing
     refetchOnWindowFocus: (query) => {
       const data = query.state.data as Document | undefined;
-      return data?.status === "processing";
+      return data?.status === "PROCESSING";
     },
   });
 }

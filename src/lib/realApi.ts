@@ -110,6 +110,8 @@ export const documentApi = {
       api<Document[]>(`/api/documents/folder/${folderId}`),
   getById: (id: string): Promise<Document> =>
       api<Document>(`/api/documents/${id}`),
+  getSharedById: (id: string): Promise<Document> =>
+      api<Document>(`/api/documents/shared/${id}`),
 
   upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
     const fd = new FormData();

@@ -9,7 +9,6 @@ export const authApi = {
     api<void>("/api/auth/register", { method: "POST", body: data }),
 
   login: async (data: LoginRequest): Promise<any> => {
-    localStorage.clear();
     const res = await api<any>("/api/auth/login", {
       method: "POST",
       body: data,
