@@ -1,3 +1,4 @@
+// src/features/payment/components/PremiumUpgradePage.tsx
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Check, Loader2, Crown, CheckCircle2 } from "lucide-react";
@@ -6,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { paymentApi } from "@/features/admin/services/paymentApi";
-import type { PlanOption } from "@/features/admin/types/admin.types";
 import { accountApi } from "@/features/auth/services";
+import type { PlanOption } from "@/features/admin/types/admin.types";
+import { useAuth } from "@/lib/auth";
+import { Navigate } from "@tanstack/react-router";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
 
@@ -20,18 +23,28 @@ export function PremiumUpgradePage() {
   const [plans, setPlans] = useState<PlanOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<string>("FREE");
+  const { reloadUser } = useAuth();
 
+  // Auto-refresh user on mount to sync storage info
   useEffect(() => {
-    Promise.all([
-      paymentApi.getPlanOptions(),
-      accountApi.me().catch(() => null)
-    ]).then(([plansData, userData]) => {
-      setPlans(plansData);
-      if (userData?.plan) {
-        setCurrentPlan(userData.plan.toUpperCase());
+    const init = async () => {
+      try {
+        await reloadUser();
+        const [plansData, userData] = await Promise.all([
+          paymentApi.getPlanOptions(),
+          accountApi.me()
+        ]);
+        setPlans(plansData);
+        if (userData?.plan) {
+          setCurrentPlan(userData.plan.toUpperCase());
+        }
+        console.log("✅ Premium page loaded, user storage:", userData?.storageGb);
+      } catch (error) {
+        console.error("Failed to load premium page:", error);
       }
-    });
-  }, []);
+    };
+    init();
+  }, [reloadUser]);
 
   const handlePayment = async (selectedPlan: PlanOption) => {
     setLoading(true);
@@ -47,10 +60,14 @@ export function PremiumUpgradePage() {
   };
 
   const handleRefresh = async () => {
-    const userData = await accountApi.me().catch(() => null);
-    if (userData?.plan) {
-      setCurrentPlan(userData.plan.toUpperCase());
-      toast.success("Đã cập nhật thông tin gói");
+    try {
+      const userData = await accountApi.me();
+      if (userData?.plan) {
+        setCurrentPlan(userData.plan.toUpperCase());
+        toast.success("Đã cập nhật thông tin gói");
+      }
+    } catch (error) {
+      toast.error("Không thể cập nhật thông tin");
     }
   };
 
@@ -58,6 +75,21 @@ export function PremiumUpgradePage() {
     const planEnum = planNameToEnum[planName];
     return currentPlan === planEnum;
   };
+
+  // Auto-refresh user info when component mounts to ensure fresh data
+  useEffect(() => {
+    const refreshUser = async () => {
+      try {
+        const userData = await accountApi.me();
+        if (userData?.plan && userData.storageGb) {
+          setCurrentPlan(userData.plan.toUpperCase());
+        }
+      } catch (error) {
+        console.error("Auto-refresh user failed:", error);
+      }
+    };
+    refreshUser();
+  }, []);
 
   return (
     <div className="space-y-6">
