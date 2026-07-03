@@ -89,16 +89,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const used = documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
   
-  const getQuotaBytes = (planName?: string) => {
-    switch (planName?.toUpperCase()) {
-      case "BASIC": return 5 * 1024 * 1024 * 1024;
-      case "PRO": return 20 * 1024 * 1024 * 1024;
-      case "PREMIUM": return 100 * 1024 * 1024 * 1024;
-      default: return 1 * 1024 * 1024 * 1024; // FREE
-    }
-  };
-  
-  const total = getQuotaBytes(user?.plan);
+  const total = (user?.storageGb || 1) * 1024 * 1024 * 1024;
   const pct = Math.min(100, (used / total) * 100);
 
   const handleLogout = async () => {
