@@ -96,7 +96,6 @@ export function ContentPanel({
                 ))}
             </div>
 
-            {/* File pill row */}
             {tab === "original" && (folderDocs.data?.length ?? 0) > 0 && (
                 <div className="flex gap-2 px-4 py-2.5 border-b border-border overflow-x-auto items-center">
                     <button
@@ -135,7 +134,6 @@ export function ContentPanel({
                 </div>
             )}
 
-            {/* Folder navigation - only show when viewing PDF */}
             {tab === "original" && docId && (
                 <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30">
                     <div className="flex items-center gap-3">
@@ -163,7 +161,6 @@ export function ContentPanel({
             <div className="flex-1 overflow-y-auto p-6">
                 {tab === "original" ? (
                     docId && doc.data ? (
-                        // ✅ QUAN TRỌNG: Đã thêm className="flex-1 min-h-0 w-full h-full" vào đây
                         <DocumentViewer document={doc.data} className="flex-1 min-h-0 w-full h-full" />
                     ) : doc.isLoading ? (
                         <div className="flex items-center justify-center h-full">

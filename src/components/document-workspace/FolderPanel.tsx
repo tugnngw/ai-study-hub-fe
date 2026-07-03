@@ -17,7 +17,6 @@ export function FolderPanel({
 }) {
     return (
         <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
-            {/* Folder details - hidden when viewing a document */}
             {!docId && (
                 <div className="rounded-xl bg-gradient-soft p-3 border border-border/50">
                     <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-1">

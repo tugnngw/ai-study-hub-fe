@@ -1,6 +1,3 @@
-// src/features/documents/services/ragApi.ts
-// RAG (Retrieval-Augmented Generation) API — document analysis and Q&A
-
 import { api } from "@/lib/api";
 import type { AskRequest, AskResponse } from "@/lib/types";
 

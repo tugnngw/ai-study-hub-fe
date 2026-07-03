@@ -33,7 +33,6 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
   const allQuestions = shuffledQuestions ?? flatQuestions;
   const current = allQuestions[currentIdx];
 
-  // Shuffle options once per question
   useEffect(() => {
     const newMap = new Map(shuffledOptions);
     allQuestions.forEach(({ q }) => {
@@ -54,7 +53,6 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
   const isRevealed = current ? revealed.has(current.q.id) : false;
   const options = current ? (shuffledOptions.get(current.q.id) ?? []) : [];
 
-  // Correct answer label (map correctAnswer label through shuffle)
   const correctLabel = current
     ? (shuffledOptions.get(current.q.id)?.find((o) => o.label === current.q.correctAnswer)?.label ?? "A")
     : undefined;

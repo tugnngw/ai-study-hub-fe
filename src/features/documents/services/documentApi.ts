@@ -1,6 +1,3 @@
-// src/features/documents/services/documentApi.ts
-// Document API — CRUD operations for documents
-
 import { api } from "@/lib/api";
 import type {
   Document,
@@ -15,10 +12,7 @@ export const documentApi = {
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
 
-  getById: (id: string) => {
-    console.log("[TRACE-6] documentApi.getById called with id:", id);
-    return api<Document>(`/api/documents/${id}`);
-  },
+  getById: (id: string) => api<Document>(`/api/documents/${id}`),
 
   upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
     const fd = new FormData();

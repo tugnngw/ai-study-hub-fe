@@ -35,9 +35,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const initializeAuth = async () => {
       const accessToken = tokenStore.get();
-      const refreshToken = tokenStore.getRefresh();
 
-      if (!accessToken || !refreshToken) {
+      // Nếu không có access token, người dùng chưa đăng nhập
+      if (!accessToken) {
         setIsLoading(false);
         setUser(null);
         return;
@@ -47,8 +47,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const u = await accountApi.me();
         setUser(u);
       } catch (err: any) {
-        console.error("Auth initialization failed, clearing session:", err);
-        tokenStore.clear();
         setUser(null);
       } finally {
         setIsLoading(false);
@@ -86,9 +84,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // --- Authentication Functions ---
   const login = async (username: string, password: string) => {
-    // Clear old tokens
-    tokenStore.clear();
-
     const res: AuthResponse = await authApi.login({ username, password });
 
     const accessToken = res?.accessToken;
@@ -208,7 +203,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           value={{
             user,
             isLoading,
-            isAuthenticated: !!user,
+            isAuthenticated: !!tokenStore.get(),
             login,
             register,
             logout,

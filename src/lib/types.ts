@@ -67,7 +67,7 @@ export interface Document {
   title: string;
   description?: string | null;
   summary?: string | null;
-  status: "processing" | "ready" | "failed" | "deleted";
+  status: "processing" | "ready" | "failed" | "deleted" | "PROCESSING" | "READY" | "REJECT" | "COMPLETED";
   cloudinaryUrl?: string | null;
   publicId?: string | null;
   mimeType?: string | null;
@@ -123,6 +123,7 @@ export interface ShareResponse {
   documentTitle: string | null;
   folderName: string | null;
   fileCount: number | null;
+  cloudinaryUrl: string | null; // added field
 }
 
 export interface ShareRecipient {
