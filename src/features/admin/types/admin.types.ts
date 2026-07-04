@@ -49,6 +49,10 @@ export interface DocumentResponse {
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
+  folderId?: string;
+  subjectId?: number;
+  mimeType?: string;
+  cloudinaryUrl?: string;
 }
 
 // ── Reported / managed files ───────────────────────────
