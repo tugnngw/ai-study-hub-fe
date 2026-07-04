@@ -12,7 +12,7 @@ import {
   shareApi,
   summaryApi,
 } from "./realApi";
-import { tokenStore } from "./api";
+import { tokenStore, ApiError } from "./api";
 import type {
   Document,
   Folder,
@@ -25,6 +25,20 @@ import type {
   ReportDocumentRequest,
 } from "./types";
 
+function handleAccountLockedError(error: unknown): boolean {
+  if (error instanceof ApiError && error.status === 403) {
+    const data = error.data as any;
+    if (data?.accountLocked === true || data?.error === "ACCOUNT_LOCKED") {
+      if (typeof window !== "undefined") {
+        alert("Tài khoản của bạn đã bị khóa bởi quản trị viên.");
+        window.location.href = "/login";
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
 // ================================================================
 // AUTH
 // ================================================================
@@ -33,6 +47,9 @@ export function useLogin() {
   return useMutation({
     mutationFn: (input: { username: string; password: string }) =>
       authApi.login(input),
+    onError: (error) => {
+      handleAccountLockedError(error);
+    }
   });
 }
 
