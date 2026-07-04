@@ -44,9 +44,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       try {
+        // Validate token by calling /me endpoint
         const u = await accountApi.me();
         setUser(u);
+        console.log("✅ Auth initialized, user:", u.username);
       } catch (err: any) {
+        // Token is invalid or expired
+        console.warn("⚠️ Token validation failed during init:", err.status);
+        tokenStore.clear();
         setUser(null);
       } finally {
         setIsLoading(false);
@@ -56,24 +61,58 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     initializeAuth();
   }, []);
 
+  // --- Listen for token changes (auto-logout when token cleared) ---
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "auth_token" || e.key === "refresh_token") {
+        console.log("🔔 Token changed in another tab, clearing local user state");
+        setUser(null);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  // --- Listen for sessionStorage changes within same tab ---
+  useEffect(() => {
+    const handleSessionChange = () => {
+      const token = tokenStore.get();
+      if (!token && user) {
+        console.log("⚠️ Session cleared, logging out");
+        setUser(null);
+      }
+    };
+
+    window.addEventListener("storage", handleSessionChange);
+    return () => window.removeEventListener("storage", handleSessionChange);
+  }, [user]);
+
   // --- Periodically refresh token (every 10 min) ---
   useEffect(() => {
     const interval = setInterval(async () => {
-      if (!tokenStore.get() || !tokenStore.getRefresh()) {
+      const token = tokenStore.get();
+      const refreshToken = tokenStore.getRefresh();
+
+      if (!token || !refreshToken) {
         setUser(null);
         clearInterval(interval);
         return;
       }
+
       try {
         const res = await authApi.refresh();
         if (res?.accessToken && res.refreshToken) {
           tokenStore.set(res.accessToken);
           tokenStore.setRefresh(res.refreshToken);
+          console.log("✅ Token refreshed successfully");
         } else {
+          console.warn("⚠️ Refresh response invalid");
           tokenStore.clear();
           setUser(null);
         }
-      } catch {
+      } catch (err) {
+        console.error("❌ Token refresh failed:", err);
         tokenStore.clear();
         setUser(null);
       }
@@ -154,9 +193,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Ignore logout API error
     }
 
+    // Clear session immediately
     tokenStore.clear();
     setUser(null);
+    console.log("✅ Logged out successfully");
 
+    // Redirect to login page
     if (typeof window !== "undefined") {
       window.location.href = "/auth/login";
     }
@@ -217,7 +259,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           value={{
             user,
             isLoading,
-            isAuthenticated: !!tokenStore.get(),
+            isAuthenticated: !!user,
             login,
             register,
             logout,

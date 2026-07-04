@@ -6,25 +6,39 @@ export const API_BASE =
 const TOKEN_KEY = "auth_token";
 const REFRESH_KEY = "refresh_token";
 
+// Use sessionStorage instead of localStorage to keep sessions separate per tab
+const storage = typeof window !== "undefined" ? sessionStorage : null;
+
 export const tokenStore = {
   get: () => {
-    if (typeof window === "undefined") return null;
-    const token = localStorage.getItem(TOKEN_KEY);
+    if (!storage) return null;
+    const token = storage.getItem(TOKEN_KEY);
     return token;
   },
   set: (t: string) => {
-    localStorage.setItem(TOKEN_KEY, t);
+    if (!storage) return;
+    storage.setItem(TOKEN_KEY, t);
+    // Broadcast to other tabs via storage event (only works for other tabs)
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new StorageEvent("storage", {
+        key: TOKEN_KEY,
+        newValue: t,
+        url: window.location.href,
+      }));
+    }
   },
   clear: () => {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(REFRESH_KEY);
+    if (!storage) return;
+    storage.removeItem(TOKEN_KEY);
+    storage.removeItem(REFRESH_KEY);
   },
   getRefresh: () => {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem(REFRESH_KEY);
+    if (!storage) return null;
+    return storage.getItem(REFRESH_KEY);
   },
   setRefresh: (t: string) => {
-    localStorage.setItem(REFRESH_KEY, t);
+    if (!storage) return;
+    storage.setItem(REFRESH_KEY, t);
   },
 };
 
