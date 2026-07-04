@@ -23,28 +23,22 @@ export function PremiumUpgradePage() {
   const [plans, setPlans] = useState<PlanOption[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPlan, setCurrentPlan] = useState<string>("FREE");
-  const { reloadUser } = useAuth();
+  const { user } = useAuth();
 
-  // Auto-refresh user on mount to sync storage info
   useEffect(() => {
     const init = async () => {
       try {
-        await reloadUser();
-        const [plansData, userData] = await Promise.all([
-          paymentApi.getPlanOptions(),
-          accountApi.me()
-        ]);
+        const plansData = await paymentApi.getPlanOptions();
         setPlans(plansData);
-        if (userData?.plan) {
-          setCurrentPlan(userData.plan.toUpperCase());
+        if (user?.plan) {
+          setCurrentPlan(user.plan.toUpperCase());
         }
-        console.log("✅ Premium page loaded, user storage:", userData?.storageGb);
       } catch (error) {
         console.error("Failed to load premium page:", error);
       }
     };
     init();
-  }, [reloadUser]);
+  }, [user?.plan]);
 
   const handlePayment = async (selectedPlan: PlanOption) => {
     setLoading(true);
@@ -75,21 +69,6 @@ export function PremiumUpgradePage() {
     const planEnum = planNameToEnum[planName];
     return currentPlan === planEnum;
   };
-
-  // Auto-refresh user info when component mounts to ensure fresh data
-  useEffect(() => {
-    const refreshUser = async () => {
-      try {
-        const userData = await accountApi.me();
-        if (userData?.plan && userData.storageGb) {
-          setCurrentPlan(userData.plan.toUpperCase());
-        }
-      } catch (error) {
-        console.error("Auto-refresh user failed:", error);
-      }
-    };
-    refreshUser();
-  }, []);
 
   return (
     <div className="space-y-6">

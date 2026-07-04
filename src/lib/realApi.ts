@@ -108,6 +108,8 @@ export const documentApi = {
   list: (): Promise<Document[]> => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string): Promise<Document[]> =>
       api<Document[]>(`/api/documents/folder/${folderId}`),
+  listSharedFolder: (folderId: string): Promise<Document[]> =>
+      api<Document[]>(`/api/documents/shared/folder/${folderId}`),
   getById: (id: string): Promise<Document> =>
       api<Document>(`/api/documents/${id}`),
   getSharedById: (id: string): Promise<Document> =>
