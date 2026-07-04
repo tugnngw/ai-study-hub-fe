@@ -60,6 +60,8 @@ type Options = {
 };
 
 let refreshPromise: Promise<boolean> | null = null;
+const MAX_RETRY_COUNT = 1;
+const retryCountMap = new Map<string, number>();
 
 export async function attemptRefresh(): Promise<boolean> {
   const refreshToken = tokenStore.getRefresh();
@@ -137,7 +139,16 @@ export async function api<T = unknown>(
   console.log(`[API] ${opts.method || "GET"} ${path} - response status:`, res.status);
 
   if (res.status === 401) {
-    console.log(`[API] 🔴 Got 401 on ${path}, attempting refresh...`);
+    const requestKey = `${opts.method || "GET"}:${path}`;
+    const currentRetryCount = retryCountMap.get(requestKey) || 0;
+
+    if (currentRetryCount >= MAX_RETRY_COUNT) {
+      console.log(`[API] ❌ Max retry count reached for ${path}, clearing retry count and throwing error`);
+      retryCountMap.delete(requestKey);
+      throw new ApiError(401, "Session expired. Please log in again.");
+    }
+
+    console.log(`[API] 🔴 Got 401 on ${path}, attempting refresh... (retry ${currentRetryCount + 1}/${MAX_RETRY_COUNT})`);
     if (!refreshPromise) {
       refreshPromise = attemptRefresh().finally(() => {
         refreshPromise = null;
@@ -148,18 +159,53 @@ export async function api<T = unknown>(
     console.log(`[API] Refresh result: ${refreshed ? "✅ Success" : "❌ Failed"}`);
 
     if (refreshed) {
+      retryCountMap.set(requestKey, currentRetryCount + 1);
       console.log(`[API] Retrying ${path} with new token...`);
       try {
         res = await doFetch();
         console.log(`[API] Retry status:`, res.status);
+        if (res.ok || res.status !== 401) {
+          retryCountMap.delete(requestKey);
+        }
       } catch (retryError) {
         console.error(`[API] Error during retry fetch for ${path}:`, retryError);
+        retryCountMap.delete(requestKey);
         throw new ApiError(500, `Failed to retry request: ${path}`);
       }
     } else {
       console.log(`[API] ❌ Refresh failed, throwing 401 error`);
+      retryCountMap.delete(requestKey);
       throw new ApiError(401, "Session expired. Please log in again.");
     }
+  }
+
+  if (res.status === 403) {
+    console.log(`[API] 🚫 Got 403 Forbidden on ${path} - no refresh attempt, access denied`);
+    const ct = res.headers.get("content-type") ?? "";
+    const json = ct.includes("application/json")
+        ? await res.json().catch(() => null)
+        : null;
+    
+    const errorCode = json && typeof json === "object" && "error" in json ? String((json as any).error) : null;
+    
+    if (errorCode === "ACCOUNT_LOCKED") {
+      console.log(`[API] 🔒 Account locked detected, clearing auth state`);
+      tokenStore.clear();
+      
+      const message = json && typeof json === "object" && "message" in json 
+        ? String((json as { message: unknown }).message)
+        : "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.";
+      
+      throw new ApiError(403, message, { ...json, accountLocked: true });
+    }
+    
+    const message =
+        (json &&
+            typeof json === "object" &&
+            "message" in json &&
+            String((json as { message: unknown }).message)) ||
+        "You do not have permission to access this resource";
+    throw new ApiError(403, message, json);
   }
 
   const ct = res.headers.get("content-type") ?? "";
