@@ -141,18 +141,17 @@ export function AIChat({
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
         {/* Column 1: folder + file list */}
         <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
-          <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-2">
-            THƯ MỤC ĐANG DÙNG
-          </div>
+          {folder.data?.name && (
+            <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-2">
+              THƯ MỤC: {folder.data.name}
+            </div>
+          )}
           <div className="rounded-xl bg-gradient-soft p-3 border border-border/50 flex items-center gap-3">
             <div className="h-9 w-9 rounded-lg bg-gradient-brand flex items-center justify-center shrink-0">
               <FolderClosed className="h-4.5 w-4.5 text-white" />
             </div>
             <div className="min-w-0 flex-1">
               <div className="text-sm font-semibold font-display truncate">
-                {folder.data?.name ?? "—"}
-              </div>
-              <div className="text-[11px] text-muted-foreground">
                 {formatBytes(totalSize)} · {docs.length} tài liệu
               </div>
             </div>
