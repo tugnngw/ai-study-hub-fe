@@ -20,10 +20,7 @@ export function FolderPanel({
             {!docId && (
                 <div className="rounded-xl bg-gradient-soft p-3 border border-border/50">
                     <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-1">
-                        THƯ MỤC ĐANG DÙNG
-                    </div>
-                    <div className="text-sm font-semibold font-display">
-                        {folder.data?.name || "—"}
+                        THƯ MỤC: {folder.data?.name || "—"}
                     </div>
                     <div className="text-xs text-muted-foreground mt-0.5">
                         {folderDocs.data?.length || 0} tài liệu
