@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff } from "lucide-react";
+import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -17,12 +17,14 @@ export function DocumentActionsMenu({
   documentId,
   folderId,
   title,
+  status,
   className,
   iconClassName,
 }: {
   documentId: string;
   folderId: string;
   title: string;
+  status?: string;
   className?: string;
   iconClassName?: string;
 }) {
@@ -31,6 +33,7 @@ export function DocumentActionsMenu({
   const download = useDownloadDocument();
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
   const pinned = isPinned(documentId);
+  const isRejected = status?.toUpperCase() === "REJECT";
 
   const [reportOpen, setReportOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -83,6 +86,19 @@ export function DocumentActionsMenu({
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleDownload} disabled={download.isPending}>
             <Download className="h-3.5 w-3.5 mr-2" /> Tải xuống
+          </DropdownMenuItem>
+          <DropdownMenuItem 
+            onClick={() => {
+              if (isRejected) {
+                toast.error("Tài liệu bị từ chối duyệt, không thể chia sẻ");
+                return;
+              }
+              toast.info("Tính năng chia sẻ đang được phát triển");
+            }}
+            disabled={isRejected}
+            className={isRejected ? "opacity-50 cursor-not-allowed" : ""}
+          >
+            <Share2 className="h-3.5 w-3.5 mr-2" /> Chia sẻ
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setReportOpen(true)}>
             <Flag className="h-3.5 w-3.5 mr-2" /> Báo cáo

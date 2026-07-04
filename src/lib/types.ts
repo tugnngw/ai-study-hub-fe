@@ -124,7 +124,8 @@ export interface ShareResponse {
   documentTitle: string | null;
   folderName: string | null;
   fileCount: number | null;
-  cloudinaryUrl: string | null; // added field
+  cloudinaryUrl: string | null;
+  documentStatus?: string | null;
 }
 
 export interface ShareRecipient {
