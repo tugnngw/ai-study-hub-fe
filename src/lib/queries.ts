@@ -143,28 +143,8 @@ export function useDocumentsByFolder(folderId: string) {
       } catch (err: unknown) {
         const status = (err as { status?: number }).status;
         if (status === 401 || status === 403) {
-          console.log("[useDocumentsByFolder] Owner folder access failed, falling back to shared documents");
-          // Fallback: get all shared documents and filter by folderId
-          const sharedItems = await shareApi.listSharedWithMe();
-          // Filter shares that belong to this folder and convert to Document-like objects
-          const docs: Document[] = sharedItems
-            .filter(share => share.folderId === folderId && share.documentId)
-            .map(share => ({
-              id: share.documentId!,
-              ownerId: share.ownerId, // This is the owner's ID, not the current user's
-              folderId: share.folderId!,
-              title: share.documentTitle || "Untitled Document",
-              description: null,
-              summary: null,
-              status: "READY", // Assume shared docs are ready to view
-              cloudinaryUrl: share.cloudinaryUrl,
-              publicId: null,
-              mimeType: null, // We don't have this from share, but PDF viewer can work with cloudinaryUrl
-              subjectId: null,
-              createdAt: share.createdAt,
-              updatedAt: share.createdAt,
-            }));
-          return docs;
+          console.log("[useDocumentsByFolder] Owner folder access failed, falling back to shared folder endpoint");
+          return await documentApi.listSharedFolder(folderId);
         }
         throw err;
       }

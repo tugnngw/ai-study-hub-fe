@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
 import {
   Dialog,
@@ -91,6 +92,7 @@ function DocumentsPage() {
                 <th className="px-4 py-3 font-medium hidden md:table-cell">
                   Description
                 </th>
+                <th className="px-4 py-3 font-medium hidden sm:table-cell">Status</th>
                 <th className="px-4 py-3 font-medium w-24">Actions</th>
               </tr>
             </thead>
@@ -102,6 +104,7 @@ function DocumentsPage() {
                   folderId={d.folderId ?? ""}
                   title={d.title}
                   description={d.description ?? ""}
+                  status={d.status}
                   pinned={isPinned(d.id)}
                   onTogglePin={() => togglePin(d.id)}
                 />
@@ -121,6 +124,7 @@ function DocumentRow({
   folderId,
   title,
   description,
+  status,
   pinned,
   onTogglePin,
 }: {
@@ -128,9 +132,24 @@ function DocumentRow({
   folderId: string;
   title: string;
   description: string;
+  status: string;
   pinned: boolean;
   onTogglePin: () => void;
 }) {
+  const getStatusBadge = () => {
+    const statusUpper = status?.toUpperCase();
+    if (statusUpper === "COMPLETED") {
+      return <Badge className="bg-yellow-500/10 text-yellow-600 border-yellow-500/20 hover:bg-yellow-500/20">Chờ duyệt</Badge>;
+    }
+    if (statusUpper === "READY") {
+      return <Badge className="bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20">Sẵn sàng</Badge>;
+    }
+    if (statusUpper === "REJECT") {
+      return <Badge className="bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20">Bị từ chối</Badge>;
+    }
+    return <Badge variant="outline">{status}</Badge>;
+  };
+
   return (
     <tr className={cn("border-t border-border/60 hover:bg-accent/30", pinned && "bg-amber-50/60 dark:bg-amber-400/5")}>
       <td className="px-4 py-3">
@@ -156,11 +175,15 @@ function DocumentRow({
       <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
         {description}
       </td>
+      <td className="px-4 py-3 hidden sm:table-cell">
+        {getStatusBadge()}
+      </td>
       <td className="px-4 py-3">
         <DocumentActionsMenu
           documentId={id}
           folderId={folderId}
           title={title}
+          status={status}
         />
       </td>
     </tr>

@@ -20,7 +20,7 @@ export const sharesApi = {
 
   // DELETE — Xóa: xóa THẲNG share -> hiện trong Thùng rác.
   deleteShared: (shareToken: string) =>
-      api<void>(`/api/shares/${shareToken}`, { method: "DELETE" }),
+      api<void>(`/api/shares/token/${shareToken}`, { method: "DELETE" }),
 
   // GET — Lấy link chia sẻ (Sao chép link)
   getShareLink: (shareToken: string) =>

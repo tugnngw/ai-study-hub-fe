@@ -190,7 +190,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const reloadUser = async () => {
+  const reloadUser = useCallback(async () => {
     try {
       const u = await accountApi.me();
       setUser(u);
@@ -198,7 +198,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error("Reload user failed:", error);
       throw error;
     }
-  };
+  }, []);
 
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
