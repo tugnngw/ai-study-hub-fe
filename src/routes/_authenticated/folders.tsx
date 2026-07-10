@@ -1,17 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useState, useMemo } from "react";
 import { FolderKanban, Plus, Search, Trash2, Pencil, Star, MoreVertical, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import {
   useCreateFolder,
   useDeleteFolder,
+  useDocuments,
   useFolders,
   useUpdateFolder,
 } from "@/lib/queries";
-import { shareApi } from "@/lib/realApi";
-import type { ShareRequest } from "@/lib/types";
 import { useStarredFolders } from "@/lib/preferences";
+import { ShareEntityDialog } from "@/components/share-entity-dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -51,12 +50,26 @@ export const Route = createFileRoute("/_authenticated/folders")({
 
 function FoldersPage() {
   const { data, isLoading } = useFolders();
+  const { data: docs } = useDocuments();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Folder | null>(null);
   const [deleting, setDeleting] = useState<Folder | null>(null);
   const [sharing, setSharing] = useState<Folder | null>(null);
   const { isMarked: isStarred, toggle: toggleStar } = useStarredFolders();
+
+  // Đếm số tài liệu theo từng thư mục.
+  const countByFolder = useMemo(() => {
+    const m = new Map<string, number>();
+    (docs ?? []).forEach((d) => {
+      if (d.folderId != null)
+        m.set(String(d.folderId), (m.get(String(d.folderId)) ?? 0) + 1);
+    });
+    return m;
+  }, [docs]);
+
+  const folderCount = (f: Folder) =>
+    f.documentCount ?? countByFolder.get(String(f.id)) ?? 0;
 
   const filtered = (data ?? [])
       .filter((f) => f.name.toLowerCase().includes(query.toLowerCase()))
@@ -126,7 +139,10 @@ function FoldersPage() {
                           <div className="flex-1 min-w-0">
                             <div className="font-medium truncate pr-5">{f.name}</div>
                             <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
-                              {f.aiSummary || "No summary"}
+                              {f.description || f.aiSummary || "No summary"}
+                            </div>
+                            <div className="text-xs font-medium text-primary mt-1.5">
+                              {folderCount(f)} tài liệu
                             </div>
                           </div>
                         </div>
@@ -178,7 +194,14 @@ function FoldersPage() {
 
         <FolderFormDialog open={open} onOpenChange={setOpen} folder={editing} />
         <DeleteFolderDialog folder={deleting} onClose={() => setDeleting(null)} />
-        <ShareFolderDialog folder={sharing} onClose={() => setSharing(null)} />
+        <ShareEntityDialog
+          open={!!sharing}
+          onOpenChange={(v) => {
+            if (!v) setSharing(null);
+          }}
+          title={sharing?.name ?? ""}
+          folderId={sharing?.id}
+        />
       </div>
   );
 }
@@ -303,103 +326,5 @@ function DeleteFolderDialog({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-  );
-}
-
-function ShareFolderDialog({
-                             folder,
-                             onClose,
-                           }: {
-  folder: Folder | null;
-  onClose: () => void;
-}) {
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const shareMutation = useMutation({
-    mutationFn: (data: ShareRequest) => shareApi.shareFolder(data),
-    onSuccess: () => {
-      toast.success("Folder shared successfully");
-      onClose();
-      setEmail("");
-      setUsername("");
-    },
-    onError: (error) => {
-      toast.error(error instanceof Error ? error.message : "Failed to share folder");
-    },
-  });
-
-  const handleShare = async () => {
-    if (!folder) return;
-
-    if (!email.trim() && !username.trim()) {
-      toast.error("Please enter email or username");
-      return;
-    }
-
-    const request: ShareRequest = {
-      folderId: folder.id,
-      visibility: "private",
-    };
-
-    if (email.trim()) {
-      request.email = email.trim();
-    }
-    if (username.trim()) {
-      request.username = username.trim();
-    }
-
-    await shareMutation.mutateAsync(request);
-  };
-
-  return (
-      <Dialog
-          open={!!folder}
-          onOpenChange={(v) => {
-            if (!v) onClose();
-          }}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Share folder</DialogTitle>
-            <DialogDescription>
-              Share &ldquo;{folder?.name}&rdquo; with another user
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="user@example.com"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
-              <Input
-                  id="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="username"
-              />
-            </div>
-            <div className="text-xs text-muted-foreground">
-              Enter either email or username of the user you want to share with.
-            </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-                onClick={handleShare}
-                disabled={shareMutation.isPending}
-            >
-              Share
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
   );
 }

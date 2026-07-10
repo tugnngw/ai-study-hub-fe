@@ -20,12 +20,15 @@ import {
   Settings,
   Sun,
   Moon,
+  Upload,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useDocuments, useDocument } from "@/lib/queries";
 import { useTheme } from "@/lib/theme";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { UploadDocumentDialog } from "@/components/upload-document-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,6 +76,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const search = useRouterState({ select: (s) => s.location.search }) as { docId?: number | string };
   const { data: documents } = useDocuments();
   const [collapsed, setCollapsedState] = useState(getInitialCollapsed);
+  const [uploadOpen, setUploadOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -168,7 +172,26 @@ export function AppShell({ children }: { children: ReactNode }) {
             })}
           </nav>
 
-          {/* Storage */}
+          {/* Upload button */}
+          <div className={cn("px-3 pb-1", collapsed && "px-2")}>
+            {collapsed ? (
+              <button
+                onClick={() => setUploadOpen(true)}
+                title="Tải lên tài liệu"
+                className="w-full h-10 rounded-lg bg-gradient-brand text-white flex items-center justify-center shadow-brand hover:opacity-90 transition-opacity"
+              >
+                <Upload className="h-4 w-4" />
+              </button>
+            ) : (
+              <Button
+                onClick={() => setUploadOpen(true)}
+                variant="outline"
+                className="w-full justify-center gap-2 border-dashed border-primary/40 text-primary hover:bg-primary/5 hover:border-primary"
+              >
+                <Upload className="h-4 w-4" /> Tải lên tài liệu
+              </Button>
+            )}
+          </div>
           {!collapsed && (
               <div className="p-3">
                 <div className="rounded-xl border border-sidebar-border bg-card/60 p-3.5 space-y-2.5">
@@ -262,10 +285,10 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link to="/profile" className="cursor-pointer"><UserIcon className="h-4 w-4 mr-2" /> Hồ sơ</Link>
+                    <Link to="/profile" className="cursor-pointer"><UserIcon className="h-4 w-4 mr-2" /> Hồ sơ của tôi</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/admin" className="cursor-pointer"><Settings className="h-4 w-4 mr-2" /> Cài đặt</Link>
+                    <Link to="/admin" className="cursor-pointer"><Settings className="h-4 w-4 mr-2" /> Cài đặt & Bảo mật</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">
@@ -307,6 +330,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             )}
           </main>
         </div>
+
+        <UploadDocumentDialog open={uploadOpen} onOpenChange={setUploadOpen} />
       </div>
   );
 }

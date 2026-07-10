@@ -32,98 +32,87 @@ function CloudPage() {
   const isOverLimit = used > total;
 
   return (
-      <div className="space-y-6 max-w-3xl">
+      <div className="space-y-5">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight">Cloud đã sài</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className="text-2xl font-bold tracking-tight font-display">
+            Lưu trữ Cloud
+          </h1>
+          <p className="text-muted-foreground mt-1 text-sm">
             Theo dõi dung lượng lưu trữ của bạn
           </p>
         </div>
 
         <Card>
-          <CardContent className="p-6 space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+          <CardContent className="p-6 space-y-5">
+            {/* Dòng tổng quan + thanh tiến trình */}
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
                 <Cloud className="h-6 w-6 text-primary" />
               </div>
-              <div>
+              <div className="flex-1">
                 <div className="text-sm text-muted-foreground">
                   Tổng dung lượng đã dùng
                 </div>
-                <div className="text-2xl font-semibold">
+                <div className="text-2xl font-bold font-display">
                   {formatBytes(used)}{" "}
-                  <span className="text-base text-muted-foreground">
-                  / {formatBytes(total)}
-                </span>
+                  <span className="text-base text-muted-foreground font-normal">
+                    / {formatBytes(total)}
+                  </span>
+                </div>
+              </div>
+              <div className="text-right shrink-0">
+                <div
+                  className={`text-sm font-semibold ${
+                    isOverLimit ? "text-destructive" : "text-emerald-600"
+                  }`}
+                >
+                  {isOverLimit ? "⚠️ Vượt giới hạn" : "✅ Bình thường"}
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  {pct.toFixed(2)}% đã dùng
                 </div>
               </div>
             </div>
 
             <Progress
                 value={pct}
-                className={`h-2 ${isOverLimit ? 'bg-destructive/20' : ''}`}
+                className={`h-2.5 ${isOverLimit ? "bg-destructive/20" : ""}`}
             />
 
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{pct.toFixed(2)}% đã sử dụng</span>
-              {isOverLimit && (
-                  <span className="text-destructive font-semibold">
-                Đã vượt quá giới hạn!
-              </span>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Card>
-            <CardContent className="p-5 flex items-center gap-3">
-              <Database className="h-8 w-8 text-violet-500" />
-              <div>
-                <div className="text-sm text-muted-foreground">Số tài liệu</div>
-                <div className="text-2xl font-semibold">
+            {/* Ba chỉ số gọn trên cùng 1 hàng */}
+            <div className="grid grid-cols-3 divide-x divide-border border-t border-border pt-4 -mx-6 px-6">
+              <div className="px-4 first:pl-0">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Database className="h-3.5 w-3.5 text-violet-500" /> Số tài liệu
+                </div>
+                <div className="text-xl font-bold font-display mt-0.5">
                   {docs.data?.length ?? 0}
                 </div>
               </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-5 flex items-center gap-3">
-              <HardDrive className={`h-8 w-8 ${isOverLimit ? 'text-destructive' : 'text-emerald-500'}`} />
-              <div>
-                <div className="text-sm text-muted-foreground">Còn trống</div>
-                <div className={`text-2xl font-semibold ${isOverLimit ? 'text-destructive' : ''}`}>
-                  {isOverLimit ? '0 B' : formatBytes(free)}
+              <div className="px-4">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <HardDrive className="h-3.5 w-3.5 text-primary" /> Giới hạn
+                </div>
+                <div className="text-xl font-bold font-display mt-0.5">
+                  {formatBytes(total)}
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Hiển thị thông tin chi tiết */}
-        <Card>
-          <CardContent className="p-4">
-            <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
-                <span className="text-muted-foreground">Giới hạn:</span>
-                <span className="ml-2 font-medium">{formatBytes(total)}</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Đã dùng:</span>
-                <span className="ml-2 font-medium">{formatBytes(used)}</span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Còn trống:</span>
-                <span className={`ml-2 font-medium ${isOverLimit ? 'text-destructive' : ''}`}>
-                {isOverLimit ? '0 B' : formatBytes(free)}
-              </span>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Trạng thái:</span>
-                <span className={`ml-2 font-medium ${isOverLimit ? 'text-destructive' : 'text-emerald-500'}`}>
-                {isOverLimit ? '⚠️ Vượt giới hạn' : '✅ Bình thường'}
-              </span>
+              <div className="px-4">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <HardDrive
+                    className={`h-3.5 w-3.5 ${
+                      isOverLimit ? "text-destructive" : "text-emerald-500"
+                    }`}
+                  />{" "}
+                  Còn trống
+                </div>
+                <div
+                  className={`text-xl font-bold font-display mt-0.5 ${
+                    isOverLimit ? "text-destructive" : ""
+                  }`}
+                >
+                  {isOverLimit ? "0 B" : formatBytes(free)}
+                </div>
               </div>
             </div>
           </CardContent>

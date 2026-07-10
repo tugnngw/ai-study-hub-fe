@@ -26,6 +26,10 @@ interface PdfViewerProps {
   fileName?: string;
   className?: string;
   documentId?: string;
+  fileSize?: number | null;
+  mimeType?: string | null;
+  totalPages?: number | null;
+  createdAt?: string;
 }
 
 export const PdfViewer: React.FC<PdfViewerProps> = ({
@@ -33,6 +37,10 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   fileName = "document.pdf",
   className,
   documentId,
+  fileSize,
+  mimeType,
+  totalPages,
+  createdAt,
 }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -409,19 +417,70 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
     );
   }
 
-  // Error state
+  // Error state — hiển thị THÔNG TIN FILE thay vì chỉ báo lỗi + link.
   if (error) {
+    const fmtSize = (n?: number | null) => {
+      if (!n) return "—";
+      if (n < 1024 ** 2) return `${(n / 1024).toFixed(1)} KB`;
+      if (n < 1024 ** 3) return `${(n / 1024 ** 2).toFixed(1)} MB`;
+      return `${(n / 1024 ** 3).toFixed(2)} GB`;
+    };
+    const ext = (fileName.split(".").pop() || "PDF").toUpperCase();
     return (
       <Card className={cn("flex flex-col min-h-0", className)} style={{ minHeight: "400px" }}>
         {Toolbar}
         <div className="flex-1 flex flex-col items-center justify-center p-8">
-          <p className="text-red-500 text-center mb-4">{error}</p>
-          <Button variant="outline" size="sm" asChild>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              <Download className="h-4 w-4 mr-2" />
-              Tải xuống
-            </a>
-          </Button>
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-muted/30 p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-12 w-12 rounded-xl bg-gradient-brand flex items-center justify-center shrink-0">
+                <FileText className="h-6 w-6 text-white" />
+              </div>
+              <div className="min-w-0">
+                <div className="font-semibold truncate">{fileName}</div>
+                <div className="text-xs text-muted-foreground">
+                  Không thể xem trước trong trình duyệt
+                </div>
+              </div>
+            </div>
+
+            <dl className="space-y-2 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Loại tệp</dt>
+                <dd className="font-medium">{mimeType || ext}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Kích thước</dt>
+                <dd className="font-medium">{fmtSize(fileSize)}</dd>
+              </div>
+              {totalPages != null && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Số trang</dt>
+                  <dd className="font-medium">{totalPages}</dd>
+                </div>
+              )}
+              {createdAt && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Ngày tải lên</dt>
+                  <dd className="font-medium">
+                    {new Date(createdAt).toLocaleDateString("vi-VN")}
+                  </dd>
+                </div>
+              )}
+            </dl>
+
+            <div className="flex gap-2 mt-5">
+              <Button variant="outline" size="sm" className="flex-1" asChild>
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-4 w-4 mr-1.5" /> Mở tab mới
+                </a>
+              </Button>
+              <Button size="sm" className="flex-1" asChild>
+                <a href={url} download={fileName}>
+                  <Download className="h-4 w-4 mr-1.5" /> Tải xuống
+                </a>
+              </Button>
+            </div>
+          </div>
         </div>
       </Card>
     );

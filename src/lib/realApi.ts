@@ -22,6 +22,7 @@ import type {
   Quiz,
   Flashcard,
   FlashcardProgress,
+  Subject,
 } from "./types";
 import type { QuizItem } from "@/features/quiz/types/quiz.types";
 import type { GenerateSummaryRequest, GenerateSummaryResponse } from "./types";
@@ -85,6 +86,36 @@ export const accountApi = {
 };
 
 // ================================================================
+// SUBJECT  →  /api/subjects
+// Danh mục môn học theo kỳ, dùng cho luồng upload tài liệu.
+// ================================================================
+
+export const subjectApi = {
+  // Lấy toàn bộ môn (BE trả kèm semester). FE tự nhóm theo kỳ.
+  list: (): Promise<Subject[]> => api<Subject[]>("/api/subjects"),
+  // Lọc theo kỳ nếu BE hỗ trợ (fallback: FE tự lọc từ list()).
+  listBySemester: (semester: number): Promise<Subject[]> =>
+      api<Subject[]>(`/api/subjects?semester=${semester}`),
+};
+
+// ================================================================
+// DASHBOARD  →  /api/dashboard
+// Điểm nối cho BE: 1 endpoint tổng hợp cho trang chủ người dùng.
+// Nếu BE chưa có endpoint này, FE tự dựng payload từ folders/docs/subjects.
+// ================================================================
+
+export interface DashboardData {
+  recentNotes: Folder[];     // sổ ghi chú gần đây
+  recentDocuments: Document[]; // tài liệu gần đây
+  subjects: Subject[];       // môn học (kèm semester)
+  docCountBySubject?: Record<number, number>; // số tài liệu theo môn (tuỳ chọn)
+}
+
+export const dashboardApi = {
+  get: (): Promise<DashboardData> => api<DashboardData>("/api/dashboard"),
+};
+
+// ================================================================
 // FOLDER  →  /api/folder
 // ================================================================
 
@@ -117,7 +148,9 @@ export const documentApi = {
 
   upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
     const fd = new FormData();
-    fd.append("files", input.file);
+    // Gộp danh sách file (hỗ trợ cả `file` đơn lẻ lẫn `files` nhiều).
+    const list = input.files ?? (input.file ? [input.file] : []);
+    list.forEach((f) => fd.append("files", f));
     fd.append("title", input.title);
     if (input.description) {
       fd.append("description", input.description);
@@ -192,7 +225,11 @@ export const shareApi = {
       api<ShareResponse[]>("/api/shares/owner"),
   listSharedWithMe: (): Promise<ShareResponse[]> =>
       api<ShareResponse[]>("/api/shares/shared-with-me"),
+  // Chia sẻ 1 folder HOẶC 1 file (document). BE nhận cả 2 field, truyền đúng 1.
   shareFolder: (request: ShareRequest): Promise<ShareResponse> =>
+      api<ShareResponse>("/api/shares", { method: "POST", body: request }),
+  // Alias rõ nghĩa cho việc chia sẻ 1 file đơn lẻ.
+  shareDocument: (request: ShareRequest): Promise<ShareResponse> =>
       api<ShareResponse>("/api/shares", { method: "POST", body: request }),
   removeShare: (shareId: string): Promise<void> =>
       api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),

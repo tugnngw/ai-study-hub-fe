@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { FileText, Plus, Search, Upload, Pin } from "lucide-react";
+import { useState, useMemo } from "react";
+import { FileText, Plus, Search, Upload, Pin, X } from "lucide-react";
 import { toast } from "sonner";
-import { useDocuments, useFolders, useUploadDocument } from "@/lib/queries";
+import { useDocuments, useFolders, useUploadDocument, useSubjects } from "@/lib/queries";
+import { SEMESTERS } from "@/lib/config";
 import { usePinnedDocuments } from "@/lib/preferences";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -35,9 +36,17 @@ export const Route = createFileRoute("/_authenticated/documents")({
 
 function DocumentsPage() {
   const { data, isLoading } = useDocuments();
+  const subjects = useSubjects();
   const [query, setQuery] = useState("");
   const [uploadOpen, setUploadOpen] = useState(false);
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
+
+  // Tra cứu môn theo subjectId để hiển thị Kỳ + Môn.
+  const subjectMap = useMemo(() => {
+    const m = new Map<number, { code: string; name: string; semester: number }>();
+    (subjects.data ?? []).forEach((s) => m.set(s.id, s));
+    return m;
+  }, [subjects.data]);
 
   const filtered = (data ?? [])
     .filter((d) => d.title.toLowerCase().includes(query.toLowerCase()))
@@ -89,6 +98,8 @@ function DocumentsPage() {
             <thead className="bg-muted/40">
               <tr className="text-left">
                 <th className="px-4 py-3 font-medium">Title</th>
+                <th className="px-4 py-3 font-medium hidden lg:table-cell">Kỳ</th>
+                <th className="px-4 py-3 font-medium hidden lg:table-cell">Môn</th>
                 <th className="px-4 py-3 font-medium hidden md:table-cell">
                   Description
                 </th>
@@ -97,18 +108,24 @@ function DocumentsPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((d) => (
-                <DocumentRow
-                  key={d.id}
-                  id={d.id}
-                  folderId={d.folderId ?? ""}
-                  title={d.title}
-                  description={d.description ?? ""}
-                  status={d.status}
-                  pinned={isPinned(d.id)}
-                  onTogglePin={() => togglePin(d.id)}
-                />
-              ))}
+              {filtered.map((d) => {
+                const subj = d.subjectId != null ? subjectMap.get(d.subjectId) : undefined;
+                return (
+                  <DocumentRow
+                    key={d.id}
+                    id={d.id}
+                    folderId={d.folderId ?? ""}
+                    title={d.title}
+                    description={d.description ?? ""}
+                    status={d.status}
+                    semester={subj?.semester}
+                    subjectId={d.subjectId ?? undefined}
+                    subjectLabel={subj ? `${subj.code}` : undefined}
+                    pinned={isPinned(d.id)}
+                    onTogglePin={() => togglePin(d.id)}
+                  />
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -125,6 +142,9 @@ function DocumentRow({
   title,
   description,
   status,
+  semester,
+  subjectId,
+  subjectLabel,
   pinned,
   onTogglePin,
 }: {
@@ -133,6 +153,9 @@ function DocumentRow({
   title: string;
   description: string;
   status: string;
+  semester?: number;
+  subjectId?: number;
+  subjectLabel?: string;
   pinned: boolean;
   onTogglePin: () => void;
 }) {
@@ -172,6 +195,22 @@ function DocumentRow({
           </Link>
         </div>
       </td>
+      <td className="px-4 py-3 hidden lg:table-cell">
+        {semester != null ? (
+          <Badge variant="outline" className="font-normal">
+            Kỳ {semester}
+          </Badge>
+        ) : (
+          <span className="text-muted-foreground text-xs">—</span>
+        )}
+      </td>
+      <td className="px-4 py-3 hidden lg:table-cell">
+        {subjectLabel ? (
+          <span className="font-medium">{subjectLabel}</span>
+        ) : (
+          <span className="text-muted-foreground text-xs">—</span>
+        )}
+      </td>
       <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
         {description}
       </td>
@@ -184,6 +223,8 @@ function DocumentRow({
           folderId={folderId}
           title={title}
           status={status}
+          description={description}
+          subjectId={subjectId}
         />
       </td>
     </tr>
@@ -198,67 +239,199 @@ function UploadDialog({
   onOpenChange: (v: boolean) => void;
 }) {
   const folders = useFolders();
+  const subjects = useSubjects();
   const upload = useUploadDocument();
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [folderId, setFolderId] = useState<string>("");
+  const [semester, setSemester] = useState<string>("");
+  const [subjectId, setSubjectId] = useState<string>("");
+
+  // Số kỳ lấy từ cấu hình trong code (src/lib/config.ts).
+  const semesters = SEMESTERS;
+
+  // Môn học lọc theo kỳ đã chọn.
+  const subjectsInSemester = useMemo(
+    () =>
+      (subjects.data ?? []).filter(
+        (s) => String(s.semester) === semester,
+      ),
+    [subjects.data, semester],
+  );
+
+  const multiple = files.length > 1;
+
+  const reset = () => {
+    setFiles([]);
+    setTitle("");
+    setDescription("");
+    setFolderId("");
+    setSemester("");
+    setSubjectId("");
+  };
+
+  const removeFile = (idx: number) =>
+    setFiles((prev) => prev.filter((_, i) => i !== idx));
 
   const submit = async () => {
-    if (!file) return toast.error("Select a file");
-    if (!title.trim()) return toast.error("Title required");
-    if (!folderId) return toast.error("Select a folder");
+    if (files.length === 0) return toast.error("Chọn ít nhất một file");
+    if (!multiple && !title.trim()) return toast.error("Nhập tiêu đề");
+    if (!folderId) return toast.error("Chọn thư mục");
+    if (!semester) return toast.error("Chọn kỳ học");
+    if (!subjectId) return toast.error("Chọn môn học");
     try {
       await upload.mutateAsync({
-        file,
-        folderId,
-        title,
+        files,
+        // Nhiều file: dùng tên file làm tiêu đề mỗi tài liệu (BE tách theo từng file).
+        title: multiple ? files[0].name : title,
         description,
+        folderId,
+        subjectId: Number(subjectId),
       });
-      toast.success("Uploaded");
+      toast.success(
+        multiple ? `Đã tải lên ${files.length} tài liệu` : "Đã tải lên tài liệu",
+      );
       onOpenChange(false);
-      setFile(null);
-      setTitle("");
-      setDescription("");
-      setFolderId("");
+      reset();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Upload failed");
+      toast.error(e instanceof Error ? e.message : "Tải lên thất bại");
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog
+      open={open}
+      onOpenChange={(v) => {
+        onOpenChange(v);
+        if (!v) reset();
+      }}
+    >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Upload document</DialogTitle>
+          <DialogTitle>Tải lên tài liệu</DialogTitle>
           <DialogDescription>
-            Add a new file to your workspace.
+            Chọn một hoặc nhiều tệp, kèm kỳ và môn học tương ứng.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label>File</Label>
+            <Label>File (có thể chọn nhiều)</Label>
             <Input
               type="file"
-              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+              multiple
+              onChange={(e) => {
+                const picked = Array.from(e.target.files ?? []);
+                if (picked.length) setFiles((prev) => [...prev, ...picked]);
+                // reset input để chọn lại cùng file được
+                e.target.value = "";
+              }}
             />
+            {files.length > 0 && (
+              <ul className="space-y-1 max-h-40 overflow-y-auto rounded-md border border-border/60 p-2">
+                {files.map((f, i) => (
+                  <li
+                    key={`${f.name}-${i}`}
+                    className="flex items-center justify-between gap-2 text-sm px-2 py-1 rounded hover:bg-accent/40"
+                  >
+                    <span className="truncate flex items-center gap-2 min-w-0">
+                      <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                      <span className="truncate">{f.name}</span>
+                      <span className="text-xs text-muted-foreground shrink-0">
+                        ({(f.size / 1024 / 1024).toFixed(1)} MB)
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeFile(i)}
+                      className="text-muted-foreground hover:text-destructive shrink-0"
+                      title="Bỏ file này"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
+
+          {!multiple && (
+            <div className="space-y-2">
+              <Label>Tiêu đề</Label>
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Tên tài liệu"
+              />
+            </div>
+          )}
+          {multiple && (
+            <p className="text-xs text-muted-foreground">
+              Đang tải {files.length} tệp — mỗi tệp sẽ tạo một tài liệu riêng, lấy tên theo tên tệp.
+            </p>
+          )}
           <div className="space-y-2">
-            <Label>Title</Label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
-          </div>
-          <div className="space-y-2">
-            <Label>Description</Label>
+            <Label>Mô tả (tuỳ chọn)</Label>
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2">
+              <Label>Kỳ học</Label>
+              <Select
+                value={semester}
+                onValueChange={(v) => {
+                  setSemester(v);
+                  setSubjectId(""); // đổi kỳ thì reset môn
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Chọn kỳ" />
+                </SelectTrigger>
+                <SelectContent>
+                  {semesters.map((s) => (
+                    <SelectItem key={s} value={String(s)}>
+                      Kỳ {s}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Môn học</Label>
+              <Select
+                value={subjectId}
+                onValueChange={setSubjectId}
+                disabled={!semester}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder={semester ? "Chọn môn" : "Chọn kỳ trước"} />
+                </SelectTrigger>
+                <SelectContent>
+                  {subjectsInSemester.length === 0 ? (
+                    <div className="px-3 py-2 text-sm text-muted-foreground">
+                      Không có môn trong kỳ này
+                    </div>
+                  ) : (
+                    subjectsInSemester.map((s) => (
+                      <SelectItem key={s.id} value={String(s.id)}>
+                        {s.code} – {s.name}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
           <div className="space-y-2">
-            <Label>Folder</Label>
+            <Label>Thư mục</Label>
             <Select value={folderId} onValueChange={setFolderId}>
               <SelectTrigger>
-                <SelectValue placeholder="Choose folder" />
+                <SelectValue placeholder="Chọn thư mục" />
               </SelectTrigger>
               <SelectContent>
                 {(folders.data ?? []).map((f) => (
@@ -272,10 +445,10 @@ function UploadDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Cancel
+            Huỷ
           </Button>
           <Button onClick={submit} disabled={upload.isPending}>
-            {upload.isPending ? "Uploading..." : "Upload"}
+            {upload.isPending ? "Đang tải lên…" : "Tải lên"}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -107,6 +107,10 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
           fileName={fileName}
           className={className}
           documentId={document.id}
+          fileSize={document.fileSize}
+          mimeType={document.mimeType}
+          totalPages={document.totalPages}
+          createdAt={document.createdAt}
         />
       );
 
