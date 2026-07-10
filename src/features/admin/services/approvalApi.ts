@@ -16,6 +16,7 @@ export const approvalApi = {
       const pendingReports = reports.filter(r => !r.status || r.status === "pending");
       const data = pendingReports.map((r) => ({
         id: r.id,
+        documentId: (r as any).documentId,
         title: r.name || "Unknown",
         uploader: r.uploader,
         date: new Date(r.createdAt).toLocaleDateString("vi-VN"),

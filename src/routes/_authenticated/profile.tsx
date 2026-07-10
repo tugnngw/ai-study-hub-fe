@@ -1,13 +1,14 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { FileText, FolderKanban, Share2, Pencil, Save, X } from "lucide-react";
+import { FileText, FolderKanban, Share2, Pencil, Save, X, Crown } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDocuments, useFolders, useSharedDocuments } from "@/lib/queries";
+import { remainingDaysUntil } from "@/features/payment/proration";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: ProfilePage,
@@ -32,6 +33,8 @@ function ProfilePage() {
 
   const update = (k: keyof typeof form, v: string) =>
     setForm((p) => ({ ...p, [k]: v }));
+
+  const planRemainingDays = remainingDaysUntil(user?.planExpiresAt);
 
   const save = (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,7 +69,7 @@ function ProfilePage() {
   ];
 
   return (
-    <div className="space-y-6 max-w-3xl">
+    <div className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Hồ sơ</h1>
@@ -103,6 +106,44 @@ function ProfilePage() {
           </Card>
         ))}
       </div>
+
+      {/* Gói hiện tại + hạn dùng */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Crown className="h-4 w-4 text-primary" /> Gói dịch vụ
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-wrap items-center gap-x-10 gap-y-3">
+          <div>
+            <div className="text-xs text-muted-foreground">Gói hiện tại</div>
+            <div className="font-semibold text-lg">
+              {String(user?.plan ?? "FREE").toUpperCase()}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-muted-foreground">Ngày hết hạn</div>
+            <div className="font-semibold">
+              {planRemainingDays > 0
+                ? new Date(user?.planExpiresAt as string).toLocaleDateString("vi-VN")
+                : "Không giới hạn (Free)"}
+            </div>
+          </div>
+          {planRemainingDays > 0 && (
+            <div>
+              <div className="text-xs text-muted-foreground">Còn lại</div>
+              <div className="font-semibold text-primary">
+                {planRemainingDays} ngày
+              </div>
+            </div>
+          )}
+          <div className="ml-auto">
+            <Button asChild variant="outline" size="sm">
+              <Link to="/premium">Quản lý gói</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
       <form onSubmit={save}>
         <Card>

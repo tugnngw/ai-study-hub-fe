@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import {
+  Check,
   ChevronLeft,
   ChevronRight,
   FileText,
@@ -18,11 +19,20 @@ import {
   useDocument,
   useDocumentsByFolder,
   useFolder,
+  useFolders,
   useUploadDocument,
 } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -83,6 +93,7 @@ export function AIChat({
   const doc = useDocument(docId ?? "");
   const ask = useAskRag();
   const navigate = useNavigate();
+  const allFolders = useFolders();
 
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
@@ -141,27 +152,66 @@ export function AIChat({
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
         {/* Column 1: folder + file list */}
         <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
-          {folder.data?.name && (
-            <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-2">
-              THƯ MỤC: {folder.data.name}
-            </div>
-          )}
           <div className="rounded-xl bg-gradient-soft p-3 border border-border/50 flex items-center gap-3">
             <div className="h-9 w-9 rounded-lg bg-gradient-brand flex items-center justify-center shrink-0">
               <FolderClosed className="h-4.5 w-4.5 text-white" />
             </div>
             <div className="min-w-0 flex-1">
               <div className="text-sm font-semibold font-display truncate">
+                {folder.data?.name ??
+                  (allFolders.data ?? []).find(
+                    (f) => String(f.id) === String(folderId),
+                  )?.name ??
+                  (folder.isLoading ? "Đang tải…" : "Thư mục")}
+              </div>
+              <div className="text-[11px] text-muted-foreground mt-0.5">
                 {formatBytes(totalSize)} · {docs.length} tài liệu
               </div>
             </div>
-            <Link
-              to="/folders"
-              className="h-7 w-7 rounded-md hover:bg-accent flex items-center justify-center text-muted-foreground shrink-0"
-              title="Quản lý thư mục"
-            >
-              <FolderClosed className="h-4 w-4" />
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="h-7 w-7 rounded-md hover:bg-accent flex items-center justify-center text-muted-foreground shrink-0"
+                  title="Chọn thư mục khác"
+                >
+                  <FolderClosed className="h-4 w-4" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56 max-h-72 overflow-y-auto">
+                <DropdownMenuLabel>Chuyển thư mục</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {(allFolders.data ?? []).map((f) => (
+                  <DropdownMenuItem
+                    key={f.id}
+                    onClick={() =>
+                      navigate({ to: "/ai", search: { folderId: String(f.id) } })
+                    }
+                    className={cn(
+                      "cursor-pointer",
+                      String(f.id) === String(folderId) &&
+                        "bg-accent font-medium",
+                    )}
+                  >
+                    <FolderClosed className="h-3.5 w-3.5 mr-2 text-muted-foreground" />
+                    <span className="truncate">{f.name}</span>
+                    {String(f.id) === String(folderId) && (
+                      <Check className="h-3.5 w-3.5 ml-auto text-primary" />
+                    )}
+                  </DropdownMenuItem>
+                ))}
+                {(allFolders.data ?? []).length === 0 && (
+                  <div className="px-2 py-1.5 text-xs text-muted-foreground">
+                    Chưa có thư mục
+                  </div>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/folders">
+                    <FolderClosed className="h-3.5 w-3.5 mr-2" /> Quản lý thư mục
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
           <Button

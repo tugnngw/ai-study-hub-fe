@@ -35,10 +35,25 @@ export interface User {
   role: string;
   status: string;
   authProvider: string;
-  plan?: "FREE" | "BASIC" | "PRO" | "PREMIUM";
+  plan?: "FREE" | "BASIC" | "PRO" | "PREMIUM" | "PLUS";
   storageGb?: number;
+  // Thời điểm gói nâng cấp hết hạn (ISO string). null/undefined = gói FREE / không hết hạn.
+  planExpiresAt?: string | null;
+  // Ngày bắt đầu gói hiện tại (ISO) — dùng để tính số ngày còn lại khi đổi gói.
+  planStartedAt?: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+// =============================================================
+// SUBJECT / SEMESTER  →  /api/subjects
+// Dùng cho việc upload tài liệu: mỗi tài liệu thuộc 1 môn, mỗi môn thuộc 1 kỳ.
+// =============================================================
+export interface Subject {
+  id: number;
+  code: string;          // ví dụ SE1901
+  name: string;          // ví dụ Software Engineering
+  semester: number;      // kỳ 1..9
 }
 
 export interface Folder {
@@ -46,6 +61,8 @@ export interface Folder {
   name: string;
   description?: string;
   aiSummary?: string;
+  // Số tài liệu trong thư mục (BE nên trả kèm; nếu không FE tự đếm).
+  documentCount?: number;
   createdAt: string;
   updatedAt: string;
 }
@@ -81,7 +98,9 @@ export interface Document {
 }
 
 export interface UploadDocumentRequest {
-  file: File;
+  // Hỗ trợ 1 hoặc nhiều file cùng lúc. Giữ `file` để tương thích code cũ.
+  file?: File;
+  files?: File[];
   title: string;
   description?: string;
   folderId?: string;
@@ -92,6 +111,7 @@ export interface UpdateDocumentRequest {
   title?: string;
   description?: string;
   folderId?: string;
+  subjectId?: number;
 }
 
 export interface DownloadUrlResponse {
@@ -100,7 +120,9 @@ export interface DownloadUrlResponse {
 }
 
 export interface ShareRequest {
-  folderId: string;
+  // Chia sẻ theo folder HOẶC theo 1 file (document). Truyền đúng 1 trong 2.
+  folderId?: string;
+  documentId?: string;
   username?: string;
   email?: string;
   visibility: "private" | "public";

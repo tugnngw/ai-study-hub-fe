@@ -58,6 +58,7 @@ export interface DocumentResponse {
 // ── Reported / managed files ───────────────────────────
 export interface ReportedFileItem {
   id: string;
+  documentId?: string;
   name: string;
   uploader: string;
   size: string;
@@ -71,12 +72,15 @@ export type ReportDecision = "approve" | "reject";
 // ── Approval queue ─────────────────────────────────────
 export interface ApprovalItem {
   id: string;
+  documentId?: string;
   title: string;
   uploader: string;
   date: string;
   size: string;
   reason?: string;
   reporter?: string;
+  cloudinaryUrl?: string | null;
+  mimeType?: string | null;
 }
 
 export type ApprovalAction = "approve" | "reject";
