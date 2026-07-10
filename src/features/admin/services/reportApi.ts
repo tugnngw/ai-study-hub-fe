@@ -1,5 +1,4 @@
 // src/features/admin/services/reportApi.ts
-import { api } from "@/lib/api";
 import type { 
   ReportedFileItem,
   ReportDecision,

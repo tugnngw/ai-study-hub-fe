@@ -13,13 +13,17 @@ import {
   History,
   Crown,
   ShieldCheck,
+  Trash2,
   User as UserIcon,
   LogOut,
   Search,
   PanelLeftClose,
   PanelLeft,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { useTheme } from "@/lib/theme";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -63,7 +67,7 @@ const nav = [
     icon: History,
     exact: false,
   },
-  // { to: "/admin_panel/trash", label: "Thùng rác", icon: Trash2, exact: false }, // ❌ ĐÃ XÓA
+  { to: "/admin_panel/trash", label: "Thùng rác", icon: Trash2, exact: false },
   { to: "/admin_panel/premium", label: "Premium", icon: Crown, exact: false },
   { to: "/admin_panel/profile", label: "Hồ sơ", icon: UserIcon, exact: false },
 ] as const;
@@ -73,6 +77,7 @@ const isActivePath = (pathname: string, to: string, exact: boolean) =>
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [collapsed, setCollapsed] = useState(false);
@@ -198,6 +203,18 @@ export function AdminShell({ children }: { children: ReactNode }) {
             </div>
 
             <div className="ml-auto flex items-center gap-2">
+              <button
+                onClick={toggleTheme}
+                className="p-2 hover:bg-accent rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+                title={theme === "dark" ? "Chuyển nền sáng" : "Chuyển nền tối"}
+                aria-label="Đổi giao diện sáng/tối"
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2 hover:bg-accent rounded-full pr-3 pl-1 py-1 transition-colors">

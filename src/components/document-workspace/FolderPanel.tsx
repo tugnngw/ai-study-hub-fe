@@ -19,10 +19,10 @@ export function FolderPanel({
         <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
             {!docId && (
                 <div className="rounded-xl bg-gradient-soft p-3 border border-border/50">
-                    <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-1">
-                        THƯ MỤC: {folder.data?.name || "—"}
+                    <div className="text-sm font-semibold font-display truncate">
+                        {folder.data?.name || "Thư mục"}
                     </div>
-                    <div className="text-xs text-muted-foreground mt-0.5">
+                    <div className="text-[11px] text-muted-foreground mt-0.5">
                         {folderDocs.data?.length || 0} tài liệu
                     </div>
                 </div>

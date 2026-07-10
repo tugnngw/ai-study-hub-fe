@@ -44,7 +44,54 @@ const PLAN_ID_MAP: Record<string, number> = {
   PLUS: 3,
 };
 
+// Gói trả về nguyên bản từ BE (dùng cho trang quản trị chỉnh sửa giá trị).
+export interface AdminPlan {
+  id: number;
+  name: string;
+  description: string;
+  storageGb: number;
+  aiQuestions: number;
+  price: number;      // giá cho 30 ngày (VNĐ)
+  isActive: boolean;
+}
+
+// Kết quả tính toán khi user đổi/nâng gói giữa chừng (proration).
+// Nguyên tắc: KHÔNG đổi gói trực tiếp. Quy đổi số ngày còn lại của gói cũ ra
+// tiền, trừ vào giá gói mới để ra số tiền phải trả cho phần ngày còn lại.
+export interface UpgradeQuote {
+  currentPlan: string;
+  targetPlan: string;
+  remainingDays: number;     // số ngày còn lại của gói hiện tại
+  remainingValue: number;    // giá trị quy đổi của số ngày còn lại (VNĐ)
+  targetDailyPrice: number;  // đơn giá/ngày của gói mới
+  daysCovered: number;       // số ngày gói mới được cấp sau khi bù trừ
+  amountDue: number;         // số tiền thực phải trả
+}
+
 export const paymentApi = {
+  // ── ADMIN: quản lý giá trị các gói ────────────────────────
+  adminGetPlans: (): Promise<AdminPlan[]> => api<AdminPlan[]>("/api/admin/plans"),
+  adminUpdatePlan: (id: number, body: Partial<Omit<AdminPlan, "id">>): Promise<AdminPlan> =>
+    api<AdminPlan>(`/api/admin/plans/${id}`, { method: "PUT", body }),
+
+  // ── PUBLIC: user đọc danh sách gói (đã đồng bộ với chỉnh sửa của admin) ──
+  // Ưu tiên endpoint công khai; nếu BE chưa có, fallback dùng /api/admin/plans.
+  getPlans: async (): Promise<AdminPlan[]> => {
+    try {
+      return await api<AdminPlan[]>("/api/plans");
+    } catch {
+      return await api<AdminPlan[]>("/api/admin/plans");
+    }
+  },
+
+  // ── Đổi/nâng gói theo số ngày (proration) ─────────────────
+  // FE gọi để BE báo lại số tiền phải trả sau khi bù trừ ngày còn lại.
+  getUpgradeQuote: (planId: number, days: number): Promise<UpgradeQuote> =>
+    api<UpgradeQuote>(`/api/payment/quote?planId=${planId}&days=${days}`),
+  // Tạo link thanh toán theo số ngày người dùng chọn (thay vì cố định 1 tháng).
+  createPaymentByDays: (planId: number, days: number): Promise<PaymentResponse> =>
+    api("/api/payment/create", { method: "POST", body: { planId, days } }),
+
   getPlanOptions: async (): Promise<PlanOption[]> => {
     const plans = await api<BackendPlan[]>("/api/payment/plans");
     return plans

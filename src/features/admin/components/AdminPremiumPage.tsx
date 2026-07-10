@@ -8,6 +8,9 @@ import {
   TrendingUp,
   TrendingDown,
   FileCheck,
+  Pencil,
+  Save,
+  X,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -20,7 +23,11 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { useAdminTransactions } from "../hooks";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { useAdminTransactions, useAdminPlans, useUpdatePlan } from "../hooks";
+import { formatStorage, mbToGb, MB_PER_GB } from "@/lib/config";
 import { Loader2 } from "lucide-react";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
@@ -82,6 +89,225 @@ const statusBadge: Record<string, { label: string; cls: string }> = {
 };
 
 type TabKey = "all" | "PAID" | "PENDING";
+
+// ── Cấu hình giá trị các gói (chỉ admin) ──────────────────────
+function PlanConfigCard() {
+  const { data: plans, isLoading } = useAdminPlans();
+  const updatePlan = useUpdatePlan();
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [draft, setDraft] = useState<{
+    price: number;
+    storageValue: number; // giá trị nhập theo đơn vị đang chọn
+    storageUnit: "MB" | "GB";
+    aiQuestions: number;
+    description: string;
+    isActive: boolean;
+  } | null>(null);
+
+  const startEdit = (p: NonNullable<typeof plans>[number]) => {
+    setEditingId(p.id);
+    // Gói < 1 GB → hiển thị & sửa theo MB cho tiện; ngược lại theo GB.
+    const useMb = p.storageGb < 1;
+    setDraft({
+      price: p.price,
+      storageValue: useMb ? Math.round(p.storageGb * MB_PER_GB) : p.storageGb,
+      storageUnit: useMb ? "MB" : "GB",
+      aiQuestions: p.aiQuestions,
+      description: p.description,
+      isActive: p.isActive,
+    });
+  };
+
+  const cancel = () => {
+    setEditingId(null);
+    setDraft(null);
+  };
+
+  const save = async (id: number) => {
+    if (!draft) return;
+    // Quy đổi về GB (đơn vị chuẩn lưu trong hệ thống).
+    const storageGb =
+      draft.storageUnit === "MB"
+        ? mbToGb(draft.storageValue)
+        : draft.storageValue;
+    try {
+      await updatePlan.mutateAsync({
+        id,
+        price: draft.price,
+        storageGb,
+        aiQuestions: draft.aiQuestions,
+        description: draft.description,
+        isActive: draft.isActive,
+      });
+      toast.success("Đã cập nhật gói");
+      cancel();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Cập nhật thất bại");
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-base">Cấu hình gói nâng cấp</CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Chỉnh sửa giá (30 ngày), dung lượng lưu trữ và số câu hỏi AI của từng gói.
+        </p>
+      </CardHeader>
+      <CardContent className="p-0">
+        <Table>
+          <TableHeader>
+            <TableRow className="[&>th]:text-[14px] [&>th]:font-semibold [&>th]:text-foreground">
+              <TableHead>Gói</TableHead>
+              <TableHead>Giá / 30 ngày</TableHead>
+              <TableHead>Lưu trữ</TableHead>
+              <TableHead>Câu hỏi AI</TableHead>
+              <TableHead>Trạng thái</TableHead>
+              <TableHead className="text-right">Hành động</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={6} className="h-20 text-center">
+                  <Loader2 className="h-5 w-5 animate-spin mx-auto text-primary" />
+                </TableCell>
+              </TableRow>
+            ) : (plans ?? []).length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="h-20 text-center text-muted-foreground">
+                  Chưa có gói nào
+                </TableCell>
+              </TableRow>
+            ) : (
+              (plans ?? []).map((p) => {
+                const editing = editingId === p.id;
+                return (
+                  <TableRow key={p.id} className="[&>td]:py-3">
+                    <TableCell className="font-semibold">{p.name}</TableCell>
+                    <TableCell>
+                      {editing ? (
+                        <Input
+                          type="number"
+                          className="w-32 h-8"
+                          value={draft?.price ?? 0}
+                          onChange={(e) =>
+                            setDraft((d) => d && { ...d, price: Number(e.target.value) })
+                          }
+                        />
+                      ) : (
+                        fmtVnd(p.price)
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editing ? (
+                        <div className="flex items-center gap-1.5">
+                          <Input
+                            type="number"
+                            min={0}
+                            step="any"
+                            className="w-24 h-8"
+                            value={draft?.storageValue ?? 0}
+                            onChange={(e) =>
+                              setDraft((d) => d && { ...d, storageValue: Number(e.target.value) })
+                            }
+                          />
+                          <select
+                            className="h-8 rounded-md border border-input bg-background px-2 text-sm"
+                            value={draft?.storageUnit ?? "GB"}
+                            onChange={(e) =>
+                              setDraft((d) => {
+                                if (!d) return d;
+                                const nextUnit = e.target.value as "MB" | "GB";
+                                if (nextUnit === d.storageUnit) return d;
+                                // Quy đổi giá trị khi đổi đơn vị để giữ nguyên dung lượng thực.
+                                const value =
+                                  nextUnit === "MB"
+                                    ? Math.round(d.storageValue * MB_PER_GB * 1000) / 1000
+                                    : Math.round((d.storageValue / MB_PER_GB) * 1000) / 1000;
+                                return { ...d, storageUnit: nextUnit, storageValue: value };
+                              })
+                            }
+                          >
+                            <option value="MB">MB</option>
+                            <option value="GB">GB</option>
+                          </select>
+                        </div>
+                      ) : (
+                        formatStorage(p.storageGb)
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editing ? (
+                        <Input
+                          type="number"
+                          className="w-24 h-8"
+                          value={draft?.aiQuestions ?? 0}
+                          onChange={(e) =>
+                            setDraft((d) => d && { ...d, aiQuestions: Number(e.target.value) })
+                          }
+                        />
+                      ) : p.aiQuestions > 9999 ? (
+                        "Không giới hạn"
+                      ) : (
+                        p.aiQuestions
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editing ? (
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() =>
+                            setDraft((d) => d && { ...d, isActive: !d.isActive })
+                          }
+                        >
+                          {draft?.isActive ? "Đang bật" : "Đang tắt"}
+                        </Button>
+                      ) : (
+                        <Badge
+                          variant="secondary"
+                          className={
+                            p.isActive
+                              ? "bg-emerald-500/10 text-emerald-600"
+                              : "bg-gray-500/10 text-gray-600"
+                          }
+                        >
+                          {p.isActive ? "Đang bật" : "Đang tắt"}
+                        </Badge>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {editing ? (
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => save(p.id)}
+                            disabled={updatePlan.isPending}
+                          >
+                            <Save className="h-3.5 w-3.5 mr-1" /> Lưu
+                          </Button>
+                          <Button size="sm" variant="outline" onClick={cancel}>
+                            <X className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      ) : (
+                        <Button size="sm" variant="outline" onClick={() => startEdit(p)}>
+                          <Pencil className="h-3.5 w-3.5 mr-1" /> Sửa
+                        </Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            )}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
+  );
+}
 
 export const AdminPremiumPage: React.FC = () => {
   const [tab, setTab] = useState<TabKey>("all");
@@ -147,6 +373,8 @@ export const AdminPremiumPage: React.FC = () => {
           tone="bg-destructive/10 text-destructive"
         />
       </div>
+
+      <PlanConfigCard />
 
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">

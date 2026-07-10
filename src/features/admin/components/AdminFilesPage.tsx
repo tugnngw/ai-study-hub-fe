@@ -1,7 +1,7 @@
 // src/features/admin/components/AdminFilesPage.tsx
 import React, { useState, useMemo } from "react";
 import { toast } from "sonner";
-import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search, AlertTriangle } from "lucide-react";
+import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search, AlertTriangle, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -16,8 +16,9 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAdminDocuments, useApproveDocument, useRejectDocument, useDeleteDocument, useRestoreDocument } from "../hooks";
+import { FilePreviewDialog } from "./FilePreviewDialog";
 
-type TabValue = "all" | "pending" | "approved" | "rejected" | "trash";
+type TabValue = "all" | "pending" | "approved" | "rejected";
 
 const statusLabel: Record<string, string> = {
   COMPLETED: "Đã upload",
@@ -36,6 +37,10 @@ export const AdminFilesPage: React.FC = () => {
   const rejectDocument = useRejectDocument();
   const deleteDocument = useDeleteDocument();
   const restoreDocument = useRestoreDocument();
+
+  // File đang xem trước + tập hợp id đã được admin xem (để bắt buộc xem trước khi duyệt).
+  const [preview, setPreview] = useState<{ title: string; url?: string | null; mimeType?: string | null } | null>(null);
+  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
 
   const documents = Array.isArray(documentsResponse) ? documentsResponse : [];
 
@@ -84,10 +89,9 @@ export const AdminFilesPage: React.FC = () => {
               <TabsTrigger value="pending">Chờ duyệt</TabsTrigger>
               <TabsTrigger value="approved">Đã duyệt</TabsTrigger>
               <TabsTrigger value="rejected">Từ chối</TabsTrigger>
-              <TabsTrigger value="trash">Thùng rác</TabsTrigger>
             </TabsList>
 
-            {["all", "pending", "approved", "rejected", "trash"].map((tab) => (
+            {["all", "pending", "approved", "rejected"].map((tab) => (
               <TabsContent key={tab} value={tab} className="space-y-4">
                 {tab === "trash" && (
                   <div className="px-4 py-3 bg-muted/50 rounded-lg border border-muted">
@@ -164,12 +168,29 @@ export const AdminFilesPage: React.FC = () => {
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
+                              {tab !== "trash" && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    setPreview({
+                                      title: d.title,
+                                      url: d.cloudinaryUrl,
+                                      mimeType: d.mimeType,
+                                    });
+                                    setReviewedIds((prev) => new Set(prev).add(d.id));
+                                  }}
+                                >
+                                  <Eye className="h-3.5 w-3.5" /> Xem
+                                </Button>
+                              )}
                               {activeTab === "pending" && (
                                 <>
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    disabled={approveDocument.isPending}
+                                    disabled={approveDocument.isPending || !reviewedIds.has(d.id)}
+                                    title={!reviewedIds.has(d.id) ? "Bạn cần xem file trước khi duyệt" : undefined}
                                     onClick={() => {
                                       approveDocument.mutate(d.id, {
                                         onSuccess: () => toast.success("Đã duyệt file"),
@@ -182,7 +203,8 @@ export const AdminFilesPage: React.FC = () => {
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    disabled={rejectDocument.isPending}
+                                    disabled={rejectDocument.isPending || !reviewedIds.has(d.id)}
+                                    title={!reviewedIds.has(d.id) ? "Bạn cần xem file trước khi từ chối" : undefined}
                                     onClick={() => {
                                       rejectDocument.mutate(d.id, {
                                         onSuccess: () => toast.success("Đã từ chối file"),
@@ -223,6 +245,14 @@ export const AdminFilesPage: React.FC = () => {
           </Tabs>
         </CardContent>
       </Card>
+
+      <FilePreviewDialog
+        open={!!preview}
+        onOpenChange={(v) => !v && setPreview(null)}
+        title={preview?.title ?? ""}
+        url={preview?.url}
+        mimeType={preview?.mimeType}
+      />
     </div>
   );
 };

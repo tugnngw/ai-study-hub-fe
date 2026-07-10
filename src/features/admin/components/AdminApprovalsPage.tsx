@@ -1,7 +1,7 @@
 // src/features/admin/components/AdminApprovalsPage.tsx
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { FileText, Check, X, Flag, AlertCircle } from "lucide-react";
+import { FileText, Check, X, Flag, AlertCircle, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -16,12 +16,42 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useApprovals, useApprovalAction } from "../hooks";
 import type { ApprovalAction } from "../types/admin.types";
+import { FilePreviewDialog } from "./FilePreviewDialog";
+import { documentApi } from "@/lib/realApi";
 
 export const AdminApprovalsPage: React.FC = () => {
   const query = useApprovals();
   const action = useApprovalAction();
   const [list, setList] = useState<(typeof query.data)[number][] | []>(query.data || []);
   const [_, setForceUpdate] = useState(0);
+
+  // Xem trước file trước khi ra quyết định.
+  const [preview, setPreview] = useState<{ title: string; url?: string | null; mimeType?: string | null } | null>(null);
+  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
+  const [loadingPreview, setLoadingPreview] = useState<string | null>(null);
+
+  const openPreview = async (item: any) => {
+    setReviewedIds((prev) => new Set(prev).add(item.id));
+    // Nếu đã có url thì dùng luôn, nếu chưa thì lấy chi tiết document.
+    if (item.cloudinaryUrl) {
+      setPreview({ title: item.title, url: item.cloudinaryUrl, mimeType: item.mimeType });
+      return;
+    }
+    if (!item.documentId) {
+      setPreview({ title: item.title, url: null });
+      return;
+    }
+    try {
+      setLoadingPreview(item.id);
+      const doc = await documentApi.getById(item.documentId);
+      setPreview({ title: item.title, url: doc.cloudinaryUrl, mimeType: doc.mimeType });
+    } catch {
+      toast.error("Không tải được nội dung file");
+      setPreview({ title: item.title, url: null });
+    } finally {
+      setLoadingPreview(null);
+    }
+  };
 
   useEffect(() => {
     if (query.data) {
@@ -144,20 +174,32 @@ export const AdminApprovalsPage: React.FC = () => {
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
-                         <Button
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          disabled={loadingPreview === item.id}
+                          onClick={() => openPreview(item)}
+                        >
+                          <Eye /> {loadingPreview === item.id ? "Đang mở..." : "Xem file"}
+                        </Button>
+                        <Button
                           variant="outline"
                           size="sm"
                           className="text-destructive hover:text-destructive"
+                          disabled={!reviewedIds.has(item.id)}
+                          title={!reviewedIds.has(item.id) ? "Xem file trước khi xử lý" : undefined}
                           onClick={() => handle(item.id, "reject")}
                         >
                           <X /> Từ chối file
                         </Button>
-                         <Button
-                           size="sm"
-                           onClick={() => handle(item.id, "approve")}
-                         >
-                           <Check /> Chấp nhận báo cáo
-                         </Button>
+                        <Button
+                          size="sm"
+                          disabled={!reviewedIds.has(item.id)}
+                          title={!reviewedIds.has(item.id) ? "Xem file trước khi xử lý" : undefined}
+                          onClick={() => handle(item.id, "approve")}
+                        >
+                          <Check /> Chấp nhận báo cáo
+                        </Button>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -167,6 +209,14 @@ export const AdminApprovalsPage: React.FC = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <FilePreviewDialog
+        open={!!preview}
+        onOpenChange={(v) => !v && setPreview(null)}
+        title={preview?.title ?? ""}
+        url={preview?.url}
+        mimeType={preview?.mimeType}
+      />
     </div>
   );
 };

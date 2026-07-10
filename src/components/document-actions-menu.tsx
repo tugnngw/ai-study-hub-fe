@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff, Share2 } from "lucide-react";
+import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff, Share2, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -12,12 +12,16 @@ import { useDeleteDocument, useDownloadDocument } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
+import { ShareEntityDialog } from "@/components/share-entity-dialog";
+import { EditDocumentDialog } from "@/components/edit-document-dialog";
 
 export function DocumentActionsMenu({
   documentId,
   folderId,
   title,
   status,
+  description,
+  subjectId,
   className,
   iconClassName,
 }: {
@@ -25,6 +29,8 @@ export function DocumentActionsMenu({
   folderId: string;
   title: string;
   status?: string;
+  description?: string;
+  subjectId?: number;
   className?: string;
   iconClassName?: string;
 }) {
@@ -37,6 +43,8 @@ export function DocumentActionsMenu({
 
   const [reportOpen, setReportOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   const handleDelete = async () => {
     try {
@@ -84,16 +92,19 @@ export function DocumentActionsMenu({
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setEditOpen(true)}>
+            <Pencil className="h-3.5 w-3.5 mr-2" /> Sửa thông tin
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={handleDownload} disabled={download.isPending}>
             <Download className="h-3.5 w-3.5 mr-2" /> Tải xuống
           </DropdownMenuItem>
-          <DropdownMenuItem 
+          <DropdownMenuItem
             onClick={() => {
               if (isRejected) {
                 toast.error("Tài liệu bị từ chối duyệt, không thể chia sẻ");
                 return;
               }
-              toast.info("Tính năng chia sẻ đang được phát triển");
+              setShareOpen(true);
             }}
             disabled={isRejected}
             className={isRejected ? "opacity-50 cursor-not-allowed" : ""}
@@ -137,6 +148,18 @@ export function DocumentActionsMenu({
         title={title}
         onConfirm={handleDelete}
         isPending={del.isPending}
+      />
+      <ShareEntityDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        title={title}
+        documentId={documentId}
+      />
+      <EditDocumentDialog
+        open={editOpen}
+        onOpenChange={setEditOpen}
+        documentId={documentId}
+        initial={{ title, description, folderId, subjectId }}
       />
     </>
   );

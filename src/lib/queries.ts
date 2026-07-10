@@ -1,15 +1,18 @@
 // src/lib/queries.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { GenerateSummaryRequest, GenerateSummaryResponse } from "./types";
+import { paymentApi } from "@/features/admin/services/paymentApi";
 import {
   accountApi,
   authApi,
+  dashboardApi,
   documentApi,
   flashcardApi,
   folderApi,
   quizApi,
   ragApi,
   shareApi,
+  subjectApi,
   summaryApi,
 } from "./realApi";
 import { tokenStore, ApiError } from "./api";
@@ -82,6 +85,81 @@ export function useCurrentUser() {
 }
 
 // ================================================================
+// PLANS (gói nâng cấp) — dùng chung cho trang Premium của user.
+// Cùng cache với chỉnh sửa của admin để tự cập nhật sau khi admin lưu.
+// ================================================================
+
+export function usePlans() {
+  return useQuery({
+    queryKey: ["plans"],
+    queryFn: () => paymentApi.getPlans(),
+    staleTime: 30_000,
+  });
+}
+
+// ================================================================
+// DASHBOARD (trang chủ người dùng)
+// Điểm nối BE: gọi GET /api/dashboard. Khi BE chưa sẵn sàng, tự tổng hợp
+// từ folders/documents/subjects để UI vẫn chạy.
+// ================================================================
+
+export function useDashboard() {
+  return useQuery({
+    queryKey: ["dashboard"],
+    queryFn: async () => {
+      try {
+        return await dashboardApi.get();
+      } catch {
+        // Fallback: dựng payload từ các endpoint hiện có.
+        const [folders, documents, subjects] = await Promise.all([
+          folderApi.list().catch(() => []),
+          documentApi.list().catch(() => []),
+          subjectApi.list().catch(() => []),
+        ]);
+        const docCountBySubject: Record<number, number> = {};
+        const docCountByFolder: Record<string, number> = {};
+        documents.forEach((d) => {
+          if (d.subjectId != null)
+            docCountBySubject[d.subjectId] =
+              (docCountBySubject[d.subjectId] ?? 0) + 1;
+          if (d.folderId != null)
+            docCountByFolder[String(d.folderId)] =
+              (docCountByFolder[String(d.folderId)] ?? 0) + 1;
+        });
+        const recentNotes = [...folders]
+          .map((f) => ({
+            ...f,
+            documentCount: f.documentCount ?? docCountByFolder[String(f.id)] ?? 0,
+          }))
+          .sort((a, b) =>
+            (b.updatedAt ?? b.createdAt ?? "").localeCompare(
+              a.updatedAt ?? a.createdAt ?? "",
+            ),
+          )
+          .slice(0, 3);
+        const recentDocuments = [...documents]
+          .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""))
+          .slice(0, 6);
+        return { recentNotes, recentDocuments, subjects, docCountBySubject };
+      }
+    },
+    staleTime: 60_000,
+  });
+}
+
+// ================================================================
+// SUBJECT (môn học theo kỳ) — dùng cho luồng upload
+// ================================================================
+
+export function useSubjects() {
+  return useQuery({
+    queryKey: ["subjects"],
+    queryFn: () => subjectApi.list(),
+    staleTime: 10 * 60_000,
+  });
+}
+
+// ================================================================
 // FOLDER
 // ================================================================
 
@@ -101,7 +179,7 @@ export function useFolder(id: string) {
   return useQuery({
     queryKey: folderKeys.detail(id),
     queryFn: () => folderApi.getById(id),
-    enabled: !!id && id > 0,
+    enabled: !!id && id !== "0",
   });
 }
 
@@ -308,13 +386,16 @@ export function useOwnedShares() {
 export function useShareFolder() {
   const qc = useQueryClient();
   return useMutation({
+    // Chia sẻ folder HOẶC file (document). Truyền đúng 1 trong 2 id.
     mutationFn: (request: {
-      folderId: string;
+      folderId?: string;
+      documentId?: string;
       username?: string;
       email?: string;
     }) =>
         shareApi.shareFolder({
           folderId: request.folderId,
+          documentId: request.documentId,
           username: request.username,
           email: request.email,
           visibility: "private",
@@ -324,6 +405,11 @@ export function useShareFolder() {
       qc.invalidateQueries({ queryKey: sharedKeys.owned });
     },
   });
+}
+
+// Alias rõ nghĩa để chia sẻ 1 file đơn lẻ.
+export function useShareDocument() {
+  return useShareFolder();
 }
 
 export function useDeleteSharedDocument() {
