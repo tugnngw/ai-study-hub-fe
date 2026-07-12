@@ -100,6 +100,15 @@ export function usePlans() {
   });
 }
 
+export function useMySubscription() {
+  return useQuery({
+    queryKey: ["my-subscription"],
+    queryFn: () => paymentApi.getMySubscription(),
+    staleTime: 5_000, // 5s
+    retry: false,
+  });
+}
+
 // ================================================================
 // SEMESTER
 // ================================================================

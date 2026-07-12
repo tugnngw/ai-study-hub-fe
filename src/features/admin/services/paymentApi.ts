@@ -8,6 +8,7 @@ interface BackendPlan {
   storageGb: number;
   aiQuestions: number;
   price: number;
+  durationDays?: number;
   isActive: boolean;
 }
 
@@ -55,12 +56,6 @@ interface PaginatedResponse<T> {
   number: number;
 }
 
-const PLAN_ID_MAP: Record<string, number> = {
-  PRO: 2,
-  PLUS: 3,
-};
-
-// Gói trả về nguyên bản từ BE (dùng cho trang quản trị chỉnh sửa giá trị).
 export interface AdminPlan {
   id: string;
   name: string;
@@ -77,21 +72,17 @@ export interface AdminPlan {
   activeSubscriptionCount?: number;
 }
 
-// Kết quả tính toán khi user đổi/nâng gói giữa chừng (proration).
-// Nguyên tắc: KHÔNG đổi gói trực tiếp. Quy đổi số ngày còn lại của gói cũ ra
-// tiền, trừ vào giá gói mới để ra số tiền phải trả cho phần ngày còn lại.
-export interface UpgradeQuote {
-  currentPlan: string;
-  targetPlan: string;
-  remainingDays: number;     // số ngày còn lại của gói hiện tại
-  remainingValue: number;    // giá trị quy đổi của số ngày còn lại (VNĐ)
-  targetDailyPrice: number;  // đơn giá/ngày của gói mới
-  daysCovered: number;       // số ngày gói mới được cấp sau khi bù trừ
-  amountDue: number;         // số tiền thực phải trả
+export interface SubscriptionResponse {
+  id: string;
+  planId: string;
+  planName: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  pricePaid: number;
 }
 
 export const paymentApi = {
-  // ── ADMIN: quản lý giá trị các gói ────────────────────────
   adminGetPlans: (): Promise<AdminPlan[]> => api<AdminPlan[]>("/api/admin/plans"),
   adminGetPlanById: (id: string): Promise<AdminPlan> => api<AdminPlan>(`/api/admin/plans/${id}`),
   adminCreatePlan: (body: Omit<AdminPlan, "id" | "activeSubscriptionCount">): Promise<AdminPlan> =>
@@ -103,8 +94,6 @@ export const paymentApi = {
   adminRestorePlan: (id: string): Promise<void> =>
     api<void>(`/api/admin/plans/${id}/restore`, { method: "PATCH" }),
 
-  // ── PUBLIC: user đọc danh sách gói (đã đồng bộ với chỉnh sửa của admin) ──
-  // Ưu tiên endpoint công khai; nếu BE chưa có, fallback dùng /api/admin/plans.
   getPlans: async (): Promise<AdminPlan[]> => {
     try {
       return await api<AdminPlan[]>("/api/plans");
@@ -113,14 +102,6 @@ export const paymentApi = {
     }
   },
 
-  // ── Đổi/nâng gói theo số ngày (proration) ─────────────────
-  // FE gọi để BE báo lại số tiền phải trả sau khi bù trừ ngày còn lại.
-  getUpgradeQuote: (planId: number, days: number): Promise<UpgradeQuote> =>
-    api<UpgradeQuote>(`/api/payment/quote?planId=${planId}&days=${days}`),
-  // Tạo link thanh toán theo số ngày người dùng chọn (thay vì cố định 1 tháng).
-  createPaymentByDays: (planId: number, days: number): Promise<PaymentResponse> =>
-    api("/api/payment/create", { method: "POST", body: { planId, days } }),
-
   getPlanOptions: async (): Promise<PlanOption[]> => {
     const plans = await api<BackendPlan[]>("/api/payment/plans");
     return plans
@@ -128,7 +109,7 @@ export const paymentApi = {
       .map((p) => {
         const isPremium = p.name === "Premium";
         return {
-          id: isPremium ? "PLUS" : "PRO" as any,
+          id: p.id,
           name: p.name,
           price: p.price,
           tagline: p.description || "",
@@ -142,11 +123,16 @@ export const paymentApi = {
         };
       });
   },
+
   createPayment: (planId: string): Promise<PaymentResponse> =>
     api("/api/payment/create", {
       method: "POST",
-      body: { planId: PLAN_ID_MAP[planId] || 2 },
+      body: { planId },
     }),
+
+  getMySubscription: (): Promise<SubscriptionResponse> =>
+    api<SubscriptionResponse>("/api/payment/my-subscription"),
+
   getTransactions: (): Promise<UserTransactionResponse[]> => 
     api<UserTransactionResponse[]>("/api/payment/my-transactions"),
   getAllTransactions: (page: number = 0, size: number = 20) =>
