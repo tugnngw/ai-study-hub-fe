@@ -1,9 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
-import { FileText, Plus, Search, Upload, Pin, X } from "lucide-react";
+import { FileText, Plus, Search, Upload, Pin } from "lucide-react";
 import { toast } from "sonner";
-import { useDocuments, useFolders, useUploadDocument, useSubjects } from "@/lib/queries";
-import { SEMESTERS } from "@/lib/config";
+import {
+  useDocuments,
+  useFolders,
+  useUploadDocument,
+  useSemesters,
+  useSubjectsBySemester,
+} from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -36,17 +41,10 @@ export const Route = createFileRoute("/_authenticated/documents")({
 
 function DocumentsPage() {
   const { data, isLoading } = useDocuments();
-  const subjects = useSubjects();
+  const subjects = useSemesters();
   const [query, setQuery] = useState("");
   const [uploadOpen, setUploadOpen] = useState(false);
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
-
-  // Tra cứu môn theo subjectId để hiển thị Kỳ + Môn.
-  const subjectMap = useMemo(() => {
-    const m = new Map<number, { code: string; name: string; semester: number }>();
-    (subjects.data ?? []).forEach((s) => m.set(s.id, s));
-    return m;
-  }, [subjects.data]);
 
   const filtered = (data ?? [])
     .filter((d) => d.title.toLowerCase().includes(query.toLowerCase()))
@@ -98,8 +96,7 @@ function DocumentsPage() {
             <thead className="bg-muted/40">
               <tr className="text-left">
                 <th className="px-4 py-3 font-medium">Title</th>
-                <th className="px-4 py-3 font-medium hidden lg:table-cell">Kỳ</th>
-                <th className="px-4 py-3 font-medium hidden lg:table-cell">Môn</th>
+                <th className="px-4 py-3 font-medium hidden lg:table-cell">Folder</th>
                 <th className="px-4 py-3 font-medium hidden md:table-cell">
                   Description
                 </th>
@@ -109,7 +106,6 @@ function DocumentsPage() {
             </thead>
             <tbody>
               {filtered.map((d) => {
-                const subj = d.subjectId != null ? subjectMap.get(d.subjectId) : undefined;
                 return (
                   <DocumentRow
                     key={d.id}
@@ -118,9 +114,6 @@ function DocumentsPage() {
                     title={d.title}
                     description={d.description ?? ""}
                     status={d.status}
-                    semester={subj?.semester}
-                    subjectId={d.subjectId ?? undefined}
-                    subjectLabel={subj ? `${subj.code}` : undefined}
                     pinned={isPinned(d.id)}
                     onTogglePin={() => togglePin(d.id)}
                   />
@@ -142,20 +135,14 @@ function DocumentRow({
   title,
   description,
   status,
-  semester,
-  subjectId,
-  subjectLabel,
   pinned,
   onTogglePin,
 }: {
-  id: number;
+  id: string;
   folderId: string;
   title: string;
   description: string;
   status: string;
-  semester?: number;
-  subjectId?: number;
-  subjectLabel?: string;
   pinned: boolean;
   onTogglePin: () => void;
 }) {
@@ -196,20 +183,7 @@ function DocumentRow({
         </div>
       </td>
       <td className="px-4 py-3 hidden lg:table-cell">
-        {semester != null ? (
-          <Badge variant="outline" className="font-normal">
-            Kỳ {semester}
-          </Badge>
-        ) : (
-          <span className="text-muted-foreground text-xs">—</span>
-        )}
-      </td>
-      <td className="px-4 py-3 hidden lg:table-cell">
-        {subjectLabel ? (
-          <span className="font-medium">{subjectLabel}</span>
-        ) : (
-          <span className="text-muted-foreground text-xs">—</span>
-        )}
+        <span className="text-muted-foreground text-xs">—</span>
       </td>
       <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
         {description}
@@ -224,7 +198,6 @@ function DocumentRow({
           title={title}
           status={status}
           description={description}
-          subjectId={subjectId}
         />
       </td>
     </tr>
@@ -239,25 +212,20 @@ function UploadDialog({
   onOpenChange: (v: boolean) => void;
 }) {
   const folders = useFolders();
-  const subjects = useSubjects();
+  const semesters = useSemesters();
   const upload = useUploadDocument();
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [folderId, setFolderId] = useState<string>("");
-  const [semester, setSemester] = useState<string>("");
+  const [semesterId, setSemesterId] = useState<string>("");
   const [subjectId, setSubjectId] = useState<string>("");
 
-  // Số kỳ lấy từ cấu hình trong code (src/lib/config.ts).
-  const semesters = SEMESTERS;
+  const subjects = useSubjectsBySemester(semesterId);
 
-  // Môn học lọc theo kỳ đã chọn.
   const subjectsInSemester = useMemo(
-    () =>
-      (subjects.data ?? []).filter(
-        (s) => String(s.semester) === semester,
-      ),
-    [subjects.data, semester],
+    () => subjects.data ?? [],
+    [subjects.data],
   );
 
   const multiple = files.length > 1;
@@ -267,7 +235,7 @@ function UploadDialog({
     setTitle("");
     setDescription("");
     setFolderId("");
-    setSemester("");
+    setSemesterId("");
     setSubjectId("");
   };
 
@@ -278,16 +246,12 @@ function UploadDialog({
     if (files.length === 0) return toast.error("Chọn ít nhất một file");
     if (!multiple && !title.trim()) return toast.error("Nhập tiêu đề");
     if (!folderId) return toast.error("Chọn thư mục");
-    if (!semester) return toast.error("Chọn kỳ học");
-    if (!subjectId) return toast.error("Chọn môn học");
     try {
       await upload.mutateAsync({
         files,
-        // Nhiều file: dùng tên file làm tiêu đề mỗi tài liệu (BE tách theo từng file).
         title: multiple ? files[0].name : title,
         description,
         folderId,
-        subjectId: Number(subjectId),
       });
       toast.success(
         multiple ? `Đã tải lên ${files.length} tài liệu` : "Đã tải lên tài liệu",
@@ -323,7 +287,6 @@ function UploadDialog({
               onChange={(e) => {
                 const picked = Array.from(e.target.files ?? []);
                 if (picked.length) setFiles((prev) => [...prev, ...picked]);
-                // reset input để chọn lại cùng file được
                 e.target.value = "";
               }}
             />
@@ -382,19 +345,19 @@ function UploadDialog({
             <div className="space-y-2">
               <Label>Kỳ học</Label>
               <Select
-                value={semester}
+                value={semesterId}
                 onValueChange={(v) => {
-                  setSemester(v);
-                  setSubjectId(""); // đổi kỳ thì reset môn
+                  setSemesterId(v);
+                  setSubjectId("");
                 }}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Chọn kỳ" />
                 </SelectTrigger>
                 <SelectContent>
-                  {semesters.map((s) => (
-                    <SelectItem key={s} value={String(s)}>
-                      Kỳ {s}
+                  {(semesters.data ?? []).map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -405,10 +368,10 @@ function UploadDialog({
               <Select
                 value={subjectId}
                 onValueChange={setSubjectId}
-                disabled={!semester}
+                disabled={!semesterId}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={semester ? "Chọn môn" : "Chọn kỳ trước"} />
+                  <SelectValue placeholder={semesterId ? "Chọn môn" : "Chọn kỳ trước"} />
                 </SelectTrigger>
                 <SelectContent>
                   {subjectsInSemester.length === 0 ? (
@@ -417,8 +380,8 @@ function UploadDialog({
                     </div>
                   ) : (
                     subjectsInSemester.map((s) => (
-                      <SelectItem key={s.id} value={String(s.id)}>
-                        {s.code} – {s.name}
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.code ?? s.name} – {s.name}
                       </SelectItem>
                     ))
                   )}

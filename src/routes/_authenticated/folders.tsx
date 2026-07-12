@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
-import { FolderKanban, Plus, Search, Trash2, Pencil, Star, MoreVertical, Share2 } from "lucide-react";
+import { FolderKanban, Plus, Search, Trash2, Pencil, Star, MoreVertical, Share2, BookOpen, GraduationCap, Loader2, BadgeCheck } from "lucide-react";
 import { toast } from "sonner";
 import {
   useCreateFolder,
@@ -8,6 +8,8 @@ import {
   useDocuments,
   useFolders,
   useUpdateFolder,
+  useSemesters,
+  useSubjectsBySemester,
 } from "@/lib/queries";
 import { useStarredFolders } from "@/lib/preferences";
 import { ShareEntityDialog } from "@/components/share-entity-dialog";
@@ -15,7 +17,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,6 +36,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -41,7 +52,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import type { Folder } from "@/lib/types";
+import type { Folder, Subject } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/folders")({
@@ -57,8 +68,16 @@ function FoldersPage() {
   const [deleting, setDeleting] = useState<Folder | null>(null);
   const [sharing, setSharing] = useState<Folder | null>(null);
   const { isMarked: isStarred, toggle: toggleStar } = useStarredFolders();
+  const folders = useFolders();
+  const semesters = useSemesters();
 
-  // Đếm số tài liệu theo từng thư mục.
+  // Find subject for editing folder
+  const editingSubjectId = useMemo(() => {
+    if (!editing || !semesters.data || !folders.data) return "";
+    const folder = folders.data.find(f => f.id === editing.id);
+    return folder?.subjectId ?? "";
+  }, [editing, semesters.data, folders.data]);
+
   const countByFolder = useMemo(() => {
     const m = new Map<string, number>();
     (docs ?? []).forEach((d) => {
@@ -192,15 +211,21 @@ function FoldersPage() {
             </div>
         )}
 
-        <FolderFormDialog open={open} onOpenChange={setOpen} folder={editing} />
+        <FolderFormDialog
+            open={open}
+            onOpenChange={setOpen}
+            folder={editing}
+            initialSubjectId={editingSubjectId}
+        />
+
         <DeleteFolderDialog folder={deleting} onClose={() => setDeleting(null)} />
         <ShareEntityDialog
-          open={!!sharing}
-          onOpenChange={(v) => {
-            if (!v) setSharing(null);
-          }}
-          title={sharing?.name ?? ""}
-          folderId={sharing?.id}
+            open={!!sharing}
+            onOpenChange={(v) => {
+              if (!v) setSharing(null);
+            }}
+            title={sharing?.name ?? ""}
+            folderId={sharing?.id}
         />
       </div>
   );
@@ -210,73 +235,218 @@ function FolderFormDialog({
                             open,
                             onOpenChange,
                             folder,
+                            initialSubjectId,
                           }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   folder: Folder | null;
+  initialSubjectId?: string;
 }) {
   const create = useCreateFolder();
   const update = useUpdateFolder();
-  const [name, setName] = useState(folder?.name ?? "");
+  const semesters = useSemesters();
 
-  // sync when folder changes
-  if (open && folder && folder.name !== name && name === "") {
-    setName(folder.name);
-  }
+  const [name, setName] = useState(folder?.name ?? "");
+  const [semesterId, setSemesterId] = useState("");
+  const [subjectId, setSubjectId] = useState(initialSubjectId ?? "");
+  const subjects = useSubjectsBySemester(semesterId);
+  const [description, setDescription] = useState("");
+
+  const selectedSubject = useMemo(
+      () => (subjects.data ?? []).find((s) => s.id === subjectId),
+      [subjects.data, subjectId],
+  );
+
+  // Reset form when dialog opens
+  const reset = () => {
+    setName(folder?.name ?? "");
+    setSemesterId("");
+    setSubjectId(initialSubjectId ?? "");
+    setDescription("");
+  };
 
   const submit = async () => {
     if (!name.trim()) return toast.error("Name is required");
+    if (!semesterId) return toast.error("Select a semester");
+    if (!subjectId) return toast.error("Select a subject");
     try {
       if (folder) {
-        await update.mutateAsync({ id: folder.id, name });
+        await update.mutateAsync({
+          id: folder.id,
+          name: name.trim(),
+          subjectId,
+          description: description.trim() || undefined,
+        });
         toast.success("Folder updated");
       } else {
-        await create.mutateAsync({ name });
+        await create.mutateAsync({
+          name: name.trim(),
+          subjectId,
+          description: description.trim() || undefined,
+        });
         toast.success("Folder created");
       }
       onOpenChange(false);
-      setName("");
+      reset();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     }
   };
+
+  const isPending = create.isPending || update.isPending;
+  const canSubmit = name.trim() && semesterId && subjectId;
 
   return (
       <Dialog
           open={open}
           onOpenChange={(v) => {
             onOpenChange(v);
-            if (!v) {
-              setName("");
-            }
+            if (!v) reset();
           }}
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{folder ? "Edit folder" : "New folder"}</DialogTitle>
+            <DialogTitle className="flex items-center gap-2">
+              <FolderKanban className="h-5 w-5 text-primary" />
+              {folder ? "Edit folder" : "New folder"}
+            </DialogTitle>
             <DialogDescription>
-              Organize related documents together.
+              {folder ? "Update the folder details." : "Create a new folder to organize your documents."}
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
+
+          <div className="space-y-5">
+            {/* Semester */}
             <div className="space-y-2">
-              <Label>Name</Label>
+              <Label className="flex items-center gap-1.5">
+                <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                Semester
+              </Label>
+              <Select
+                  value={semesterId}
+                  onValueChange={(v) => {
+                    setSemesterId(v);
+                    setSubjectId("");
+                  }}
+                  disabled={semesters.isLoading}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a semester" />
+                </SelectTrigger>
+                <SelectContent>
+                  {semesters.isLoading ? (
+                      <div className="flex items-center justify-center p-3">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      </div>
+                  ) : (
+                      (semesters.data ?? []).map((s) => (
+                          <SelectItem key={s.id} value={s.id}>
+                            {s.name}
+                          </SelectItem>
+                      ))
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Subject */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-1.5">
+                <BookOpen className="h-4 w-4 text-muted-foreground" />
+                Subject
+              </Label>
+              <Select
+                  value={subjectId}
+                  onValueChange={setSubjectId}
+                  disabled={!semesterId || subjects.isLoading}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                      placeholder={
+                        !semesterId
+                            ? "Select a semester first"
+                            : subjects.isLoading
+                                ? "Loading subjects..."
+                                : "Select a subject"
+                      }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {subjects.isLoading ? (
+                      <div className="flex items-center justify-center p-3">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      </div>
+                  ) : (subjects.data ?? []).length === 0 ? (
+                      <div className="px-3 py-2 text-sm text-muted-foreground">
+                        No subjects available
+                      </div>
+                  ) : (
+                      (subjects.data ?? []).map((s) => (
+                          <SelectItem key={s.id} value={s.id}>
+                            <span className="flex items-center gap-2">
+                              {s.code && <span className="font-mono text-xs text-muted-foreground">{s.code}</span>}
+                              <span>{s.name}</span>
+                              {s.defaultSubject && (
+                                  <Badge variant="outline" className="ml-auto text-[10px] px-1.5 py-0 h-auto border-primary/30 text-primary">
+                                    Default
+                                  </Badge>
+                              )}
+                            </span>
+                          </SelectItem>
+                      ))
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Folder Name */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-1.5">
+                <FolderKanban className="h-4 w-4 text-muted-foreground" />
+                Folder name
+              </Label>
               <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Contracts"
+                  disabled={!subjectId}
+                  placeholder={!subjectId ? !semesterId ? "Select a semester first" : "Select a subject first" : "e.g. Week 1 – Introduction"}
               />
             </div>
+
+            {/* Description */}
+            <div className="space-y-2">
+              <Label>Description (optional)</Label>
+              <Textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  disabled={!subjectId}
+                  placeholder={!subjectId ? "Select a subject first" : "Brief description of this folder..."}
+                  rows={2}
+              />
+            </div>
+
+            {selectedSubject?.defaultSubject && (
+                <div className="flex items-center gap-2 rounded-lg bg-primary/5 border border-primary/10 px-3 py-2 text-xs text-muted-foreground">
+                  <BadgeCheck className="h-3.5 w-3.5 text-primary" />
+                  This folder belongs to the default subject of{" "}
+                  {(semesters.data ?? []).find((s) => s.id === semesterId)?.name ?? ""}
+                </div>
+            )}
           </div>
+
           <DialogFooter>
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
             <Button
                 onClick={submit}
-                disabled={create.isPending || update.isPending}
+                disabled={isPending || !canSubmit}
             >
-              {folder ? "Save" : "Create"}
+              {isPending ? (
+                  <><Loader2 className="h-4 w-4 mr-1 animate-spin" />{folder ? "Saving..." : "Creating..."}</>
+              ) : (
+                  folder ? "Save" : "Create folder"
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>

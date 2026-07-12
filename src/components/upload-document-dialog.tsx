@@ -1,7 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { FileText, X } from "lucide-react";
-import { useFolders, useSubjects, useUploadDocument } from "@/lib/queries";
+import { FileText, X, Loader2, GraduationCap, BookOpen, FolderKanban, Upload } from "lucide-react";
+import {
+  useFolders,
+  useSubjectsBySemester,
+  useSemesters,
+  useUploadDocument,
+} from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +26,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SEMESTERS } from "@/lib/config";
+import { Badge } from "@/components/ui/badge";
+import type { Subject } from "@/lib/types";
 
 export function UploadDocumentDialog({
   open,
@@ -30,30 +36,42 @@ export function UploadDocumentDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  defaultFolderId?: number;
+  defaultFolderId?: string;
 }) {
-  const folders = useFolders();
-  const subjects = useSubjects();
+  const semesters = useSemesters();
   const upload = useUploadDocument();
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [folderId, setFolderId] = useState<string>(
-    defaultFolderId ? String(defaultFolderId) : "",
+  const [semesterId, setSemesterId] = useState("");
+  const [subjectId, setSubjectId] = useState("");
+  const [folderId, setFolderId] = useState("");
+
+  const subjects = useSubjectsBySemester(semesterId);
+  const allFolders = useFolders();
+
+  // Filter folders by selected subject
+  const foldersInSubject = useMemo(
+    () => (allFolders.data ?? []).filter((f) => f.subjectId === subjectId),
+    [allFolders.data, subjectId],
   );
-  const [semester, setSemester] = useState<string>("");
-  const [subjectId, setSubjectId] = useState<string>("");
+
+  const selectedSubject = useMemo(
+    () => (subjects.data ?? []).find((s) => s.id === subjectId),
+    [subjects.data, subjectId],
+  );
 
   useEffect(() => {
-    if (open && defaultFolderId) setFolderId(String(defaultFolderId));
-  }, [open, defaultFolderId]);
-
-  const semesters = SEMESTERS;
-
-  const subjectsInSemester = useMemo(
-    () => (subjects.data ?? []).filter((s) => String(s.semester) === semester),
-    [subjects.data, semester],
-  );
+    if (open && defaultFolderId) {
+      setFolderId(defaultFolderId);
+      // Try to infer from defaultFolderId
+      const found = (allFolders.data ?? []).find(f => f.id === defaultFolderId);
+      if (found?.subjectId) {
+        setSubjectId(found.subjectId);
+        // Need semester for that subject — we'll just keep what user picks
+      }
+    }
+  }, [open, defaultFolderId, allFolders.data]);
 
   const multiple = files.length > 1;
 
@@ -61,37 +79,49 @@ export function UploadDocumentDialog({
     setFiles([]);
     setTitle("");
     setDescription("");
-    setFolderId(defaultFolderId ? String(defaultFolderId) : "");
-    setSemester("");
+    setFolderId("");
+    setSemesterId("");
     setSubjectId("");
   };
 
   const removeFile = (idx: number) =>
     setFiles((prev) => prev.filter((_, i) => i !== idx));
 
+  const handleSemesterChange = useCallback((v: string) => {
+    setSemesterId(v);
+    setSubjectId("");
+    setFolderId("");
+  }, []);
+
+  const handleSubjectChange = useCallback((v: string) => {
+    setSubjectId(v);
+    setFolderId("");
+  }, []);
+
   const submit = async () => {
-    if (files.length === 0) return toast.error("Chọn ít nhất một file");
-    if (!multiple && !title.trim()) return toast.error("Nhập tiêu đề");
-    if (!folderId) return toast.error("Chọn thư mục");
-    if (!semester) return toast.error("Chọn kỳ học");
-    if (!subjectId) return toast.error("Chọn môn học");
+    if (files.length === 0) return toast.error("Select at least one file");
+    if (!multiple && !title.trim()) return toast.error("Enter a title");
+    if (!semesterId) return toast.error("Select a semester");
+    if (!subjectId) return toast.error("Select a subject");
+    if (!folderId) return toast.error("Select a folder");
     try {
       await upload.mutateAsync({
         files,
         title: multiple ? files[0].name : title,
         description,
         folderId,
-        subjectId: Number(subjectId),
       });
       toast.success(
-        multiple ? `Đã tải lên ${files.length} tài liệu` : "Đã tải lên tài liệu",
+        multiple ? `Uploaded ${files.length} documents` : "Document uploaded",
       );
       onOpenChange(false);
       reset();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Tải lên thất bại");
+      toast.error(e instanceof Error ? e.message : "Upload failed");
     }
   };
+
+  const canSubmit = files.length > 0 && (multiple || title.trim()) && folderId && subjectId;
 
   return (
     <Dialog
@@ -103,14 +133,19 @@ export function UploadDocumentDialog({
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Tải lên tài liệu</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <Upload className="h-5 w-5 text-primary" />
+            Upload document
+          </DialogTitle>
           <DialogDescription>
-            Chọn một hoặc nhiều tệp, kèm kỳ và môn học tương ứng.
+            Select semester, subject, and folder before uploading.
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-4">
+
+        <div className="space-y-5">
+          {/* Files */}
           <div className="space-y-2">
-            <Label>File (có thể chọn nhiều)</Label>
+            <Label>Files (can select multiple)</Label>
             <Input
               type="file"
               multiple
@@ -138,7 +173,7 @@ export function UploadDocumentDialog({
                       type="button"
                       onClick={() => removeFile(i)}
                       className="text-muted-foreground hover:text-destructive shrink-0"
-                      title="Bỏ file này"
+                      title="Remove file"
                     >
                       <X className="h-3.5 w-3.5" />
                     </button>
@@ -150,101 +185,159 @@ export function UploadDocumentDialog({
 
           {!multiple && (
             <div className="space-y-2">
-              <Label>Tiêu đề</Label>
+              <Label>Title</Label>
               <Input
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Tên tài liệu"
+                disabled={!subjectId}
+                placeholder={!subjectId ? !semesterId ? "Select a semester first" : "Select a subject first" : "Document title"}
               />
             </div>
           )}
           {multiple && (
-            <p className="text-xs text-muted-foreground">
-              Đang tải {files.length} tệp — mỗi tệp sẽ tạo một tài liệu riêng, lấy tên theo tên tệp.
+            <p className="text-xs text-muted-foreground -mt-3">
+              Each file becomes its own document, named after the filename.
             </p>
           )}
 
           <div className="space-y-2">
-            <Label>Mô tả (tuỳ chọn)</Label>
+            <Label>Description (optional)</Label>
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              disabled={!subjectId}
+              placeholder={!subjectId ? "Select a subject first" : "Brief description..."}
+              rows={2}
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="border-t border-border pt-4 space-y-4">
+            {/* Semester */}
             <div className="space-y-2">
-              <Label>Kỳ học</Label>
+              <Label className="flex items-center gap-1.5">
+                <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                Semester
+              </Label>
               <Select
-                value={semester}
-                onValueChange={(v) => {
-                  setSemester(v);
-                  setSubjectId("");
-                }}
+                value={semesterId}
+                onValueChange={handleSemesterChange}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Chọn kỳ" />
+                  <SelectValue placeholder="Select a semester" />
                 </SelectTrigger>
                 <SelectContent>
-                  {semesters.map((s) => (
-                    <SelectItem key={s} value={String(s)}>
-                      Kỳ {s}
+                  {(semesters.data ?? []).map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Subject */}
             <div className="space-y-2">
-              <Label>Môn học</Label>
+              <Label className="flex items-center gap-1.5">
+                <BookOpen className="h-4 w-4 text-muted-foreground" />
+                Subject
+              </Label>
               <Select
                 value={subjectId}
-                onValueChange={setSubjectId}
-                disabled={!semester}
+                onValueChange={handleSubjectChange}
+                disabled={!semesterId}
               >
                 <SelectTrigger>
                   <SelectValue
-                    placeholder={semester ? "Chọn môn" : "Chọn kỳ trước"}
+                    placeholder={
+                      !semesterId
+                        ? "Select a semester first"
+                        : subjects.isLoading
+                          ? "Loading subjects..."
+                          : "Select a subject"
+                    }
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {subjectsInSemester.length === 0 ? (
+                  {subjects.isLoading ? (
+                    <div className="flex items-center justify-center p-3">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    </div>
+                  ) : (subjects.data ?? []).length === 0 ? (
                     <div className="px-3 py-2 text-sm text-muted-foreground">
-                      Không có môn trong kỳ này
+                      No subjects available
                     </div>
                   ) : (
-                    subjectsInSemester.map((s) => (
-                      <SelectItem key={s.id} value={String(s.id)}>
-                        {s.code} – {s.name}
+                    (subjects.data ?? []).map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        <span className="flex items-center gap-2">
+                          {s.code && <span className="font-mono text-xs text-muted-foreground">{s.code}</span>}
+                          <span>{s.name}</span>
+                          {s.defaultSubject && (
+                            <Badge variant="outline" className="ml-auto text-[10px] px-1.5 py-0 h-auto border-primary/30 text-primary">
+                              Default
+                            </Badge>
+                          )}
+                        </span>
                       </SelectItem>
                     ))
                   )}
                 </SelectContent>
               </Select>
             </div>
-          </div>
 
-          <div className="space-y-2">
-            <Label>Thư mục</Label>
-            <Select value={folderId} onValueChange={setFolderId}>
-              <SelectTrigger>
-                <SelectValue placeholder="Chọn thư mục" />
-              </SelectTrigger>
-              <SelectContent>
-                {(folders.data ?? []).map((f) => (
-                  <SelectItem key={f.id} value={String(f.id)}>
-                    {f.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {/* Folder */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-1.5">
+                <FolderKanban className="h-4 w-4 text-muted-foreground" />
+                Folder
+              </Label>
+              <Select
+                value={folderId}
+                onValueChange={setFolderId}
+                disabled={!subjectId}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={
+                      !subjectId
+                        ? "Select a subject first"
+                        : "Select a folder"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {foldersInSubject.length === 0 ? (
+                    <div className="px-3 py-2 text-sm text-muted-foreground">
+                      No folders available
+                    </div>
+                  ) : (
+                    foldersInSubject.map((f) => (
+                      <SelectItem key={f.id} value={f.id}>
+                        {f.name}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+              {subjectId && foldersInSubject.length === 0 && (
+                <p className="text-xs text-amber-600 dark:text-amber-400">
+                  No folders found for this subject. <a href="/folders" className="underline">Create one</a> first.
+                </p>
+              )}
+            </div>
           </div>
         </div>
+
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            Huỷ
+            Cancel
           </Button>
-          <Button onClick={submit} disabled={upload.isPending}>
-            {upload.isPending ? "Đang tải lên…" : "Tải lên"}
+          <Button onClick={submit} disabled={upload.isPending || !canSubmit}>
+            {upload.isPending ? (
+              <><Loader2 className="h-4 w-4 mr-1 animate-spin" />Uploading...</>
+            ) : (
+              <><Upload className="h-4 w-4 mr-1" /> Upload</>
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

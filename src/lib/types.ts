@@ -1,4 +1,5 @@
 // src/lib/types.ts
+
 export interface LoginRequest {
   username: string;
   password: string;
@@ -22,7 +23,6 @@ export interface RefreshResponse {
 
 export interface RegisterRequest {
   username: string;
-  email: string;
   password: string;
   fullName: string;
 }
@@ -37,31 +37,41 @@ export interface User {
   authProvider: string;
   plan?: "FREE" | "BASIC" | "PRO" | "PREMIUM" | "PLUS";
   storageGb?: number;
-  // Thời điểm gói nâng cấp hết hạn (ISO string). null/undefined = gói FREE / không hết hạn.
   planExpiresAt?: string | null;
-  // Ngày bắt đầu gói hiện tại (ISO) — dùng để tính số ngày còn lại khi đổi gói.
   planStartedAt?: string | null;
   createdAt: string;
   updatedAt: string;
 }
 
 // =============================================================
-// SUBJECT / SEMESTER  →  /api/subjects
-// Dùng cho việc upload tài liệu: mỗi tài liệu thuộc 1 môn, mỗi môn thuộc 1 kỳ.
+// SEMESTER
 // =============================================================
-export interface Subject {
-  id: number;
-  code: string;          // ví dụ SE1901
-  name: string;          // ví dụ Software Engineering
-  semester: number;      // kỳ 1..9
+export interface Semester {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
 }
 
+// =============================================================
+// SUBJECT  →  /api/subjects
+// =============================================================
+export interface Subject {
+  id: string;
+  semesterId: string;
+  code: string | null;
+  name: string;
+  defaultSubject: boolean;
+}
+
+// =============================================================
+// FOLDER  →  /api/folder
+// =============================================================
 export interface Folder {
   id: string;
   name: string;
-  description?: string;
-  aiSummary?: string;
-  // Số tài liệu trong thư mục (BE nên trả kèm; nếu không FE tự đếm).
+  subjectId?: string;
+  aiSummary?: string | null;
   documentCount?: number;
   createdAt: string;
   updatedAt: string;
@@ -69,23 +79,25 @@ export interface Folder {
 
 export interface CreateFolderRequest {
   name: string;
-  description?: string;
+  subjectId: string;
 }
 
 export interface UpdateFolderRequest {
   name?: string;
-  description?: string;
+  subjectId?: string;
 }
 
+// =============================================================
+// DOCUMENT  →  /api/documents
+// =============================================================
 export interface Document {
   id: string;
   ownerId: string;
-  subjectId?: number | null;
   folderId?: string | null;
   title: string;
   description?: string | null;
   summary?: string | null;
-  status: "processing" | "ready" | "failed" | "deleted" | "PROCESSING" | "READY" | "REJECT" | "COMPLETED";
+  status: "PROCESSING" | "READY" | "REJECT" | "COMPLETED";
   cloudinaryUrl?: string | null;
   publicId?: string | null;
   mimeType?: string | null;
@@ -98,20 +110,17 @@ export interface Document {
 }
 
 export interface UploadDocumentRequest {
-  // Hỗ trợ 1 hoặc nhiều file cùng lúc. Giữ `file` để tương thích code cũ.
   file?: File;
   files?: File[];
   title: string;
   description?: string;
   folderId?: string;
-  subjectId?: number;
 }
 
 export interface UpdateDocumentRequest {
   title?: string;
   description?: string;
   folderId?: string;
-  subjectId?: number;
 }
 
 export interface DownloadUrlResponse {
@@ -119,8 +128,10 @@ export interface DownloadUrlResponse {
   expiresAt: string;
 }
 
+// =============================================================
+// SHARE  →  /api/shares
+// =============================================================
 export interface ShareRequest {
-  // Chia sẻ theo folder HOẶC theo 1 file (document). Truyền đúng 1 trong 2.
   folderId?: string;
   documentId?: string;
   username?: string;
@@ -157,6 +168,9 @@ export interface ShareRecipient {
   fullName: string;
 }
 
+// =============================================================
+// RAG  →  /api/rag
+// =============================================================
 export interface AskRequest {
   documentId: string;
   question: string;
@@ -167,10 +181,34 @@ export interface AskResponse {
   sources?: unknown[];
 }
 
+// =============================================================
+// REPORT  →  /api/reports
+// =============================================================
 export interface ReportDocumentRequest {
   id: string;
   reason: string;
   description?: string;
+}
+
+// =============================================================
+// QUIZ  →  /api/quizzes
+// =============================================================
+export interface QuizResponse {
+  id: string;
+  title: string;
+  generatedByAi: boolean;
+  createdAt: string;
+  questions: QuestionResponse[];
+}
+
+export interface QuestionResponse {
+  id: string;
+  content: string;
+  optionA: string;
+  optionB: string;
+  optionC: string;
+  optionD: string;
+  correctAnswer: string; // "A" | "B" | "C" | "D"
 }
 
 export interface Quiz {
@@ -183,6 +221,17 @@ export interface Quiz {
   createdAt: string;
 }
 
+// =============================================================
+// FLASHCARD  →  /api/flashcards
+// =============================================================
+export interface FlashcardResponse {
+  id: string;
+  frontContent: string;
+  backContent: string;
+  generatedByAi: boolean;
+  createdAt: string;
+}
+
 export interface Flashcard {
   id: string;
   documentId: string;
@@ -191,13 +240,18 @@ export interface Flashcard {
   createdAt: string;
 }
 
+export interface FlashcardProgress {
+  id: string;
+  flashcardId: string;
+  status: "new" | "learning" | "mastered";
+  lastReviewed: string;
+}
 
 // =============================================================
-// 9. AI SUMMARY
+// AI SUMMARY
 // =============================================================
-
 export interface GenerateSummaryRequest {
-  documentIds: string[];
+  documentId: string;
   force?: boolean;
 }
 
@@ -205,22 +259,25 @@ export interface GenerateSummaryResponse {
   markdown: string;
 }
 
-export interface FlashcardProgress {
-  id: string;
-  flashcardId: string;
-  status: "new" | "learning" | "mastered";
-  lastReviewed: string;
-}
 // =============================================================
-// 10. AI GENERATION REQUESTS
+// AI GENERATION REQUESTS
 // =============================================================
-
 export interface GenerateFlashcardsRequest {
-  documentIds: string[];
+  documentId: string;
   numberOfCards?: number;
+  force?: boolean;
 }
 
 export interface GenerateQuizRequest {
-  documentIds: string[];
+  documentId: string;
   numberOfQuestions?: number;
+  force?: boolean;
+}
+
+export interface SharedDocument {
+  id: string;
+  title: string;
+  description?: string;
+  sharedBy: string;
+  sharedAt: string;
 }

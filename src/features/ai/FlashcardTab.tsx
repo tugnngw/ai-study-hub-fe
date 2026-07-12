@@ -4,23 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { FlashcardViewer } from "@/components/ui/FlashcardViewer";
-import { DocumentSelector } from "./DocumentSelector";
-import { useSelectedDocuments } from "./DocumentSelectionContext";
 import { useGenerateFlashcards } from "@/lib/queries";
 import type { Document } from "@/lib/types";
 
 interface Props {
   docs: Document[];
+  docId?: string;
 }
 
-export function FlashcardTab({ docs }: Props) {
-  const { ids } = useSelectedDocuments();
+export function FlashcardTab({ docs, docId }: Props) {
   const [flashcardCount, setFlashcardCount] = useState(10);
   const generateFlashcards = useGenerateFlashcards();
 
   return (
     <div className="flex-1 overflow-y-auto p-6">
-      <DocumentSelector docs={docs} />
       <div className="mt-4 space-y-4">
         <div className="flex-1">
           <label className="text-sm font-medium">Number of cards:</label>
@@ -34,10 +31,11 @@ export function FlashcardTab({ docs }: Props) {
           />
         </div>
         <Button
-          disabled={generateFlashcards.isPending || ids.length === 0}
+          disabled={generateFlashcards.isPending || !docId}
           onClick={() => {
+            if (!docId) return toast.error("Select a document first");
             generateFlashcards.mutate(
-              { documentIds: ids, numberOfCards: flashcardCount },
+              { documentId: docId, numberOfCards: flashcardCount },
               {
                 onSuccess: () => toast.success("Flashcards generated!"),
                 onError: (err) =>

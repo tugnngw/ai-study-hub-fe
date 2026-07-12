@@ -1,16 +1,15 @@
 // src/lib/queries.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { GenerateSummaryRequest, GenerateSummaryResponse } from "./types";
 import { paymentApi } from "@/features/admin/services/paymentApi";
 import {
   accountApi,
   authApi,
-  dashboardApi,
   documentApi,
   flashcardApi,
   folderApi,
   quizApi,
   ragApi,
+  semesterApi,
   shareApi,
   subjectApi,
   summaryApi,
@@ -19,13 +18,18 @@ import { tokenStore, ApiError } from "./api";
 import type {
   Document,
   Folder,
-  SharedDocument,
   UploadDocumentRequest,
   UpdateDocumentRequest,
   CreateFolderRequest,
   UpdateFolderRequest,
   AskRequest,
   ReportDocumentRequest,
+  GenerateSummaryRequest,
+  GenerateSummaryResponse,
+  GenerateFlashcardsRequest,
+  GenerateQuizRequest,
+  FlashcardResponse,
+  QuizResponse,
 } from "./types";
 
 function handleAccountLockedError(error: unknown): boolean {
@@ -85,8 +89,7 @@ export function useCurrentUser() {
 }
 
 // ================================================================
-// PLANS (gói nâng cấp) — dùng chung cho trang Premium của user.
-// Cùng cache với chỉnh sửa của admin để tự cập nhật sau khi admin lưu.
+// PLANS
 // ================================================================
 
 export function usePlans() {
@@ -98,70 +101,104 @@ export function usePlans() {
 }
 
 // ================================================================
-// DASHBOARD (trang chủ người dùng)
-// Điểm nối BE: gọi GET /api/dashboard. Khi BE chưa sẵn sàng, tự tổng hợp
-// từ folders/documents/subjects để UI vẫn chạy.
+// SEMESTER
+// ================================================================
+
+export function useSemesters() {
+  return useQuery({
+    queryKey: ["semesters"],
+    queryFn: () => semesterApi.list(),
+    staleTime: 10 * 60_000,
+  });
+}
+
+// ================================================================
+// SUBJECT
+// ================================================================
+
+export function useSubjectsBySemester(semesterId: string) {
+  return useQuery({
+    queryKey: ["subjects", "semester", semesterId],
+    queryFn: () => subjectApi.listBySemester(semesterId),
+    enabled: !!semesterId,
+    staleTime: 10 * 60_000,
+  });
+}
+
+// Backward compat: deprecated, use useSubjectsBySemester
+// Fetches all semesters → subjects for each → flattens
+export function useSubjects() {
+  return useQuery({
+    queryKey: ["subjects", "all"],
+    queryFn: async () => {
+      const semesters = await semesterApi.list();
+      const results = await Promise.all(
+        semesters.map((s) =>
+          subjectApi.listBySemester(s.id).catch(() => [] as never[])
+        )
+      );
+      return results.flat();
+    },
+    staleTime: 10 * 60_000,
+  });
+}
+
+// ================================================================
+// DASHBOARD (backward compat until phase 2 rewrite)
 // ================================================================
 
 export function useDashboard() {
   return useQuery({
     queryKey: ["dashboard"],
     queryFn: async () => {
-      try {
-        return await dashboardApi.get();
-      } catch {
-        // Fallback: dựng payload từ các endpoint hiện có.
-        const [folders, documents, subjects] = await Promise.all([
-          folderApi.list().catch(() => []),
-          documentApi.list().catch(() => []),
-          subjectApi.list().catch(() => []),
-        ]);
-        const docCountBySubject: Record<number, number> = {};
-        const docCountByFolder: Record<string, number> = {};
-        documents.forEach((d) => {
-          if (d.subjectId != null)
-            docCountBySubject[d.subjectId] =
-              (docCountBySubject[d.subjectId] ?? 0) + 1;
-          if (d.folderId != null)
-            docCountByFolder[String(d.folderId)] =
-              (docCountByFolder[String(d.folderId)] ?? 0) + 1;
-        });
-        const recentNotes = [...folders]
-          .map((f) => ({
-            ...f,
-            documentCount: f.documentCount ?? docCountByFolder[String(f.id)] ?? 0,
-          }))
-          .sort((a, b) =>
-            (b.updatedAt ?? b.createdAt ?? "").localeCompare(
-              a.updatedAt ?? a.createdAt ?? "",
-            ),
-          )
-          .slice(0, 3);
-        const recentDocuments = [...documents]
-          .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""))
-          .slice(0, 6);
-        return { recentNotes, recentDocuments, subjects, docCountBySubject };
-      }
+      const [folders, documents, semesters] = await Promise.all([
+        folderApi.list().catch(() => []),
+        documentApi.list().catch(() => []),
+        semesterApi.list().catch(() => []),
+      ]);
+
+      // Build subject list from all semesters
+      const subjectPromises = semesters.map((sem) =>
+        subjectApi.listBySemester(sem.id).catch(() => [] as never[])
+      );
+      const subjectArrays = await Promise.all(subjectPromises);
+      const allSubjects = subjectArrays.flat();
+
+      // Count docs by folder (since Document no longer has subjectId)
+      const docCountByFolder: Record<string, number> = {};
+      documents.forEach((d) => {
+        if (d.folderId != null) {
+          docCountByFolder[String(d.folderId)] =
+            (docCountByFolder[String(d.folderId)] ?? 0) + 1;
+        }
+      });
+
+      const recentNotes = [...folders]
+        .map((f) => ({
+          ...f,
+          documentCount: f.documentCount ?? docCountByFolder[String(f.id)] ?? 0,
+        }))
+        .sort((a, b) =>
+          (b.updatedAt ?? b.createdAt ?? "").localeCompare(
+            a.updatedAt ?? a.createdAt ?? "",
+          ),
+        )
+        .slice(0, 3);
+
+      const recentDocuments = [...documents]
+        .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""))
+        .slice(0, 6);
+
+      return {
+        recentNotes,
+        recentDocuments,
+        subjects: allSubjects,
+        docCountBySubject: {} as Record<string, number>,
+      };
     },
     staleTime: 60_000,
   });
 }
-
-// ================================================================
-// SUBJECT (môn học theo kỳ) — dùng cho luồng upload
-// ================================================================
-
-export function useSubjects() {
-  return useQuery({
-    queryKey: ["subjects"],
-    queryFn: () => subjectApi.list(),
-    staleTime: 10 * 60_000,
-  });
-}
-
-// ================================================================
-// FOLDER
-// ================================================================
 
 export const folderKeys = {
   all: ["folders"] as const,
@@ -179,7 +216,7 @@ export function useFolder(id: string) {
   return useQuery({
     queryKey: folderKeys.detail(id),
     queryFn: () => folderApi.getById(id),
-    enabled: !!id && id !== "0",
+    enabled: !!id,
   });
 }
 
@@ -249,12 +286,9 @@ export function useDocumentsByFolder(folderId: string) {
 }
 
 export function useDocument(id: string) {
-  const enabled = !!id;
-  console.log("[TRACE-4] useDocument id:", id, "enabled:", enabled);
   return useQuery({
     queryKey: docKeys.detail(id),
     queryFn: async () => {
-      console.log("[TRACE-5] queryFn executing for id:", id);
       try {
         return await documentApi.getById(id);
       } catch (err: unknown) {
@@ -266,17 +300,14 @@ export function useDocument(id: string) {
         throw err;
       }
     },
-    enabled: enabled,
-    // Thêm polling khi document đang processing
+    enabled: !!id,
     refetchInterval: (query) => {
       const data = query.state.data as Document | undefined;
       if (data?.status === "PROCESSING") {
-        console.log("[Polling] Document is processing, polling every 3s");
-        return 3000; // Poll every 3 seconds
+        return 3000;
       }
       return false;
     },
-    // Refetch khi focus nếu đang processing
     refetchOnWindowFocus: (query) => {
       const data = query.state.data as Document | undefined;
       return data?.status === "PROCESSING";
@@ -289,7 +320,6 @@ export function useUploadDocument() {
   return useMutation({
     mutationFn: async (input: UploadDocumentRequest) => {
       const docs = await documentApi.upload(input);
-      await Promise.all(docs.map((doc) => ragApi.processDocument(doc.id)));
       return docs;
     },
     onSuccess: (_d, v) => {
@@ -379,14 +409,13 @@ export function useOwnedShares() {
   return useQuery({
     queryKey: sharedKeys.owned,
     queryFn: () => shareApi.listOwned(),
-    enabled: !!tokenStore.get(), // Only run if authenticated
+    enabled: !!tokenStore.get(),
   });
 }
 
 export function useShareFolder() {
   const qc = useQueryClient();
   return useMutation({
-    // Chia sẻ folder HOẶC file (document). Truyền đúng 1 trong 2 id.
     mutationFn: (request: {
       folderId?: string;
       documentId?: string;
@@ -407,7 +436,6 @@ export function useShareFolder() {
   });
 }
 
-// Alias rõ nghĩa để chia sẻ 1 file đơn lẻ.
 export function useShareDocument() {
   return useShareFolder();
 }
@@ -457,15 +485,6 @@ export function useAskRag() {
   });
 }
 
-export function useUploadRag() {
-  return useMutation({
-    mutationFn: (input: { file: File; documentId: string; chunk?: boolean }) =>
-      input.chunk
-        ? ragApi.uploadAndChunk(input.file, input.documentId)
-        : ragApi.upload(input.file, input.documentId),
-  });
-}
-
 // ================================================================
 // SUMMARY
 // ================================================================
@@ -476,8 +495,17 @@ export function useGenerateSummary() {
     mutationFn: (input: GenerateSummaryRequest) =>
       summaryApi.generate(input),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["summaries"] });
+      qc.invalidateQueries({ queryKey: ["summary"] });
     },
+  });
+}
+
+export function useSummary(documentId: string) {
+  return useQuery({
+    queryKey: ["summary", documentId],
+    queryFn: () => summaryApi.getCached(documentId),
+    enabled: !!documentId,
+    staleTime: 60_000,
   });
 }
 
@@ -504,9 +532,8 @@ export function useGenerateQuiz() {
       quizApi.generate(input),
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: ["quizzes"] });
-      // Also invalidate the specific document key if a single document was used
       if (data?.id != null) {
-        qc.invalidateQueries({ queryKey: quizKeys.byDocument(String(data.id)) });
+        qc.invalidateQueries({ queryKey: quizKeys.byDocument(data.id) });
       }
     },
   });
@@ -539,16 +566,4 @@ export function useGenerateFlashcards() {
   });
 }
 
-export function useUpdateFlashcardProgress() {
-  return useMutation({
-    mutationFn: ({
-      flashcardId,
-      status,
-    }: {
-      flashcardId: number;
-      status: "new" | "learning" | "mastered";
-    }) => flashcardApi.updateProgress(flashcardId, status),
-  });
-}
-
-export type { Document, Folder, SharedDocument };
+export type { Document, Folder };
