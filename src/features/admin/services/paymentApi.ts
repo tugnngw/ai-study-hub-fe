@@ -2,7 +2,7 @@ import { api } from "@/lib/api";
 import type { PlanOption, TransactionItem } from "../types/admin.types";
 
 interface BackendPlan {
-  id: number;
+  id: string;
   name: string;
   description: string;
   storageGb: number;
@@ -31,6 +31,22 @@ interface UserTransactionResponse {
   updatedAt: string;
 }
 
+interface AdminTransactionResponse {
+  id: string;
+  accountId: string;
+  userName?: string;
+  userEmail?: string;
+  planName: string;
+  amount: number;
+  status: string;
+  description: string;
+  transactionId: string;
+  payosOrderCode: number;
+  paymentMethod: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface PaginatedResponse<T> {
   content: T[];
   totalElements: number;
@@ -46,13 +62,19 @@ const PLAN_ID_MAP: Record<string, number> = {
 
 // Gói trả về nguyên bản từ BE (dùng cho trang quản trị chỉnh sửa giá trị).
 export interface AdminPlan {
-  id: number;
+  id: string;
   name: string;
+  tagline?: string;
   description: string;
+  price: number;
+  durationDays?: number;
   storageGb: number;
   aiQuestions: number;
-  price: number;      // giá cho 30 ngày (VNĐ)
+  features?: string[];
+  isPopular?: boolean;
+  displayOrder?: number;
   isActive: boolean;
+  activeSubscriptionCount?: number;
 }
 
 // Kết quả tính toán khi user đổi/nâng gói giữa chừng (proration).
@@ -71,8 +93,15 @@ export interface UpgradeQuote {
 export const paymentApi = {
   // ── ADMIN: quản lý giá trị các gói ────────────────────────
   adminGetPlans: (): Promise<AdminPlan[]> => api<AdminPlan[]>("/api/admin/plans"),
-  adminUpdatePlan: (id: number, body: Partial<Omit<AdminPlan, "id">>): Promise<AdminPlan> =>
+  adminGetPlanById: (id: string): Promise<AdminPlan> => api<AdminPlan>(`/api/admin/plans/${id}`),
+  adminCreatePlan: (body: Omit<AdminPlan, "id" | "activeSubscriptionCount">): Promise<AdminPlan> =>
+    api<AdminPlan>("/api/admin/plans", { method: "POST", body }),
+  adminUpdatePlan: (id: string, body: Partial<Omit<AdminPlan, "id">>): Promise<AdminPlan> =>
     api<AdminPlan>(`/api/admin/plans/${id}`, { method: "PUT", body }),
+  adminDeletePlan: (id: string): Promise<void> =>
+    api<void>(`/api/admin/plans/${id}`, { method: "DELETE" }),
+  adminRestorePlan: (id: string): Promise<void> =>
+    api<void>(`/api/admin/plans/${id}/restore`, { method: "PATCH" }),
 
   // ── PUBLIC: user đọc danh sách gói (đã đồng bộ với chỉnh sửa của admin) ──
   // Ưu tiên endpoint công khai; nếu BE chưa có, fallback dùng /api/admin/plans.
