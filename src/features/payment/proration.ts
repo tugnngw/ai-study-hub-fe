@@ -1,23 +1,8 @@
 // src/features/payment/proration.ts
-// -----------------------------------------------------------------------------
-// Tính toán đổi/nâng gói theo NGUYÊN TẮC: không đổi gói trực tiếp giữa chừng.
-// Thay vào đó quy đổi số ngày còn lại của gói hiện tại thành tiền, trừ vào
-// giá của gói mới, ra số tiền thực phải trả cho phần ngày còn lại.
-//
-// Ví dụ (theo yêu cầu):
-//   Đang gói PLUS 99k / 30 ngày, đã dùng 10 ngày → còn 20 ngày.
-//   Giá trị còn lại = 99k * 20/30 = 66k.
-//   Nâng lên PREMIUM 159k / 30 ngày cho phần 20 ngày còn lại:
-//     giá premium cho 20 ngày = 159k * 20/30 = 106k
-//   => nhưng theo yêu cầu người dùng: 159 - 66 = 93k cho 20 ngày còn lại.
-//   (Tức: trả thẳng chênh lệch giá 30 ngày trừ đi giá trị còn lại của gói cũ.)
-// -----------------------------------------------------------------------------
-
-const CYCLE_DAYS = 30;
-
 export interface PlanLike {
   name: string;
-  price: number; // giá cho 1 chu kỳ CYCLE_DAYS ngày
+  price: number; 
+  durationDays?: number; // thời hạn mặc định của gói
 }
 
 export interface ProrationResult {
@@ -37,14 +22,15 @@ export function remainingDaysUntil(expiresAt?: string | null): number {
 }
 
 // Giá trị quy đổi của số ngày còn lại theo giá gói CŨ.
-export function remainingValue(currentPrice: number, remainingDays: number): number {
-  return Math.round((currentPrice * remainingDays) / CYCLE_DAYS);
+export function remainingValue(currentPrice: number, currentDurationDays: number, remainingDays: number): number {
+  const duration = currentDurationDays || 30;
+  return Math.round((currentPrice * remainingDays) / duration);
 }
 
 /**
  * Tính số tiền phải trả khi nâng cấp giữa chừng.
- * @param current  gói hiện tại (giá 30 ngày)
- * @param target   gói muốn nâng lên (giá 30 ngày)
+ * @param current  gói hiện tại 
+ * @param target   gói muốn nâng lên 
  * @param expiresAt thời điểm hết hạn của gói hiện tại
  */
 export function computeUpgrade(
@@ -53,25 +39,17 @@ export function computeUpgrade(
   expiresAt?: string | null,
 ): ProrationResult {
   const remainingDays = remainingDaysUntil(expiresAt);
-  const rv = current ? remainingValue(current.price, remainingDays) : 0;
+  const currentDuration = current?.durationDays || 30;
+  const targetDuration = target.durationDays || 30;
+  
+  const rv = current ? remainingValue(current.price, currentDuration, remainingDays) : 0;
   // Trả chênh lệch: giá gói mới (1 chu kỳ) trừ đi giá trị còn lại của gói cũ.
   const amountDue = Math.max(0, target.price - rv);
+  
   return {
     remainingDays,
     remainingValue: rv,
     amountDue,
-    // Phần ngày còn lại của chu kỳ được giữ nguyên cho gói mới.
-    daysCovered: remainingDays > 0 ? remainingDays : CYCLE_DAYS,
+    daysCovered: targetDuration, // Admin giờ cố định ngày mua
   };
 }
-
-/**
- * Mua mới theo số ngày người dùng chọn (không đổi gói — chỉ FREE → trả phí,
- * hoặc gia hạn cùng gói). Giá = đơn giá/ngày * số ngày.
- */
-export function priceForDays(planPrice: number, days: number): number {
-  const daily = planPrice / CYCLE_DAYS;
-  return Math.round(daily * days);
-}
-
-export const PRORATION_CYCLE_DAYS = CYCLE_DAYS;
