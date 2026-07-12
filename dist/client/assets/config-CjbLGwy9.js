@@ -1,0 +1,1 @@
+var e=Array.from({length:9},(e,t)=>t+1),t=1024,n=e=>e/t;function r(e){return e==null||Number.isNaN(e)?`—`:e<1?`${Math.round(e*t)} MB`:`${Number.isInteger(e)?e:Number(e.toFixed(2))} GB`}export{n as i,e as n,r,t};

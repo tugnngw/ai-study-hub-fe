@@ -7,6 +7,8 @@ import type {
   AuthResponse,
   RefreshResponse,
   RegisterRequest,
+  Semester,
+  Subject,
   Folder,
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -19,13 +21,14 @@ import type {
   AskRequest,
   AskResponse,
   ReportDocumentRequest,
-  Quiz,
-  Flashcard,
+  QuizResponse,
+  FlashcardResponse,
   FlashcardProgress,
-  Subject,
+  GenerateSummaryRequest,
+  GenerateSummaryResponse,
+  GenerateFlashcardsRequest,
+  GenerateQuizRequest,
 } from "./types";
-import type { QuizItem } from "@/features/quiz/types/quiz.types";
-import type { GenerateSummaryRequest, GenerateSummaryResponse } from "./types";
 
 // ================================================================
 // AUTH  →  /api/auth
@@ -86,33 +89,24 @@ export const accountApi = {
 };
 
 // ================================================================
-// SUBJECT  →  /api/subjects
-// Danh mục môn học theo kỳ, dùng cho luồng upload tài liệu.
+// SEMESTER  →  /api/semesters
 // ================================================================
 
-export const subjectApi = {
-  // Lấy toàn bộ môn (BE trả kèm semester). FE tự nhóm theo kỳ.
-  list: (): Promise<Subject[]> => api<Subject[]>("/api/subjects"),
-  // Lọc theo kỳ nếu BE hỗ trợ (fallback: FE tự lọc từ list()).
-  listBySemester: (semester: number): Promise<Subject[]> =>
-      api<Subject[]>(`/api/subjects?semester=${semester}`),
+export const semesterApi = {
+  list: (): Promise<Semester[]> => api<Semester[]>("/api/semesters"),
+  getById: (id: string): Promise<Semester> =>
+      api<Semester>(`/api/semesters/${id}`),
 };
 
 // ================================================================
-// DASHBOARD  →  /api/dashboard
-// Điểm nối cho BE: 1 endpoint tổng hợp cho trang chủ người dùng.
-// Nếu BE chưa có endpoint này, FE tự dựng payload từ folders/docs/subjects.
+// SUBJECT  →  /api/subjects
 // ================================================================
 
-export interface DashboardData {
-  recentNotes: Folder[];     // sổ ghi chú gần đây
-  recentDocuments: Document[]; // tài liệu gần đây
-  subjects: Subject[];       // môn học (kèm semester)
-  docCountBySubject?: Record<number, number>; // số tài liệu theo môn (tuỳ chọn)
-}
-
-export const dashboardApi = {
-  get: (): Promise<DashboardData> => api<DashboardData>("/api/dashboard"),
+export const subjectApi = {
+  listBySemester: (semesterId: string): Promise<Subject[]> =>
+      api<Subject[]>(`/api/subjects/semester/${semesterId}`),
+  getById: (id: string): Promise<Subject> =>
+      api<Subject>(`/api/subjects/${id}`),
 };
 
 // ================================================================
@@ -148,7 +142,6 @@ export const documentApi = {
 
   upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
     const fd = new FormData();
-    // Gộp danh sách file (hỗ trợ cả `file` đơn lẻ lẫn `files` nhiều).
     const list = input.files ?? (input.file ? [input.file] : []);
     list.forEach((f) => fd.append("files", f));
     fd.append("title", input.title);
@@ -157,9 +150,6 @@ export const documentApi = {
     }
     if (input.folderId) {
       fd.append("folderId", input.folderId);
-    }
-    if (input.subjectId) {
-      fd.append("subjectId", String(input.subjectId));
     }
     return api<Document[]>("/api/documents", {
       method: "POST",
@@ -189,30 +179,10 @@ export const documentApi = {
 // ================================================================
 
 export const ragApi = {
-  processDocument: (documentId: string): Promise<void> =>
-      api<void>(`/api/v1/rag/process/${documentId}`, { method: "POST" }),
-
-  getDocumentStatus: (documentId: string): Promise<{ documentId: string; status: string }> =>
-      api<{ documentId: string; status: string }>(`/api/v1/rag/status/${documentId}`),
-
-  upload: (file: File, documentId: string): Promise<void> => {
-    const fd = new FormData();
-    fd.append("file", file);
-    fd.append("documentId", documentId);
-    return api<void>("/api/rag/upload", { method: "POST", formData: fd });
-  },
-
-  uploadAndChunk: (file: File, documentId: string): Promise<void> => {
-    const fd = new FormData();
-    fd.append("file", file);
-    fd.append("documentId", documentId);
-    return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
-  },
-
   ask: (input: AskRequest): Promise<AskResponse> =>
       api<AskResponse>("/api/rag/ask", {
         method: "POST",
-        body: { id: input.id, question: input.question },
+        body: { documentId: input.documentId, question: input.question },
       }),
 };
 
@@ -225,10 +195,8 @@ export const shareApi = {
       api<ShareResponse[]>("/api/shares/owner"),
   listSharedWithMe: (): Promise<ShareResponse[]> =>
       api<ShareResponse[]>("/api/shares/shared-with-me"),
-  // Chia sẻ 1 folder HOẶC 1 file (document). BE nhận cả 2 field, truyền đúng 1.
   shareFolder: (request: ShareRequest): Promise<ShareResponse> =>
       api<ShareResponse>("/api/shares", { method: "POST", body: request }),
-  // Alias rõ nghĩa cho việc chia sẻ 1 file đơn lẻ.
   shareDocument: (request: ShareRequest): Promise<ShareResponse> =>
       api<ShareResponse>("/api/shares", { method: "POST", body: request }),
   removeShare: (shareId: string): Promise<void> =>
@@ -244,27 +212,19 @@ export const shareApi = {
         body: { documentId: body.id, reason: body.reason, description: body.description },
       }),
 };
+
 // ================================================================
-// QUIZ  →  /api/quiz
+// QUIZ  →  /api/quizzes
 // ================================================================
 
 export const quizApi = {
-  listByDocument: (documentId: string): Promise<Quiz[]> =>
-      api<Quiz[]>(`/api/quizzes?documentId=${documentId}`),
-  generate: (input: { documentIds: string[]; numberOfQuestions?: number } | string, questionCount = 10): Promise<Quiz> => {
-    const body = typeof input === "string" 
-      ? { documentIds: [input], numberOfQuestions: questionCount }
-      : { documentIds: input.documentIds, numberOfQuestions: input.numberOfQuestions ?? questionCount };
-    return api<Quiz>("/api/quizzes/generate", {
-      method: "POST",
-      body,
-    });
-  },
-  generateAdvanced: (body: {
-    scope: "all" | string;
-    types: string[];
-    questionCount: number;
-  }): Promise<QuizItem[]> => api<QuizItem[]>("/api/quizzes/generate", { method: "POST", body }),
+  listByDocument: (documentId: string): Promise<QuizResponse[]> =>
+      api<QuizResponse[]>(`/api/quizzes/${documentId}`),
+  generate: (input: GenerateQuizRequest): Promise<QuizResponse> =>
+      api<QuizResponse>("/api/quizzes/generate", {
+        method: "POST",
+        body: input,
+      }),
 };
 
 // ================================================================
@@ -272,28 +232,26 @@ export const quizApi = {
 // ================================================================
 
 export const flashcardApi = {
-  listByDocument: (documentId: string): Promise<Flashcard[]> =>
-      api<Flashcard[]>(`/api/flashcards?documentId=${documentId}`),
-  generate: (input: { documentIds: string[]; numberOfCards?: number } | string): Promise<Flashcard[]> => {
-    const body = typeof input === "string"
-      ? { documentIds: [input] }
-      : { documentIds: input.documentIds, numberOfCards: input.numberOfCards };
-    return api<Flashcard[]>("/api/flashcards/generate", {
-      method: "POST",
-      body,
-    });
-  },
-  updateProgress: (flashcardId: string, status: FlashcardProgress["status"]): Promise<FlashcardProgress> =>
-      api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
-        method: "PUT",
-        body: { status },
+  listByDocument: (documentId: string): Promise<FlashcardResponse[]> =>
+      api<FlashcardResponse[]>(`/api/flashcards/${documentId}`),
+  generate: (input: GenerateFlashcardsRequest): Promise<FlashcardResponse[]> =>
+      api<FlashcardResponse[]>("/api/flashcards/generate", {
+        method: "POST",
+        body: input,
       }),
 };
 
+// ================================================================
+// AI SUMMARY
+// ================================================================
+
 export const summaryApi = {
-  generate: (request: GenerateSummaryRequest) =>
-    api<GenerateSummaryResponse>("/api/ai/summary", {
-      method: "POST",
-      body: request,
-    }),
+  generate: (request: GenerateSummaryRequest): Promise<GenerateSummaryResponse> =>
+      api<GenerateSummaryResponse>("/api/ai/summary", {
+        method: "POST",
+        body: request,
+      }),
+
+  getCached: (documentId: string): Promise<GenerateSummaryResponse> =>
+      api<GenerateSummaryResponse>(`/api/ai/summary/${documentId}`),
 };

@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import {
   useFolders,
-  useSubjects,
+  useSemesters,
+  useSubjectsBySemester,
   useUpdateDocument,
 } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -24,11 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SEMESTERS } from "@/lib/config";
 
-/**
- * Dialog chỉnh sửa thông tin tài liệu: tiêu đề, mô tả, kỳ, môn, thư mục.
- */
 export function EditDocumentDialog({
   open,
   onOpenChange,
@@ -42,38 +39,44 @@ export function EditDocumentDialog({
     title: string;
     description?: string;
     folderId?: string;
-    subjectId?: number;
+    subjectId?: string;
   };
 }) {
   const folders = useFolders();
-  const subjects = useSubjects();
+  const semesters = useSemesters();
   const update = useUpdateDocument();
 
   const [title, setTitle] = useState(initial.title);
   const [description, setDescription] = useState(initial.description ?? "");
   const [folderId, setFolderId] = useState(initial.folderId ?? "");
-  const [semester, setSemester] = useState<string>("");
+  const [semesterId, setSemesterId] = useState<string>("");
   const [subjectId, setSubjectId] = useState<string>(
-    initial.subjectId != null ? String(initial.subjectId) : "",
+    initial.subjectId ?? "",
   );
 
-  // Khi mở dialog, nạp lại giá trị ban đầu + suy ra kỳ từ môn hiện tại.
+  const subjects = useSubjectsBySemester(semesterId);
+
   useEffect(() => {
     if (!open) return;
     setTitle(initial.title);
     setDescription(initial.description ?? "");
     setFolderId(initial.folderId ?? "");
-    setSubjectId(initial.subjectId != null ? String(initial.subjectId) : "");
-    const subj = (subjects.data ?? []).find((s) => s.id === initial.subjectId);
-    setSemester(subj ? String(subj.semester) : "");
-  }, [open, initial, subjects.data]);
-
-  const semesters = SEMESTERS;
+    setSubjectId(initial.subjectId ?? "");
+    setSemesterId("");
+  }, [open, initial]);
 
   const subjectsInSemester = useMemo(
-    () => (subjects.data ?? []).filter((s) => String(s.semester) === semester),
-    [subjects.data, semester],
+    () => subjects.data ?? [],
+    [subjects.data],
   );
+
+  // Find semesterId from initial subject when dialog opens
+  useEffect(() => {
+    if (!open) return;
+    if (initial.subjectId && semesters.data) {
+      // We'll just let user select semester manually
+    }
+  }, [open, initial.subjectId, semesters.data]);
 
   const submit = async () => {
     if (!title.trim()) return toast.error("Nhập tiêu đề");
@@ -83,7 +86,6 @@ export function EditDocumentDialog({
         title,
         description,
         folderId: folderId || undefined,
-        subjectId: subjectId ? Number(subjectId) : undefined,
       });
       toast.success("Đã cập nhật tài liệu");
       onOpenChange(false);
@@ -118,9 +120,9 @@ export function EditDocumentDialog({
             <div className="space-y-2">
               <Label>Kỳ học</Label>
               <Select
-                value={semester}
+                value={semesterId}
                 onValueChange={(v) => {
-                  setSemester(v);
+                  setSemesterId(v);
                   setSubjectId("");
                 }}
               >
@@ -128,9 +130,9 @@ export function EditDocumentDialog({
                   <SelectValue placeholder="Chọn kỳ" />
                 </SelectTrigger>
                 <SelectContent>
-                  {semesters.map((s) => (
-                    <SelectItem key={s} value={String(s)}>
-                      Kỳ {s}
+                  {(semesters.data ?? []).map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -141,11 +143,11 @@ export function EditDocumentDialog({
               <Select
                 value={subjectId}
                 onValueChange={setSubjectId}
-                disabled={!semester}
+                disabled={!semesterId}
               >
                 <SelectTrigger>
                   <SelectValue
-                    placeholder={semester ? "Chọn môn" : "Chọn kỳ trước"}
+                    placeholder={semesterId ? "Chọn môn" : "Chọn kỳ trước"}
                   />
                 </SelectTrigger>
                 <SelectContent>
@@ -155,8 +157,8 @@ export function EditDocumentDialog({
                     </div>
                   ) : (
                     subjectsInSemester.map((s) => (
-                      <SelectItem key={s.id} value={String(s.id)}>
-                        {s.code} – {s.name}
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.code ?? s.name} – {s.name}
                       </SelectItem>
                     ))
                   )}

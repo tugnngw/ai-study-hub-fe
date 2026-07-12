@@ -44,7 +44,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
 import { DocumentViewer } from "@/components/document-viewer";
-import { DocumentSelectionProvider } from "@/features/ai/DocumentSelectionContext";
 import { AISummary } from "@/features/ai/AISummary";
 import { FlashcardTab } from "@/features/ai/FlashcardTab";
 import { QuizTab } from "@/features/ai/QuizTab";
@@ -138,7 +137,7 @@ export function AIChat({
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
-      const res = await ask.mutateAsync({ id: docId, question: q });
+      const res = await ask.mutateAsync({ documentId: docId, question: q });
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Đã xảy ra lỗi");
@@ -148,8 +147,7 @@ export function AIChat({
   };
 
   return (
-    <DocumentSelectionProvider>
-      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
+    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
         {/* Column 1: folder + file list */}
         <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
           <div className="rounded-xl bg-gradient-soft p-3 border border-border/50 flex items-center gap-3">
@@ -437,6 +435,7 @@ export function AIChat({
           )}{" "}
           {activeTab === "summary" && (
             <AISummary
+              docId={docId}
               docs={docs}
               isGenerating={generateSummary.isPending}
               summary={summary}
@@ -452,8 +451,8 @@ export function AIChat({
               }
             />
           )}
-          {activeTab === "flashcards" && <FlashcardTab docs={docs} />}
-          {activeTab === "quizzes" && <QuizTab docs={docs} />}
+          {activeTab === "flashcards" && <FlashcardTab docs={docs} docId={docId} />}
+          {activeTab === "quizzes" && <QuizTab docs={docs} docId={docId} />}
         </section>
 
         {/* Column 3: chat */}
@@ -595,7 +594,6 @@ export function AIChat({
           folderId={folderId}
         />
       </div>
-    </DocumentSelectionProvider>
   );
 }
 

@@ -65,8 +65,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "auth_token" || e.key === "refresh_token") {
-        console.log("🔔 Token changed in another tab, clearing local user state");
-        setUser(null);
+        // Only logout if the token was actually cleared/set to null
+        if (e.newValue === null) {
+          console.log("🔔 Token cleared in another tab, clearing local user state");
+          setUser(null);
+        }
+        // If token was updated to a new value, we don't need to do anything
+        // tokenStore.get() will return the correct value on next access
       }
     };
 
