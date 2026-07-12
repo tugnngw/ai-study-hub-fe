@@ -30,7 +30,7 @@ export function DocumentActionsMenu({
   title: string;
   status?: string;
   description?: string;
-  subjectId?: number;
+  subjectId?: string;
   className?: string;
   iconClassName?: string;
 }) {
