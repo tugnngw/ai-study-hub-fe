@@ -18,7 +18,7 @@ import { paymentApi } from "@/features/admin/services/paymentApi";
 import type { AdminPlan } from "@/features/admin/services/paymentApi";
 import { accountApi } from "@/features/auth/services";
 import { useAuth } from "@/lib/auth";
-import { usePlans } from "@/lib/queries";
+import { usePlans, useMySubscription } from "@/lib/queries";
 import { formatStorage } from "@/lib/config";
 import {
   computeUpgrade,
@@ -31,8 +31,11 @@ const fmtDate = (d?: string | null) =>
 
 const RANK: Record<string, number> = { FREE: 0, BASIC: 1, PRO: 2, PLUS: 2, PREMIUM: 3 };
 
+
 export function PremiumUpgradePage() {
   const plansQuery = usePlans();
+  const subQuery = useMySubscription();
+
   const [currentPlan, setCurrentPlan] = useState<string>("FREE");
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -48,9 +51,16 @@ export function PremiumUpgradePage() {
   );
 
   useEffect(() => {
-    if (user?.plan) setCurrentPlan(String(user.plan).toUpperCase());
-    if (user?.planExpiresAt) setExpiresAt(user.planExpiresAt);
-  }, [user?.plan, user?.planExpiresAt]);
+    // Ưu tiên data từ subQuery nếu có
+    if (subQuery.data) {
+      setCurrentPlan(subQuery.data.planName.toUpperCase());
+      setExpiresAt(subQuery.data.endDate);
+    } else if (user?.plan) {
+      setCurrentPlan(String(user.plan).toUpperCase());
+      setExpiresAt(user.planExpiresAt);
+    }
+  }, [user?.plan, user?.planExpiresAt, subQuery.data]);
+
 
   const currentPlanObj = useMemo(
     () => plans.find((p) => p.name.toUpperCase() === currentPlan) ?? null,
@@ -69,20 +79,24 @@ export function PremiumUpgradePage() {
   const quote = useMemo(() => {
     if (!selected) return null;
     const upgrading = isPaidActive && isUpgrade(selected);
+    const planDuration = selected.durationDays || 30;
+    
     if (upgrading) {
+      // Tính bù trừ cho gói đang dùng (chỉ để hiển thị cho user biết)
       return computeUpgrade(
         currentPlanObj
-          ? { name: currentPlanObj.name, price: currentPlanObj.price }
+          ? { name: currentPlanObj.name, price: currentPlanObj.price, durationDays: currentPlanObj.durationDays }
           : null,
-        { name: selected.name, price: selected.price },
+        { name: selected.name, price: selected.price, durationDays: selected.durationDays },
         expiresAt,
       );
     }
+    
     return {
       remainingDays: 0,
       remainingValue: 0,
       amountDue: selected.price,
-      daysCovered: selected.durationDays || 30,
+      daysCovered: planDuration,
     };
   }, [selected, isPaidActive, currentPlanObj, expiresAt]);
 
@@ -91,7 +105,7 @@ export function PremiumUpgradePage() {
   };
 
   const handlePay = async () => {
-    if (!selected || !quote) return;
+    if (!selected) return;
     setLoading(true);
     try {
       const res = await paymentApi.createPayment(selected.id);
@@ -289,7 +303,7 @@ export function PremiumUpgradePage() {
             </DialogTitle>
             <DialogDescription>
               {upgrading
-                ? "Nâng cấp cho phần ngày còn lại của gói hiện tại. Số tiền đã trừ giá trị chưa dùng."
+                ? "Nâng cấp gói. Giá trị số ngày chưa dùng của gói hiện tại sẽ được bù trừ."
                 : `Gói ${selected?.name} - ${selected?.durationDays || 30} ngày sử dụng`}
             </DialogDescription>
           </DialogHeader>
