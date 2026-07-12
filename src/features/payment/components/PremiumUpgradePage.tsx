@@ -5,8 +5,6 @@ import { Check, Loader2, Crown, CheckCircle2, CalendarClock } from "lucide-react
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -24,16 +22,13 @@ import { usePlans } from "@/lib/queries";
 import { formatStorage } from "@/lib/config";
 import {
   computeUpgrade,
-  priceForDays,
   remainingDaysUntil,
-  PRORATION_CYCLE_DAYS,
 } from "../proration";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
 const fmtDate = (d?: string | null) =>
   d ? new Date(d).toLocaleDateString("vi-VN") : "—";
 
-// Thứ tự cấp bậc để phân biệt NÂNG cấp và HẠ cấp.
 const RANK: Record<string, number> = { FREE: 0, BASIC: 1, PRO: 2, PLUS: 2, PREMIUM: 3 };
 
 export function PremiumUpgradePage() {
@@ -42,10 +37,8 @@ export function PremiumUpgradePage() {
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<AdminPlan | null>(null);
-  const [days, setDays] = useState<number>(PRORATION_CYCLE_DAYS);
   const { user, reloadUser } = useAuth();
 
-  // Danh sách gói (đồng bộ với chỉnh sửa của admin). Ẩn Free/Basic, chỉ gói đang bật.
   const plans = useMemo(
     () =>
       (plansQuery.data ?? []).filter(
@@ -73,12 +66,10 @@ export function PremiumUpgradePage() {
   const isDowngrade = (p: AdminPlan) =>
     (RANK[p.name.toUpperCase()] ?? 0) < (RANK[currentPlan] ?? 0);
 
-  // Preview số tiền cho lựa chọn hiện tại trong dialog.
   const quote = useMemo(() => {
     if (!selected) return null;
     const upgrading = isPaidActive && isUpgrade(selected);
     if (upgrading) {
-      // NÂNG cấp giữa chừng: bù trừ giá trị ngày còn lại của gói cũ.
       return computeUpgrade(
         currentPlanObj
           ? { name: currentPlanObj.name, price: currentPlanObj.price }
@@ -87,28 +78,23 @@ export function PremiumUpgradePage() {
         expiresAt,
       );
     }
-    // Mua mới / gia hạn theo số ngày người dùng chọn.
     return {
       remainingDays: 0,
       remainingValue: 0,
-      amountDue: priceForDays(selected.price, days),
-      daysCovered: days,
+      amountDue: selected.price,
+      daysCovered: selected.durationDays || 30,
     };
-  }, [selected, days, isPaidActive, currentPlanObj, expiresAt]);
+  }, [selected, isPaidActive, currentPlanObj, expiresAt]);
 
   const openCheckout = (p: AdminPlan) => {
     setSelected(p);
-    setDays(PRORATION_CYCLE_DAYS);
   };
 
   const handlePay = async () => {
     if (!selected || !quote) return;
     setLoading(true);
     try {
-      const upgrading = isPaidActive && isUpgrade(selected);
-      const res = upgrading
-        ? await paymentApi.createPaymentByDays(selected.id, quote.daysCovered)
-        : await paymentApi.createPaymentByDays(selected.id, days);
+      const res = await paymentApi.createPayment(selected.id);
 
       const url = res.checkoutUrl ?? "";
       const isMockSuccess =
@@ -118,7 +104,6 @@ export function PremiumUpgradePage() {
           url.includes("/premium"));
 
       if (isMockSuccess) {
-        // MOCK: gói đã được cập nhật ở BE giả — nạp lại user để phản ánh ngay.
         await reloadUser();
         const u = await accountApi.me();
         if (u?.plan) setCurrentPlan(String(u.plan).toUpperCase());
@@ -126,7 +111,6 @@ export function PremiumUpgradePage() {
         setSelected(null);
         toast.success(`Đã nâng cấp lên ${selected.name}!`);
       } else if (url) {
-        // Thật: chuyển tới cổng thanh toán.
         window.location.href = url;
         return;
       }
@@ -159,7 +143,7 @@ export function PremiumUpgradePage() {
             Nâng cấp Premium
           </h1>
           <p className="text-muted-foreground mt-1 text-sm">
-            Chọn gói và số ngày sử dụng phù hợp với nhu cầu của bạn
+            Chọn gói phù hợp với nhu cầu của bạn
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={refresh}>
@@ -167,7 +151,6 @@ export function PremiumUpgradePage() {
         </Button>
       </div>
 
-      {/* Thẻ trạng thái gói hiện tại + hạn dùng */}
       <Card className="border-primary/30 bg-primary/5">
         <CardContent className="py-4 flex flex-wrap items-center gap-x-8 gap-y-2">
           <div className="flex items-center gap-2">
@@ -203,6 +186,7 @@ export function PremiumUpgradePage() {
           const current = isCurrent(p);
           const highlighted = p.name.toUpperCase() === "PREMIUM";
           const downgrade = isPaidActive && isDowngrade(p);
+          const durationDays = p.durationDays || 30;
           return (
             <Card
               key={p.id}
@@ -245,7 +229,7 @@ export function PremiumUpgradePage() {
                     {fmtVnd(p.price)}
                   </span>
                   <span className="text-muted-foreground text-sm">
-                    / {PRORATION_CYCLE_DAYS} ngày
+                    / {durationDays} ngày
                   </span>
                 </div>
                 <ul className="mt-4 space-y-2">
@@ -297,7 +281,6 @@ export function PremiumUpgradePage() {
         })}
       </div>
 
-      {/* Dialog chọn số ngày & xem bù trừ khi nâng cấp */}
       <Dialog open={!!selected} onOpenChange={(v) => !v && setSelected(null)}>
         <DialogContent>
           <DialogHeader>
@@ -307,36 +290,11 @@ export function PremiumUpgradePage() {
             <DialogDescription>
               {upgrading
                 ? "Nâng cấp cho phần ngày còn lại của gói hiện tại. Số tiền đã trừ giá trị chưa dùng."
-                : "Chọn số ngày bạn muốn sử dụng."}
+                : `Gói ${selected?.name} - ${selected?.durationDays || 30} ngày sử dụng`}
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
-            {!upgrading && (
-              <div className="space-y-2">
-                <Label>Số ngày sử dụng</Label>
-                <Input
-                  type="number"
-                  min={1}
-                  value={days}
-                  onChange={(e) => setDays(Math.max(1, Number(e.target.value)))}
-                />
-                <div className="flex gap-2">
-                  {[7, 30, 90, 180, 365].map((d) => (
-                    <Button
-                      key={d}
-                      type="button"
-                      size="sm"
-                      variant={days === d ? "default" : "outline"}
-                      onClick={() => setDays(d)}
-                    >
-                      {d}n
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {quote && (
               <div className="rounded-lg border bg-muted/40 p-4 space-y-1.5 text-sm">
                 {upgrading && (
@@ -351,19 +309,11 @@ export function PremiumUpgradePage() {
                       value={`- ${fmtVnd(quote.remainingValue)}`}
                     />
                     <Row
-                      label={`Giá ${selected?.name} (30 ngày)`}
+                      label={`Giá ${selected?.name} (${selected?.durationDays || 30} ngày)`}
                       value={fmtVnd(selected?.price ?? 0)}
                     />
                     <div className="border-t my-1" />
                   </>
-                )}
-                {!upgrading && (
-                  <Row
-                    label={`Đơn giá / ngày`}
-                    value={fmtVnd(
-                      Math.round((selected?.price ?? 0) / PRORATION_CYCLE_DAYS),
-                    )}
-                  />
                 )}
                 <Row
                   label="Số ngày áp dụng"
