@@ -234,6 +234,14 @@ export function useCreateFolder() {
   return useMutation({
     mutationFn: (input: CreateFolderRequest) => folderApi.create(input),
     onSuccess: () => qc.invalidateQueries({ queryKey: folderKeys.all }),
+    onError: (error: unknown) => {
+      console.error("[useCreateFolder] Error:", error);
+      if (error instanceof ApiError && error.status === 401) {
+        console.log("[useCreateFolder] 401 - session expired");
+        tokenStore.clear();
+        window.location.href = "/login";
+      }
+    },
   });
 }
 
@@ -245,6 +253,14 @@ export function useUpdateFolder() {
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: folderKeys.all });
       qc.invalidateQueries({ queryKey: folderKeys.detail(v.id) });
+    },
+    onError: (error: unknown) => {
+      console.error("[useUpdateFolder] Error:", error);
+      if (error instanceof ApiError && error.status === 401) {
+        console.log("[useUpdateFolder] 401 - session expired");
+        tokenStore.clear();
+        window.location.href = "/login";
+      }
     },
   });
 }
