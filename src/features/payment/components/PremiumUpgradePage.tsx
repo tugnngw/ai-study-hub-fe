@@ -1,7 +1,7 @@
 // src/features/payment/components/PremiumUpgradePage.tsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { toast } from "sonner";
-import { Check, Loader2, Crown, CheckCircle2, CalendarClock } from "lucide-react";
+import { Check, Loader2, Crown, CheckCircle2, CalendarClock, ExternalLink, QrCode, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -41,6 +41,9 @@ export function PremiumUpgradePage() {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<AdminPlan | null>(null);
   const { user, reloadUser } = useAuth();
+  const [paymentInfo, setPaymentInfo] = useState<{checkoutUrl: string; orderCode: number; amount: number} | null>(null);
+  const [qrCodeModal, setQrCodeModal] = useState(false);
+  const [countdown, setCountdown] = useState(60); // 1 phút = 60 giây
 
   const plans = useMemo(
     () =>
@@ -125,8 +128,15 @@ export function PremiumUpgradePage() {
         setSelected(null);
         toast.success(`Đã nâng cấp lên ${selected.name}!`);
       } else if (url) {
-        window.location.href = url;
-        return;
+        // Lưu thông tin payment và hiển thị QR code modal
+        setPaymentInfo({
+          checkoutUrl: url,
+          orderCode: res.orderCode,
+          amount: res.amount
+        });
+        setQrCodeModal(true);
+        setCountdown(60);
+        setSelected(null); // Đóng dialog cũ
       }
     } catch (e) {
       toast.error("Lỗi tạo link thanh toán");
@@ -148,6 +158,58 @@ export function PremiumUpgradePage() {
   };
 
   const upgrading = selected ? isPaidActive && isUpgrade(selected) : false;
+
+  const countdownRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    let poller: NodeJS.Timeout;
+
+    if (qrCodeModal && paymentInfo) {
+      // Countdown
+      timer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            clearInterval(poller);
+            setQrCodeModal(false);
+            setPaymentInfo(null);
+            toast.error("Đã hết thời gian thanh toán");
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      // Polling
+      poller = setInterval(async () => {
+        try {
+          const u = await accountApi.me();
+          if (u && u.plan && String(u.plan).toUpperCase() !== currentPlan) {
+            clearInterval(timer);
+            clearInterval(poller);
+            setQrCodeModal(false);
+            setPaymentInfo(null);
+            await reloadUser();
+            toast.success("Thanh toán thành công! Gói đã được cập nhật.");
+            refresh();
+          }
+        } catch (e) {
+          console.error("Error checking subscription status", e);
+        }
+      }, 3000);
+    }
+    return () => {
+      clearInterval(timer);
+      clearInterval(poller);
+    };
+  }, [qrCodeModal, paymentInfo, currentPlan]);
+
+  const formatCountdown = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
 
   return (
     <div className="space-y-6">
@@ -357,6 +419,45 @@ export function PremiumUpgradePage() {
               )}
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={qrCodeModal} onOpenChange={(v) => !v && setQrCodeModal(false)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-primary">
+              <QrCode className="h-5 w-5" /> Thanh toán QR
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="text-center">
+              <div className="text-4xl font-mono font-bold text-primary flex items-center justify-center gap-2">
+                <Clock className="h-8 w-8" />
+                {formatCountdown(countdown)}
+              </div>
+              <p className="text-sm text-muted-foreground mt-2">
+                Vui lòng quét mã QR trong vòng 1 phút
+              </p>
+            </div>
+            <div className="border p-2 rounded-lg bg-white">
+              {/* Giả định checkoutUrl chứa URL ảnh QR hoặc link trang web */}
+              {paymentInfo?.checkoutUrl && (
+                <iframe
+                  src={paymentInfo.checkoutUrl}
+                  className="w-[300px] h-[300px]"
+                  title="QR Payment"
+                />
+              )}
+            </div>
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => window.open(paymentInfo?.checkoutUrl, "_blank")}
+            >
+              <ExternalLink className="h-4 w-4 mr-2" /> Mở trang thanh toán
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
