@@ -37,7 +37,9 @@ export function FolderPanel({
                         Array.from({ length: 3 }).map((_, i) => (
                             <Skeleton key={i} className="h-9 rounded-lg" />
                         ))}
-                    {(folderDocs.data ?? []).map((d: any) => {
+                    {(folderDocs.data ?? [])
+                        .filter((d: any) => d.status?.toUpperCase() !== 'BANNED')
+                        .map((d: any) => {
                         const active = d.id === docId;
                         return (
                             <Link
@@ -50,6 +52,7 @@ export function FolderPanel({
                                     active
                                         ? "bg-gradient-brand text-white font-medium shadow-soft"
                                         : "hover:bg-accent text-foreground/90",
+                                    d.status?.toUpperCase() === 'BANNED' && "opacity-50 cursor-not-allowed pointer-events-none"
                                 )}
                             >
                                 <FileText className="h-3.5 w-3.5 shrink-0" />

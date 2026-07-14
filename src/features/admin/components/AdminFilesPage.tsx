@@ -205,12 +205,12 @@ export const AdminFilesPage: React.FC = () => {
                                     size="sm"
                                     disabled={rejectDocument.isPending || !reviewedIds.has(d.id)}
                                     title={!reviewedIds.has(d.id) ? "Bạn cần xem file trước khi từ chối" : undefined}
-                                    onClick={() => {
-                                      rejectDocument.mutate(d.id, {
-                                        onSuccess: () => toast.success("Đã từ chối file"),
-                                        onError: (err) => toast.error("Lỗi: " + err.message),
-                                      });
-                                    }}
+                                     onClick={() => {
+                                       rejectDocument.mutate({ id: d.id }, {
+                                         onSuccess: () => toast.success("Đã từ chối file"),
+                                         onError: (err) => toast.error("Lỗi: " + err.message),
+                                       });
+                                     }}
                                   >
                                     <XCircle className="h-3.5 w-3.5" /> Từ chối
                                   </Button>

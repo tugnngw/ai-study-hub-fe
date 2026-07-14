@@ -36,8 +36,8 @@ export const approvalApi = {
     return true;
   },
 
-  reject: async (id: string): Promise<boolean> => {
-    await reportApi.handleReportDecision(id, "reject");
+  reject: async (id: string, reason: string): Promise<boolean> => {
+    await reportApi.handleReportDecision(id, "reject", reason);
     return true;
   },
 };

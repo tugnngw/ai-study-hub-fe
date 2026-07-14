@@ -1,7 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+// src/routes/_authenticated/documents.tsx
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { FileText, Plus, Search, Upload, Pin, X } from "lucide-react";
 import { toast } from "sonner";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogDescription, 
+  DialogFooter, 
+  DialogHeader, 
+  DialogTitle 
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import {
   useDocuments,
   useFolders,
@@ -11,7 +21,6 @@ import {
 } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,14 +28,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -114,6 +115,7 @@ function DocumentsPage() {
                     title={d.title}
                     description={d.description ?? ""}
                     status={d.status}
+                    rejectReason={(d as any).rejectReason}
                     pinned={isPinned(d.id)}
                     onTogglePin={() => togglePin(d.id)}
                   />
@@ -135,6 +137,7 @@ function DocumentRow({
   title,
   description,
   status,
+  rejectReason,
   pinned,
   onTogglePin,
 }: {
@@ -143,9 +146,28 @@ function DocumentRow({
   title: string;
   description: string;
   status: string;
+  rejectReason?: string;
   pinned: boolean;
   onTogglePin: () => void;
 }) {
+  const [showDialog, setShowDialog] = useState(false);
+
+  const isRejected = status?.toUpperCase() === "REJECT";
+  const isReported = status?.toUpperCase() === "REPORTED";
+  const isBanned = status?.toUpperCase() === "BANNED";
+  const isBlocked = isRejected || isReported || isBanned;
+
+  const handleDocumentClick = (e: React.MouseEvent) => {
+    if (isBlocked) {
+      e.preventDefault();
+      setShowDialog(true);
+    }
+  };
+
+  const proceedToDocument = () => {
+    setShowDialog(false);
+    navigate({ to: "/ai", search: { folderId, docId: id } });
+  };
   const getStatusBadge = () => {
     const statusUpper = status?.toUpperCase();
     if (statusUpper === "COMPLETED") {
@@ -157,52 +179,96 @@ function DocumentRow({
     if (statusUpper === "REJECT") {
       return <Badge className="bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20">Bị từ chối</Badge>;
     }
+    if (statusUpper === "BANNED") {
+      return <Badge className="bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20">Bị cấm</Badge>;
+    }
+    if (statusUpper === "REPORTED") {
+      return <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20">Bị báo cáo</Badge>;
+    }
     return <Badge variant="outline">{status}</Badge>;
   };
-
+  
   return (
-    <tr className={cn("border-t border-border/60 hover:bg-accent/30", pinned && "bg-amber-50/60 dark:bg-amber-400/5")}>
-      <td className="px-4 py-3">
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onTogglePin}
-            title={pinned ? "Bỏ ghim" : "Ghim tài liệu"}
-            className="shrink-0 h-6 w-6 rounded-md hover:bg-accent flex items-center justify-center"
-          >
-            <Pin className={cn("h-3.5 w-3.5", pinned ? "fill-amber-400 text-amber-500" : "text-muted-foreground")} />
-          </button>
-          <Link
-            to="/ai"
-            search={{ folderId, docId: id }}
-            className="flex items-center gap-2 hover:text-primary min-w-0"
-          >
-            <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
-            <span className="font-medium truncate">{title}</span>
-          </Link>
-        </div>
-      </td>
-      <td className="px-4 py-3 hidden lg:table-cell">
-        <span className="text-muted-foreground text-xs">—</span>
-      </td>
-      <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
-        {description}
-      </td>
-      <td className="px-4 py-3 hidden sm:table-cell">
-        {getStatusBadge()}
-      </td>
-      <td className="px-4 py-3">
-        <DocumentActionsMenu
-          documentId={id}
-          folderId={folderId}
-          title={title}
-          status={status}
-          description={description}
-        />
-      </td>
-    </tr>
+    <>
+      <tr className={cn("border-t border-border/60 hover:bg-accent/30", pinned && "bg-amber-50/60 dark:bg-amber-400/5")}>
+        <td className="px-4 py-3">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onTogglePin}
+              title={pinned ? "Bỏ ghim" : "Ghim tài liệu"}
+              className="shrink-0 h-6 w-6 rounded-md hover:bg-accent flex items-center justify-center"
+            >
+              <Pin className={cn("h-3.5 w-3.5", pinned ? "fill-amber-400 text-amber-500" : "text-muted-foreground")} />
+            </button>
+            <Link
+              to={isBlocked ? "#" : "/ai"}
+              search={isBlocked ? {} : { folderId, docId: id }}
+              onClick={handleDocumentClick}
+              className="flex items-center gap-2 hover:text-primary min-w-0"
+            >
+              <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
+              <span className="font-medium truncate">{title}</span>
+            </Link>
+          </div>
+        </td>
+        <td className="px-4 py-3 hidden lg:table-cell">
+          <span className="text-muted-foreground text-xs">—</span>
+        </td>
+        <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
+          {description}
+        </td>
+        <td className="px-4 py-3 hidden sm:table-cell">
+           {getStatusBadge()}
+         </td>
+         <td className="px-4 py-3">
+           <DocumentActionsMenu
+             documentId={id}
+             folderId={folderId}
+             title={title}
+             status={status}
+             description={description}
+           />
+         </td>
+       </tr>
+
+       <Dialog open={showDialog} onOpenChange={setShowDialog}>
+         <DialogContent>
+           <DialogHeader>
+             <DialogTitle className={isRejected || isBanned ? "text-red-600" : "text-amber-600"}>
+               {isBanned ? "Tài liệu đã bị cấm" : (isRejected ? "Tài liệu đã bị từ chối" : "Tài liệu đang bị báo cáo")}
+             </DialogTitle>
+             <DialogDescription>
+               {isBanned
+                 ? "Tài liệu này đã bị cấm do vi phạm quy định."
+                 : (isRejected 
+                   ? "Tài liệu này không đủ điều kiện để hiển thị." 
+                   : "Tài liệu này đang bị báo cáo và cần được kiểm duyệt.")}
+             </DialogDescription>
+           </DialogHeader>
+           {isRejected && (
+             <div className="p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg">
+               <p className="font-medium text-red-800 dark:text-red-300">Lý do từ chối:</p>
+               <p className="text-sm text-red-700 dark:text-red-400 mt-1">
+                 {rejectReason || "Không có thông tin lý do cụ thể."}
+               </p>
+             </div>
+           )}
+           <DialogFooter>
+             <Button variant="outline" onClick={() => setShowDialog(false)}>
+               Đóng
+             </Button>
+             {!isReported && !isBanned && (
+               <Button variant="default" onClick={proceedToDocument}>
+                 Vẫn truy cập
+               </Button>
+             )}
+           </DialogFooter>
+         </DialogContent>
+       </Dialog>
+    </>
   );
-}
+ }
 
 function UploadDialog({
   open,

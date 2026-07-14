@@ -31,6 +31,7 @@ import { Route as Admin_panelApprovalsRouteImport } from './routes/admin_panel/a
 import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
 import { Route as AuthenticatedTransactionsRouteImport } from './routes/_authenticated/transactions'
 import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
+import { Route as AuthenticatedReportedRouteImport } from './routes/_authenticated/reported'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedPremiumRouteImport } from './routes/_authenticated/premium'
 import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated/folders'
@@ -156,6 +157,11 @@ const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
   path: '/shared',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedReportedRoute = AuthenticatedReportedRouteImport.update({
+  id: '/reported',
+  path: '/reported',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -238,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/premium': typeof AuthenticatedPremiumRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/reported': typeof AuthenticatedReportedRoute
   '/shared': typeof AuthenticatedSharedRoute
   '/transactions': typeof AuthenticatedTransactionsRoute
   '/trash': typeof AuthenticatedTrashRoute
@@ -272,6 +279,7 @@ export interface FileRoutesByTo {
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/premium': typeof AuthenticatedPremiumRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/reported': typeof AuthenticatedReportedRoute
   '/shared': typeof AuthenticatedSharedRoute
   '/transactions': typeof AuthenticatedTransactionsRoute
   '/trash': typeof AuthenticatedTrashRoute
@@ -310,6 +318,7 @@ export interface FileRoutesById {
   '/_authenticated/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/_authenticated/premium': typeof AuthenticatedPremiumRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/reported': typeof AuthenticatedReportedRoute
   '/_authenticated/shared': typeof AuthenticatedSharedRoute
   '/_authenticated/transactions': typeof AuthenticatedTransactionsRoute
   '/_authenticated/trash': typeof AuthenticatedTrashRoute
@@ -348,6 +357,7 @@ export interface FileRouteTypes {
     | '/folders'
     | '/premium'
     | '/profile'
+    | '/reported'
     | '/shared'
     | '/transactions'
     | '/trash'
@@ -382,6 +392,7 @@ export interface FileRouteTypes {
     | '/folders'
     | '/premium'
     | '/profile'
+    | '/reported'
     | '/shared'
     | '/transactions'
     | '/trash'
@@ -419,6 +430,7 @@ export interface FileRouteTypes {
     | '/_authenticated/folders'
     | '/_authenticated/premium'
     | '/_authenticated/profile'
+    | '/_authenticated/reported'
     | '/_authenticated/shared'
     | '/_authenticated/transactions'
     | '/_authenticated/trash'
@@ -607,6 +619,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSharedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/reported': {
+      id: '/_authenticated/reported'
+      path: '/reported'
+      fullPath: '/reported'
+      preLoaderRoute: typeof AuthenticatedReportedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -735,6 +754,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedFoldersRoute: typeof AuthenticatedFoldersRouteWithChildren
   AuthenticatedPremiumRoute: typeof AuthenticatedPremiumRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedReportedRoute: typeof AuthenticatedReportedRoute
   AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
   AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRoute
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
@@ -752,6 +772,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedFoldersRoute: AuthenticatedFoldersRouteWithChildren,
   AuthenticatedPremiumRoute: AuthenticatedPremiumRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedReportedRoute: AuthenticatedReportedRoute,
   AuthenticatedSharedRoute: AuthenticatedSharedRoute,
   AuthenticatedTransactionsRoute: AuthenticatedTransactionsRoute,
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,

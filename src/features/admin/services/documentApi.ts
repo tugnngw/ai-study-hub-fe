@@ -21,6 +21,14 @@ export const adminDocumentApi = {
   approve: (id: string): Promise<void> =>
       api<void>(`/api/admin/documents/${id}/approve`, { method: "PATCH" }),
 
-  reject: (id: string): Promise<void> =>
-      api<void>(`/api/admin/documents/${id}/reject`, { method: "PATCH" }),
+  reject: (data: { id: string; reason?: string }): Promise<void> => {
+    if (!data.id || data.id === "undefined") {
+      throw new Error("Invalid Document ID");
+    }
+    return api<void>(`/api/admin/documents/${data.id}/reject`, {
+      method: "PATCH",
+      body: data.reason ?? "",
+      headers: { "Content-Type": "text/plain" }
+    });
+  }
 };

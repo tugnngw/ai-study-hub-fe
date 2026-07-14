@@ -131,7 +131,7 @@ export function AIChat({
   const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef(false);
 
-  const docs = folderDocs.data ?? [];
+  const docs = (folderDocs.data ?? []).filter((d: any) => d.status?.toUpperCase() !== 'BANNED');
   const totalSize = docs.reduce((s, d) => s + (d.fileSize ?? 0), 0);
 
   const pollStatus = useCallback((id: string): Promise<void> => {
@@ -314,10 +314,12 @@ export function AIChat({
               Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton key={i} className="h-10 rounded-lg" />
               ))}
-            {docs.map((d) => {
-              const active = d.id === docId;
-              const tone = fileTone(d);
-              return (
+             {docs
+               .filter((d) => d.status?.toUpperCase() !== 'BANNED')
+               .map((d) => {
+               const active = d.id === docId;
+               const tone = fileTone(d);
+               return (
                 <div
                   key={d.id}
                   className={cn(
