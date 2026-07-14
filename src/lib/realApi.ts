@@ -28,6 +28,7 @@ import type {
   GenerateSummaryResponse,
   GenerateFlashcardsRequest,
   GenerateQuizRequest,
+  QuotaDetails,
 } from "./types";
 
 // ================================================================
@@ -264,4 +265,13 @@ export const summaryApi = {
 
   getCached: (documentId: string): Promise<GenerateSummaryResponse> =>
       api<GenerateSummaryResponse>(`/api/ai/summary/${documentId}`),
+};
+
+// ================================================================
+// QUOTA  →  /api/quota
+// ================================================================
+
+export const quotaApi = {
+  getDetails: (): Promise<QuotaDetails> =>
+      api<QuotaDetails>("/api/quota"),
 };

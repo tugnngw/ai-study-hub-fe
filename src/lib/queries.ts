@@ -8,6 +8,7 @@ import {
   flashcardApi,
   folderApi,
   quizApi,
+  quotaApi,
   ragApi,
   semesterApi,
   shareApi,
@@ -596,6 +597,18 @@ export function useFlashcardsByDocument(documentId: string) {
     queryKey: flashcardKeys.byDocument(documentId),
     queryFn: () => flashcardApi.listByDocument(documentId),
     enabled: !!documentId,
+  });
+}
+
+// ================================================================
+// QUOTA
+// ================================================================
+
+export function useQuota() {
+  return useQuery({
+    queryKey: ["quota"],
+    queryFn: () => quotaApi.getDetails(),
+    staleTime: 60_000,
   });
 }
 

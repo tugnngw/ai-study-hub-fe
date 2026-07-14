@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { FlashcardViewer } from "@/components/ui/FlashcardViewer";
+import { QuotaDisplay } from "@/components/ui/QuotaDisplay";
 import { useGenerateFlashcards, useFlashcardsByDocument } from "@/lib/queries";
 import type { Document } from "@/lib/types";
 
@@ -26,6 +27,7 @@ export function FlashcardTab({ docs, docId }: Props) {
         />
       </div>
       <div className="p-4 border-t border-border space-y-3">
+        <QuotaDisplay />
         <div className="flex items-center gap-3">
           <label className="text-sm font-medium shrink-0">Cards:</label>
           <Input
