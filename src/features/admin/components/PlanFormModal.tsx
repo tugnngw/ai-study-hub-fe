@@ -40,7 +40,10 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
   const [durationDays, setDurationDays] = useState<number>(30);
   const [storageValue, setStorageValue] = useState<number>(1);
   const [storageUnit, setStorageUnit] = useState<"MB" | "GB">("GB");
-  const [aiQuestions, setAiQuestions] = useState<number>(10);
+  const [flashcardLimit, setFlashcardLimit] = useState<number>(0);
+  const [questionLimit, setQuestionLimit] = useState<number>(0);
+  const [summaryLimit, setSummaryLimit] = useState<number>(0);
+  const [aiQuestions, setAiQuestions] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(true);
 
   const createMutation = createPlan;
@@ -54,7 +57,10 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
       const useMb = (plan.storageGb || 0) < 1;
       setStorageValue(useMb ? Math.round(plan.storageGb * MB_PER_GB) : plan.storageGb);
       setStorageUnit(useMb ? "MB" : "GB");
-      setAiQuestions(plan.aiQuestions || 0);
+      setAiQuestions(plan.aiQuestions ?? 0);
+      setFlashcardLimit(plan.flashcardLimit || 0);
+      setQuestionLimit(plan.questionLimit || 0);
+      setSummaryLimit(plan.summaryLimit || 0);
       setIsActive(plan.isActive !== undefined ? plan.isActive : true);
     } else if (mode === "create") {
       setName("");
@@ -63,6 +69,9 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
       setStorageValue(1);
       setStorageUnit("GB");
       setAiQuestions(10);
+      setFlashcardLimit(0);
+      setQuestionLimit(0);
+      setSummaryLimit(0);
       setIsActive(true);
     }
   }, [plan, mode, open]);
@@ -73,6 +82,9 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
     if (durationDays < -1) return { valid: false, message: "Thời hạn không được nhỏ hơn 0 ngày (0 là vĩnh viễn)" };
     if (storageValue < 0) return { valid: false, message: "Dung lượng không được nhỏ hơn 0" };
     if (aiQuestions < 0) return { valid: false, message: "Số câu hỏi AI không được nhỏ hơn 0" };
+    if (flashcardLimit < -1) return { valid: false, message: "Giới hạn flashcard không hợp lệ" };
+    if (questionLimit < -1) return { valid: false, message: "Giới hạn câu hỏi không hợp lệ" };
+    if (summaryLimit < -1) return { valid: false, message: "Giới hạn tóm tắt không hợp lệ" };
     return { valid: true };
   };
 
@@ -93,6 +105,9 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
           durationDays,
           storageGb,
           aiQuestions,
+          flashcardLimit,
+          questionLimit,
+          summaryLimit,
         } as any);
         toast.success("Đã tạo gói mới");
       } else if (plan) {
@@ -103,6 +118,9 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
           durationDays,
           storageGb,
           aiQuestions,
+          flashcardLimit,
+          questionLimit,
+          summaryLimit,
           isActive,
         } as any);
         toast.success("Đã cập nhật gói");
@@ -192,6 +210,39 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
               onChange={(e) => setAiQuestions(Number(e.target.value))}
               placeholder="100"
             />
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="flashcardLimit">Flashcard *</Label>
+              <Input
+                id="flashcardLimit"
+                type="number"
+                value={flashcardLimit}
+                onChange={(e) => setFlashcardLimit(Number(e.target.value))}
+                placeholder="0"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="questionLimit">Câu hỏi *</Label>
+              <Input
+                id="questionLimit"
+                type="number"
+                value={questionLimit}
+                onChange={(e) => setQuestionLimit(Number(e.target.value))}
+                placeholder="0"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="summaryLimit">Tóm tắt *</Label>
+              <Input
+                id="summaryLimit"
+                type="number"
+                value={summaryLimit}
+                onChange={(e) => setSummaryLimit(Number(e.target.value))}
+                placeholder="0"
+              />
+            </div>
           </div>
 
           {mode === "edit" && (
