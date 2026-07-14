@@ -18,13 +18,16 @@ import { PlanBadge } from "@/features/admin/components/PlanBadge";
 import { paymentApi } from "@/features/admin/services/paymentApi";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
-const fmtDate = (d: string) => new Date(d).toLocaleDateString("vi-VN", { 
-  day: "2-digit", 
-  month: "2-digit", 
-  year: "numeric",
-  hour: "2-digit",
-  minute: "2-digit"
-});
+const fmtDate = (d: string) => {
+  const date = new Date(d);
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes} ${date.toLocaleDateString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  })}`;
+};
 
 const statusMap: Record<string, { label: string; cls: string }> = {
   PAID: { label: "Thành công", cls: "bg-emerald-500/10 text-emerald-600" },
