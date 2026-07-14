@@ -504,9 +504,30 @@ export function useReportDocument() {
 // RAG
 // ================================================================
 
-export function useAskRag() {
+export function useProcessRag() {
   return useMutation({
-    mutationFn: (input: AskRequest) => ragApi.ask(input),
+    mutationFn: (documentId: string) => ragApi.process(documentId),
+  });
+}
+
+export function useProcessFolderRag() {
+  return useMutation({
+    mutationFn: (folderId: string) => ragApi.processFolder(folderId),
+  });
+}
+
+export function useRagStatus(documentId: string) {
+  return useQuery({
+    queryKey: ["rag-status", documentId],
+    queryFn: () => ragApi.status(documentId),
+    enabled: !!documentId,
+    refetchInterval: false,
+  });
+}
+
+export function useRagChat() {
+  return useMutation({
+    mutationFn: (input: import("./types").AskRequest) => ragApi.chat(input),
   });
 }
 
@@ -555,11 +576,9 @@ export function useGenerateQuiz() {
   return useMutation({
     mutationFn: (input: GenerateQuizRequest) =>
       quizApi.generate(input),
-    onSuccess: (data) => {
+    onSuccess: (_, input) => {
       qc.invalidateQueries({ queryKey: ["quizzes"] });
-      if (data?.id != null) {
-        qc.invalidateQueries({ queryKey: quizKeys.byDocument(data.id) });
-      }
+      qc.invalidateQueries({ queryKey: quizKeys.byDocument(input.documentId) });
     },
   });
 }
@@ -585,8 +604,9 @@ export function useGenerateFlashcards() {
   return useMutation({
     mutationFn: (input: GenerateFlashcardsRequest) =>
       flashcardApi.generate(input),
-    onSuccess: () => {
+    onSuccess: (_, input) => {
       qc.invalidateQueries({ queryKey: ["flashcards"] });
+      qc.invalidateQueries({ queryKey: flashcardKeys.byDocument(input.documentId) });
     },
   });
 }

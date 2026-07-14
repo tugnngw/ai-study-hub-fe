@@ -179,11 +179,20 @@ export const documentApi = {
 // ================================================================
 
 export const ragApi = {
-  ask: (input: AskRequest): Promise<AskResponse> =>
-      api<AskResponse>("/api/rag/ask", {
-        method: "POST",
-        body: { documentId: input.documentId, question: input.question },
-      }),
+  process: (documentId: string): Promise<string> =>
+    api<string>(`/api/v1/rag/process/${documentId}`, { method: "POST" }),
+
+  processFolder: (folderId: string): Promise<string> =>
+    api<string>(`/api/v1/rag/process-folder/${folderId}`, { method: "POST" }),
+
+  status: (documentId: string): Promise<import("./types").RagStatusResponse> =>
+    api<import("./types").RagStatusResponse>(`/api/v1/rag/status/${documentId}`),
+
+  chat: (input: import("./types").AskRequest): Promise<import("./types").AskResponse> =>
+    api<import("./types").AskResponse>("/api/v1/rag/chat", {
+      method: "POST",
+      body: { folderId: input.folderId, documentId: input.documentId, question: input.question },
+    }),
 };
 
 // ================================================================

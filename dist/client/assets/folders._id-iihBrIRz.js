@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-DqMcooe2.js";import{n as t}from"./index-CF4Qy1cS.js";import{t as n}from"./document-workspace-DAQpCXnF.js";var r=e();function i(){let{id:e}=t.useParams(),{docId:i}=t.useSearch();return(0,r.jsx)(n,{folderId:e,docId:i})}export{i as component};

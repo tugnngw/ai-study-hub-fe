@@ -1,9 +1,7 @@
-import { useState } from "react";
-import { Sparkles, Loader2, RefreshCw, FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import type { Document } from "@/lib/types";
+import { Loader2, Sparkles, RefreshCw, FileText } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import type { Document } from "@/lib/types";
 
 interface Props {
   docs: Document[];
@@ -14,8 +12,6 @@ interface Props {
 }
 
 export function AISummary({ docId, onGenerate, isGenerating, summary }: Props) {
-  const [showSelector, setShowSelector] = useState(false);
-
   if (!docId) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center px-6 py-12">
@@ -31,7 +27,7 @@ export function AISummary({ docId, onGenerate, isGenerating, summary }: Props) {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col flex-1 min-h-0">
       <div className="flex-1 overflow-y-auto p-4">
         {isGenerating ? (
           <div className="flex flex-col items-center justify-center py-16 gap-3">
@@ -51,28 +47,20 @@ export function AISummary({ docId, onGenerate, isGenerating, summary }: Props) {
         )}
       </div>
 
-      <div className="p-4 border-t border-border flex gap-2">
-        <Button
-          onClick={() => onGenerate({ documentId: docId })}
+      <div className="p-4 border-t border-border">
+        <button
+          onClick={() => onGenerate({ documentId: docId, force: !!summary })}
           disabled={isGenerating || !docId}
-          className="flex-1 gap-2"
+          className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-brand text-white text-sm font-medium py-2.5 shadow-brand hover:opacity-90 transition-opacity disabled:opacity-50"
         >
           {isGenerating ? (
             <><Loader2 className="h-4 w-4 animate-spin" />Generating...</>
+          ) : summary ? (
+            <><RefreshCw className="h-4 w-4" />Regenerate Summary</>
           ) : (
-            <><Sparkles className="h-4 w-4" />{summary ? "Regenerate Summary" : "Generate Summary"}</>
+            <><Sparkles className="h-4 w-4" />Generate Summary</>
           )}
-        </Button>
-        {summary && (
-          <Button
-            variant="outline"
-            onClick={() => onGenerate({ documentId: docId, force: true })}
-            disabled={isGenerating}
-            className="gap-2"
-          >
-            <RefreshCw className="h-4 w-4" />Force
-          </Button>
-        )}
+        </button>
       </div>
     </div>
   );

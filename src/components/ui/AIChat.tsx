@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Check,
   ChevronLeft,
@@ -15,7 +15,9 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import {
-  useAskRag,
+  useRagChat,
+  useProcessRag,
+  useRagStatus,
   useDocument,
   useDocumentsByFolder,
   useFolder,
@@ -23,6 +25,8 @@ import {
   useUploadDocument,
 } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
+import { useQueryClient } from "@tanstack/react-query";
+import { ragApi } from "@/lib/realApi";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -47,7 +51,7 @@ import { DocumentViewer } from "@/components/document-viewer";
 import { AISummary } from "@/features/ai/AISummary";
 import { FlashcardTab } from "@/features/ai/FlashcardTab";
 import { QuizTab } from "@/features/ai/QuizTab";
-import { useGenerateSummary } from "@/lib/queries";
+import { useGenerateSummary, useSummary } from "@/lib/queries";
 import type { GenerateSummaryResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/lib/types";
@@ -90,7 +94,7 @@ export function AIChat({
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
   const doc = useDocument(docId ?? "");
-  const ask = useAskRag();
+  const chat = useRagChat();
   const navigate = useNavigate();
   const allFolders = useFolders();
 
@@ -106,11 +110,88 @@ export function AIChat({
   const zoomOut = () => setChatZoom((z) => Math.max(0.8, +(z - 0.1).toFixed(2)));
   const zoomIn = () => setChatZoom((z) => Math.min(1.6, +(z + 0.1).toFixed(2)));
 
-  const [summary, setSummary] = useState<string>("");
   const generateSummary = useGenerateSummary();
+  const { data: cachedSummary } = useSummary(docId ?? "");
+  const [summary, setSummary] = useState<string | null>(null);
+
+  // Load cached summary when doc changes, reset otherwise
+  useEffect(() => {
+    if (cachedSummary?.markdown) {
+      setSummary(cachedSummary.markdown);
+    } else {
+      setSummary(null);
+    }
+  }, [docId, cachedSummary?.markdown]);
+
+  const processDoc = useProcessRag();
+  const qc = useQueryClient();
+
+  const [isProcessing, setIsProcessing] = useState(false);
+  const processedRef = useRef<Set<string>>(new Set());
+  const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const abortRef = useRef(false);
 
   const docs = folderDocs.data ?? [];
   const totalSize = docs.reduce((s, d) => s + (d.fileSize ?? 0), 0);
+
+  const pollStatus = useCallback((id: string): Promise<void> => {
+    return new Promise((resolve) => {
+      let attempts = 0;
+      const maxAttempts = 20;
+
+      const check = async () => {
+        if (abortRef.current) { resolve(); return; }
+        try {
+          const res = await ragApi.status(id);
+          if (res.status === "COMPLETED" || res.status === "READY") {
+            qc.invalidateQueries({ queryKey: ["documents"] });
+            resolve();
+            return;
+          }
+        } catch { /* ignore and retry */ }
+
+        attempts++;
+        if (attempts >= maxAttempts) {
+          resolve();
+          return;
+        }
+        pollingTimerRef.current = setTimeout(check, 3000);
+      };
+
+      check();
+    });
+  }, [qc]);
+
+  const processDocument = useCallback(async (id: string) => {
+    if (isProcessing) return;
+    if (processedRef.current.has(id)) return;
+    processedRef.current.add(id);
+
+    setIsProcessing(true);
+    abortRef.current = false;
+    try {
+      await processDoc.mutateAsync(id);
+      await pollStatus(id);
+    } catch {
+      processedRef.current.delete(id);
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [isProcessing, processDoc, pollStatus]);
+
+  // Auto-process on doc select
+  useEffect(() => {
+    if (docId) {
+      processDocument(docId);
+    }
+    return () => {
+      abortRef.current = true;
+      if (pollingTimerRef.current) {
+        clearTimeout(pollingTimerRef.current);
+        pollingTimerRef.current = null;
+      }
+    };
+  }, [docId]);
 
   useEffect(() => {
     setMessages([]);
@@ -121,7 +202,7 @@ export function AIChat({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
-  }, [messages, ask.isPending]);
+  }, [messages, chat.isPending]);
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -129,15 +210,19 @@ export function AIChat({
 
   const submitChat = async () => {
     if (!input.trim()) return;
-    if (!docId) {
-      toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
+    if (!folderId) {
+      toast.info("Chọn một thư mục để bắt đầu trò chuyện");
       return;
     }
     const q = input.trim();
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
-      const res = await ask.mutateAsync({ documentId: docId, question: q });
+      const res = await chat.mutateAsync({
+        folderId,
+        ...(docId ? { documentId: docId } : {}),
+        question: q,
+      });
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Đã xảy ra lỗi");
@@ -373,7 +458,7 @@ export function AIChat({
           </div>
           {activeTab === "content" && (
             <div className="flex-1 overflow-y-auto">
-              {docId && doc.data?.status === "READY" ? (
+              {docId && (doc.data?.status === "READY" || doc.data?.status === "COMPLETED") ? (
                 <DocumentViewer document={doc.data} />
               ) : doc.data?.status === "PROCESSING" ? (
                 <div className="flex items-center justify-center h-full">
@@ -501,8 +586,10 @@ export function AIChat({
                 </div>
                 <div className="text-sm text-muted-foreground mt-1 max-w-sm">
                   {docId
-                    ? "Hỏi AI để tóm tắt, giải thích hoặc kiểm tra kiến thức từ tài liệu này."
-                    : "Chọn một tài liệu để bắt đầu trò chuyện."}
+                    ? "Hỏi AI về nội dung của tài liệu đang chọn."
+                    : folderId
+                      ? "Hỏi AI về tất cả tài liệu trong thư mục này."
+                      : "Chọn một thư mục để bắt đầu trò chuyện."}
                 </div>
               </div>
             ) : (
@@ -553,7 +640,7 @@ export function AIChat({
                 </div>
               ))
             )}
-            {ask.isPending && (
+            {chat.isPending && (
               <div className="text-sm bg-muted rounded-2xl rounded-bl-md px-4 py-2.5 max-w-[85%] inline-flex items-center gap-1.5">
                 <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                 <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse [animation-delay:200ms]" />
@@ -575,12 +662,12 @@ export function AIChat({
               onChange={(e) => setInput(e.target.value)}
               placeholder="Nhập câu hỏi của bạn…."
               className="text-sm rounded-xl bg-muted/40 border-transparent focus-visible:bg-card focus-visible:border-input"
-              disabled={!docId}
+              disabled={!folderId}
             />
             <Button
               type="submit"
               size="icon"
-              disabled={ask.isPending || !input.trim() || !docId}
+              disabled={chat.isPending || isProcessing || !input.trim() || !folderId}
               className="bg-gradient-brand hover:opacity-90 rounded-xl shrink-0"
             >
               <Send className="h-4 w-4" />
