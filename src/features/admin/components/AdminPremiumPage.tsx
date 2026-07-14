@@ -185,7 +185,7 @@ function PlanConfigCard() {
                     </TableCell>
                     <TableCell>{formatStorage(p.storageGb)}</TableCell>
                     <TableCell>
-                      {p.aiQuestions > 9999 ? "Không giới hạn" : p.aiQuestions}
+                      {p.aiQuestions == null ? "—" : p.aiQuestions > 9999 ? "Không giới hạn" : p.aiQuestions}
                     </TableCell>
                     <TableCell>
                       <Badge
