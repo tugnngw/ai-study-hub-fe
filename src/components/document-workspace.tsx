@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import {
-  useAskRag,
+  useRagChat,
   useDeleteDocument,
   useDocument,
   useDocumentsByFolder,
@@ -82,7 +82,7 @@ export function DocumentWorkspace({
   const doc = useDocument(docId ?? "");
   console.log("DOC DATA", doc.data);
   const del = useDeleteDocument();
-  const ask = useAskRag();
+  const chat = useRagChat();
   const download = useDownloadDocument();
   const navigate = useNavigate();
 
@@ -108,7 +108,7 @@ export function DocumentWorkspace({
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
-      const res = await ask.mutateAsync({ id: docId, question: q });
+      const res = await chat.mutateAsync({ folderId, documentId: docId, question: q });
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
@@ -486,7 +486,7 @@ export function DocumentWorkspace({
               </div>
             ))
           )}
-          {ask.isPending && (
+          {chat.isPending && (
             <div className="text-sm bg-muted rounded-2xl rounded-bl-md px-3.5 py-2.5 max-w-[88%] inline-flex items-center gap-1.5">
               <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
               <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse [animation-delay:200ms]" />
@@ -512,7 +512,7 @@ export function DocumentWorkspace({
           <Button
             type="submit"
             size="icon"
-            disabled={ask.isPending || !input.trim() || !docId}
+            disabled={chat.isPending || !input.trim() || !docId}
             className="bg-gradient-brand hover:opacity-90 rounded-xl shrink-0"
           >
             <Send className="h-4 w-4" />

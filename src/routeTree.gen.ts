@@ -39,6 +39,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedCloudRouteImport } from './routes/_authenticated/cloud'
 import { Route as AuthenticatedAiRouteImport } from './routes/_authenticated/ai'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedSubjectsIdRouteImport } from './routes/_authenticated/subjects.$id'
 import { Route as AuthenticatedPaymentSuccessRouteImport } from './routes/_authenticated/payment.success'
 import { Route as AuthenticatedPaymentCancelRouteImport } from './routes/_authenticated/payment.cancel'
 import { Route as AuthenticatedFoldersIdRouteImport } from './routes/_authenticated/folders.$id'
@@ -195,6 +196,11 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSubjectsIdRoute = AuthenticatedSubjectsIdRouteImport.update({
+  id: '/subjects/$id',
+  path: '/subjects/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPaymentSuccessRoute =
   AuthenticatedPaymentSuccessRouteImport.update({
     id: '/payment/success',
@@ -253,6 +259,7 @@ export interface FileRoutesByFullPath {
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
   '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/subjects/$id': typeof AuthenticatedSubjectsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -286,6 +293,7 @@ export interface FileRoutesByTo {
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
   '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/subjects/$id': typeof AuthenticatedSubjectsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -323,6 +331,7 @@ export interface FileRoutesById {
   '/_authenticated/folders/$id': typeof AuthenticatedFoldersIdRoute
   '/_authenticated/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/_authenticated/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/_authenticated/subjects/$id': typeof AuthenticatedSubjectsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -360,6 +369,7 @@ export interface FileRouteTypes {
     | '/folders/$id'
     | '/payment/cancel'
     | '/payment/success'
+    | '/subjects/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -393,6 +403,7 @@ export interface FileRouteTypes {
     | '/folders/$id'
     | '/payment/cancel'
     | '/payment/success'
+    | '/subjects/$id'
   id:
     | '__root__'
     | '/'
@@ -429,6 +440,7 @@ export interface FileRouteTypes {
     | '/_authenticated/folders/$id'
     | '/_authenticated/payment/cancel'
     | '/_authenticated/payment/success'
+    | '/_authenticated/subjects/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -651,6 +663,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/subjects/$id': {
+      id: '/_authenticated/subjects/$id'
+      path: '/subjects/$id'
+      fullPath: '/subjects/$id'
+      preLoaderRoute: typeof AuthenticatedSubjectsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/payment/success': {
       id: '/_authenticated/payment/success'
       path: '/payment/success'
@@ -721,6 +740,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
   AuthenticatedPaymentCancelRoute: typeof AuthenticatedPaymentCancelRoute
   AuthenticatedPaymentSuccessRoute: typeof AuthenticatedPaymentSuccessRoute
+  AuthenticatedSubjectsIdRoute: typeof AuthenticatedSubjectsIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -737,6 +757,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,
   AuthenticatedPaymentCancelRoute: AuthenticatedPaymentCancelRoute,
   AuthenticatedPaymentSuccessRoute: AuthenticatedPaymentSuccessRoute,
+  AuthenticatedSubjectsIdRoute: AuthenticatedSubjectsIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
