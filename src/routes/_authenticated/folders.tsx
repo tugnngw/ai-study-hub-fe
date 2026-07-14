@@ -10,6 +10,7 @@ import {
   useUpdateFolder,
   useSemesters,
   useSubjectsBySemester,
+  useSubjects,
 } from "@/lib/queries";
 import { useStarredFolders } from "@/lib/preferences";
 import { ShareEntityDialog } from "@/components/share-entity-dialog";
@@ -70,6 +71,20 @@ function FoldersPage() {
   const { isMarked: isStarred, toggle: toggleStar } = useStarredFolders();
   const folders = useFolders();
   const semesters = useSemesters();
+  const allSubjects = useSubjects();
+
+  const subjectMap = useMemo(() => {
+    const map = new Map();
+    (allSubjects.data ?? []).forEach((s) => map.set(s.id, s));
+    return map;
+  }, [allSubjects.data]);
+
+  const getSemesterName = (subjectId?: string | null) => {
+    if (!subjectId) return null;
+    const subject = subjectMap.get(subjectId);
+    if (!subject) return null;
+    return semesters.data?.find(sem => sem.id === subject.semesterId)?.name || null;
+  };
 
   // Find subject for editing folder
   const editingSubjectId = useMemo(() => {
@@ -156,14 +171,26 @@ function FoldersPage() {
                             <FolderKanban className="h-5 w-5 text-primary" />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="font-medium truncate pr-5">{f.name}</div>
-                            <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
-                              {f.description || f.aiSummary || "No summary"}
-                            </div>
-                            <div className="text-xs font-medium text-primary mt-1.5">
-                              {folderCount(f)} tài liệu
-                            </div>
-                          </div>
+                             <div className="font-medium truncate pr-5">{f.name}</div>
+                             <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                               {f.description || f.aiSummary || "No summary"}
+                             </div>
+                             <div className="flex flex-wrap gap-2 mt-2">
+                               {getSemesterName(f.subjectId) && (
+                                 <Badge variant="secondary" className="text-[10px] px-1.5 py-0">
+                                   {getSemesterName(f.subjectId)}
+                                 </Badge>
+                               )}
+                               {f.subjectId && subjectMap.get(f.subjectId) && (
+                                 <Badge variant="outline" className="text-[10px] px-1.5 py-0">
+                                   {subjectMap.get(f.subjectId).code}
+                                 </Badge>
+                               )}
+                             </div>
+                             <div className="text-xs font-medium text-primary mt-1.5">
+                               {folderCount(f)} tài liệu
+                             </div>
+                           </div>
                         </div>
                       </Link>
                       <div className="flex justify-end mt-3 opacity-0 group-hover:opacity-100 transition-opacity">

@@ -6,6 +6,10 @@ export interface Folder {
   ownerId: string;
   name: string;
   aiSummary?: string | null;
+  subjectId?: string | null;
+  semesterId?: string | null;
+  description?: string | null;
+  documentCount?: number | null;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
