@@ -2,7 +2,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
-  useAskRag,
+  useRagChat,
   useDeleteDocument,
   useDocument,
   useDocumentsByFolder,
@@ -40,7 +40,7 @@ export function DocumentWorkspace({
   const isValidDocId = Boolean(docId);
   const doc = useDocument(isValidDocId ? docId : "");
   const del = useDeleteDocument();
-  const ask = useAskRag();
+  const chat = useRagChat();
   const download = useDownloadDocument();
   const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ export function DocumentWorkspace({
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
-      const res = await ask.mutateAsync({ documentId: docId, question: q });
+      const res = await chat.mutateAsync({ folderId, documentId: docId, question: q });
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");

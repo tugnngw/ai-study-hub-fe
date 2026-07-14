@@ -172,13 +172,19 @@ export interface ShareRecipient {
 // RAG  →  /api/rag
 // =============================================================
 export interface AskRequest {
-  documentId: string;
+  folderId?: string;
+  documentId?: string;
   question: string;
 }
 
 export interface AskResponse {
   answer: string;
-  sources?: unknown[];
+  referencedDocumentIds: string[];
+}
+
+export interface RagStatusResponse {
+  documentId: string;
+  status: string;
 }
 
 // =============================================================

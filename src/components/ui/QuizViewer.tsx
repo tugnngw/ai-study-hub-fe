@@ -71,14 +71,11 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
     const next = new Map(answers);
     next.set(current.q.id, opt);
     setAnswers(next);
-  }, [current, isRevealed, answers]);
-
-  const reveal = useCallback(() => {
-    if (!current || !selected) return;
-    const next = new Set(revealed);
-    next.add(current.q.id);
-    setRevealed(next);
-  }, [current, selected, revealed]);
+    // auto-reveal
+    const nextRevealed = new Set(revealed);
+    nextRevealed.add(current.q.id);
+    setRevealed(nextRevealed);
+  }, [current, isRevealed, answers, revealed]);
 
   const goNext = useCallback(() => {
     if (currentIdx < allQuestions.length - 1) setCurrentIdx((i) => i + 1);
@@ -154,7 +151,7 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
           <ChevronLeft className="h-5 w-5" />
         </button>
         <span className="font-medium tabular-nums min-w-[8rem] text-center">Q{currentIdx + 1} of {allQuestions.length}</span>
-        <button onClick={goNext} disabled={currentIdx >= allQuestions.length - 1 && !isRevealed} className="disabled:opacity-30 hover:text-foreground">
+        <button onClick={goNext} disabled={currentIdx >= allQuestions.length - 1} className="disabled:opacity-30 hover:text-foreground">
           <ChevronRight className="h-5 w-5" />
         </button>
       </div>
@@ -204,11 +201,7 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
         })}
       </div>
 
-      {selected && !isRevealed ? (
-        <Button onClick={reveal} className="w-full max-w-lg gap-2">
-          <CheckCircle2 className="h-4 w-4" />Check Answer
-        </Button>
-      ) : isRevealed ? (
+      {isRevealed ? (
         <Button onClick={goNext} className="w-full max-w-lg">
           {currentIdx < allQuestions.length - 1 ? "Next Question" : "See Results"}
         </Button>
