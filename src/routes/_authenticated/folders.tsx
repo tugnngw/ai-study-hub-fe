@@ -99,11 +99,15 @@ function FoldersPage() {
       if (d.folderId != null)
         m.set(String(d.folderId), (m.get(String(d.folderId)) ?? 0) + 1);
     });
+    console.log("DEBUG DOCUMENT COUNT MAP:", Object.fromEntries(m));
     return m;
   }, [docs]);
 
-  const folderCount = (f: Folder) =>
-    f.documentCount ?? countByFolder.get(String(f.id)) ?? 0;
+  const folderCount = (f: Folder) => {
+    const count = f.documentCount ?? countByFolder.get(String(f.id)) ?? 0;
+    console.log(`DEBUG FOLDER ${f.name} (ID: ${f.id}) COUNT:`, count);
+    return count;
+  };
 
   const filtered = (data ?? [])
       .filter((f) => f.name.toLowerCase().includes(query.toLowerCase()))
