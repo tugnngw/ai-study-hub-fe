@@ -70,7 +70,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
   const validateForm = (): { valid: boolean; message?: string } => {
     if (!name.trim()) return { valid: false, message: "Tên gói không được để trống" };
     if (price < 0) return { valid: false, message: "Giá không được nhỏ hơn 0" };
-    if (durationDays < 0) return { valid: false, message: "Thời hạn không được nhỏ hơn 0 ngày" };
+    if (durationDays < -1) return { valid: false, message: "Thời hạn không được nhỏ hơn 0 ngày (0 là vĩnh viễn)" };
     if (storageValue < 0) return { valid: false, message: "Dung lượng không được nhỏ hơn 0" };
     if (aiQuestions < 0) return { valid: false, message: "Số câu hỏi AI không được nhỏ hơn 0" };
     return { valid: true };

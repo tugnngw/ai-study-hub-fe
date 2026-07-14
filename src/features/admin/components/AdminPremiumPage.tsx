@@ -181,7 +181,7 @@ function PlanConfigCard() {
                     </TableCell>
                     <TableCell>{fmtVnd(p.price)}</TableCell>
                     <TableCell>
-                      {p.durationDays ? `${p.durationDays} ngày` : "—"}
+                      {p.durationDays === 0 ? "Vĩnh viễn" : p.durationDays ? `${p.durationDays} ngày` : "—"}
                     </TableCell>
                     <TableCell>{formatStorage(p.storageGb)}</TableCell>
                     <TableCell>

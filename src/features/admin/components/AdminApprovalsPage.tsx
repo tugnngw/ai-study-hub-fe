@@ -18,6 +18,29 @@ import { useApprovals, useApprovalAction } from "../hooks";
 import type { ApprovalAction } from "../types/admin.types";
 import { FilePreviewDialog } from "./FilePreviewDialog";
 import { documentApi } from "@/lib/realApi";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+
+const REPORT_REASON_LABELS: Record<string, string> = {
+  copyright: "Nội dung vi phạm bản quyền",
+  misinformation: "Thông tin sai lệch / gây hiểu lầm",
+  inappropriate: "Nội dung không phù hợp / phản cảm",
+  privacy: "Vi phạm quyền riêng tư",
+  other: "Lý do khác",
+};
+
+const getReasonLabel = (reason: string | undefined): string => {
+  if (!reason) return "Không có lý do";
+  return REPORT_REASON_LABELS[reason] || reason;
+};
+
 
 export const AdminApprovalsPage: React.FC = () => {
   const query = useApprovals();
@@ -70,16 +93,21 @@ export const AdminApprovalsPage: React.FC = () => {
 
   console.log("[AdminApprovalsPage] render, list.length:", list.length, "query.status:", query.status);
 
+  const [rejectId, setRejectId] = useState<string | null>(null);
+  const [rejectReason, setRejectReason] = useState("");
+
   const handle = (id: string, act: ApprovalAction) => {
+    if (act === "reject") {
+      setRejectId(id);
+      return;
+    }
     console.log("[AdminApprovalsPage] handle called:", { id, act });
     return action.mutate(
       { id, action: act },
       {
         onSuccess: () => {
           console.log("[AdminApprovalsPage] mutation success");
-          toast.success(
-            act === "approve" ? "Đã chấp nhận báo cáo" : "Đã từ chối file",
-          );
+          toast.success("Đã chấp nhận báo cáo");
           setForceUpdate(prev => prev + 1);
         },
         onError: (err) => {
@@ -87,6 +115,25 @@ export const AdminApprovalsPage: React.FC = () => {
           toast.error("Xử lý thất bại");
         },
       },
+    );
+  };
+  
+  const submitReject = () => {
+    if (!rejectId) return;
+    action.mutate(
+      { id: rejectId, action: "reject", reason: rejectReason },
+      {
+        onSuccess: () => {
+          toast.success("Đã từ chối file");
+          setRejectId(null);
+          setRejectReason("");
+          setForceUpdate(prev => prev + 1);
+        },
+        onError: (err) => {
+          console.error("[AdminApprovalsPage] mutation error:", err);
+          toast.error("Xử lý thất bại: " + err.message);
+        },
+      }
     );
   };
 
@@ -116,6 +163,7 @@ export const AdminApprovalsPage: React.FC = () => {
                 <TableHead>Người tải lên</TableHead>
                 <TableHead>Lý do báo cáo</TableHead>
                 <TableHead>Người báo cáo</TableHead>
+                <TableHead>Lý do từ chối (Admin)</TableHead>
                 <TableHead className="text-right">Hành động</TableHead>
               </TableRow>
             </TableHeader>
@@ -123,7 +171,7 @@ export const AdminApprovalsPage: React.FC = () => {
               {list.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={5}
+                    colSpan={6}
                     className="h-24 text-center text-muted-foreground"
                   >
                     Không có báo cáo nào
@@ -163,14 +211,17 @@ export const AdminApprovalsPage: React.FC = () => {
                       <div className="max-w-xs">
                         <div className="flex items-start gap-2">
                           <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                          <span className="text-sm line-clamp-2">
-                            {item.reason || "Không có lý do"}
-                          </span>
+                           <span className="text-sm line-clamp-2">
+                             {getReasonLabel(item.reason)}
+                           </span>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {item.reporter || "Anonymous"}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground text-sm">
+                      {item.adminComment || "—"}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
@@ -186,7 +237,7 @@ export const AdminApprovalsPage: React.FC = () => {
                           variant="outline"
                           size="sm"
                           className="text-destructive hover:text-destructive"
-                          disabled={!reviewedIds.has(item.id)}
+                          disabled={!reviewedIds.has(item.id) || action.isPending}
                           title={!reviewedIds.has(item.id) ? "Xem file trước khi xử lý" : undefined}
                           onClick={() => handle(item.id, "reject")}
                         >
@@ -217,6 +268,32 @@ export const AdminApprovalsPage: React.FC = () => {
         url={preview?.url}
         mimeType={preview?.mimeType}
       />
+
+      <Dialog open={!!rejectId} onOpenChange={() => setRejectId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Từ chối file bị báo cáo</DialogTitle>
+            <DialogDescription>
+              Vui lòng nhập lý do từ chối để thông báo cho người upload.
+            </DialogDescription>
+          </DialogHeader>
+          <Textarea
+            placeholder="Nhập lý do từ chối..."
+            value={rejectReason}
+            onChange={(e) => setRejectReason(e.target.value)}
+          />
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRejectId(null)}>Hủy</Button>
+            <Button
+              variant="destructive"
+              disabled={action.isPending}
+              onClick={submitReject}
+            >
+              Xác nhận từ chối
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

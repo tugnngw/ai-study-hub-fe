@@ -1,7 +1,7 @@
 // src/features/admin/components/AdminDocumentsPage.tsx
 import React, { useState, useMemo } from "react";
 import { toast } from "sonner";
-import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search } from "lucide-react";
+import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search, AlertCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -16,6 +16,22 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAdminDocuments, useApproveDocument, useRejectDocument, useDeleteDocument, useRestoreDocument } from "../hooks";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 
 // UUID validation helper
 const isValidUUID = (id: string): boolean => {
@@ -33,6 +49,8 @@ const statusLabel: Record<string, string> = {
 export const AdminDocumentsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabValue>("all");
   const [query, setQuery] = useState("");
+  const [rejectId, setRejectId] = useState<string | null>(null);
+  const [rejectReason, setRejectReason] = useState("");
 
   const { data: documentsResponse = [], isLoading } = useAdminDocuments(activeTab);
   const approveDocument = useApproveDocument();
@@ -138,9 +156,23 @@ export const AdminDocumentsPage: React.FC = () => {
                             {d.ownerName ?? "-"}
                           </TableCell>
                           <TableCell>
-                            <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
-                              {statusLabel[d.status as string] ?? d.status}
-                            </Badge>
+                            <div className="flex items-center gap-2">
+                              <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
+                                {statusLabel[d.status as string] ?? d.status}
+                              </Badge>
+                              {d.status === "REJECT" && d.rejectReason && (
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger>
+                                      <AlertCircle className="h-4 w-4 text-destructive" />
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>Lý do: {d.rejectReason}</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              )}
+                            </div>
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
@@ -169,15 +201,12 @@ export const AdminDocumentsPage: React.FC = () => {
                                     size="sm"
                                     disabled={rejectDocument.isPending}
                                     onClick={() => {
-                                      console.log("[DEBUG] Reject clicked, docId:", d.id);
-                                      if (!isValidUUID(d.id)) {
-                                        toast.error("Invalid document ID format");
+                                      if (!d.id) {
+                                        toast.error("Tài liệu không có ID hợp lệ");
                                         return;
                                       }
-                                      rejectDocument.mutate(d.id, {
-                                        onSuccess: () => toast.success("Đã từ chối tài liệu"),
-                                        onError: (err) => toast.error("Lỗi: " + err.message),
-                                      });
+                                      console.log("Button clicked, document ID:", d.id);
+                                      setRejectId(d.id);
                                     }}
                                   >
                                     <XCircle className="h-3.5 w-3.5" /> Từ chối
@@ -234,6 +263,45 @@ export const AdminDocumentsPage: React.FC = () => {
           </Tabs>
         </CardContent>
       </Card>
+
+      <Dialog open={!!rejectId} onOpenChange={() => setRejectId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Từ chối tài liệu</DialogTitle>
+            <DialogDescription>
+              Bạn có chắc chắn muốn từ chối tài liệu này không? Vui lòng nhập lý do.
+            </DialogDescription>
+          </DialogHeader>
+          <Textarea
+            placeholder="Nhập lý do từ chối..."
+            value={rejectReason}
+            onChange={(e) => setRejectReason(e.target.value)}
+          />
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setRejectId(null)}>Hủy</Button>
+            <Button
+              variant="destructive"
+              disabled={rejectDocument.isPending}
+              onClick={() => {
+                if (!rejectId) return;
+                  rejectDocument.mutate({ 
+                    id: rejectId, 
+                    reason: rejectReason.trim() === "" ? "" : rejectReason 
+                  }, {
+                  onSuccess: () => {
+                    toast.success("Đã từ chối tài liệu");
+                    setRejectId(null);
+                    setRejectReason("");
+                  },
+                  onError: (err: any) => toast.error("Lỗi: " + err.message),
+                });
+              }}
+            >
+              Xác nhận từ chối
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

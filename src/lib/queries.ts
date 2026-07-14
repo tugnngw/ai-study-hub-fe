@@ -611,4 +611,9 @@ export function useGenerateFlashcards() {
   });
 }
 
-export type { Document, Folder };
+export function useMySubmittedReports() {
+  return useQuery({
+    queryKey: ["my-reports"],
+    queryFn: () => shareApi.listMyReports(),
+  });
+}

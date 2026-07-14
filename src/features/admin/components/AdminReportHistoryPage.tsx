@@ -1,6 +1,6 @@
 // src/features/admin/components/AdminReportHistoryPage.tsx
-import React from "react";
-import { FileText, Check, X, Flag, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
+import { FileText, Check, X, Flag, AlertCircle, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -12,10 +12,26 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useReportHistory } from "../hooks";
+import { FilePreviewDialog } from "./FilePreviewDialog";
 
 export const AdminReportHistoryPage: React.FC = () => {
   const { data: history = [], isLoading } = useReportHistory();
+  const [preview, setPreview] = useState<{ title: string; url?: string | null; mimeType?: string | null } | null>(null);
+
+  const REPORT_REASON_LABELS: Record<string, string> = {
+    copyright: "Nội dung vi phạm bản quyền",
+    misinformation: "Thông tin sai lệch / gây hiểu lầm",
+    inappropriate: "Nội dung không phù hợp / phản cảm",
+    privacy: "Vi phạm quyền riêng tư",
+    other: "Lý do khác",
+  };
+
+  const getReasonLabel = (reason: string | undefined): string => {
+    if (!reason) return "Không có lý do";
+    return REPORT_REASON_LABELS[reason] || reason;
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -73,13 +89,14 @@ export const AdminReportHistoryPage: React.FC = () => {
                 <TableHead>Người báo cáo</TableHead>
                 <TableHead>Ngày báo cáo</TableHead>
                 <TableHead>Trạng thái</TableHead>
+                <TableHead>Hành động</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {isLoading ? (
                 <TableRow>
                   <TableCell
-                    colSpan={6}
+                    colSpan={7}
                     className="h-24 text-center text-muted-foreground"
                   >
                     Đang tải dữ liệu...
@@ -88,7 +105,7 @@ export const AdminReportHistoryPage: React.FC = () => {
               ) : history.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={6}
+                    colSpan={7}
                     className="h-24 text-center text-muted-foreground"
                   >
                     Không có báo cáo nào
@@ -128,8 +145,8 @@ export const AdminReportHistoryPage: React.FC = () => {
                       <div className="max-w-xs">
                         <div className="flex items-start gap-2">
                           <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                          <span className="text-sm line-clamp-2">
-                            {item.reason || "Không có lý do"}
+                           <span className="text-sm line-clamp-2">
+                            {getReasonLabel(item.reason)}
                           </span>
                         </div>
                       </div>
@@ -150,6 +167,20 @@ export const AdminReportHistoryPage: React.FC = () => {
                         {item.decision || getStatusText(item.status)}
                       </Badge>
                     </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          setPreview({
+                            title: item.name,
+                            url: item.cloudinaryUrl,
+                          })
+                        }
+                      >
+                        <Eye className="h-4 w-4 mr-1" /> Xem
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               )}
@@ -157,6 +188,13 @@ export const AdminReportHistoryPage: React.FC = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <FilePreviewDialog
+        open={!!preview}
+        onOpenChange={(v) => !v && setPreview(null)}
+        title={preview?.title ?? ""}
+        url={preview?.url}
+      />
     </div>
   );
 };

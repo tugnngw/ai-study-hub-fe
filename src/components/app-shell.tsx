@@ -21,6 +21,7 @@ import {
   Sun,
   Moon,
   Upload,
+  AlertCircle,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useDocuments, useDocument } from "@/lib/queries";
@@ -45,6 +46,7 @@ const nav = [
   { to: "/documents", label: "Tài liệu", icon: FileText },
   { to: "/shared", label: "Được chia sẻ", icon: Users },
   { to: "/trash", label: "Thùng rác", icon: Trash2 },
+  { to: "/reported", label: "Báo cáo vi phạm", icon: AlertCircle },
   { to: "/cloud", label: "Lưu trữ Cloud", icon: Cloud },
   { to: "/premium", label: "Nâng cấp Premium", icon: Crown },
   { to: "/transactions", label: "Lịch sử giao dịch", icon: Receipt },
@@ -261,11 +263,11 @@ export function AppShell({ children }: { children: ReactNode }) {
                     <div className="hidden sm:flex flex-col items-start leading-tight">
                       <div className="flex items-center gap-1.5">
                         <span className="text-xs font-medium">{user?.fullName ?? "User"}</span>
-                        {user?.plan && user.plan !== "FREE" && (
-                          <span className="text-[9px] font-bold bg-amber-500/10 text-amber-600 px-1.5 py-0.5 rounded-full border border-amber-500/20">
-                            {user.plan}
-                          </span>
-                        )}
+                         {user?.role !== "ADMIN" && user?.plan && user.plan !== "FREE" && (
+                           <span className="text-[9px] font-bold bg-amber-500/10 text-amber-600 px-1.5 py-0.5 rounded-full border border-amber-500/20">
+                             {user.plan}
+                           </span>
+                         )}
                       </div>
                       <span className="text-[10px] text-muted-foreground">@{user?.username ?? "user"}</span>
                     </div>
