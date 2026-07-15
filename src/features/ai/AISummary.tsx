@@ -1,6 +1,7 @@
 import { Loader2, Sparkles, RefreshCw, FileText } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { QuotaDisplay } from "@/components/ui/QuotaDisplay";
 import type { Document } from "@/lib/types";
 
 interface Props {
@@ -47,7 +48,8 @@ export function AISummary({ docId, onGenerate, isGenerating, summary }: Props) {
         )}
       </div>
 
-      <div className="p-4 border-t border-border">
+      <div className="p-4 border-t border-border space-y-3">
+        <QuotaDisplay />
         <button
           onClick={() => onGenerate({ documentId: docId, force: !!summary })}
           disabled={isGenerating || !docId}
