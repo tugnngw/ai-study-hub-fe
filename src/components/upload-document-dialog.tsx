@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { FileText, X, Loader2, GraduationCap, BookOpen, FolderKanban, Upload } from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
   useFolders,
   useSubjectsBySemester,
@@ -50,28 +51,38 @@ export function UploadDocumentDialog({
   const subjects = useSubjectsBySemester(semesterId);
   const allFolders = useFolders();
 
-  // Filter folders by selected subject
-  const foldersInSubject = useMemo(
-    () => (allFolders.data ?? []).filter((f) => f.subjectId === subjectId),
-    [allFolders.data, subjectId],
-  );
+  // Filter folders: phải thuộc Subject đang chọn
+  const foldersInSubject = useMemo(() => {
+    return (allFolders.data ?? []).filter((f) => f.subjectId === subjectId);
+  }, [allFolders.data, subjectId]);
 
-  const selectedSubject = useMemo(
-    () => (subjects.data ?? []).find((s) => s.id === subjectId),
-    [subjects.data, subjectId],
-  );
+  // Sync subject and semester when folder changes
+  useEffect(() => {
+    if (folderId) {
+      const folder = (allFolders.data ?? []).find(f => f.id === folderId);
+      if (folder) {
+        if (folder.subjectId) setSubjectId(folder.subjectId);
+        if (folder.semesterId) setSemesterId(folder.semesterId);
+      }
+    }
+  }, [folderId, allFolders.data]);
 
+  // Initial sync for defaultFolderId
   useEffect(() => {
     if (open && defaultFolderId) {
       setFolderId(defaultFolderId);
-      // Try to infer from defaultFolderId
-      const found = (allFolders.data ?? []).find(f => f.id === defaultFolderId);
-      if (found?.subjectId) {
-        setSubjectId(found.subjectId);
-        // Need semester for that subject — we'll just keep what user picks
+    }
+  }, [open, defaultFolderId]);
+
+  // Reset folder when subject changes
+  useEffect(() => {
+    if (folderId) {
+      const folder = (allFolders.data ?? []).find(f => f.id === folderId);
+      if (folder && folder.subjectId !== subjectId) {
+        setFolderId("");
       }
     }
-  }, [open, defaultFolderId, allFolders.data]);
+  }, [subjectId, folderId, allFolders.data]);
 
   const multiple = files.length > 1;
 
@@ -214,15 +225,23 @@ export function UploadDocumentDialog({
           <div className="border-t border-border pt-4 space-y-4">
             {/* Semester */}
             <div className="space-y-2">
-              <Label className="flex items-center gap-1.5">
-                <GraduationCap className="h-4 w-4 text-muted-foreground" />
-                Semester
-              </Label>
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-1.5">
+                  <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                  Semester
+                </Label>
+                {folderId && (
+                  <span className="text-xs text-muted-foreground">
+                    Auto-set from folder
+                  </span>
+                )}
+              </div>
               <Select
                 value={semesterId}
                 onValueChange={handleSemesterChange}
+                disabled={!!folderId}
               >
-                <SelectTrigger>
+                <SelectTrigger className={cn(!!folderId && "cursor-not-allowed opacity-50")}>
                   <SelectValue placeholder="Select a semester" />
                 </SelectTrigger>
                 <SelectContent>
@@ -237,50 +256,31 @@ export function UploadDocumentDialog({
 
             {/* Subject */}
             <div className="space-y-2">
-              <Label className="flex items-center gap-1.5">
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
-                Subject
-              </Label>
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-1.5">
+                  <BookOpen className="h-4 w-4 text-muted-foreground" />
+                  Subject
+                </Label>
+                {folderId && (
+                  <span className="text-xs text-muted-foreground">
+                    Auto-set from folder
+                  </span>
+                )}
+              </div>
               <Select
                 value={subjectId}
                 onValueChange={handleSubjectChange}
-                disabled={!semesterId}
+                disabled={!semesterId || !!folderId}
               >
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={
-                      !semesterId
-                        ? "Select a semester first"
-                        : subjects.isLoading
-                          ? "Loading subjects..."
-                          : "Select a subject"
-                    }
-                  />
+                <SelectTrigger className={cn(!!folderId && "cursor-not-allowed opacity-50")}>
+                  <SelectValue placeholder="Select a subject" />
                 </SelectTrigger>
                 <SelectContent>
-                  {subjects.isLoading ? (
-                    <div className="flex items-center justify-center p-3">
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                    </div>
-                  ) : (subjects.data ?? []).length === 0 ? (
-                    <div className="px-3 py-2 text-sm text-muted-foreground">
-                      No subjects available
-                    </div>
-                  ) : (
-                    (subjects.data ?? []).map((s) => (
-                      <SelectItem key={s.id} value={s.id}>
-                        <span className="flex items-center gap-2">
-                          {s.code && <span className="font-mono text-xs text-muted-foreground">{s.code}</span>}
-                          <span>{s.name}</span>
-                          {s.defaultSubject && (
-                            <Badge variant="outline" className="ml-auto text-[10px] px-1.5 py-0 h-auto border-primary/30 text-primary">
-                              Default
-                            </Badge>
-                          )}
-                        </span>
-                      </SelectItem>
-                    ))
-                  )}
+                  {(subjects.data ?? []).map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>

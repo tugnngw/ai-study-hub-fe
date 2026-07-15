@@ -269,8 +269,6 @@ export function PremiumUpgradePage() {
         </CardContent>
       </Card>
 
-      <QuotaDisplay />
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {plans.map((p) => {
           const current = isCurrent(p);
@@ -332,6 +330,30 @@ export function PremiumUpgradePage() {
                     {p.aiQuestions > 9999
                       ? "Không giới hạn câu hỏi AI"
                       : `${p.aiQuestions} câu hỏi AI`}
+                  </li>
+                  <li className="flex items-center gap-2 text-sm">
+                    <Check className="h-4 w-4 text-emerald-600 shrink-0" />{" "}
+                    {p.flashcardLimit === -1
+                      ? "Không giới hạn flashcards"
+                      : p.flashcardLimit === 0
+                      ? "Không có flashcards"
+                      : `${p.flashcardLimit} flashcards`}
+                  </li>
+                  <li className="flex items-center gap-2 text-sm">
+                    <Check className="h-4 w-4 text-emerald-600 shrink-0" />{" "}
+                    {p.questionLimit === -1
+                      ? "Không giới hạn câu hỏi quiz"
+                      : p.questionLimit === 0
+                      ? "Không có quiz"
+                      : `${p.questionLimit} câu hỏi quiz`}
+                  </li>
+                  <li className="flex items-center gap-2 text-sm">
+                    <Check className="h-4 w-4 text-emerald-600 shrink-0" />{" "}
+                    {p.summaryLimit === -1
+                      ? "Không giới hạn tóm tắt"
+                      : p.summaryLimit === 0
+                      ? "Không có tóm tắt"
+                      : `${p.summaryLimit} tóm tắt AI`}
                   </li>
                 </ul>
 
