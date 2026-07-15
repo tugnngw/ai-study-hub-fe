@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const Route = createFileRoute("/_authenticated/payment/success")({
   component: PaymentSuccessPage,
@@ -11,18 +12,26 @@ export const Route = createFileRoute("/_authenticated/payment/success")({
 function PaymentSuccessPage() {
   const navigate = useNavigate();
   const { reloadUser } = useAuth();
+  const queryClient = useQueryClient();
   const [reloading, setReloading] = useState(true);
 
   useEffect(() => {
     const reloadUserInfo = async () => {
       try {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
         await reloadUser();
+        queryClient.invalidateQueries({ queryKey: ["my-subscription"] });
+        queryClient.invalidateQueries({ queryKey: ["quota"] });
+        queryClient.invalidateQueries({ queryKey: ["account", "me"] });
         console.log("✅ User info reloaded after payment");
       } catch (err) {
         console.error("❌ Failed to reload user:", err);
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 2000));
         try {
           await reloadUser();
+          queryClient.invalidateQueries({ queryKey: ["my-subscription"] });
+          queryClient.invalidateQueries({ queryKey: ["quota"] });
           console.log("✅ User info reloaded on retry");
         } catch (retryErr) {
           console.error("❌ Retry failed:", retryErr);
@@ -33,7 +42,7 @@ function PaymentSuccessPage() {
     };
 
     reloadUserInfo();
-  }, [reloadUser]);
+  }, [reloadUser, queryClient]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4 space-y-6">
