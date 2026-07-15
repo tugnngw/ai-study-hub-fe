@@ -5,6 +5,7 @@ import { Check, Loader2, Crown, CheckCircle2, CalendarClock, ExternalLink, QrCod
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { QuotaDisplay } from "@/components/ui/QuotaDisplay";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,7 @@ import type { AdminPlan } from "@/features/admin/services/paymentApi";
 import { accountApi } from "@/features/auth/services";
 import { useAuth } from "@/lib/auth";
 import { usePlans, useMySubscription } from "@/lib/queries";
+import { useQueryClient } from "@tanstack/react-query";
 import { formatStorage } from "@/lib/config";
 import {
   computeUpgrade,
@@ -31,10 +33,16 @@ const fmtDate = (d?: string | null) =>
 
 const RANK: Record<string, number> = { FREE: 0, BASIC: 1, PRO: 2, PLUS: 2, PREMIUM: 3 };
 
+const getPlanRank = (planName: string): number => {
+  const baseName = planName.toUpperCase().replace(/\s+V\d+$/, '').trim();
+  return RANK[baseName] ?? 0;
+};
+
 
 export function PremiumUpgradePage() {
   const plansQuery = usePlans();
   const subQuery = useMySubscription();
+  const queryClient = useQueryClient();
 
   const [currentPlan, setCurrentPlan] = useState<string>("FREE");
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
@@ -75,9 +83,9 @@ export function PremiumUpgradePage() {
 
   const isCurrent = (p: AdminPlan) => p.name.toUpperCase() === currentPlan;
   const isUpgrade = (p: AdminPlan) =>
-    (RANK[p.name.toUpperCase()] ?? 0) > (RANK[currentPlan] ?? 0);
+    getPlanRank(p.name) > getPlanRank(currentPlan);
   const isDowngrade = (p: AdminPlan) =>
-    (RANK[p.name.toUpperCase()] ?? 0) < (RANK[currentPlan] ?? 0);
+    getPlanRank(p.name) < getPlanRank(currentPlan);
 
   const quote = useMemo(() => {
     if (!selected) return null;
@@ -125,6 +133,8 @@ export function PremiumUpgradePage() {
         const u = await accountApi.me();
         if (u?.plan) setCurrentPlan(String(u.plan).toUpperCase());
         setExpiresAt(u?.planExpiresAt ?? null);
+        queryClient.invalidateQueries({ queryKey: ["my-subscription"] });
+        queryClient.invalidateQueries({ queryKey: ["quota"] });
         setSelected(null);
         toast.success(`Đã nâng cấp lên ${selected.name}!`);
       } else if (url) {
@@ -151,6 +161,8 @@ export function PremiumUpgradePage() {
       if (u?.plan) setCurrentPlan(String(u.plan).toUpperCase());
       setExpiresAt(u?.planExpiresAt ?? null);
       await plansQuery.refetch();
+      queryClient.invalidateQueries({ queryKey: ["my-subscription"] });
+      queryClient.invalidateQueries({ queryKey: ["quota"] });
       toast.success("Đã cập nhật thông tin gói");
     } catch {
       toast.error("Không thể cập nhật thông tin");
@@ -197,7 +209,7 @@ export function PremiumUpgradePage() {
         } catch (e) {
           console.error("Error checking subscription status", e);
         }
-      }, 3000);
+      }, 30000); // Polling mỗi 30 giây
     }
     return () => {
       clearInterval(timer);
@@ -256,6 +268,8 @@ export function PremiumUpgradePage() {
           </div>
         </CardContent>
       </Card>
+
+      <QuotaDisplay />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {plans.map((p) => {
@@ -436,9 +450,9 @@ export function PremiumUpgradePage() {
                 <Clock className="h-8 w-8" />
                 {formatCountdown(countdown)}
               </div>
-              <p className="text-sm text-muted-foreground mt-2">
-                Vui lòng quét mã QR trong vòng 1 phút
-              </p>
+               <p className="text-sm text-muted-foreground mt-2">
+                 Vui lòng quét mã QR trong vòng 1 phút
+               </p>
             </div>
             <div className="border p-2 rounded-lg bg-white">
               {/* Giả định checkoutUrl chứa URL ảnh QR hoặc link trang web */}
