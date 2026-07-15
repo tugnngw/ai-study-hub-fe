@@ -60,12 +60,19 @@ export function UploadDocumentDialog({
   useEffect(() => {
     if (folderId) {
       const folder = (allFolders.data ?? []).find(f => f.id === folderId);
+      console.log('[DEBUG] Selected folder:', folder);
       if (folder) {
-        if (folder.subjectId) setSubjectId(folder.subjectId);
-        if (folder.semesterId) setSemesterId(folder.semesterId);
+        if (folder.subjectId && folder.subjectId !== subjectId) {
+          console.log('[DEBUG] Setting subjectId:', folder.subjectId);
+          setSubjectId(folder.subjectId);
+        }
+        if (folder.semesterId && folder.semesterId !== semesterId) {
+          console.log('[DEBUG] Setting semesterId:', folder.semesterId);
+          setSemesterId(folder.semesterId);
+        }
       }
     }
-  }, [folderId, allFolders.data]);
+  }, [folderId, allFolders.data, subjectId, semesterId]);
 
   // Initial sync for defaultFolderId
   useEffect(() => {
@@ -99,15 +106,17 @@ export function UploadDocumentDialog({
     setFiles((prev) => prev.filter((_, i) => i !== idx));
 
   const handleSemesterChange = useCallback((v: string) => {
+    if (folderId) return;
     setSemesterId(v);
     setSubjectId("");
     setFolderId("");
-  }, []);
+  }, [folderId]);
 
   const handleSubjectChange = useCallback((v: string) => {
+    if (folderId) return;
     setSubjectId(v);
     setFolderId("");
-  }, []);
+  }, [folderId]);
 
   const submit = async () => {
     if (files.length === 0) return toast.error("Select at least one file");

@@ -43,6 +43,7 @@ export const Route = createFileRoute("/_authenticated/documents")({
 function DocumentsPage() {
   const { data, isLoading } = useDocuments();
   const subjects = useSemesters();
+  const folders = useFolders();
   const [query, setQuery] = useState("");
   const [uploadOpen, setUploadOpen] = useState(false);
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
@@ -106,12 +107,14 @@ function DocumentsPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((d) => {
+               {filtered.map((d) => {
+                const folderName = folders.data?.find(f => f.id === d.folderId)?.name || "—";
                 return (
                   <DocumentRow
                     key={d.id}
                     id={d.id}
                     folderId={d.folderId ?? ""}
+                    folderName={folderName}
                     title={d.title}
                     description={d.description ?? ""}
                     status={d.status}
@@ -134,6 +137,7 @@ function DocumentsPage() {
 function DocumentRow({
   id,
   folderId,
+  folderName,
   title,
   description,
   status,
@@ -143,6 +147,7 @@ function DocumentRow({
 }: {
   id: string;
   folderId: string;
+  folderName: string;
   title: string;
   description: string;
   status: string;
@@ -213,7 +218,7 @@ function DocumentRow({
           </div>
         </td>
         <td className="px-4 py-3 hidden lg:table-cell">
-          <span className="text-muted-foreground text-xs">—</span>
+          <span className="text-sm">{folderName}</span>
         </td>
         <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
           {description}
