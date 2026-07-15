@@ -272,7 +272,7 @@ export function PremiumUpgradePage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {plans.map((p) => {
           const current = isCurrent(p);
-          const highlighted = p.name.toUpperCase() === "PREMIUM";
+          const highlighted = false; // Tắt badge "Phổ biến"
           const downgrade = isPaidActive && isDowngrade(p);
           const durationDays = p.durationDays || 30;
           return (
