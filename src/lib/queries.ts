@@ -31,6 +31,7 @@ import type {
   GenerateQuizRequest,
   FlashcardResponse,
   QuizResponse,
+  RagStatusResponse,
 } from "./types";
 
 function handleAccountLockedError(error: unknown): boolean {
@@ -327,17 +328,6 @@ export function useDocument(id: string) {
       }
     },
     enabled: !!id,
-    refetchInterval: (query) => {
-      const data = query.state.data as Document | undefined;
-      if (data?.status === "PROCESSING") {
-        return 3000;
-      }
-      return false;
-    },
-    refetchOnWindowFocus: (query) => {
-      const data = query.state.data as Document | undefined;
-      return data?.status === "PROCESSING";
-    },
   });
 }
 
@@ -522,7 +512,37 @@ export function useRagStatus(documentId: string) {
     queryKey: ["rag-status", documentId],
     queryFn: () => ragApi.status(documentId),
     enabled: !!documentId,
-    refetchInterval: false,
+    refetchInterval: (query) => {
+      const data = query.state.data as RagStatusResponse | undefined;
+      if (data?.status === "PROCESSING") return 3000;
+      return false;
+    },
+  });
+}
+
+export function useRagSession(documentId: string) {
+  return useQuery({
+    queryKey: ["rag-sessions", documentId],
+    queryFn: () => ragApi.sessions(documentId),
+    enabled: !!documentId,
+  });
+}
+
+export function useRagSessionDetail(sessionId: string | null) {
+  return useQuery({
+    queryKey: ["rag-session", sessionId],
+    queryFn: () => ragApi.sessionDetail(sessionId!),
+    enabled: !!sessionId,
+  });
+}
+
+export function useDeleteRagSession() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (sessionId: string) => ragApi.deleteSession(sessionId),
+    onSuccess: (_, sessionId) => {
+      qc.invalidateQueries({ queryKey: ["rag-sessions"] });
+    },
   });
 }
 

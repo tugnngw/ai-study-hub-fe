@@ -1,7 +1,9 @@
 // src/features/documents/types/document.types.ts
 // Document-related types and interfaces
 
-export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
+export type DocumentStatus = "COMPLETED" | "READY" | "REJECT" | "REPORTED" | "BANNED";
+
+export type AiProcessingStatus = "NOT_STARTED" | "PROCESSING" | "COMPLETED" | "FAILED";
 
 export interface Document {
   id: string;
@@ -12,6 +14,7 @@ export interface Document {
   description?: string | null;
   summary?: string | null;
   status: DocumentStatus;
+  aiStatus?: AiProcessingStatus;
   cloudinaryUrl?: string | null;
   publicId?: string | null;
   mimeType?: string | null;
@@ -20,6 +23,7 @@ export interface Document {
   totalPages?: number | null;
   createdAt: string;
   deletedAt?: string | null;
+  rejectReason?: string | null;
 }
 
 export interface UploadDocumentRequest {

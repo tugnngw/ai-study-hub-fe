@@ -189,10 +189,20 @@ export const ragApi = {
   status: (documentId: string): Promise<import("./types").RagStatusResponse> =>
     api<import("./types").RagStatusResponse>(`/api/v1/rag/status/${documentId}`),
 
+  // Chat sessions
+  sessions: (documentId: string): Promise<import("./types").ChatSession[]> =>
+    api<import("./types").ChatSession[]>(`/api/v1/rag/sessions?documentId=${documentId}`),
+
+  sessionDetail: (sessionId: string): Promise<import("./types").ChatSession> =>
+    api<import("./types").ChatSession>(`/api/v1/rag/sessions/${sessionId}`),
+
+  deleteSession: (sessionId: string): Promise<void> =>
+    api<void>(`/api/v1/rag/sessions/${sessionId}`, { method: "DELETE" }),
+
   chat: (input: import("./types").AskRequest): Promise<import("./types").AskResponse> =>
     api<import("./types").AskResponse>("/api/v1/rag/chat", {
       method: "POST",
-      body: { folderId: input.folderId, documentId: input.documentId, question: input.question },
+      body: { sessionId: input.sessionId ?? null, documentId: input.documentId, question: input.question },
     }),
 };
 

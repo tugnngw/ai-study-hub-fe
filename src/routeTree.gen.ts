@@ -41,6 +41,7 @@ import { Route as AuthenticatedCloudRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedAiRouteImport } from './routes/_authenticated/ai'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedSubjectsIdRouteImport } from './routes/_authenticated/subjects.$id'
+import { Route as AuthenticatedSharedShareIdRouteImport } from './routes/_authenticated/shared.$shareId'
 import { Route as AuthenticatedPaymentSuccessRouteImport } from './routes/_authenticated/payment.success'
 import { Route as AuthenticatedPaymentCancelRouteImport } from './routes/_authenticated/payment.cancel'
 import { Route as AuthenticatedFoldersIdRouteImport } from './routes/_authenticated/folders.$id'
@@ -207,6 +208,12 @@ const AuthenticatedSubjectsIdRoute = AuthenticatedSubjectsIdRouteImport.update({
   path: '/subjects/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSharedShareIdRoute =
+  AuthenticatedSharedShareIdRouteImport.update({
+    id: '/$shareId',
+    path: '/$shareId',
+    getParentRoute: () => AuthenticatedSharedRoute,
+  } as any)
 const AuthenticatedPaymentSuccessRoute =
   AuthenticatedPaymentSuccessRouteImport.update({
     id: '/payment/success',
@@ -245,7 +252,7 @@ export interface FileRoutesByFullPath {
   '/premium': typeof AuthenticatedPremiumRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reported': typeof AuthenticatedReportedRoute
-  '/shared': typeof AuthenticatedSharedRoute
+  '/shared': typeof AuthenticatedSharedRouteWithChildren
   '/transactions': typeof AuthenticatedTransactionsRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
@@ -266,6 +273,7 @@ export interface FileRoutesByFullPath {
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
   '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/shared/$shareId': typeof AuthenticatedSharedShareIdRoute
   '/subjects/$id': typeof AuthenticatedSubjectsIdRoute
 }
 export interface FileRoutesByTo {
@@ -280,7 +288,7 @@ export interface FileRoutesByTo {
   '/premium': typeof AuthenticatedPremiumRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reported': typeof AuthenticatedReportedRoute
-  '/shared': typeof AuthenticatedSharedRoute
+  '/shared': typeof AuthenticatedSharedRouteWithChildren
   '/transactions': typeof AuthenticatedTransactionsRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
@@ -301,6 +309,7 @@ export interface FileRoutesByTo {
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
   '/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/shared/$shareId': typeof AuthenticatedSharedShareIdRoute
   '/subjects/$id': typeof AuthenticatedSubjectsIdRoute
 }
 export interface FileRoutesById {
@@ -319,7 +328,7 @@ export interface FileRoutesById {
   '/_authenticated/premium': typeof AuthenticatedPremiumRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reported': typeof AuthenticatedReportedRoute
-  '/_authenticated/shared': typeof AuthenticatedSharedRoute
+  '/_authenticated/shared': typeof AuthenticatedSharedRouteWithChildren
   '/_authenticated/transactions': typeof AuthenticatedTransactionsRoute
   '/_authenticated/trash': typeof AuthenticatedTrashRoute
   '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
@@ -340,6 +349,7 @@ export interface FileRoutesById {
   '/_authenticated/folders/$id': typeof AuthenticatedFoldersIdRoute
   '/_authenticated/payment/cancel': typeof AuthenticatedPaymentCancelRoute
   '/_authenticated/payment/success': typeof AuthenticatedPaymentSuccessRoute
+  '/_authenticated/shared/$shareId': typeof AuthenticatedSharedShareIdRoute
   '/_authenticated/subjects/$id': typeof AuthenticatedSubjectsIdRoute
 }
 export interface FileRouteTypes {
@@ -379,6 +389,7 @@ export interface FileRouteTypes {
     | '/folders/$id'
     | '/payment/cancel'
     | '/payment/success'
+    | '/shared/$shareId'
     | '/subjects/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -414,6 +425,7 @@ export interface FileRouteTypes {
     | '/folders/$id'
     | '/payment/cancel'
     | '/payment/success'
+    | '/shared/$shareId'
     | '/subjects/$id'
   id:
     | '__root__'
@@ -452,6 +464,7 @@ export interface FileRouteTypes {
     | '/_authenticated/folders/$id'
     | '/_authenticated/payment/cancel'
     | '/_authenticated/payment/success'
+    | '/_authenticated/shared/$shareId'
     | '/_authenticated/subjects/$id'
   fileRoutesById: FileRoutesById
 }
@@ -689,6 +702,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSubjectsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/shared/$shareId': {
+      id: '/_authenticated/shared/$shareId'
+      path: '/$shareId'
+      fullPath: '/shared/$shareId'
+      preLoaderRoute: typeof AuthenticatedSharedShareIdRouteImport
+      parentRoute: typeof AuthenticatedSharedRoute
+    }
     '/_authenticated/payment/success': {
       id: '/_authenticated/payment/success'
       path: '/payment/success'
@@ -745,6 +765,17 @@ const AuthenticatedFoldersRouteChildren: AuthenticatedFoldersRouteChildren = {
 const AuthenticatedFoldersRouteWithChildren =
   AuthenticatedFoldersRoute._addFileChildren(AuthenticatedFoldersRouteChildren)
 
+interface AuthenticatedSharedRouteChildren {
+  AuthenticatedSharedShareIdRoute: typeof AuthenticatedSharedShareIdRoute
+}
+
+const AuthenticatedSharedRouteChildren: AuthenticatedSharedRouteChildren = {
+  AuthenticatedSharedShareIdRoute: AuthenticatedSharedShareIdRoute,
+}
+
+const AuthenticatedSharedRouteWithChildren =
+  AuthenticatedSharedRoute._addFileChildren(AuthenticatedSharedRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAiRoute: typeof AuthenticatedAiRoute
@@ -755,7 +786,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPremiumRoute: typeof AuthenticatedPremiumRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReportedRoute: typeof AuthenticatedReportedRoute
-  AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
+  AuthenticatedSharedRoute: typeof AuthenticatedSharedRouteWithChildren
   AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRoute
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
   AuthenticatedPaymentCancelRoute: typeof AuthenticatedPaymentCancelRoute
@@ -773,7 +804,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPremiumRoute: AuthenticatedPremiumRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReportedRoute: AuthenticatedReportedRoute,
-  AuthenticatedSharedRoute: AuthenticatedSharedRoute,
+  AuthenticatedSharedRoute: AuthenticatedSharedRouteWithChildren,
   AuthenticatedTransactionsRoute: AuthenticatedTransactionsRoute,
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,
   AuthenticatedPaymentCancelRoute: AuthenticatedPaymentCancelRoute,

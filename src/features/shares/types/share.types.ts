@@ -33,27 +33,40 @@ export interface ShareRecipient {
   email?: string;
 }
 
-// ── Trang Chia sẻ (figma) — CHỈ chia sẻ folder ─────────
-// Người liên quan (người chia sẻ / người được chia sẻ)
+export interface SaveToFolderResponse {
+  message: string;
+  copied: number;
+  skipped: number;
+  failed: number;
+  copiedDocuments?: string[];
+  skippedDocuments?: string[];
+  failedDocuments?: string[];
+}
+
 export interface SharePerson {
-  name: string; // tên hiển thị
-  avatarUrl?: string | null; // ảnh đại diện (backend trả; rỗng → hiện chữ cái đầu)
+  name: string;
+  avatarUrl?: string | null;
 }
 
 export interface SharedWithMeItem {
-  id: string; // id THẬT của folder
-  name: string; // tên thư mục
-  size: string; // "11.4mb"
-  items: number; // số mục trong thư mục
-  sharedBy: SharePerson; // người đã chia sẻ (tên + avatar)
-  time: string; // "21 giờ trước"
-  order: number; // mốc thời gian (số) để sắp xếp
+  id: string;          // shareToken (URL-friendly)
+  shareId: string;     // DB id (for API calls)
+  actualFolderId: string; // actual folder UUID from backend (for document listing)
+  name: string;
+  size: string;
+  items: number;
+  sharedBy: SharePerson;
+  time: string;
+  order: number;
   fileCount: number;
-  savedFolderId?: string; // folderId đã lưu (nếu có)
+  savedFolderId?: string;
+  isDocument?: boolean;
 }
 
 export interface SharedByMeItem {
   id: string;
+  shareId: string;
+  actualFolderId: string;
   name: string;
   size: string;
   items: number;
