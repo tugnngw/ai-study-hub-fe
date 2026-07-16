@@ -20,7 +20,7 @@ export function QuotaDisplay() {
     return null;
   }
 
-  const { status, flashcardLimit, flashcardRemaining, questionLimit, questionRemaining } = data;
+  const { status, flashcardLimit, flashcardRemaining, questionLimit, questionRemaining, summaryLimit, summaryRemaining, chatLimit, chatRemaining } = data;
 
   if (status === "NO_SUBSCRIPTION" || status === "NO_PLAN" || status === "EXPIRED") {
     return (
@@ -87,6 +87,8 @@ export function QuotaDisplay() {
         <div className="space-y-3">
           {renderQuotaBar("Flashcard", flashcardLimit, flashcardRemaining)}
           {renderQuotaBar("Câu hỏi quiz", questionLimit, questionRemaining)}
+          {renderQuotaBar("Tóm tắt", summaryLimit, summaryRemaining)}
+          {renderQuotaBar("Chat AI", chatLimit, chatRemaining)}
         </div>
       </CardContent>
     </Card>

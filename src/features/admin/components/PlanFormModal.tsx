@@ -43,6 +43,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
   const [flashcardLimit, setFlashcardLimit] = useState<number>(0);
   const [questionLimit, setQuestionLimit] = useState<number>(0);
   const [summaryLimit, setSummaryLimit] = useState<number>(0);
+  const [chatLimit, setChatLimit] = useState<number>(0);
   const [aiQuestions, setAiQuestions] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(true);
 
@@ -61,6 +62,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
       setFlashcardLimit(plan.flashcardLimit || 0);
       setQuestionLimit(plan.questionLimit || 0);
       setSummaryLimit(plan.summaryLimit || 0);
+      setChatLimit(plan.chatLimit || 0);
       setIsActive(plan.isActive !== undefined ? plan.isActive : true);
     } else if (mode === "create") {
       setName("");
@@ -72,6 +74,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
       setFlashcardLimit(0);
       setQuestionLimit(0);
       setSummaryLimit(0);
+      setChatLimit(0);
       setIsActive(true);
     }
   }, [plan, mode, open]);
@@ -85,6 +88,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
     if (flashcardLimit < -1) return { valid: false, message: "Giới hạn flashcard không hợp lệ" };
     if (questionLimit < -1) return { valid: false, message: "Giới hạn câu hỏi không hợp lệ" };
     if (summaryLimit < -1) return { valid: false, message: "Giới hạn tóm tắt không hợp lệ" };
+    if (chatLimit < -1) return { valid: false, message: "Giới hạn chat không hợp lệ" };
     return { valid: true };
   };
 
@@ -108,6 +112,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
           flashcardLimit,
           questionLimit,
           summaryLimit,
+          chatLimit,
         } as any);
         toast.success("Đã tạo gói mới");
       } else if (plan) {
@@ -121,6 +126,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
           flashcardLimit,
           questionLimit,
           summaryLimit,
+          chatLimit,
           isActive,
         } as any);
         toast.success("Đã cập nhật gói");
@@ -212,7 +218,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
             />
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-4 gap-4">
             <div className="space-y-2">
               <Label htmlFor="flashcardLimit">Flashcard *</Label>
               <Input
@@ -240,6 +246,16 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
                 type="number"
                 value={summaryLimit}
                 onChange={(e) => setSummaryLimit(Number(e.target.value))}
+                placeholder="0"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="chatLimit">Chat *</Label>
+              <Input
+                id="chatLimit"
+                type="number"
+                value={chatLimit}
+                onChange={(e) => setChatLimit(Number(e.target.value))}
                 placeholder="0"
               />
             </div>

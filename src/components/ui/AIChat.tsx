@@ -528,7 +528,7 @@ export function AIChat({
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
               </div>
-            ) : aiStatus === "FAILED" ? (
+            ) : aiStatus === "REJECT" ? (
               <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
                 <p className="text-sm text-red-500">Knowledge preparation failed.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
@@ -568,7 +568,7 @@ export function AIChat({
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
               </div>
-            ) : aiStatus === "FAILED" ? (
+            ) : aiStatus === "REJECT" ? (
               <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
                 <p className="text-sm text-red-500">Knowledge preparation failed.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
@@ -593,7 +593,7 @@ export function AIChat({
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
               </div>
-            ) : aiStatus === "FAILED" ? (
+            ) : aiStatus === "REJECT" ? (
               <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
                 <p className="text-sm text-red-500">Knowledge preparation failed.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
