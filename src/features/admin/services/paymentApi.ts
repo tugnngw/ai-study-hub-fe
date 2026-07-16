@@ -70,6 +70,10 @@ export interface AdminPlan {
   displayOrder?: number;
   isActive: boolean;
   activeSubscriptionCount?: number;
+  flashcardLimit?: number;
+  questionLimit?: number;
+  summaryLimit?: number;
+  chatLimit?: number;
 }
 
 export interface SubscriptionResponse {
@@ -77,9 +81,10 @@ export interface SubscriptionResponse {
   planId: string;
   planName: string;
   startDate: string;
-  endDate: string;
+  endDate?: string | null;
   status: string;
   pricePaid: number;
+  daysRemaining?: number;
 }
 
 export const paymentApi = {
