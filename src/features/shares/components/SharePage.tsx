@@ -1,6 +1,7 @@
 // src/features/shares/components/SharePage.tsx
 // Trang Chia sẻ — lắp ráp từ hooks + component con (folder-only).
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { useShares, useShareActions } from "../hooks";
 import { ShareToolbar, type ShareTabKey } from "./ShareToolbar";
 import { SharedWithMeTable } from "./SharedWithMeTable";
@@ -9,6 +10,7 @@ import { SharedByMeTable } from "./SharedByMeTable";
 export function SharePage() {
   const s = useShares();
   const [tab, setTab] = useState<ShareTabKey>("all");
+  const navigate = useNavigate();
   const actions = useShareActions({
     onRemovedWithMe: s.removeWithMeLocal,
     onRemovedByMe: s.removeByMeLocal,
@@ -20,12 +22,18 @@ export function SharePage() {
   const showWithMe = tab === "all" || tab === "with-me";
   const showByMe = tab === "all" || tab === "by-me";
 
-  const handleOpenWithMe = (shareToken: string, savedFolderId?: string) => {
-    actions.openInAI(shareToken, savedFolderId);
+  const handleOpenWithMe = (shareToken: string) => {
+    navigate({
+      to: "/shared/$shareId",
+      params: { shareId: shareToken },
+    });
   };
 
-  const handleOpenByMe = (shareToken: string, savedFolderId?: string) => {
-    actions.openInAI(shareToken, savedFolderId);
+  const handleOpenByMe = (shareToken: string) => {
+    navigate({
+      to: "/shared/$shareId",
+      params: { shareId: shareToken },
+    });
   };
 
   return (
@@ -56,8 +64,7 @@ export function SharePage() {
                 totalPages={s.totalPagesWithMe}
                 onPage={s.setPageWithMe}
                 onOpen={(id) => {
-                  const item = s.pagedWithMe.find((it) => it.id === id);
-                  handleOpenWithMe(id, item?.savedFolderId);
+                  handleOpenWithMe(id);
                 }}
                 onDownload={actions.download}
                 onRemove={actions.removeWithMe}
@@ -72,8 +79,7 @@ export function SharePage() {
                 totalPages={s.totalPagesByMe}
                 onPage={s.setPageByMe}
                 onOpen={(id) => {
-                  const item = s.pagedByMe.find((it) => it.id === id);
-                  handleOpenByMe(id, item?.savedFolderId);
+                  handleOpenByMe(id);
                 }}
                 onCopyLink={actions.copyLink}
                 onRemove={actions.removeByMe}

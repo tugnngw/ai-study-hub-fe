@@ -1,5 +1,6 @@
 // src/features/admin/components/AdminReportHistoryPage.tsx
 import React, { useState } from "react";
+import { toast } from "sonner";
 import { FileText, Check, X, Flag, AlertCircle, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -15,10 +16,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useReportHistory } from "../hooks";
 import { FilePreviewDialog } from "./FilePreviewDialog";
+import { documentApi } from "@/lib/realApi";
 
 export const AdminReportHistoryPage: React.FC = () => {
   const { data: history = [], isLoading } = useReportHistory();
   const [preview, setPreview] = useState<{ title: string; url?: string | null; mimeType?: string | null } | null>(null);
+  const [loadingPreview, setLoadingPreview] = useState<string | null>(null);
 
   const REPORT_REASON_LABELS: Record<string, string> = {
     copyright: "Nội dung vi phạm bản quyền",
@@ -167,18 +170,34 @@ export const AdminReportHistoryPage: React.FC = () => {
                         {item.decision || getStatusText(item.status)}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="text-right">
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() =>
-                          setPreview({
-                            title: item.name,
-                            url: item.cloudinaryUrl,
-                          })
-                        }
+                        disabled={loadingPreview === item.id}
+                        onClick={async () => {
+                          if (item.cloudinaryUrl) {
+                            setPreview({ title: item.name, url: item.cloudinaryUrl, mimeType: item.mimeType });
+                            return;
+                          }
+                          if (!item.documentId) {
+                            setPreview({ title: item.name, url: null });
+                            return;
+                          }
+                          try {
+                            setLoadingPreview(item.id);
+                            const doc = await documentApi.getById(item.documentId);
+                            setPreview({ title: item.name, url: doc.cloudinaryUrl, mimeType: doc.mimeType });
+                          } catch {
+                            toast.error("Không tải được nội dung file");
+                            setPreview({ title: item.name, url: null });
+                          } finally {
+                            setLoadingPreview(null);
+                          }
+                        }}
                       >
-                        <Eye className="h-4 w-4 mr-1" /> Xem
+                        <Eye className="h-4 w-4 mr-1" />
+                        {loadingPreview === item.id ? "Đang tải..." : "Xem"}
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -194,6 +213,7 @@ export const AdminReportHistoryPage: React.FC = () => {
         onOpenChange={(v) => !v && setPreview(null)}
         title={preview?.title ?? ""}
         url={preview?.url}
+        mimeType={preview?.mimeType}
       />
     </div>
   );

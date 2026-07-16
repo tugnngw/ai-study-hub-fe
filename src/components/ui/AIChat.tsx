@@ -2,13 +2,17 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   FileText,
   FolderClosed,
   Loader2,
+  MessageSquare,
+  Plus,
   Send,
   Sparkles,
+  Trash2,
   Upload,
   ZoomIn,
   ZoomOut,
@@ -18,6 +22,9 @@ import {
   useRagChat,
   useProcessRag,
   useRagStatus,
+  useRagSession,
+  useRagSessionDetail,
+  useDeleteRagSession,
   useDocument,
   useDocumentsByFolder,
   useFolder,
@@ -101,6 +108,38 @@ export function AIChat({
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
   const [uploadOpen, setUploadOpen] = useState(false);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+
+  const sessionsQuery = useRagSession(docId ?? "");
+  const sessionDetail = useRagSessionDetail(activeSessionId);
+  const deleteSession = useDeleteRagSession();
+  const ragStatus = useRagStatus(docId ?? "");
+  const aiStatus = ragStatus.data?.status ?? doc.data?.aiStatus ?? "NOT_STARTED";
+
+  const sessions = sessionsQuery.data ?? [];
+
+  // Load newest session on doc change
+  useEffect(() => {
+    if (sessions.length > 0) {
+      setActiveSessionId(sessions[0].id);
+    } else {
+      setActiveSessionId(null);
+    }
+  }, [sessions, docId]);
+
+  // Populate messages when sessionDetail loads
+  useEffect(() => {
+    if (sessionDetail.data?.messages) {
+      const msgs: ChatMsg[] = sessionDetail.data.messages.map((m) => ({
+        role: m.senderType === "USER" ? "user" : "assistant",
+        content: m.content,
+      }));
+      setMessages(msgs);
+    } else if (!activeSessionId) {
+      setMessages([]);
+    }
+  }, [sessionDetail.data, activeSessionId]);
+
   const [activeTab, setActiveTab] = useState<
     "content" | "summary" | "flashcards" | "quizzes"
   >("content");
@@ -126,72 +165,29 @@ export function AIChat({
   const processDoc = useProcessRag();
   const qc = useQueryClient();
 
-  const [isProcessing, setIsProcessing] = useState(false);
-  const processedRef = useRef<Set<string>>(new Set());
-  const pollingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const abortRef = useRef(false);
-
   const docs = (folderDocs.data ?? []).filter((d: any) => d.status?.toUpperCase() !== 'BANNED');
   const totalSize = docs.reduce((s, d) => s + (d.fileSize ?? 0), 0);
 
-  const pollStatus = useCallback((id: string): Promise<void> => {
-    return new Promise((resolve) => {
-      let attempts = 0;
-      const maxAttempts = 20;
-
-      const check = async () => {
-        if (abortRef.current) { resolve(); return; }
-        try {
-          const res = await ragApi.status(id);
-          if (res.status === "COMPLETED" || res.status === "READY") {
-            qc.invalidateQueries({ queryKey: ["documents"] });
-            resolve();
-            return;
-          }
-        } catch { /* ignore and retry */ }
-
-        attempts++;
-        if (attempts >= maxAttempts) {
-          resolve();
-          return;
-        }
-        pollingTimerRef.current = setTimeout(check, 3000);
-      };
-
-      check();
-    });
-  }, [qc]);
-
-  const processDocument = useCallback(async (id: string) => {
-    if (isProcessing) return;
-    if (processedRef.current.has(id)) return;
-    processedRef.current.add(id);
-
-    setIsProcessing(true);
-    abortRef.current = false;
+  const handlePrepareKnowledge = useCallback(async () => {
+    if (!docId) return;
     try {
-      await processDoc.mutateAsync(id);
-      await pollStatus(id);
-    } catch {
-      processedRef.current.delete(id);
-    } finally {
-      setIsProcessing(false);
+      await processDoc.mutateAsync(docId);
+      // Invalidate ragStatus → triggers refetch → refetchInterval polls every 3s
+      qc.invalidateQueries({ queryKey: ["rag-status", docId] });
+    } catch (e) {
+      toast.error(`Xử lý AI thất bại: ${e instanceof Error ? e.message : "Lỗi không xác định"}`);
     }
-  }, [isProcessing, processDoc, pollStatus]);
+  }, [docId, processDoc, qc]);
 
-  // Auto-process on doc select
+  // Invalidate documents and show toast when aiStatus reaches COMPLETED
+  const prevAiStatus = useRef(aiStatus);
   useEffect(() => {
-    if (docId) {
-      processDocument(docId);
+    if (prevAiStatus.current === "PROCESSING" && aiStatus === "COMPLETED") {
+      qc.invalidateQueries({ queryKey: ["documents"] });
+      toast.success("AI Knowledge đã sẵn sàng!");
     }
-    return () => {
-      abortRef.current = true;
-      if (pollingTimerRef.current) {
-        clearTimeout(pollingTimerRef.current);
-        pollingTimerRef.current = null;
-      }
-    };
-  }, [docId]);
+    prevAiStatus.current = aiStatus;
+  }, [aiStatus, qc]);
 
   useEffect(() => {
     setMessages([]);
@@ -210,20 +206,29 @@ export function AIChat({
 
   const submitChat = async () => {
     if (!input.trim()) return;
-    if (!folderId) {
-      toast.info("Chọn một thư mục để bắt đầu trò chuyện");
+    if (!docId) {
+      toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
       return;
     }
     const q = input.trim();
     setInput("");
-    setMessages((m) => [...m, { role: "user", content: q }]);
+    // Optimistically add user message
+    const userMsg: ChatMsg = { role: "user", content: q };
+    setMessages((m) => [...m, userMsg]);
     try {
       const res = await chat.mutateAsync({
-        folderId,
-        ...(docId ? { documentId: docId } : {}),
+        sessionId: activeSessionId ?? null,
+        documentId: docId,
         question: q,
       });
-      setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
+      // If new session created, set active
+      if (!activeSessionId && res.sessionId) {
+        setActiveSessionId(res.sessionId);
+      }
+      const aiMsg: ChatMsg = { role: "assistant", content: res.answer };
+      setMessages((m) => [...m, aiMsg]);
+      // Refresh sessions list
+      sessionsQuery.refetch();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Đã xảy ra lỗi");
     } finally {
@@ -460,19 +465,8 @@ export function AIChat({
           </div>
           {activeTab === "content" && (
             <div className="flex-1 overflow-y-auto">
-              {docId && (doc.data?.status === "READY" || doc.data?.status === "COMPLETED") ? (
+              {docId && doc.data ? (
                 <DocumentViewer document={doc.data} />
-              ) : doc.data?.status === "PROCESSING" ? (
-                <div className="flex items-center justify-center h-full">
-                  <div className="flex flex-col items-center gap-2 p-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                    <p className="text-sm text-muted-foreground">Đang xử lý tài liệu...</p>
-                  </div>
-                </div>
-              ) : doc.data?.status === "REJECT" ? (
-                <div className="flex items-center justify-center h-full p-8">
-                  <p className="text-red-500 text-center">Tài liệu đã xảy ra lỗi khi xử lý</p>
-                </div>
               ) : docId && !doc.data ? (
                 <div className="flex items-center justify-center h-full p-8">
                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -521,56 +515,167 @@ export function AIChat({
             </div>
           )}{" "}
           {activeTab === "summary" && (
-            <AISummary
-              docId={docId}
-              docs={docs}
-              isGenerating={generateSummary.isPending}
-              summary={summary}
-              onGenerate={(opts) =>
-                generateSummary.mutate(opts, {
-                  onSuccess: (data: GenerateSummaryResponse) => {
-                    setSummary(data.markdown);
-                    toast.success("Summary generated!");
-                  },
-                  onError: (err) =>
-                    toast.error((err as Error).message || "Failed to generate summary"),
-                })
-              }
-            />
+            aiStatus === "NOT_STARTED" ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+                <Sparkles className="h-12 w-12 text-muted-foreground/40" />
+                <p className="text-sm text-muted-foreground">Knowledge has not been prepared.</p>
+                <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} className="bg-gradient-brand shadow-brand">
+                  {processDoc.isPending ? <><Loader2 className="h-4 w-4 animate-spin mr-1" />Đang xử lý...</> : "Prepare Knowledge"}
+                </Button>
+              </div>
+            ) : aiStatus === "PROCESSING" ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
+              </div>
+            ) : aiStatus === "FAILED" ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+                <p className="text-sm text-red-500">Knowledge preparation failed.</p>
+                <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
+                  Retry
+                </Button>
+              </div>
+            ) : (
+              <AISummary
+                docId={docId}
+                docs={docs}
+                isGenerating={generateSummary.isPending}
+                summary={summary}
+                onGenerate={(opts) =>
+                  generateSummary.mutate(opts, {
+                    onSuccess: (data: GenerateSummaryResponse) => {
+                      setSummary(data.markdown);
+                      toast.success("Summary generated!");
+                    },
+                    onError: (err) =>
+                      toast.error((err as Error).message || "Failed to generate summary"),
+                  })
+                }
+              />
+            )
           )}
-          {activeTab === "flashcards" && <FlashcardTab docs={docs} docId={docId} />}
-          {activeTab === "quizzes" && <QuizTab docs={docs} docId={docId} />}
+          {activeTab === "flashcards" && (
+            aiStatus === "NOT_STARTED" ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+                <Sparkles className="h-12 w-12 text-muted-foreground/40" />
+                <p className="text-sm text-muted-foreground">Knowledge has not been prepared.</p>
+                <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} className="bg-gradient-brand shadow-brand">
+                  {processDoc.isPending ? <><Loader2 className="h-4 w-4 animate-spin mr-1" />Đang xử lý...</> : "Prepare Knowledge"}
+                </Button>
+              </div>
+            ) : aiStatus === "PROCESSING" ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
+              </div>
+            ) : aiStatus === "FAILED" ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+                <p className="text-sm text-red-500">Knowledge preparation failed.</p>
+                <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
+                  Retry
+                </Button>
+              </div>
+            ) : (
+              <FlashcardTab docs={docs} docId={docId} />
+            )
+          )}
+          {activeTab === "quizzes" && (
+            aiStatus === "NOT_STARTED" ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+                <Sparkles className="h-12 w-12 text-muted-foreground/40" />
+                <p className="text-sm text-muted-foreground">Knowledge has not been prepared.</p>
+                <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} className="bg-gradient-brand shadow-brand">
+                  {processDoc.isPending ? <><Loader2 className="h-4 w-4 animate-spin mr-1" />Đang xử lý...</> : "Prepare Knowledge"}
+                </Button>
+              </div>
+            ) : aiStatus === "PROCESSING" ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
+              </div>
+            ) : aiStatus === "FAILED" ? (
+              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+                <p className="text-sm text-red-500">Knowledge preparation failed.</p>
+                <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
+                  Retry
+                </Button>
+              </div>
+            ) : (
+              <QuizTab docs={docs} docId={docId} />
+            )
+          )}
         </section>
 
-        {/* Column 3: chat */}
+                {/* Column 3: chat */}
         <aside className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
-          <div className="px-4 py-3 border-b border-border flex items-center gap-2">
-            <div className="text-sm font-semibold font-display truncate flex-1 text-center">
-              {doc.data?.title ?? "Chưa chọn tài liệu"}
-            </div>
-            <div className="flex items-center gap-0.5 shrink-0">
-              <button
-                type="button"
-                onClick={zoomOut}
-                disabled={chatZoom <= 0.8}
-                title="Thu nhỏ"
-                className="h-7 w-7 rounded-md hover:bg-accent flex items-center justify-center text-muted-foreground disabled:opacity-40"
-              >
-                <ZoomOut className="h-4 w-4" />
-              </button>
-              <span className="text-[11px] text-muted-foreground w-9 text-center tabular-nums">
-                {Math.round(chatZoom * 100)}%
+          <div className="px-4 py-2 border-b border-border flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-1.5 text-sm font-semibold font-display truncate hover:opacity-80 transition-opacity shrink min-w-0">
+                  <MessageSquare className="h-4 w-4 shrink-0 text-primary" />
+                  <span className="truncate">
+                    {activeSessionId
+                      ? (sessions.find((s) => s.id === activeSessionId)?.title ?? "New Chat")
+                      : "New Chat"}
+                  </span>
+                  <ChevronDown className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-64">
+                <DropdownMenuLabel>Hội thoại</DropdownMenuLabel>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setActiveSessionId(null);
+                    setMessages([]);
+                  }}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Chat
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {sessions.length === 0 && (
+                  <p className="text-xs text-muted-foreground px-2 py-1">
+                    Chưa có hội thoại
+                  </p>
+                )}
+                {sessions.map((s) => (
+                  <div key={s.id} className="flex items-center group">
+                    <DropdownMenuItem
+                      className={cn(
+                        "flex-1 min-w-0",
+                        s.id === activeSessionId && "bg-primary/10"
+                      )}
+                      onClick={() => setActiveSessionId(s.id)}
+                    >
+                      <MessageSquare className="h-4 w-4 mr-2 shrink-0" />
+                      <span className="truncate">{s.title ?? "New Chat"}</span>
+                    </DropdownMenuItem>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deleteSession.mutate(s.id, {
+                          onSuccess: () => {
+                            if (activeSessionId === s.id) {
+                              setActiveSessionId(null);
+                              setMessages([]);
+                            }
+                          },
+                        });
+                      }}
+                      className="h-7 w-7 rounded hover:bg-destructive/10 flex items-center justify-center text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity mr-1"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            {doc.data?.title && (
+              <span className="text-xs text-muted-foreground truncate shrink-0 ml-auto max-w-[160px]" title={doc.data.title}>
+                <FileText className="h-3 w-3 inline-block mr-1 -mt-0.5" />
+                {doc.data.title}
               </span>
-              <button
-                type="button"
-                onClick={zoomIn}
-                disabled={chatZoom >= 1.6}
-                title="Phóng to"
-                className="h-7 w-7 rounded-md hover:bg-accent flex items-center justify-center text-muted-foreground disabled:opacity-40"
-              >
-                <ZoomIn className="h-4 w-4" />
-              </button>
-            </div>
+            )}
           </div>
 
           <div
@@ -587,11 +692,11 @@ export function AIChat({
                   Trò chuyện với AI
                 </div>
                 <div className="text-sm text-muted-foreground mt-1 max-w-sm">
-                  {docId
-                    ? "Hỏi AI về nội dung của tài liệu đang chọn."
-                    : folderId
-                      ? "Hỏi AI về tất cả tài liệu trong thư mục này."
-                      : "Chọn một thư mục để bắt đầu trò chuyện."}
+                  {activeSessionId
+                    ? "Tiếp tục trò chuyện hoặc bắt đầu hội thoại mới."
+                    : docId
+                      ? "Hỏi AI về nội dung của tài liệu đang chọn."
+                      : "Chọn một tài liệu để bắt đầu trò chuyện."}
                 </div>
               </div>
             ) : (
@@ -613,7 +718,6 @@ export function AIChat({
                       components={{
                         code: (props) => {
                           const { className, children, ...rest } = props;
-                          // react-markdown passes inline at runtime but TS types omit it
                           const isInline = (props as Record<string, unknown>).inline as boolean | undefined;
                           return (
                             <code
@@ -651,30 +755,56 @@ export function AIChat({
             )}
           </div>
 
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void submitChat();
-            }}
-            className="p-3 border-t border-border flex gap-2"
-          >
-            <Input
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Nhập câu hỏi của bạn…."
-              className="text-sm rounded-xl bg-muted/40 border-transparent focus-visible:bg-card focus-visible:border-input"
-              disabled={!folderId}
-            />
-            <Button
-              type="submit"
-              size="icon"
-              disabled={chat.isPending || isProcessing || !input.trim() || !folderId}
-              className="bg-gradient-brand hover:opacity-90 rounded-xl shrink-0"
+          {aiStatus === "COMPLETED" ? (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                void submitChat();
+              }}
+              className="p-3 border-t border-border flex gap-2"
             >
-              <Send className="h-4 w-4" />
-            </Button>
-          </form>
+              <Input
+                ref={inputRef}
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Nhập câu hỏi của bạn…."
+                className="text-sm rounded-xl bg-muted/40 border-transparent focus-visible:bg-card focus-visible:border-input"
+                disabled={!docId}
+              />
+              <Button
+                type="submit"
+                size="icon"
+                disabled={processDoc.isPending || !input.trim() || !docId}
+                className="bg-gradient-brand hover:opacity-90 rounded-xl shrink-0"
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </form>
+          ) : aiStatus === "PROCESSING" ? (
+            <div className="p-3 border-t border-border flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Đang xử lý AI...
+            </div>
+          ) : (
+            <div className="p-3 border-t border-border">
+              <Button
+                className="w-full"
+                disabled={processDoc.isPending || !docId}
+                onClick={() => docId && handlePrepareKnowledge()}
+              >
+                {processDoc.isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Đang xử lý...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4 mr-2" /> Xử lý AI
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
         </aside>
 
         <UploadDialog

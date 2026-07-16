@@ -1,3 +1,2 @@
 // Document services
-export { documentApi } from "./documentApi";
-export { ragApi } from "./ragApi";
+// Only lib/realApi.ts is the active API implementation.

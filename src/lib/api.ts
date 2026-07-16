@@ -63,6 +63,8 @@ let refreshPromise: Promise<boolean> | null = null;
 const MAX_RETRY_COUNT = 1;
 const retryCountMap = new Map<string, number>();
 
+const ts = () => new Date().toISOString().slice(11, 23);
+
 export async function attemptRefresh(): Promise<boolean> {
   const refreshToken = tokenStore.getRefresh();
   console.log(`[API] attemptRefresh called, refreshToken exists: ${!!refreshToken}`);
@@ -126,8 +128,8 @@ export async function api<T = unknown>(
       body = JSON.stringify(opts.body);
     }
 
-    console.log(`[API] ${opts.method || "GET"} ${path} - token exists: ${!!token}`);
-    console.log(`[API] Headers:`, JSON.stringify(headers));
+    console.log(`[API:${ts()}] FETCH ${opts.method || "GET"} ${path} - token exists: ${!!token}`);
+    console.log(`[API:${ts()}] Headers:`, JSON.stringify(headers));
     return fetch(`${API_BASE}${path}`, {
       method: opts.method ?? "GET",
       headers,
@@ -137,19 +139,19 @@ export async function api<T = unknown>(
   };
 
   let res = await doFetch();
-  console.log(`[API] ${opts.method || "GET"} ${path} - response status:`, res.status);
+  console.log(`[API:${ts()}] ${opts.method || "GET"} ${path} - response status:`, res.status);
 
   if (res.status === 401) {
     const requestKey = `${opts.method || "GET"}:${path}`;
     const currentRetryCount = retryCountMap.get(requestKey) || 0;
 
     if (currentRetryCount >= MAX_RETRY_COUNT) {
-      console.log(`[API] ❌ Max retry count reached for ${path}, clearing retry count and throwing error`);
+      console.log(`[API:${ts()}] ❌ Max retry count reached for ${path}, clearing retry count and throwing error`);
       retryCountMap.delete(requestKey);
       throw new ApiError(401, "Session expired. Please log in again.");
     }
 
-    console.log(`[API] 🔴 Got 401 on ${path}, attempting refresh... (retry ${currentRetryCount + 1}/${MAX_RETRY_COUNT})`);
+    console.log(`[API:${ts()}] 🔴 Got 401 on ${path}, attempting refresh... (retry ${currentRetryCount + 1}/${MAX_RETRY_COUNT})`);
     if (!refreshPromise) {
       refreshPromise = attemptRefresh().finally(() => {
         refreshPromise = null;
@@ -157,24 +159,24 @@ export async function api<T = unknown>(
     }
 
     const refreshed = await refreshPromise;
-    console.log(`[API] Refresh result: ${refreshed ? "✅ Success" : "❌ Failed"}`);
+    console.log(`[API:${ts()}] Refresh result: ${refreshed ? "✅ Success" : "❌ Failed"}`);
 
     if (refreshed) {
       retryCountMap.set(requestKey, currentRetryCount + 1);
-      console.log(`[API] Retrying ${path} with new token...`);
+      console.log(`[API:${ts()}] Retrying ${path} with new token...`);
       try {
         res = await doFetch();
-        console.log(`[API] Retry status:`, res.status);
+        console.log(`[API:${ts()}] Retry status:`, res.status);
         if (res.ok || res.status !== 401) {
           retryCountMap.delete(requestKey);
         }
       } catch (retryError) {
-        console.error(`[API] Error during retry fetch for ${path}:`, retryError);
+        console.error(`[API:${ts()}] Error during retry fetch for ${path}:`, retryError);
         retryCountMap.delete(requestKey);
         throw new ApiError(500, `Failed to retry request: ${path}`);
       }
     } else {
-      console.log(`[API] ❌ Refresh failed, throwing 401 error`);
+      console.log(`[API:${ts()}] ❌ Refresh failed, throwing 401 error`);
       retryCountMap.delete(requestKey);
       throw new ApiError(401, "Session expired. Please log in again.");
     }

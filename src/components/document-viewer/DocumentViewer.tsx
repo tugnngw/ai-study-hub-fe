@@ -17,19 +17,6 @@ interface DocumentViewerProps {
   className?: string;
 }
 
-/**
- * DocumentViewer - Main orchestrator component
- *
- * Validates backend data and selects correct viewer:
- * - Priority 1: document.mimeType
- * - Priority 2: Extension from cloudinaryUrl
- *
- * Supported types:
- * - PDF: react-pdf with lazy page loading
- * - DOCX: docx-preview with retry logic
- * - TXT: Plain text with line preservation
- * - Unsupported: Friendly message + download
- */
 export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   document,
   className,
@@ -42,30 +29,6 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
     mimeType: document.mimeType,
     publicId: document.publicId,
   });
-
-  if (document.status === "PROCESSING") {
-    return (
-      <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
-        <div className="flex-1 flex flex-col items-center justify-center p-8">
-          <Loader2 className="h-8 w-8 animate-spin text-primary mb-3" />
-          <p className="text-sm text-muted-foreground">Đang xử lý tài liệu...</p>
-          <p className="text-xs text-muted-foreground mt-1">Vui lòng đợi trong giây lát</p>
-        </div>
-      </Card>
-    );
-  }
-
-  if (document.status === "COMPLETED") {
-    return (
-      <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
-        <div className="flex-1 flex flex-col items-center justify-center p-8">
-          <Loader2 className="h-8 w-8 text-muted-foreground animate-spin mb-3" />
-          <p className="text-sm text-muted-foreground font-medium">Tài liệu đang chờ admin duyệt</p>
-          <p className="text-xs text-muted-foreground mt-1">Vui lòng quay lại sau</p>
-        </div>
-      </Card>
-    );
-  }
 
   if (document.status === "REJECT") {
     return (
@@ -92,6 +55,50 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
       </Card>
     );
   }
+
+  if (document.status === "BANNED") {
+    return (
+      <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
+        <div className="flex-1 flex flex-col items-center justify-center p-8">
+          <div className="text-center space-y-3">
+            <div className="text-red-500">
+              <svg className="h-12 w-12 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+            </div>
+            <p className="text-lg font-medium text-red-600">Tài liệu đã bị cấm</p>
+            <p className="text-sm text-gray-500">Tài liệu vi phạm quy định và đã bị quản trị viên khoá.</p>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
+  if (document.status === "COMPLETED") {
+    return (
+      <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
+        <div className="flex-1 flex flex-col items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 text-muted-foreground animate-spin mb-3" />
+          <p className="text-sm text-muted-foreground font-medium">Tài liệu đang chờ admin duyệt</p>
+          <p className="text-xs text-muted-foreground mt-1">Vui lòng quay lại sau</p>
+        </div>
+      </Card>
+    );
+  }
+
+  if (document.status === "REPORTED") {
+    return (
+      <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
+        <div className="flex-1 flex flex-col items-center justify-center p-8">
+          <div className="text-center space-y-3">
+            <p className="text-lg font-medium text-amber-600">Tài liệu đã bị báo cáo</p>
+            <p className="text-sm text-gray-500">Tài liệu đang được quản trị viên xem xét.</p>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
   console.log('[Debug Flow] DocumentViewer: File URL:', document.cloudinaryUrl);
   // Validate cloudinaryUrl exists
   const fileUrl = document.cloudinaryUrl;

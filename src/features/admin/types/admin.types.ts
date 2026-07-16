@@ -37,7 +37,7 @@ export interface AdminUserItem {
 }
 
 // ── Document ──────────────────────────────────────────
-export type DocumentStatus = "COMPLETED" | "READY" | "REJECT" | "DELETED" | "PROCESSING" | "FAILED";
+export type DocumentStatus = "COMPLETED" | "READY" | "REJECT" | "REPORTED" | "BANNED";
 
 export interface DocumentResponse {
   id: string;
@@ -53,6 +53,7 @@ export interface DocumentResponse {
   subjectId?: number;
   mimeType?: string;
   cloudinaryUrl?: string;
+  aiStatus?: "NOT_STARTED" | "PROCESSING" | "COMPLETED" | "FAILED";
 }
 
 // ── Reported / managed files ───────────────────────────
