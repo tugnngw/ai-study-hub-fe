@@ -63,7 +63,7 @@ export interface Document {
 
 export interface RagStatusResponse {
   documentId: string;
-  status: AiProcessingStatus;
+  aiStatus: AiProcessingStatus;
 }
 
 export interface AskRequest {
