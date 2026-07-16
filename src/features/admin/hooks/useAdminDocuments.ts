@@ -1,29 +1,49 @@
 // src/features/admin/hooks/useAdminDocuments.ts
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from "@tanstack/react-query";
 import { adminDocumentApi } from "../services";
 import { adminKeys } from "./adminKeys";
 import type { DocumentResponse } from "../types/admin.types";
 
 export const useAdminDocuments = (tab: string) => {
-  const fetchFn = async () => {
-    const data = await (async () => {
-      switch (tab) {
-        case "pending":
-          return adminDocumentApi.getByStatus("COMPLETED");
-        case "approved":
-          return adminDocumentApi.getByStatus("READY");
-        case "rejected":
-          return adminDocumentApi.getByStatus("REJECT");
-        case "trash":
-          return adminDocumentApi.getTrash();
-        default:
-          return adminDocumentApi.getAll();
-      }
-    })();
-    console.log("[DEBUG] Documents API response:", data);
-    return data ?? [];
-  };
-  return useQuery({ queryKey: adminKeys.documents(tab as any), queryFn: fetchFn, keepPreviousData: true });
+  const key = adminKeys.documents(tab as any);
+  const queryInfo = useQuery({
+    queryKey: key,
+    queryFn: async () => {
+      const ts = new Date().toISOString().slice(11, 23);
+      console.log(`[RQ:${ts}] queryFn START key=${JSON.stringify(key)} tab=${tab}`);
+      const data = await (async () => {
+        switch (tab) {
+          case "pending":
+            return adminDocumentApi.getByStatus("COMPLETED");
+          case "approved":
+            return adminDocumentApi.getByStatus("READY");
+          case "rejected":
+            return adminDocumentApi.getByStatus("REJECT");
+          case "trash":
+            return adminDocumentApi.getTrash();
+          default:
+            return adminDocumentApi.getAll();
+        }
+      })();
+      console.log(`[RQ:${ts}] queryFn END key=${JSON.stringify(key)} resultCount=${data?.length ?? 0}`, data);
+      return data ?? [];
+    },
+    placeholderData: keepPreviousData,
+  });
+
+  const ts = new Date().toISOString().slice(11, 23);
+  console.log(
+    `[RQ:${ts}] useQuery RENDER key=${JSON.stringify(key)} ` +
+    `observerCount=${queryInfo.observers?.length ?? "?"} ` +
+    `fetchStatus=${queryInfo.fetchStatus} ` +
+    `status=${queryInfo.status} ` +
+    `isStale=${queryInfo.isStale} ` +
+    `isInvalidated=${queryInfo.isInvalidated} ` +
+    `isFetching=${queryInfo.isFetching} ` +
+    `dataCount=${(queryInfo.data as any[])?.length ?? 0}`
+  );
+
+  return queryInfo;
 };
 
 export const useApproveDocument = () => {

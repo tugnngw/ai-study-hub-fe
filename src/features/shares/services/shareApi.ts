@@ -4,11 +4,10 @@
 // nhận — không có thao tác "Lưu" thủ công ở FE.
 
 import { api } from "@/lib/api";
-import type { SharedWithMeItem, SharedByMeItem, ShareResponse } from "../types/share.types";
+import type { SharedWithMeItem, SharedByMeItem, ShareResponse, SaveToFolderResponse } from "../types/share.types";
 
 export const sharesApi = {
-  // GET — danh sách (backend trả đủ field figma: name, size, items,
-  // sharedBy{name,avatarUrl}, sharedWith[], time, order)
+  // GET — danh sách
   getSharedWithMe: async (): Promise<SharedWithMeItem[]> => {
     const response = await api<ShareResponse[]>("/api/shares/shared-with-me");
     return response.map(mapShareResponseToSharedWithMe);
@@ -18,15 +17,22 @@ export const sharesApi = {
     return response.map(mapShareResponseToSharedByMe);
   },
 
-  // DELETE — Xóa: xóa THẲNG share -> hiện trong Thùng rác.
+  // DELETE — Xóa share
   deleteShared: (shareToken: string) =>
       api<void>(`/api/shares/token/${shareToken}`, { method: "DELETE" }),
 
-  // GET — Lấy link chia sẻ (Sao chép link)
+  // POST — Lưu shared item vào thư mục của tôi
+  saveShared: (shareId: string, body: { folderId: string; title?: string; description?: string }) =>
+    api<SaveToFolderResponse>(`/api/shares/${shareId}/save`, {
+      method: "POST",
+      body,
+    }),
+
+  // GET — Lấy link chia sẻ
   getShareLink: (shareToken: string) =>
       api<{ url: string }>(`/api/shares/${shareToken}/link`),
 
-  // GET — Lấy URL tải xuống (Tải xuống)
+  // GET — URL tải xuống
   getDownloadUrl: (shareToken: string) =>
       api<{ url: string }>(`/api/shares/${shareToken}/download`),
 };
@@ -34,6 +40,8 @@ export const sharesApi = {
 function mapShareResponseToSharedWithMe(resp: ShareResponse): SharedWithMeItem {
   return {
     id: resp.shareToken,
+    shareId: resp.id,
+    actualFolderId: resp.folderId ?? "",
     name: resp.folderName || resp.documentTitle || "Unknown",
     size: "11.4mb",
     items: resp.fileCount || 0,
@@ -45,6 +53,7 @@ function mapShareResponseToSharedWithMe(resp: ShareResponse): SharedWithMeItem {
     order: new Date(resp.createdAt).getTime(),
     fileCount: resp.fileCount || 0,
     savedFolderId: resp.folderId ?? undefined,
+    isDocument: !!resp.documentId,
   };
 }
 
@@ -58,6 +67,8 @@ function mapShareResponseToSharedByMe(resp: ShareResponse): SharedByMeItem {
 
   return {
     id: resp.shareToken,
+    shareId: resp.id,
+    actualFolderId: resp.folderId ?? "",
     name: resp.folderName || resp.documentTitle || "Unknown",
     size: "11.4mb",
     items: resp.fileCount || 0,

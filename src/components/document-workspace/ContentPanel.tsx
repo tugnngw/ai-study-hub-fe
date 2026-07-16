@@ -1,4 +1,4 @@
-import { Download, FileText, Loader2, RotateCw, Trash2, Upload } from "lucide-react";
+import { Download, ExternalLink, FileText, Loader2, RotateCw, Trash2, Upload } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { DocumentViewer } from "@/components/document-viewer";
 import { Button } from "@/components/ui/button";
@@ -70,7 +70,7 @@ export function ContentPanel({
     };
 
     return (
-        <section className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
+        <section className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft min-h-0">
             <div className="flex gap-1.5 p-3 border-b border-border bg-gradient-soft overflow-x-auto">
                 {(
                     [
@@ -96,41 +96,45 @@ export function ContentPanel({
                 ))}
             </div>
 
-            {tab === "original" && docId && (
-                <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30">
-                    <div className="flex items-center gap-3">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setUploadOpen(true)}
-                            className="flex items-center gap-1.5 text-primary font-medium text-sm hover:gap-2.5 transition-all h-auto px-0"
-                        >
-                            <Upload className="h-4 w-4" /> Tải lên tài liệu
-                        </Button>
-                        <div className="text-[10px] font-semibold tracking-wider text-muted-foreground">
-                            THƯ MỤC
-                        </div>
-                        <div className="text-sm font-semibold font-display">
-                            {folder.data?.name ?? "—"}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                            {folderDocs.data?.length ?? 0} tài liệu
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            <div className="flex-1 overflow-y-auto p-6">
-                {doc.data?.status?.toUpperCase() === "BANNED" ? (
-                    <div className="flex items-center justify-center h-full text-center p-8 border border-red-200 bg-red-50 rounded-2xl">
-                        <div className="space-y-2">
-                            <p className="text-xl font-semibold text-red-600">Tài liệu đã bị cấm</p>
-                            <p className="text-sm text-red-600/70">Tài liệu này vi phạm quy định và đã bị quản trị viên khoá.</p>
-                        </div>
-                    </div>
-                ) : tab === "original" ? (
+            <div className="flex-1 overflow-y-auto p-6 flex flex-col min-h-0">
+                {tab === "original" ? (
                     docId && doc.data ? (
-                        <DocumentViewer document={doc.data} className="flex-1 min-h-0 w-full h-full" />
+                        <div className="flex flex-col min-h-0 flex-1">
+                            <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30">
+                                <div className="flex items-center gap-3">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => setUploadOpen(true)}
+                                        className="flex items-center gap-1.5 text-primary font-medium text-sm hover:gap-2.5 transition-all h-auto px-0"
+                                    >
+                                        <Upload className="h-4 w-4" /> Tải lên tài liệu
+                                    </Button>
+                                    <div className="text-[10px] font-semibold tracking-wider text-muted-foreground">
+                                        THƯ MỤC
+                                    </div>
+                                    <div className="text-sm font-semibold font-display">
+                                        {folder.data?.name ?? "—"}
+                                    </div>
+                                    <div className="text-xs text-muted-foreground">
+                                        {folderDocs.data?.length ?? 0} tài liệu
+                                    </div>
+                                </div>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => {
+                                        if (doc.data?.cloudinaryUrl)
+                                            window.open(doc.data.cloudinaryUrl, "_blank");
+                                    }}
+                                    className="text-xs"
+                                >
+                                    <ExternalLink className="h-3 w-3 mr-1" />
+                                    Mở mới
+                                </Button>
+                            </div>
+                            <DocumentViewer document={doc.data} className="flex-1 min-h-0 w-full h-full" />
+                        </div>
                     ) : doc.isLoading ? (
                         <div className="flex items-center justify-center h-full">
                             <div className="flex flex-col items-center gap-2">
