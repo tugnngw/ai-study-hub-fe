@@ -255,7 +255,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
                 onChange={(e) => setAiQuestions(Number(e.target.value))}
                 placeholder="100"
               />
-              <p className="text-xs text-muted-foreground">Số câu hỏi mỗi lần tạo</p>
+              <p className="text-xs text-muted-foreground">Số câu hỏi cho mỗi bài Quiz (mỗi lần tạo)</p>
             </div>
           </div>
 
