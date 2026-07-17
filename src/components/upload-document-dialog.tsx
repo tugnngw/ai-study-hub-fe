@@ -7,6 +7,7 @@ import {
   useSubjectsBySemester,
   useSemesters,
   useUploadDocument,
+  useSubjects,
 } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,6 +42,7 @@ export function UploadDocumentDialog({
 }) {
   const semesters = useSemesters();
   const upload = useUploadDocument();
+  const allSubjects = useSubjects();
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -301,33 +303,48 @@ export function UploadDocumentDialog({
                 <FolderKanban className="h-4 w-4 text-muted-foreground" />
                 Folder
               </Label>
-              <Select
-                value={folderId}
-                onValueChange={setFolderId}
-              >
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={
-                      !subjectId
-                        ? "Select a folder (auto-fills semester & subject)"
-                        : "Select a folder"
-                    }
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {foldersInSubject.length === 0 ? (
-                    <div className="px-3 py-2 text-sm text-muted-foreground">
-                      No folders available
-                    </div>
-                  ) : (
-                    foldersInSubject.map((f) => (
-                      <SelectItem key={f.id} value={f.id}>
-                        {f.name}
+              <div className="flex gap-2">
+                <Select
+                  value={folderId}
+                  onValueChange={(v) => setFolderId(v === "__none" ? "" : v)}
+                  className="flex-1"
+                >
+                  <SelectTrigger className="flex-1">
+                    <SelectValue
+                      placeholder={
+                        !subjectId
+                          ? "Chọn thư mục (tự động nhập kì & môn)"
+                          : "Chọn thư mục"
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {folderId && (
+                      <SelectItem value="__none">
+                        <span className="text-muted-foreground">Không chọn thư mục</span>
                       </SelectItem>
-                    ))
-                  )}
-                </SelectContent>
-              </Select>
+                    )}
+                    {foldersInSubject.length === 0 && !folderId ? (
+                      <div className="px-3 py-2 text-sm text-muted-foreground">
+                        Không có thư mục
+                      </div>
+                    ) : (
+                      foldersInSubject.map((f) => {
+                        const subj = subjectId ? null : allSubjects.data?.find((s) => s.id === f.subjectId);
+                        const sem = semesters.data?.find((s) => s.id === f.semesterId);
+                        const label = subjectId || !subj
+                          ? f.name
+                          : `${f.name} (${subj.code ?? subj.name} - ${sem?.name ?? ""})`;
+                        return (
+                          <SelectItem key={f.id} value={f.id}>
+                            {label}
+                          </SelectItem>
+                        );
+                      })
+                    )}
+                  </SelectContent>
+                </Select>
+              </div>
               {subjectId && foldersInSubject.length === 0 && (
                 <p className="text-xs text-amber-600 dark:text-amber-400">
                   No folders found for this subject. <a href="/folders" className="underline">Create one</a> first.

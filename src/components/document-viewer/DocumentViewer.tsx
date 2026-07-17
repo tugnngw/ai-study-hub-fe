@@ -74,17 +74,9 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
     );
   }
 
-  if (document.status === "COMPLETED") {
-    return (
-      <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
-        <div className="flex-1 flex flex-col items-center justify-center p-8">
-          <Loader2 className="h-8 w-8 text-muted-foreground animate-spin mb-3" />
-          <p className="text-sm text-muted-foreground font-medium">Tài liệu đang chờ admin duyệt</p>
-          <p className="text-xs text-muted-foreground mt-1">Vui lòng quay lại sau</p>
-        </div>
-      </Card>
-    );
-  }
+  // COMPLETED means upload done, admin may or may not approve yet.
+  // We still show the file so the user can preview it.
+  // Only block when the doc is clearly rejected or banned.
 
   if (document.status === "REPORTED") {
     return (

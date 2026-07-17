@@ -20,6 +20,7 @@ interface PaymentResponse {
   checkoutUrl: string;
   orderCode: number;
   amount: number;
+  qrCode?: string;
 }
 
 interface UserTransactionResponse {

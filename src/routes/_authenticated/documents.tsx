@@ -18,6 +18,7 @@ import {
   useUploadDocument,
   useSemesters,
   useSubjectsBySemester,
+  useSubjects,
 } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 import { cn, formatBytes } from "@/lib/utils";
@@ -44,6 +45,11 @@ function DocumentsPage() {
   const { data, isLoading } = useDocuments();
   const subjects = useSemesters();
   const folders = useFolders();
+  const allSubjects = useSubjects();
+  const semesterMap = useMemo(() => new Map((subjects.data ?? []).map((s) => [s.id, s.name])), [subjects.data]);
+  const subjectNameMap = useMemo(() => new Map((allSubjects.data ?? []).map((s) => [s.id, s.name])), [allSubjects.data]);
+  const folderData = folders.data ?? [];
+  const folderLookup = useMemo(() => new Map(folderData.map((f) => [f.id, f])), [folderData]);
   const [query, setQuery] = useState("");
   const [uploadOpen, setUploadOpen] = useState(false);
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
@@ -99,6 +105,12 @@ function DocumentsPage() {
               <tr className="text-left">
                 <th className="px-4 py-3 font-medium">Title</th>
                 <th className="px-4 py-3 font-medium hidden lg:table-cell">Folder</th>
+                <th className="px-4 py-3 font-medium hidden lg:table-cell">
+                  Semester
+                </th>
+                <th className="px-4 py-3 font-medium hidden lg:table-cell">
+                  Subject
+                </th>
                 <th className="px-4 py-3 font-medium hidden md:table-cell">
                   Description
                 </th>
@@ -108,13 +120,18 @@ function DocumentsPage() {
             </thead>
             <tbody>
                {filtered.map((d) => {
-                const folderName = folders.data?.find(f => f.id === d.folderId)?.name || "—";
+                const folderInfo = folderLookup.get(d.folderId ?? "");
+                const folderName = folderInfo?.name || "-";
+                const semesterName = folderInfo?.semesterId ? semesterMap.get(folderInfo.semesterId) : "-";
+                const subjectName = folderInfo?.subjectId ? subjectNameMap.get(folderInfo.subjectId) : "-";
                 return (
                   <DocumentRow
                     key={d.id}
                     id={d.id}
                     folderId={d.folderId ?? ""}
                     folderName={folderName}
+                    semesterName={semesterName}
+                    subjectName={subjectName}
                     title={d.title}
                     description={d.description ?? ""}
                     status={d.status}
@@ -138,6 +155,8 @@ function DocumentRow({
   id,
   folderId,
   folderName,
+  semesterName,
+  subjectName,
   title,
   description,
   status,
@@ -148,6 +167,8 @@ function DocumentRow({
   id: string;
   folderId: string;
   folderName: string;
+  semesterName: string;
+  subjectName: string;
   title: string;
   description: string;
   status: string;
@@ -219,6 +240,12 @@ function DocumentRow({
         </td>
         <td className="px-4 py-3 hidden lg:table-cell">
           <span className="text-sm">{folderName}</span>
+        </td>
+        <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell text-sm">
+          {semesterName}
+        </td>
+        <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell text-sm">
+          {subjectName}
         </td>
         <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
           {description}
