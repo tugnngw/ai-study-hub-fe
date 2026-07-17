@@ -1,6 +1,6 @@
 // src/routes/_authenticated/documents.tsx
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { FileText, Plus, Search, Upload, Pin, X } from "lucide-react";
 import { toast } from "sonner";
 import { 
@@ -299,6 +299,27 @@ function UploadDialog({
     [subjects.data],
   );
 
+  // Filter folders: nếu chưa chọn subject thì hiện tất cả
+  const foldersInSubject = useMemo(() => {
+    if (!subjectId) return folders.data ?? [];
+    return (folders.data ?? []).filter((f) => f.subjectId === subjectId);
+  }, [folders.data, subjectId]);
+
+  // Auto-sync semester/subject khi chọn folder
+  useEffect(() => {
+    if (folderId) {
+      const folder = (folders.data ?? []).find(f => f.id === folderId);
+      if (folder) {
+        if (folder.subjectId && folder.subjectId !== subjectId) {
+          setSubjectId(folder.subjectId);
+        }
+        if (folder.semesterId && folder.semesterId !== semesterId) {
+          setSemesterId(folder.semesterId);
+        }
+      }
+    }
+  }, [folderId, folders.data, subjectId, semesterId]);
+
   const multiple = files.length > 1;
 
   const reset = () => {
@@ -316,6 +337,8 @@ function UploadDialog({
   const submit = async () => {
     if (files.length === 0) return toast.error("Chọn ít nhất một file");
     if (!multiple && !title.trim()) return toast.error("Nhập tiêu đề");
+    if (!semesterId) return toast.error("Chọn kỳ học");
+    if (!subjectId) return toast.error("Chọn môn học");
     if (!folderId) return toast.error("Chọn thư mục");
     try {
       await upload.mutateAsync({
@@ -414,15 +437,24 @@ function UploadDialog({
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label>Kỳ học</Label>
+              <div className="flex items-center justify-between">
+                <Label>Kỳ học</Label>
+                {folderId && (
+                  <span className="text-xs text-muted-foreground">
+                    Tự động từ thư mục
+                  </span>
+                )}
+              </div>
               <Select
                 value={semesterId}
                 onValueChange={(v) => {
+                  if (folderId) return;
                   setSemesterId(v);
                   setSubjectId("");
                 }}
+                disabled={!!folderId}
               >
-                <SelectTrigger>
+                <SelectTrigger className={cn(!!folderId && "cursor-not-allowed opacity-50")}>
                   <SelectValue placeholder="Chọn kỳ" />
                 </SelectTrigger>
                 <SelectContent>
@@ -435,13 +467,20 @@ function UploadDialog({
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Môn học</Label>
+              <div className="flex items-center justify-between">
+                <Label>Môn học</Label>
+                {folderId && (
+                  <span className="text-xs text-muted-foreground">
+                    Tự động từ thư mục
+                  </span>
+                )}
+              </div>
               <Select
                 value={subjectId}
                 onValueChange={setSubjectId}
-                disabled={!semesterId}
+                disabled={!semesterId || !!folderId}
               >
-                <SelectTrigger>
+                <SelectTrigger className={cn(!!folderId && "cursor-not-allowed opacity-50")}>
                   <SelectValue placeholder={semesterId ? "Chọn môn" : "Chọn kỳ trước"} />
                 </SelectTrigger>
                 <SelectContent>
@@ -465,16 +504,27 @@ function UploadDialog({
             <Label>Thư mục</Label>
             <Select value={folderId} onValueChange={setFolderId}>
               <SelectTrigger>
-                <SelectValue placeholder="Chọn thư mục" />
+                <SelectValue placeholder={!subjectId ? "Chọn thư mục (sẽ tự nhập kỳ & môn)" : "Chọn thư mục"} />
               </SelectTrigger>
               <SelectContent>
-                {(folders.data ?? []).map((f) => (
-                  <SelectItem key={f.id} value={String(f.id)}>
-                    {f.name}
-                  </SelectItem>
-                ))}
+                {foldersInSubject.length === 0 ? (
+                  <div className="px-3 py-2 text-sm text-muted-foreground">
+                    Không có thư mục
+                  </div>
+                ) : (
+                  foldersInSubject.map((f) => (
+                    <SelectItem key={f.id} value={String(f.id)}>
+                      {f.name}
+                    </SelectItem>
+                  ))
+                )}
               </SelectContent>
             </Select>
+            {subjectId && foldersInSubject.length === 0 && (
+              <p className="text-xs text-amber-600 dark:text-amber-400">
+                Chưa có thư mục nào cho môn này. <a href="/folders" className="underline">Tạo mới</a>.
+              </p>
+            )}
           </div>
         </div>
         <DialogFooter>
