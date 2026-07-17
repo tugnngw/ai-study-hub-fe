@@ -31,12 +31,7 @@ const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
 const fmtDate = (d?: string | null) =>
   d ? new Date(d).toLocaleDateString("vi-VN") : "—";
 
-const RANK: Record<string, number> = { FREE: 0, BASIC: 1, PRO: 2, PLUS: 2, PREMIUM: 3 };
-
-const getPlanRank = (planName: string): number => {
-  const baseName = planName.toUpperCase().replace(/\s+V\d+$/, '').trim();
-  return RANK[baseName] ?? 0;
-};
+const getPlanRank = (plan: AdminPlan): number => plan.tier ?? 0;
 
 
 export function PremiumUpgradePage() {
@@ -81,11 +76,10 @@ export function PremiumUpgradePage() {
   const remainingDays = remainingDaysUntil(expiresAt);
   const isPaidActive = currentPlan !== "FREE" && remainingDays > 0;
 
+  const currentTier = currentPlanObj?.tier ?? 0;
   const isCurrent = (p: AdminPlan) => p.name.toUpperCase() === currentPlan;
-  const isUpgrade = (p: AdminPlan) =>
-    getPlanRank(p.name) > getPlanRank(currentPlan);
-  const isDowngrade = (p: AdminPlan) =>
-    getPlanRank(p.name) < getPlanRank(currentPlan);
+  const isUpgrade = (p: AdminPlan) => getPlanRank(p) > currentTier;
+  const isDowngrade = (p: AdminPlan) => getPlanRank(p) < currentTier;
 
   const quote = useMemo(() => {
     if (!selected) return null;
