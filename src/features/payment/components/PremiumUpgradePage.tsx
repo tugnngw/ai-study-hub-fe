@@ -1,7 +1,7 @@
 // src/features/payment/components/PremiumUpgradePage.tsx
 import { useEffect, useMemo, useState, useRef } from "react";
 import { toast } from "sonner";
-import { Check, Loader2, Crown, CheckCircle2, CalendarClock, ExternalLink, QrCode, Clock } from "lucide-react";
+import { Check, Loader2, Crown, CheckCircle2, CalendarClock, ExternalLink, QrCode, Clock, Smartphone } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -51,7 +51,7 @@ export function PremiumUpgradePage() {
   const { user, reloadUser } = useAuth();
   const [paymentInfo, setPaymentInfo] = useState<{checkoutUrl: string; orderCode: number; amount: number} | null>(null);
   const [qrCodeModal, setQrCodeModal] = useState(false);
-  const [countdown, setCountdown] = useState(60); // 1 phút = 60 giây
+  const [countdown, setCountdown] = useState(180); // 3 phút
 
   const plans = useMemo(
     () =>
@@ -145,8 +145,10 @@ export function PremiumUpgradePage() {
           amount: res.amount
         });
         setQrCodeModal(true);
-        setCountdown(60);
+        setCountdown(180);
         setSelected(null); // Đóng dialog cũ
+        // Tự động mở trang thanh toán
+        window.open(url, "_blank", "noopener,noreferrer");
       }
     } catch (e) {
       toast.error("Lỗi tạo link thanh toán");
@@ -327,9 +329,11 @@ export function PremiumUpgradePage() {
                   </li>
                   <li className="flex items-center gap-2 text-sm">
                     <Check className="h-4 w-4 text-emerald-600 shrink-0" />{" "}
-                    {p.aiQuestions > 9999
-                      ? "Không giới hạn câu hỏi AI"
-                      : `${p.aiQuestions} câu hỏi AI`}
+                    {p.chatLimit == null ? "—" : p.chatLimit === -1
+                      ? "Không giới hạn chat AI"
+                      : p.chatLimit === 0
+                      ? "Không có chat AI"
+                      : `Chat AI: ${p.chatLimit} lượt`}
                   </li>
                   <li className="flex items-center gap-2 text-sm">
                     <Check className="h-4 w-4 text-emerald-600 shrink-0" />{" "}
@@ -473,16 +477,15 @@ export function PremiumUpgradePage() {
                 {formatCountdown(countdown)}
               </div>
                <p className="text-sm text-muted-foreground mt-2">
-                 Vui lòng quét mã QR trong vòng 1 phút
-               </p>
+                  Quét mã QR bằng app ngân hàng hoặc mở link bên dưới
+                </p>
             </div>
             <div className="border p-2 rounded-lg bg-white">
-              {/* Giả định checkoutUrl chứa URL ảnh QR hoặc link trang web */}
               {paymentInfo?.checkoutUrl && (
-                <iframe
-                  src={paymentInfo.checkoutUrl}
+                <img
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(paymentInfo.checkoutUrl)}`}
                   className="w-[300px] h-[300px]"
-                  title="QR Payment"
+                  alt="QR thanh toán"
                 />
               )}
             </div>

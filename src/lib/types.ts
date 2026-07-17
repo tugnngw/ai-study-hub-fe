@@ -9,6 +9,7 @@ export interface Plan {
   durationDays: number;
   storageGb: number;
   aiQuestions: number;
+  chatLimit: number;          // 0: disabled, -1: unlimited, >0: limited count
   flashcardLimit: number;     // 0: disabled, -1: unlimited, >0: limited count
   questionLimit: number;      // 0: disabled, -1: unlimited, >0: limited count  
   summaryLimit: number;       // 0: disabled, -1: unlimited, >0: limited count
@@ -24,9 +25,11 @@ export interface QuotaDetails {
   planName: string;
   storageGb: number;
   aiQuestions: number;
+  chatLimit: number;
   flashcardLimit: number;
   questionLimit: number;
   summaryLimit: number;
+  chatRemaining: number;      // -1: unlimited, 0: disabled/exceeded, >0: remaining count
   flashcardRemaining: number;  // -1: unlimited, 0: disabled/exceeded, >0: remaining count
   questionRemaining: number;
   summaryRemaining: number;
