@@ -148,6 +148,7 @@ function PlanConfigCard() {
               <TableRow className="[&>th]:text-[14px] [&>th]:font-semibold [&>th]:text-foreground">
                 <TableHead>Gói</TableHead>
                 <TableHead>Giá</TableHead>
+                <TableHead>Cấp độ</TableHead>
                 <TableHead>Thời hạn</TableHead>
                 <TableHead>Lưu trữ</TableHead>
                 <TableHead>AI Chat</TableHead>
@@ -161,13 +162,13 @@ function PlanConfigCard() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="h-20 text-center">
+                  <TableCell colSpan={10} className="h-20 text-center">
                     <Loader2 className="h-5 w-5 animate-spin mx-auto text-primary" />
                   </TableCell>
                 </TableRow>
               ) : (plans ?? []).length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={9} className="h-20 text-center text-muted-foreground">
+                  <TableCell colSpan={10} className="h-20 text-center text-muted-foreground">
                     Chưa có gói nào
                   </TableCell>
                 </TableRow>
@@ -183,6 +184,11 @@ function PlanConfigCard() {
                       )}
                     </TableCell>
                     <TableCell>{fmtVnd(p.price)}</TableCell>
+                    <TableCell>
+                      <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                        {p.tier ?? 0}
+                      </span>
+                    </TableCell>
                     <TableCell>
                       {p.durationDays === 0 || p.durationDays === -1 ? "Vĩnh viễn" : p.durationDays ? `${p.durationDays} ngày` : "—"}
                     </TableCell>

@@ -78,6 +78,7 @@ export interface AdminPlan {
   questionLimit?: number;
   summaryLimit?: number;
   chatLimit?: number;
+  tier: number;
 }
 
 export interface SubscriptionResponse {
