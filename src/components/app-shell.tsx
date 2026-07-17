@@ -1,6 +1,6 @@
 // src/components/app-shell.tsx
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, useMemo, type ReactNode } from "react";
 import {
   LayoutDashboard,
   FolderKanban,
@@ -15,7 +15,6 @@ import {
   Crown,
   Receipt,
   Search,
-  PanelLeftClose,
   PanelLeft,
   Settings,
   Sun,
@@ -24,12 +23,11 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import { useDocuments, useDocument } from "@/lib/queries";
+import { useDocuments, useDocument, useQuota, useFolders, useSemesters, useSubjects } from "@/lib/queries";
 import { useTheme } from "@/lib/theme";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { UploadDocumentDialog } from "@/components/upload-document-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -69,8 +67,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const search = useRouterState({ select: (s) => s.location.search }) as { docId?: number | string };
   const { data: documents } = useDocuments();
+  const { data: quota } = useQuota();
+  const folders = useFolders();
+  const semesters = useSemesters();
+  const subjects = useSubjects();
+  const folderMap = useMemo(() => new Map((folders.data ?? []).map((f) => [f.id, f])), [folders.data]);
+  const semesterMap = useMemo(() => new Map((semesters.data ?? []).map((s) => [s.id, s.name])), [semesters.data]);
+  const subjectMap = useMemo(() => new Map((subjects.data ?? []).map((s) => [s.id, s.name])), [subjects.data]);
   const [collapsed, setCollapsedState] = useState(getInitialCollapsed);
-  const [uploadOpen, setUploadOpen] = useState(false);
+  const [headerSearch, setHeaderSearch] = useState("");
+  const headerSearchResults = useMemo(() => {
+    if (!headerSearch.trim()) return [];
+    const q = headerSearch.toLowerCase();
+    return (documents ?? []).filter((d) => d.title.toLowerCase().includes(q)).slice(0, 8);
+  }, [headerSearch, documents]);
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -93,8 +103,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   const openDoc = useDocument(openDocId || "");
 
   const used = documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
-  
-  const total = (user?.storageGb || 1) * 1024 * 1024 * 1024;
+  const storageGb = quota?.storageGb ?? user?.storageGb ?? 1;
+  const total = storageGb * 1024 * 1024 * 1024;
   const pct = Math.min(100, (used / total) * 100);
 
   const handleLogout = async () => {
@@ -105,7 +115,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const initial = user?.fullName?.[0]?.toUpperCase() ?? "U";
 
   // Detect if current page is a folder detail (needs full-bleed layout)
-  const isFolderDetail = pathname.startsWith("/folders/") || pathname.startsWith("/documents/");
+  const isFolderDetail = pathname.startsWith("/folders/") || pathname.startsWith("/documents/") || pathname.startsWith("/ai");
 
   return (
       <div className="min-h-screen flex">
@@ -127,16 +137,6 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </div>
               )}
             </Link>
-            {!collapsed && (
-                <button onClick={() => setCollapsed(true)} className="p-1 hover:bg-accent rounded-lg ml-auto shrink-0">
-                  <PanelLeftClose className="h-4 w-4" />
-                </button>
-            )}
-            {collapsed && (
-                <button onClick={() => setCollapsed(false)} className="p-1 hover:bg-accent rounded-lg">
-                  <PanelLeft className="h-4 w-4" />
-                </button>
-            )}
           </div>
 
           {/* Navigation */}
@@ -167,25 +167,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </nav>
 
           {/* Upload button */}
-          <div className={cn("px-3 pb-1", collapsed && "px-2")}>
-            {collapsed ? (
-              <button
-                onClick={() => setUploadOpen(true)}
-                title="Tải lên tài liệu"
-                className="w-full h-10 rounded-lg bg-gradient-brand text-white flex items-center justify-center shadow-brand hover:opacity-90 transition-opacity"
-              >
-                <Upload className="h-4 w-4" />
-              </button>
-            ) : (
-              <Button
-                onClick={() => setUploadOpen(true)}
-                variant="outline"
-                className="w-full justify-center gap-2 border-dashed border-primary/40 text-primary hover:bg-primary/5 hover:border-primary"
-              >
-                <Upload className="h-4 w-4" /> Tải lên tài liệu
-              </Button>
-            )}
-          </div>
+          {/* Upload + Storage */}
           {!collapsed && (
               <div className="p-3">
                 <div className="rounded-xl border border-sidebar-border bg-card/60 p-3.5 space-y-2.5">
@@ -231,9 +213,55 @@ export function AppShell({ children }: { children: ReactNode }) {
                   <div className="relative w-full">
                     <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                     <Input
-                        placeholder="Tìm tài liệu, thư mục…"
+                        value={headerSearch}
+                        onChange={(e) => setHeaderSearch(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && headerSearch.trim()) {
+                            const url = `/documents?q=${encodeURIComponent(headerSearch.trim())}`;
+                            window.location.href = url;
+                          }
+                        }}
+                        placeholder="Tìm tài liệu, thư mục..."
                         className="pl-9 h-9 bg-muted/50 border-transparent focus-visible:bg-card focus-visible:border-input"
                     />
+                    {headerSearch.trim() && (
+                      <div className="absolute top-full mt-1 left-0 right-0 bg-popover border border-border rounded-xl shadow-lg z-50 max-h-80 overflow-y-auto p-1.5">
+                        {headerSearchResults.length === 0 ? (
+                          <div className="px-3 py-4 text-xs text-muted-foreground text-center">Không tìm thấy</div>
+                        ) : (
+                          headerSearchResults.map((d) => {
+                            const folder = d.folderId ? folderMap.get(d.folderId) : null;
+                            const semName = folder?.semesterId ? semesterMap.get(folder.semesterId) : null;
+                            const subName = folder?.subjectId ? subjectMap.get(folder.subjectId) : null;
+                            return (
+                              <button
+                                key={d.id}
+                                className="w-full flex items-center gap-3 px-3 py-2.5 text-left rounded-lg hover:bg-accent transition-colors"
+                                onClick={() => {
+                                  setHeaderSearch("");
+                                  window.location.href = `/ai?folderId=${d.folderId ?? ""}&docId=${d.id}`;
+                                }}
+                              >
+                                <FileText className="h-5 w-5 shrink-0 text-primary" />
+                                <div className="flex-1 min-w-0">
+                                  <div className="text-sm font-medium truncate">{d.title}</div>
+                                  <div className="text-[11px] text-muted-foreground mt-0.5">
+                                    {folder?.name ?? ""}
+                                    {folder?.name && semName ? ` · ${semName}` : ""}
+                                    {folder?.name && subName ? ` · ${subName}` : ""}
+                                  </div>
+                                </div>
+                                {folder && (
+                                  <span className="shrink-0 text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full truncate max-w-[120px]">
+                                    {folder.name}
+                                  </span>
+                                )}
+                              </button>
+                            );
+                          })
+                        )}
+                      </div>
+                    )}
                   </div>
               )}
             </div>
@@ -316,16 +344,14 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
 
           {/* Content */}
-          <main className="flex-1 min-w-0">
+          <main className="flex-1 min-w-0 flex flex-col">
             {isFolderDetail ? (
                 children
             ) : (
-                <div className="p-6 md:p-8 max-w-7xl mx-auto">{children}</div>
+                <div className="px-6 md:px-8 lg:px-10 py-6 lg:py-8 max-w-screen-2xl mx-auto w-full">{children}</div>
             )}
           </main>
         </div>
-
-        <UploadDocumentDialog open={uploadOpen} onOpenChange={setUploadOpen} />
       </div>
   );
 }

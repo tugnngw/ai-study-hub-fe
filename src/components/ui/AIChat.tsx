@@ -149,6 +149,38 @@ export function AIChat({
   const zoomOut = () => setChatZoom((z) => Math.max(0.8, +(z - 0.1).toFixed(2)));
   const zoomIn = () => setChatZoom((z) => Math.min(1.6, +(z + 0.1).toFixed(2)));
 
+  // Panel resize
+  const containerRef = useRef<HTMLDivElement>(null);
+  const defaultLeft = typeof window === 'undefined' ? 280 : Number(localStorage.getItem('ai-left') || '280');
+  const defaultRight = typeof window === 'undefined' ? 340 : Number(localStorage.getItem('ai-right') || '340');
+  const [leftW, setLeftW] = useState(() => Math.max(180, Math.min(600, defaultLeft)));
+  const [rightW, setRightW] = useState(() => Math.max(200, Math.min(500, defaultRight)));
+  const saveWidths = () => {
+    try { localStorage.setItem('ai-left', String(leftW)); localStorage.setItem('ai-right', String(rightW)); } catch {}
+  };
+  const startResize = (side: 'left' | 'right') => (e: React.MouseEvent) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startL = leftW;
+    const startR = rightW;
+    const onMove = (ev: MouseEvent) => {
+      const dx = ev.clientX - startX;
+      if (side === 'left') setLeftW(Math.max(180, Math.min(600, startL + dx)));
+      else setRightW(Math.max(200, Math.min(500, startR - dx)));
+    };
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+      saveWidths();
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  };
+
   const generateSummary = useGenerateSummary();
   const { data: cachedSummary } = useSummary(docId ?? "");
   const [summary, setSummary] = useState<string | null>(null);
@@ -237,9 +269,9 @@ export function AIChat({
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
+    <div ref={containerRef} className="flex flex-col lg:flex-row h-full gap-1.5 p-3">
         {/* Column 1: folder + file list */}
-        <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
+        <aside className="hidden lg:flex flex-col bg-card/50 backdrop-blur-md border border-border/50 rounded-2xl p-4 overflow-hidden shadow-soft shrink-0" style={{ width: leftW }}>
           <div className="rounded-xl bg-gradient-soft p-3 border border-border/50 flex items-center gap-3">
             <div className="h-9 w-9 rounded-lg bg-gradient-brand flex items-center justify-center shrink-0">
               <FolderClosed className="h-4.5 w-4.5 text-white" />
@@ -330,7 +362,7 @@ export function AIChat({
                   className={cn(
                     "group flex items-center gap-2 rounded-lg pl-2 pr-1 py-2 transition-colors",
                     active
-                      ? "bg-red-50 border-l-2 border-red-400"
+                      ? "bg-primary/5 border-l-2 border-primary"
                       : "hover:bg-accent border-l-2 border-transparent",
                   )}
                 >
@@ -376,8 +408,14 @@ export function AIChat({
           </Link>
         </aside>
 
+        {/* Resize handle */}
+        <div
+          onMouseDown={startResize('left')}
+          className="hidden lg:block w-1 cursor-col-resize hover:bg-primary/20 active:bg-primary/40 shrink-0 transition-colors rounded-full"
+        />
+
         {/* Column 2: original content */}
-        <section className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
+        <section className="flex flex-col bg-card overflow-hidden flex-1 min-w-0 rounded-xl border border-border/60 shadow-sm">
           <div className="px-4 pt-3 border-b border-border">
             <div className="flex items-center gap-6 overflow-x-auto">
               <button
@@ -429,44 +467,10 @@ export function AIChat({
               </button>
             </div>
           </div>
-          {/* Pill row */}
-          <div className="flex gap-2 px-4 py-2.5 border-b border-border overflow-x-auto items-center">
-            <button
-              onClick={() => navigate({ to: "/ai", search: { folderId } })}
-              className={cn(
-                "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
-                !docId
-                  ? "bg-gradient-brand text-white"
-                  : "bg-muted text-foreground hover:bg-accent",
-              )}
-            >
-              All
-            </button>
-            {docs.map((d) => (
-              <Link
-                key={d.id}
-                to="/ai"
-                search={{ folderId, docId: d.id }}
-                className={cn(
-                  "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
-                  d.id === docId
-                    ? "bg-gradient-brand text-white"
-                    : "bg-brand-soft text-primary hover:bg-accent",
-                )}
-              >
-                {d.title}
-              </Link>
-            ))}
-            {docs.length > 3 && (
-              <span className="h-7 w-7 rounded-full border border-border flex items-center justify-center text-muted-foreground shrink-0">
-                <ChevronRight className="h-4 w-4" />
-              </span>
-            )}
-          </div>
           {activeTab === "content" && (
             <div className="flex-1 overflow-y-auto">
               {docId && doc.data ? (
-                <DocumentViewer document={doc.data} />
+                <DocumentViewer document={doc.data} className="flex-1 w-full h-full" />
               ) : docId && !doc.data ? (
                 <div className="flex items-center justify-center h-full p-8">
                   <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -606,8 +610,14 @@ export function AIChat({
           )}
         </section>
 
-                {/* Column 3: chat */}
-        <aside className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
+        {/* Resize handle */}
+        <div
+          onMouseDown={startResize('right')}
+          className="hidden lg:block w-1 cursor-col-resize hover:bg-primary/20 active:bg-primary/40 shrink-0 transition-colors rounded-full"
+        />
+
+        {/* Column 3: chat */}
+        <aside className="flex flex-col bg-card overflow-hidden shrink-0 rounded-xl border border-border/60 shadow-sm" style={{ width: rightW }}>
           <div className="px-4 py-2 border-b border-border flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

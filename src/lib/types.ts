@@ -21,6 +21,19 @@ export interface Plan {
   activeSubscriptionCount?: number;
 }
 
+export interface Semester {
+  id: string;
+  name: string;
+}
+
+export interface Subject {
+  id: string;
+  semesterId?: string;
+  code?: string | null;
+  name: string;
+  defaultSubject?: boolean;
+}
+
 export interface QuotaDetails {
   planName: string;
   storageGb: number;
