@@ -51,8 +51,9 @@ export function UploadDocumentDialog({
   const subjects = useSubjectsBySemester(semesterId);
   const allFolders = useFolders();
 
-  // Filter folders: phải thuộc Subject đang chọn
+  // Filter folders: nếu chưa chọn subject thì hiện tất cả, nếu đã chọn thì filter
   const foldersInSubject = useMemo(() => {
+    if (!subjectId) return allFolders.data ?? [];
     return (allFolders.data ?? []).filter((f) => f.subjectId === subjectId);
   }, [allFolders.data, subjectId]);
 
@@ -303,13 +304,12 @@ export function UploadDocumentDialog({
               <Select
                 value={folderId}
                 onValueChange={setFolderId}
-                disabled={!subjectId}
               >
                 <SelectTrigger>
                   <SelectValue
                     placeholder={
                       !subjectId
-                        ? "Select a subject first"
+                        ? "Select a folder (auto-fills semester & subject)"
                         : "Select a folder"
                     }
                   />
