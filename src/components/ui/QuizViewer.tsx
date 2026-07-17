@@ -165,12 +165,12 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
           <RotateCcw className="h-3.5 w-3.5" />Reset
         </Button>
       </div>
-      <div className="w-full max-w-lg p-6 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-xl text-white text-center">
+      <div className="w-full max-w-2xl p-8 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-xl text-white text-center">
         <p className="text-xs text-white/60 mb-3">Question {currentIdx + 1}</p>
-        <p className="text-lg font-semibold leading-relaxed">{q.content}</p>
+        <p className="text-xl font-semibold leading-relaxed">{q.content}</p>
       </div>
 
-      <div className="w-full max-w-lg space-y-3">
+      <div className="w-full max-w-2xl space-y-3">
         {options.map((opt) => {
           const isSelected = selected === opt.label;
           const isCorrect = correctLabel === opt.label;
@@ -202,7 +202,7 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
       </div>
 
       {isRevealed ? (
-        <Button onClick={goNext} className="w-full max-w-lg">
+        <Button onClick={goNext} className="w-full max-w-2xl">
           {currentIdx < allQuestions.length - 1 ? "Next Question" : "See Results"}
         </Button>
       ) : (

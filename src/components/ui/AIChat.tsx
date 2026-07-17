@@ -166,7 +166,7 @@ export function AIChat({
     const onMove = (ev: MouseEvent) => {
       const dx = ev.clientX - startX;
       if (side === 'left') setLeftW(Math.max(180, Math.min(600, startL + dx)));
-      else setRightW(Math.max(200, Math.min(500, startR - dx)));
+      else setRightW(Math.max(200, Math.min(600, startR - dx)));
     };
     const onUp = () => {
       document.removeEventListener('mousemove', onMove);
@@ -415,7 +415,7 @@ export function AIChat({
         />
 
         {/* Column 2: original content */}
-        <section className="flex flex-col bg-card overflow-hidden flex-1 min-w-0 rounded-xl border border-border/60 shadow-sm">
+        <section className="flex flex-col bg-card flex-1 min-w-0 min-h-0 rounded-xl border border-border/60 shadow-sm">
           <div className="px-4 pt-3 border-b border-border">
             <div className="flex items-center gap-6 overflow-x-auto">
               <button
@@ -468,7 +468,7 @@ export function AIChat({
             </div>
           </div>
           {activeTab === "content" && (
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 min-h-0 overflow-y-auto">
               {docId && doc.data ? (
                 <DocumentViewer document={doc.data} className="flex-1 w-full h-full" />
               ) : docId && !doc.data ? (
@@ -519,8 +519,9 @@ export function AIChat({
             </div>
           )}{" "}
           {activeTab === "summary" && (
-            aiStatus === "NOT_STARTED" ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+            <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+            {aiStatus === "NOT_STARTED" ? (
+              <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <Sparkles className="h-12 w-12 text-muted-foreground/40" />
                 <p className="text-sm text-muted-foreground">Knowledge has not been prepared.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} className="bg-gradient-brand shadow-brand">
@@ -528,12 +529,12 @@ export function AIChat({
                 </Button>
               </div>
             ) : aiStatus === "PROCESSING" ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8">
+              <div className="flex flex-col items-center justify-center h-full gap-3 p-8">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
               </div>
             ) : aiStatus === "REJECT" ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+              <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <p className="text-sm text-red-500">Knowledge preparation failed.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
                   Retry
@@ -556,11 +557,13 @@ export function AIChat({
                   })
                 }
               />
-            )
+            )}
+            </div>
           )}
           {activeTab === "flashcards" && (
-            aiStatus === "NOT_STARTED" ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+            <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+            {aiStatus === "NOT_STARTED" ? (
+              <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <Sparkles className="h-12 w-12 text-muted-foreground/40" />
                 <p className="text-sm text-muted-foreground">Knowledge has not been prepared.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} className="bg-gradient-brand shadow-brand">
@@ -568,12 +571,12 @@ export function AIChat({
                 </Button>
               </div>
             ) : aiStatus === "PROCESSING" ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8">
+              <div className="flex flex-col items-center justify-center h-full gap-3 p-8">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
               </div>
             ) : aiStatus === "REJECT" ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+              <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <p className="text-sm text-red-500">Knowledge preparation failed.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
                   Retry
@@ -581,11 +584,13 @@ export function AIChat({
               </div>
             ) : (
               <FlashcardTab docs={docs} docId={docId} />
-            )
+            )}
+            </div>
           )}
           {activeTab === "quizzes" && (
-            aiStatus === "NOT_STARTED" ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+            <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
+            {aiStatus === "NOT_STARTED" ? (
+              <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <Sparkles className="h-12 w-12 text-muted-foreground/40" />
                 <p className="text-sm text-muted-foreground">Knowledge has not been prepared.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} className="bg-gradient-brand shadow-brand">
@@ -593,12 +598,12 @@ export function AIChat({
                 </Button>
               </div>
             ) : aiStatus === "PROCESSING" ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-3 p-8">
+              <div className="flex flex-col items-center justify-center h-full gap-3 p-8">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
               </div>
             ) : aiStatus === "REJECT" ? (
-              <div className="flex-1 flex flex-col items-center justify-center gap-4 p-8">
+              <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <p className="text-sm text-red-500">Knowledge preparation failed.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
                   Retry
@@ -606,7 +611,8 @@ export function AIChat({
               </div>
             ) : (
               <QuizTab docs={docs} docId={docId} />
-            )
+            )}
+            </div>
           )}
         </section>
 
