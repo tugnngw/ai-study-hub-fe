@@ -1,7 +1,9 @@
-import { Loader2, Sparkles, RefreshCw, FileText } from "lucide-react";
+import { Loader2, Sparkles, RefreshCw, FileText, AlertTriangle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { toast } from "sonner";
 import { QuotaDisplay } from "@/components/ui/QuotaDisplay";
+import { useQuota } from "@/lib/queries";
 import type { Document } from "@/lib/types";
 
 interface Props {
@@ -13,6 +15,13 @@ interface Props {
 }
 
 export function AISummary({ docId, onGenerate, isGenerating, summary }: Props) {
+  const { data: quota } = useQuota();
+
+  const remaining = quota?.summaryRemaining ?? 0;
+  const limit = quota?.summaryLimit ?? 0;
+  const isExhausted = limit > 0 && remaining <= 0;
+  const isLow = limit > 0 && remaining <= Math.floor(limit * 0.2) && remaining > 0;
+
   if (!docId) {
     return (
       <div className="flex flex-col items-center justify-center h-full text-center px-6 py-12">
@@ -51,18 +60,29 @@ export function AISummary({ docId, onGenerate, isGenerating, summary }: Props) {
       <div className="p-4 border-t border-border space-y-3">
         <QuotaDisplay />
         <button
-          onClick={() => onGenerate({ documentId: docId, force: !!summary })}
-          disabled={isGenerating || !docId}
+          onClick={() => {
+            if (isExhausted) {
+              toast.error("Bạn đã hết lượt tóm tắt. Vui lòng nâng cấp gói.");
+              return;
+            }
+            onGenerate({ documentId: docId, force: !!summary });
+          }}
+          disabled={isGenerating || !docId || isExhausted}
           className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-brand text-white text-sm font-medium py-2.5 shadow-brand hover:opacity-90 transition-opacity disabled:opacity-50"
         >
           {isGenerating ? (
             <><Loader2 className="h-4 w-4 animate-spin" />Generating...</>
+          ) : isExhausted ? (
+            <><AlertTriangle className="h-4 w-4" />Hết lượt</>
           ) : summary ? (
             <><RefreshCw className="h-4 w-4" />Regenerate Summary</>
           ) : (
             <><Sparkles className="h-4 w-4" />Generate Summary</>
           )}
         </button>
+        {isLow && (
+          <p className="text-xs text-amber-600 text-center">Chỉ còn {remaining} lượt tóm tắt</p>
+        )}
       </div>
     </div>
   );

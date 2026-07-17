@@ -152,9 +152,9 @@ function PlanConfigCard() {
                 <TableHead>Thời hạn</TableHead>
                 <TableHead>Lưu trữ</TableHead>
                 <TableHead>AI Chat</TableHead>
-                <TableHead>Quiz</TableHead>
-                <TableHead>Flashcard</TableHead>
-                <TableHead>Tóm tắt</TableHead>
+                <TableHead>Tạo Quiz (lượt)</TableHead>
+                <TableHead>Tạo Flashcard (lượt)</TableHead>
+                <TableHead>Tóm tắt (lượt)</TableHead>
                 <TableHead>Trạng thái</TableHead>
                 <TableHead className="text-right">Hành động</TableHead>
               </TableRow>
@@ -194,16 +194,16 @@ function PlanConfigCard() {
                     </TableCell>
                     <TableCell>{formatStorage(p.storageGb)}</TableCell>
                     <TableCell>
-                      {p.chatLimit == null ? "—" : p.chatLimit > 9999 ? "Không giới hạn" : p.chatLimit}
+                      {p.chatLimit == null ? "—" : p.chatLimit > 9999 ? "Không giới hạn" : `${p.chatLimit} lượt`}
                     </TableCell>
                     <TableCell>
-                      {p.questionLimit == null ? "—" : p.questionLimit > 9999 ? "Không giới hạn" : p.questionLimit}
+                      {p.questionLimit == null ? "—" : p.questionLimit > 9999 ? "Không giới hạn" : `${p.questionLimit} lượt`}
                     </TableCell>
                     <TableCell>
-                      {p.flashcardLimit == null ? "—" : p.flashcardLimit > 9999 ? "Không giới hạn" : p.flashcardLimit}
+                      {p.flashcardLimit == null ? "—" : p.flashcardLimit > 9999 ? "Không giới hạn" : `${p.flashcardLimit} lượt`}
                     </TableCell>
                     <TableCell>
-                      {p.summaryLimit == null ? "—" : p.summaryLimit > 9999 ? "Không giới hạn" : p.summaryLimit}
+                      {p.summaryLimit == null ? "—" : p.summaryLimit > 9999 ? "Không giới hạn" : `${p.summaryLimit} lượt`}
                     </TableCell>
                     <TableCell>
                       <Badge
