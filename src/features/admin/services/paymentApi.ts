@@ -7,6 +7,10 @@ interface BackendPlan {
   description: string;
   storageGb: number;
   aiQuestions: number;
+  chatLimit?: number;
+  flashcardLimit?: number;
+  questionLimit?: number;
+  summaryLimit?: number;
   price: number;
   durationDays?: number;
   isActive: boolean;
@@ -137,6 +141,9 @@ export const paymentApi = {
 
   getMySubscription: (): Promise<SubscriptionResponse> =>
     api<SubscriptionResponse>("/api/payment/my-subscription"),
+
+  getTransactionStatus: (orderCode: number): Promise<unknown> =>
+    api(`/api/payment/status/${orderCode}`),
 
   getTransactions: (): Promise<UserTransactionResponse[]> => 
     api<UserTransactionResponse[]>("/api/payment/my-transactions"),

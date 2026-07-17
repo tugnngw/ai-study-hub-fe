@@ -563,6 +563,7 @@ export function useGenerateSummary() {
       summaryApi.generate(input),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["summary"] });
+      qc.invalidateQueries({ queryKey: ["quota"] });
     },
   });
 }
@@ -600,6 +601,7 @@ export function useGenerateQuiz() {
     onSuccess: (_, input) => {
       qc.invalidateQueries({ queryKey: ["quizzes"] });
       qc.invalidateQueries({ queryKey: quizKeys.byDocument(input.documentId) });
+      qc.invalidateQueries({ queryKey: ["quota"] });
     },
   });
 }
@@ -640,6 +642,7 @@ export function useGenerateFlashcards() {
     onSuccess: (_, input) => {
       qc.invalidateQueries({ queryKey: ["flashcards"] });
       qc.invalidateQueries({ queryKey: flashcardKeys.byDocument(input.documentId) });
+      qc.invalidateQueries({ queryKey: ["quota"] });
     },
   });
 }
