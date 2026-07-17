@@ -46,7 +46,7 @@ export function QuotaDisplay() {
           <span className="text-sm font-medium text-muted-foreground">{label}:</span>
           <div className="flex items-center gap-1">
             <Infinity className="h-4 w-4 text-green-600" />
-            <span className="text-sm text-green-700">Không giới hạn</span>
+            <span className="text-sm text-green-700 font-medium">Không giới hạn</span>
           </div>
         </div>
       );
@@ -56,23 +56,28 @@ export function QuotaDisplay() {
       return (
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-muted-foreground">{label}:</span>
-          <span className="text-sm text-red-600">Đã tắt</span>
+          <span className="text-sm text-red-600 font-medium">Đã tắt</span>
         </div>
       );
     }
 
-    const percentage = Math.max(0, ((limit - remaining) / limit) * 100);
+    const used = limit - remaining;
+    const percentage = Math.max(0, (used / limit) * 100);
     const isLow = remaining <= Math.floor(limit * 0.2);
+    const isExhausted = remaining <= 0;
 
     return (
       <div className="space-y-1">
         <div className="flex justify-between text-sm">
           <span className="font-medium text-muted-foreground">{label}</span>
-          <span className={isLow ? "text-red-600 font-medium" : "text-muted-foreground"}>
-            {remaining}/{limit}
+          <span className={isExhausted ? "text-red-600 font-medium" : isLow ? "text-amber-600 font-medium" : "text-muted-foreground"}>
+            {isExhausted ? "Hết lượt" : `Còn ${remaining}/${limit} lượt`}
           </span>
         </div>
-        <Progress value={percentage} className="h-2" />
+        <Progress
+          value={percentage}
+          className={`h-2 ${isExhausted ? "bg-red-100" : isLow ? "bg-amber-100" : ""}`}
+        />
       </div>
     );
   };
@@ -85,9 +90,9 @@ export function QuotaDisplay() {
           <span className="text-sm font-medium">Hạn mức sử dụng</span>
         </div>
         <div className="space-y-3">
-          {renderQuotaBar("Flashcard", flashcardLimit, flashcardRemaining)}
-          {renderQuotaBar("Câu hỏi quiz", questionLimit, questionRemaining)}
-          {renderQuotaBar("Tóm tắt", summaryLimit, summaryRemaining)}
+          {renderQuotaBar("Tạo Flashcard", flashcardLimit, flashcardRemaining)}
+          {renderQuotaBar("Tạo Quiz", questionLimit, questionRemaining)}
+          {renderQuotaBar("Tóm tắt AI", summaryLimit, summaryRemaining)}
           {renderQuotaBar("Chat AI", chatLimit, chatRemaining)}
         </div>
       </CardContent>

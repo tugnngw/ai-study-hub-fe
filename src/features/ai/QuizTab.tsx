@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Sparkles, Loader2 } from "lucide-react";
+import { Sparkles, Loader2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { QuizViewer } from "@/components/ui/QuizViewer";
 import { QuotaDisplay } from "@/components/ui/QuotaDisplay";
-import { useGenerateQuiz, useQuizByDocument } from "@/lib/queries";
+import { useGenerateQuiz, useQuizByDocument, useQuota } from "@/lib/queries";
 import type { Document } from "@/lib/types";
 
 interface Props {
@@ -17,6 +17,12 @@ export function QuizTab({ docs, docId }: Props) {
   const [quizCount, setQuizCount] = useState(5);
   const generateQuiz = useGenerateQuiz();
   const quizQuery = useQuizByDocument(docId ?? "");
+  const { data: quota } = useQuota();
+
+  const remaining = quota?.questionRemaining ?? 0;
+  const limit = quota?.questionLimit ?? 0;
+  const isExhausted = limit > 0 && remaining <= 0;
+  const isLow = limit > 0 && remaining <= Math.floor(limit * 0.2) && remaining > 0;
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
@@ -47,10 +53,16 @@ export function QuizTab({ docs, docId }: Props) {
             }}
             className="w-20"
           />
+          {isExhausted && (
+            <span className="text-xs text-red-600 flex items-center gap-1 shrink-0">
+              <AlertTriangle className="h-3 w-3" />Hết lượt
+            </span>
+          )}
           <Button
-            disabled={generateQuiz.isPending || !docId || quizCount < 1}
+            disabled={generateQuiz.isPending || !docId || quizCount < 1 || isExhausted}
             onClick={() => {
               if (!docId) return toast.error("Select a document first");
+              if (isExhausted) return toast.error("Bạn đã hết lượt tạo quiz. Vui lòng nâng cấp gói.");
               generateQuiz.mutate(
                 { documentId: docId, numberOfQuestions: quizCount },
                 {
@@ -64,15 +76,20 @@ export function QuizTab({ docs, docId }: Props) {
                 }
               );
             }}
-            className="gap-2 flex-1"
+            className={`gap-2 flex-1 ${isExhausted ? "opacity-50" : ""}`}
           >
             {generateQuiz.isPending ? (
               <><Loader2 className="h-4 w-4 animate-spin" />Generating...</>
+            ) : isExhausted ? (
+              <><AlertTriangle className="h-4 w-4" />Hết lượt</>
             ) : (
               <><Sparkles className="h-4 w-4" />Generate Quiz</>
             )}
           </Button>
         </div>
+        {isLow && (
+          <p className="text-xs text-amber-600">Chỉ còn {remaining} lượt tạo quiz</p>
+        )}
       </div>
     </div>
   );
