@@ -73,10 +73,12 @@ export function PremiumUpgradePage() {
   const remainingDays = remainingDaysUntil(expiresAt);
   const isPaidActive = currentPlan !== "FREE" && remainingDays > 0;
 
+  const currentPlanId = subQuery.data?.planId;
   const currentTier = currentPlanObj?.tier ?? 0;
-  const isCurrent = (p: AdminPlan) => p.tier === currentTier;
-  const isUpgrade = (p: AdminPlan) => p.tier > currentTier;
-  const isDowngrade = (p: AdminPlan) => p.tier < currentTier;
+  const isCurrent = (p: AdminPlan) =>
+    currentPlanId ? p.id === currentPlanId : p.name.toUpperCase() === currentPlan;
+  const isUpgrade = (p: AdminPlan) => !isCurrent(p) && p.tier > currentTier;
+  const isDowngrade = (p: AdminPlan) => !isCurrent(p) && p.tier < currentTier;
 
   const quote = useMemo(() => {
     if (!selected) return null;
