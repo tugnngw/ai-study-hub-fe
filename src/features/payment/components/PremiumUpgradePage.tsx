@@ -41,7 +41,7 @@ export function PremiumUpgradePage() {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<AdminPlan | null>(null);
   const { user, reloadUser } = useAuth();
-  const [paymentInfo, setPaymentInfo] = useState<{checkoutUrl: string; orderCode: number; amount: number} | null>(null);
+  const [paymentInfo, setPaymentInfo] = useState<{checkoutUrl: string; orderCode: number; amount: number; qrCode?: string} | null>(null);
   const [qrCodeModal, setQrCodeModal] = useState(false);
   const [countdown, setCountdown] = useState(180); // 3 phút
 
@@ -135,7 +135,8 @@ export function PremiumUpgradePage() {
         setPaymentInfo({
           checkoutUrl: url,
           orderCode: res.orderCode,
-          amount: res.amount
+          amount: res.amount,
+          qrCode: res.qrCode,
         });
         setQrCodeModal(true);
         setCountdown(180);
@@ -497,7 +498,7 @@ export function PremiumUpgradePage() {
             <div className="border p-2 rounded-lg bg-white">
               {paymentInfo?.checkoutUrl && (
                 <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(paymentInfo.checkoutUrl)}`}
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(paymentInfo.qrCode || paymentInfo.checkoutUrl)}`}
                   className="w-[300px] h-[300px]"
                   alt="QR thanh toán"
                 />
