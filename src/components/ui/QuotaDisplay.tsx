@@ -1,8 +1,9 @@
-import { Info, Infinity } from "lucide-react";
+import { Info, Infinity, ChevronDown, ChevronRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { useQuota } from "@/lib/queries";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useState } from "react";
 
 export function QuotaDisplay() {
   const { data, isLoading, error } = useQuota();
@@ -82,19 +83,28 @@ export function QuotaDisplay() {
     );
   };
 
+  const [open, setOpen] = useState(false);
+
   return (
     <Card>
       <CardContent className="p-4 space-y-3">
-        <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="flex items-center gap-2 w-full text-left"
+        >
+          {open ? <ChevronDown className="h-4 w-4 text-muted-foreground" /> : <ChevronRight className="h-4 w-4 text-muted-foreground" />}
           <Info className="h-4 w-4 text-muted-foreground" />
           <span className="text-sm font-medium">Hạn mức sử dụng</span>
-        </div>
-        <div className="space-y-3">
-          {renderQuotaBar("Tạo Flashcard", flashcardLimit, flashcardRemaining)}
-          {renderQuotaBar("Tạo Quiz", questionLimit, questionRemaining)}
-          {renderQuotaBar("Tóm tắt AI", summaryLimit, summaryRemaining)}
-          {renderQuotaBar("Chat AI", chatLimit, chatRemaining)}
-        </div>
+        </button>
+        {open && (
+          <div className="space-y-3">
+            {renderQuotaBar("Tạo Flashcard", flashcardLimit, flashcardRemaining)}
+            {renderQuotaBar("Tạo Quiz", questionLimit, questionRemaining)}
+            {renderQuotaBar("Tóm tắt AI", summaryLimit, summaryRemaining)}
+            {renderQuotaBar("Chat AI", chatLimit, chatRemaining)}
+          </div>
+        )}
       </CardContent>
     </Card>
   );
