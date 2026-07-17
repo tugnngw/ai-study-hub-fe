@@ -45,6 +45,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
   const [summaryLimit, setSummaryLimit] = useState<number>(0);
   const [chatLimit, setChatLimit] = useState<number>(0);
   const [aiQuestions, setAiQuestions] = useState<number>(0);
+  const [tier, setTier] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(true);
 
   const createMutation = createPlan;
@@ -63,6 +64,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
       setQuestionLimit(plan.questionLimit || 0);
       setSummaryLimit(plan.summaryLimit || 0);
       setChatLimit(plan.chatLimit || 0);
+      setTier(plan.tier ?? 0);
       setIsActive(plan.isActive !== undefined ? plan.isActive : true);
     } else if (mode === "create") {
       setName("");
@@ -75,6 +77,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
       setQuestionLimit(0);
       setSummaryLimit(0);
       setChatLimit(0);
+      setTier(0);
       setIsActive(true);
     }
   }, [plan, mode, open]);
@@ -89,6 +92,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
     if (questionLimit < -1) return { valid: false, message: "Giới hạn câu hỏi không hợp lệ" };
     if (summaryLimit < -1) return { valid: false, message: "Giới hạn tóm tắt không hợp lệ" };
     if (chatLimit < -1) return { valid: false, message: "Giới hạn chat không hợp lệ" };
+    if (tier < 0) return { valid: false, message: "Cấp độ (tier) không được nhỏ hơn 0" };
     return { valid: true };
   };
 
@@ -113,6 +117,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
           questionLimit,
           summaryLimit,
           chatLimit,
+          tier,
         } as any);
         toast.success("Đã tạo gói mới");
       } else if (plan) {
@@ -127,6 +132,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
           questionLimit,
           summaryLimit,
           chatLimit,
+          tier,
           isActive,
         } as any);
         toast.success("Đã cập nhật gói");
@@ -249,17 +255,31 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
                 placeholder="0"
               />
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="chatLimit">AI Chat (số lần) *</Label>
-              <Input
-                id="chatLimit"
-                type="number"
-                value={chatLimit}
-                onChange={(e) => setChatLimit(Number(e.target.value))}
-                placeholder="0"
-              />
-            </div>
+          <div className="space-y-2">
+            <Label htmlFor="chatLimit">AI Chat (số lần) *</Label>
+            <Input
+              id="chatLimit"
+              type="number"
+              value={chatLimit}
+              onChange={(e) => setChatLimit(Number(e.target.value))}
+              placeholder="0"
+            />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="tier">Cấp độ (Tier) *</Label>
+            <Input
+              id="tier"
+              type="number"
+              value={tier}
+              onChange={(e) => setTier(Number(e.target.value))}
+              placeholder="0"
+            />
+            <p className="text-xs text-muted-foreground">
+              Số càng cao = gói càng cao. Dùng để ngăn hạ gói khi còn hạn.
+              Gợi ý: Free=0, Basic=1, Pro=2, Premium=3
+            </p>
+          </div>
+        </div>
 
           {mode === "edit" && (
             <div className="flex items-center justify-between pt-2">
