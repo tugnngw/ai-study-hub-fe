@@ -3,7 +3,7 @@ import React from "react";
 import { FileText, ExternalLink, Download } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, formatBytes } from "@/lib/utils";
 
 interface PdfViewerProps {
   url: string;
@@ -25,12 +25,6 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   totalPages,
   createdAt,
 }) => {
-  const fmtSize = (n?: number | null) => {
-    if (!n) return "—";
-    if (n < 1024 ** 2) return `${(n / 1024).toFixed(1)} KB`;
-    if (n < 1024 ** 3) return `${(n / 1024 ** 2).toFixed(1)} MB`;
-    return `${(n / 1024 ** 3).toFixed(2)} GB`;
-  };
   const ext = (fileName.split(".").pop() || "PDF").toUpperCase();
 
   return (
@@ -63,7 +57,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 
       <div className="flex items-center gap-4 px-4 py-2 border-t border-border text-xs text-muted-foreground">
         <span>Loại: {mimeType || ext}</span>
-        <span>Kích thước: {fmtSize(fileSize)}</span>
+        <span>Kích thước: {formatBytes(fileSize)}</span>
         {createdAt && <span>Ngày tải lên: {new Date(createdAt).toLocaleDateString("vi-VN")}</span>}
       </div>
     </Card>

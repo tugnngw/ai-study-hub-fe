@@ -20,7 +20,7 @@ import {
   useSubjectsBySemester,
 } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
-import { cn } from "@/lib/utils";
+import { cn, formatBytes } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -395,7 +395,7 @@ function UploadDialog({
                       <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                       <span className="truncate">{f.name}</span>
                       <span className="text-xs text-muted-foreground shrink-0">
-                        ({(f.size / 1024 / 1024).toFixed(1)} MB)
+                        ({formatBytes(f.size)})
                       </span>
                     </span>
                     <button

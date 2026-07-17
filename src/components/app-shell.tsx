@@ -38,7 +38,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { cn } from "@/lib/utils";
+import { cn, formatBytes } from "@/lib/utils";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -51,14 +51,6 @@ const nav = [
   { to: "/premium", label: "Nâng cấp Premium", icon: Crown },
   { to: "/transactions", label: "Lịch sử giao dịch", icon: Receipt },
 ] as const;
-
-function formatBytes(n: number) {
-  if (!n) return "0 B";
-  if (n < 1024) return `${n} B`;
-  if (n < 1024 ** 2) return `${(n / 1024).toFixed(1)} KB`;
-  if (n < 1024 ** 3) return `${(n / 1024 ** 2).toFixed(1)} MB`;
-  return `${(n / 1024 ** 3).toFixed(2)} GB`;
-}
 
 const SIDEBAR_COLLAPSED_KEY = "ai-study-hub:sidebar-collapsed";
 

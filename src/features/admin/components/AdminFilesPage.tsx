@@ -1,4 +1,4 @@
-// src/features/admin/components/AdminFilesPage.tsx
+import { formatBytes } from "@/lib/utils";
 import React, { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search, AlertTriangle, Eye } from "lucide-react";
@@ -138,7 +138,7 @@ export const AdminFilesPage: React.FC = () => {
                               <div className="min-w-0">
                                 <p className="font-medium truncate">{d.title}</p>
                                 <p className="text-muted-foreground text-xs">
-                                  {d.fileSize ? `${(d.fileSize / 1024 / 1024).toFixed(2)} MB` : ""}
+                                  {formatBytes(d.fileSize)}
                                 </p>
                               </div>
                             </div>
@@ -164,7 +164,7 @@ export const AdminFilesPage: React.FC = () => {
                             )}
                           </TableCell>
                           <TableCell className="text-muted-foreground">
-                            {d.fileSize ? `${(d.fileSize / 1024).toFixed(1)} KB` : "-"}
+                            {formatBytes(d.fileSize)}
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
