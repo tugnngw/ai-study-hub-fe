@@ -14,7 +14,7 @@ import {
 import { useDashboard, useFolders, useSemesters } from "@/lib/queries";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
-import { cn } from "@/lib/utils";
+import { cn, formatBytes } from "@/lib/utils";
 import type { Subject, Folder } from "@/lib/types";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -42,12 +42,6 @@ function relativeTime(iso?: string) {
   if (hrs < 24) return `${hrs} giờ trước`;
   const days = Math.floor(hrs / 24);
   return `${days} ngày trước`;
-}
-
-function fmtSize(bytes?: number | null) {
-  if (!bytes) return "";
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)}kb`;
-  return `${(bytes / 1024 / 1024).toFixed(1)}mb`;
 }
 
 function Dashboard() {
@@ -193,7 +187,7 @@ function Dashboard() {
                   <div className="text-sm font-semibold truncate">{d.title}</div>
                   <div className="text-xs text-muted-foreground">
                     {(d.mimeType?.split("/").pop() ?? "FILE").toUpperCase()}
-                    {fmtSize(d.fileSize) ? ` · ${fmtSize(d.fileSize)}` : ""} ·{" "}
+                    {formatBytes(d.fileSize) ? ` · ${formatBytes(d.fileSize)}` : ""} ·{" "}
                     {relativeTime(d.createdAt)}
                   </div>
                 </div>
