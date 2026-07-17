@@ -89,6 +89,13 @@ export interface SubscriptionResponse {
   endDate?: string | null;
   status: string;
   pricePaid: number;
+  storageGbGranted?: number;
+  aiQuestionsGranted?: number;
+  flashcardLimitGranted?: number;
+  questionLimitGranted?: number;
+  summaryLimitGranted?: number;
+  chatLimitGranted?: number;
+  tierGranted?: number;
   daysRemaining?: number;
 }
 
