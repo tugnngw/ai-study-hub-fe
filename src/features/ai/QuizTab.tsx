@@ -26,13 +26,15 @@ export function QuizTab({ docs, docId }: Props) {
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
-      <div className="flex-1 overflow-y-auto p-6">
-        <QuizViewer
-          quizzes={quizQuery.data ?? []}
-          isLoading={quizQuery.isLoading}
-        />
+      <div className="flex-1 overflow-y-auto px-4 pt-4 pb-2 lg:px-6 lg:pt-6">
+        <div className="max-w-5xl mx-auto">
+          <QuizViewer
+            quizzes={quizQuery.data ?? []}
+            isLoading={quizQuery.isLoading}
+          />
+        </div>
       </div>
-      <div className="p-4 border-t border-border space-y-3">
+      <div className="px-4 pb-2 pt-2 border-t border-border space-y-2">
         <QuotaDisplay />
         <div className="flex items-center gap-3">
           <label className="text-sm font-medium shrink-0">Questions:</label>
