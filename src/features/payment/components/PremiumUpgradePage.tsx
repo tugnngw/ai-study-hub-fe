@@ -141,8 +141,6 @@ export function PremiumUpgradePage() {
         setQrCodeModal(true);
         setCountdown(180);
         setSelected(null); // Đóng dialog cũ
-        // Tự động mở trang thanh toán
-        window.open(url, "_blank", "noopener,noreferrer");
       }
     } catch (e) {
       toast.error("Lỗi tạo link thanh toán");
@@ -205,12 +203,33 @@ export function PremiumUpgradePage() {
         } catch (e) {
           console.error("Error checking subscription status", e);
         }
-      }, 30000); // Polling mỗi 30 giây
+      }, 5000); // Polling mỗi 5 giây
+
+      // Khi tab được focus lại (sau khi thanh toán xong), check ngay
+      const onVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+          accountApi.me().then(u => {
+            if (u && u.plan && String(u.plan).toUpperCase() !== currentPlan) {
+              clearInterval(timer);
+              clearInterval(poller);
+              setQrCodeModal(false);
+              setPaymentInfo(null);
+              reloadUser().then(() => {
+                toast.success("Thanh toán thành công! Gói đã được cập nhật.");
+                refresh();
+              });
+            }
+          }).catch(() => {});
+        }
+      };
+      document.addEventListener('visibilitychange', onVisibilityChange);
+
+      return () => {
+        clearInterval(timer);
+        clearInterval(poller);
+        document.removeEventListener('visibilitychange', onVisibilityChange);
+      };
     }
-    return () => {
-      clearInterval(timer);
-      clearInterval(poller);
-    };
   }, [qrCodeModal, paymentInfo, currentPlan]);
 
   const formatCountdown = (seconds: number) => {
@@ -332,18 +351,18 @@ export function PremiumUpgradePage() {
                   <li className="flex items-center gap-2 text-sm">
                     <Check className="h-4 w-4 text-emerald-600 shrink-0" />{" "}
                     {p.flashcardLimit === -1
-                      ? "Không giới hạn flashcards"
+                      ? "Không giới hạn tạo flashcard"
                       : p.flashcardLimit === 0
-                      ? "Không có flashcards"
-                      : `${p.flashcardLimit} flashcards`}
+                      ? "Không có flashcard"
+                      : `Tạo flashcard: ${p.flashcardLimit} lượt`}
                   </li>
                   <li className="flex items-center gap-2 text-sm">
                     <Check className="h-4 w-4 text-emerald-600 shrink-0" />{" "}
                     {p.questionLimit === -1
-                      ? "Không giới hạn câu hỏi quiz"
+                      ? "Không giới hạn tạo quiz"
                       : p.questionLimit === 0
                       ? "Không có quiz"
-                      : `${p.questionLimit} câu hỏi quiz`}
+                      : `Tạo quiz: ${p.questionLimit} lượt`}
                   </li>
                   <li className="flex items-center gap-2 text-sm">
                     <Check className="h-4 w-4 text-emerald-600 shrink-0" />{" "}
@@ -351,7 +370,7 @@ export function PremiumUpgradePage() {
                       ? "Không giới hạn tóm tắt"
                       : p.summaryLimit === 0
                       ? "Không có tóm tắt"
-                      : `${p.summaryLimit} tóm tắt AI`}
+                      : `Tóm tắt: ${p.summaryLimit} lượt`}
                   </li>
                 </ul>
 
@@ -462,6 +481,10 @@ export function PremiumUpgradePage() {
             <DialogTitle className="flex items-center gap-2 text-primary">
               <QrCode className="h-5 w-5" /> Thanh toán QR
             </DialogTitle>
+            <DialogDescription>
+              Quét mã QR bằng app ngân hàng hoặc bấm nút bên dưới để mở trang thanh toán.
+              Sau khi thanh toán xong, quay lại tab này để tiếp tục.
+            </DialogDescription>
           </DialogHeader>
 
           <div className="flex flex-col items-center gap-4 py-4">
@@ -470,9 +493,7 @@ export function PremiumUpgradePage() {
                 <Clock className="h-8 w-8" />
                 {formatCountdown(countdown)}
               </div>
-               <p className="text-sm text-muted-foreground mt-2">
-                  Quét mã QR bằng app ngân hàng hoặc mở link bên dưới
-                </p>
+               <p className="text-xs text-muted-foreground mt-1">Tự động kiểm tra sau 5 giây</p>
             </div>
             <div className="border p-2 rounded-lg bg-white">
               {paymentInfo?.checkoutUrl && (
@@ -484,12 +505,15 @@ export function PremiumUpgradePage() {
               )}
             </div>
             <Button
-              variant="outline"
-              className="w-full"
+              variant="default"
+              className="w-full gap-2"
               onClick={() => window.open(paymentInfo?.checkoutUrl, "_blank")}
             >
-              <ExternalLink className="h-4 w-4 mr-2" /> Mở trang thanh toán
+              <ExternalLink className="h-4 w-4" /> Mở trang thanh toán
             </Button>
+            <p className="text-xs text-muted-foreground text-center max-w-xs">
+              Sau khi thanh toán thành công, trang sẽ tự động cập nhật. Nếu không thấy, bấm nút "Làm mới" bên trên.
+            </p>
           </div>
         </DialogContent>
       </Dialog>

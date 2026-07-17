@@ -226,7 +226,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
 
           <div className="grid grid-cols-4 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="flashcardLimit">Flashcard *</Label>
+              <Label htmlFor="flashcardLimit">Flashcard (lượt) *</Label>
               <Input
                 id="flashcardLimit"
                 type="number"
@@ -236,7 +236,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="questionLimit">Giới hạn Quiz *</Label>
+              <Label htmlFor="questionLimit">Quiz (lượt) *</Label>
               <Input
                 id="questionLimit"
                 type="number"
@@ -246,7 +246,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="summaryLimit">Tóm tắt *</Label>
+              <Label htmlFor="summaryLimit">Tóm tắt (lượt) *</Label>
               <Input
                 id="summaryLimit"
                 type="number"

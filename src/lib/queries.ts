@@ -547,8 +547,12 @@ export function useDeleteRagSession() {
 }
 
 export function useRagChat() {
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: import("./types").AskRequest) => ragApi.chat(input),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["quota"] });
+    },
   });
 }
 
