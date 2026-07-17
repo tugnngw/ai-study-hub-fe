@@ -4,18 +4,12 @@ import { useDocuments } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/lib/auth";
+import { formatBytes } from "@/lib/utils";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/_authenticated/cloud")({
   component: CloudPage,
 });
-
-function formatBytes(n: number) {
-  if (n < 1024) return `${n} B`;
-  if (n < 1024 ** 2) return `${(n / 1024).toFixed(2)} KB`;
-  if (n < 1024 ** 3) return `${(n / 1024 ** 2).toFixed(2)} MB`;
-  return `${(n / 1024 ** 3).toFixed(2)} GB`;
-}
 
 function CloudPage() {
   const docs = useDocuments();

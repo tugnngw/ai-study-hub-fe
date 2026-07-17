@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { FileText, X, Loader2, GraduationCap, BookOpen, FolderKanban, Upload } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatBytes } from "@/lib/utils";
 import {
   useFolders,
   useSubjectsBySemester,
@@ -187,7 +187,7 @@ export function UploadDocumentDialog({
                       <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
                       <span className="truncate">{f.name}</span>
                       <span className="text-xs text-muted-foreground shrink-0">
-                        ({(f.size / 1024 / 1024).toFixed(1)} MB)
+                        ({formatBytes(f.size)})
                       </span>
                     </span>
                     <button
