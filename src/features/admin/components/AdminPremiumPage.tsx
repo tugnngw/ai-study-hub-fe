@@ -150,7 +150,10 @@ function PlanConfigCard() {
                 <TableHead>Giá</TableHead>
                 <TableHead>Thời hạn</TableHead>
                 <TableHead>Lưu trữ</TableHead>
-                <TableHead>Câu hỏi AI</TableHead>
+                <TableHead>AI Chat</TableHead>
+                <TableHead>Quiz</TableHead>
+                <TableHead>Flashcard</TableHead>
+                <TableHead>Tóm tắt</TableHead>
                 <TableHead>Trạng thái</TableHead>
                 <TableHead className="text-right">Hành động</TableHead>
               </TableRow>
@@ -158,13 +161,13 @@ function PlanConfigCard() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-20 text-center">
+                  <TableCell colSpan={9} className="h-20 text-center">
                     <Loader2 className="h-5 w-5 animate-spin mx-auto text-primary" />
                   </TableCell>
                 </TableRow>
               ) : (plans ?? []).length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-20 text-center text-muted-foreground">
+                  <TableCell colSpan={9} className="h-20 text-center text-muted-foreground">
                     Chưa có gói nào
                   </TableCell>
                 </TableRow>
@@ -181,11 +184,20 @@ function PlanConfigCard() {
                     </TableCell>
                     <TableCell>{fmtVnd(p.price)}</TableCell>
                     <TableCell>
-                      {p.durationDays === 0 ? "Vĩnh viễn" : p.durationDays ? `${p.durationDays} ngày` : "—"}
+                      {p.durationDays === 0 || p.durationDays === -1 ? "Vĩnh viễn" : p.durationDays ? `${p.durationDays} ngày` : "—"}
                     </TableCell>
                     <TableCell>{formatStorage(p.storageGb)}</TableCell>
                     <TableCell>
-                      {p.aiQuestions == null ? "—" : p.aiQuestions > 9999 ? "Không giới hạn" : p.aiQuestions}
+                      {p.chatLimit == null ? "—" : p.chatLimit > 9999 ? "Không giới hạn" : p.chatLimit}
+                    </TableCell>
+                    <TableCell>
+                      {p.questionLimit == null ? "—" : p.questionLimit > 9999 ? "Không giới hạn" : p.questionLimit}
+                    </TableCell>
+                    <TableCell>
+                      {p.flashcardLimit == null ? "—" : p.flashcardLimit > 9999 ? "Không giới hạn" : p.flashcardLimit}
+                    </TableCell>
+                    <TableCell>
+                      {p.summaryLimit == null ? "—" : p.summaryLimit > 9999 ? "Không giới hạn" : p.summaryLimit}
                     </TableCell>
                     <TableCell>
                       <Badge

@@ -82,7 +82,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
   const validateForm = (): { valid: boolean; message?: string } => {
     if (!name.trim()) return { valid: false, message: "Tên gói không được để trống" };
     if (price < 0) return { valid: false, message: "Giá không được nhỏ hơn 0" };
-    if (durationDays < -1) return { valid: false, message: "Thời hạn không được nhỏ hơn 0 ngày (0 là vĩnh viễn)" };
+    if (durationDays < -1) return { valid: false, message: "Thời hạn không được nhỏ hơn -1 (-1 là vĩnh viễn)" };
     if (storageValue < 0) return { valid: false, message: "Dung lượng không được nhỏ hơn 0" };
     if (aiQuestions < 0) return { valid: false, message: "Số câu hỏi AI không được nhỏ hơn 0" };
     if (flashcardLimit < -1) return { valid: false, message: "Giới hạn flashcard không hợp lệ" };
@@ -208,7 +208,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="aiQuestions">Số câu hỏi AI *</Label>
+            <Label htmlFor="aiQuestions">Quiz (số câu) *</Label>
             <Input
               id="aiQuestions"
               type="number"
@@ -230,7 +230,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="questionLimit">Câu hỏi *</Label>
+              <Label htmlFor="questionLimit">Giới hạn Quiz *</Label>
               <Input
                 id="questionLimit"
                 type="number"
@@ -250,7 +250,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="chatLimit">Chat *</Label>
+              <Label htmlFor="chatLimit">AI Chat (số lần) *</Label>
               <Input
                 id="chatLimit"
                 type="number"
