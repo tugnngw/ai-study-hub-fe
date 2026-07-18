@@ -11,12 +11,14 @@ import {
   CheckCircle2,
   XCircle,
   AlertCircle,
+  Flag,
 } from "lucide-react";
 import { DocumentViewer } from "@/components/document-viewer";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useFolders } from "@/lib/queries";
+import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import {
   Dialog,
   DialogContent,
@@ -64,6 +66,9 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
   const [saveTitle, setSaveTitle] = useState("");
   const [saveDesc, setSaveDesc] = useState("");
   const [saveResult, setSaveResult] = useState<SaveToFolderResponse | null>(null);
+  const [reportOpen, setReportOpen] = useState(false);
+  const [reportDocId, setReportDocId] = useState("");
+  const [reportDocTitle, setReportDocTitle] = useState("");
 
   const openDoc = (id: string) => {
     navigate({
@@ -142,19 +147,32 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
               .map((d: any) => {
                 const active = d.id === docId;
                 return (
-                  <button
-                    key={d.id}
-                    onClick={() => openDoc(d.id)}
-                    className={cn(
-                      "flex items-center gap-2 text-sm px-2.5 py-2 rounded-lg transition-colors w-full text-left",
-                      active
-                        ? "bg-gradient-brand text-white font-medium shadow-soft"
-                        : "hover:bg-accent text-foreground/90",
-                    )}
-                  >
-                    <FileText className="h-3.5 w-3.5 shrink-0" />
-                    <span className="truncate">{d.title}</span>
-                  </button>
+                  <div key={d.id} className="flex items-center gap-1 group">
+                    <button
+                      onClick={() => openDoc(d.id)}
+                      className={cn(
+                        "flex items-center gap-2 text-sm px-2.5 py-2 rounded-lg transition-colors flex-1 min-w-0 text-left",
+                        active
+                          ? "bg-gradient-brand text-white font-medium shadow-soft"
+                          : "hover:bg-accent text-foreground/90",
+                      )}
+                    >
+                      <FileText className="h-3.5 w-3.5 shrink-0" />
+                      <span className="truncate">{d.title}</span>
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setReportDocId(d.id);
+                        setReportDocTitle(d.title);
+                        setReportOpen(true);
+                      }}
+                      className="h-7 w-7 shrink-0 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-red-500/10 hover:text-red-500 transition-all"
+                      title="Báo cáo"
+                    >
+                      <Flag className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 );
               })}
             {!docsQuery.isLoading && docs.length === 0 && (
@@ -333,6 +351,13 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
           )}
         </DialogContent>
       </Dialog>
+
+      <ReportDocumentDialog
+        open={reportOpen}
+        onOpenChange={setReportOpen}
+        documentId={reportDocId}
+        documentTitle={reportDocTitle}
+      />
     </div>
   );
 }
