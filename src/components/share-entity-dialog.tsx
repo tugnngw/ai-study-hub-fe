@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Check, Copy, Users, FolderKanban, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { useShareFolder, useOwnedShares } from "@/lib/queries";
-import { API_BASE } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,10 +46,15 @@ export function ShareEntityDialog({
     }
   }, [open]);
 
-  // Liên kết chia sẻ trỏ tới route xem tài nguyên được chia sẻ.
-  const link = isFolder
-    ? `${API_BASE}/shared/folder/${targetId}`
-    : `${API_BASE}/shared/document/${targetId}`;
+  // Lấy shareToken từ kết quả chia sẻ gần nhất (ưu tiên) hoặc danh sách shares
+  const matchingShare = (shares ?? []).find((s) =>
+    isFolder ? s.folderId === targetId : s.documentId === targetId,
+  );
+  const shareToken = share.data?.shareToken ?? matchingShare?.shareToken ?? "";
+  // Liên kết chia sẻ trỏ tới frontend route /shared/{shareToken}
+  const link = shareToken
+    ? `${window.location.origin}/shared/${shareToken}`
+    : "";
 
   // Lọc danh sách người đã được chia sẻ đúng tài nguyên đang thao tác.
   const relevantShares = (shares ?? []).filter((s) =>

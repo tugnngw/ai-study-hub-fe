@@ -45,7 +45,7 @@ export function AISummary({ docId, onGenerate, isGenerating, summary }: Props) {
             <p className="text-sm text-muted-foreground">Preparing knowledge...</p>
           </div>
         ) : summary ? (
-          <div className="prose prose-base dark:prose-invert max-w-none">
+          <div className="prose prose-lg dark:prose-invert max-w-none">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{summary}</ReactMarkdown>
           </div>
         ) : (

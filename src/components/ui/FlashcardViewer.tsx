@@ -82,16 +82,16 @@ export function FlashcardViewer({ flashcards, isLoading }: Props) {
         </button>
       </div>
 
-      <div className="perspective w-full max-w-lg cursor-pointer select-none" onClick={toggleFlip} style={{ height: 260 }}>
+      <div className="perspective w-full max-w-2xl cursor-pointer select-none" onClick={toggleFlip} style={{ height: 320 }}>
         <div className="relative w-full h-full transition-transform duration-500" style={{ transformStyle: "preserve-3d", transform: isFlipped ? "rotateY(180deg)" : "rotateY(0deg)" }}>
-          <div className="absolute inset-0 rounded-2xl shadow-xl flex flex-col items-center justify-center p-8 text-center" style={{ backfaceVisibility: "hidden", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}>
+          <div className="absolute inset-0 rounded-2xl shadow-xl flex flex-col items-center justify-center p-10 text-center" style={{ backfaceVisibility: "hidden", background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" }}>
             <p className="text-white/60 text-xs font-medium uppercase tracking-widest mb-4">Definition</p>
-            <p className="text-white text-xl font-semibold leading-relaxed">{current?.frontContent}</p>
+            <p className="text-white text-2xl font-semibold leading-relaxed">{current?.frontContent}</p>
             <p className="text-white/40 text-xs mt-6">Tap to reveal</p>
           </div>
-          <div className="absolute inset-0 rounded-2xl shadow-xl flex flex-col items-center justify-center p-8 text-center" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" }}>
+          <div className="absolute inset-0 rounded-2xl shadow-xl flex flex-col items-center justify-center p-10 text-center" style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)", background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" }}>
             <p className="text-white/60 text-xs font-medium uppercase tracking-widest mb-4">Answer</p>
-            <p className="text-white text-xl font-semibold leading-relaxed">{current?.backContent}</p>
+            <p className="text-white text-2xl font-semibold leading-relaxed">{current?.backContent}</p>
           </div>
         </div>
       </div>

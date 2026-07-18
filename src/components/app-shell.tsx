@@ -118,7 +118,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const isFolderDetail = pathname.startsWith("/folders/") || pathname.startsWith("/documents/") || pathname.startsWith("/ai");
 
   return (
-      <div className="min-h-screen flex">
+      <div className="h-dvh flex">
         {/* Sidebar */}
         <aside className={cn(
             "hidden md:flex md:flex-col shrink-0 border-r border-border bg-sidebar/80 backdrop-blur-xl sticky top-0 h-screen transition-all duration-300",
@@ -185,7 +185,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </aside>
 
         {/* Main */}
-        <div className="flex-1 min-w-0 flex flex-col">
+        <div className="flex-1 min-w-0 flex flex-col min-h-0">
           {/* Top bar */}
           <header className="h-16 border-b border-border/60 bg-background/70 backdrop-blur-xl flex items-center px-4 md:px-6 gap-3 sticky top-0 z-30">
             <Link to="/dashboard" className="md:hidden flex items-center gap-2">
@@ -344,11 +344,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
 
           {/* Content */}
-          <main className="flex-1 min-w-0 flex flex-col">
+          <main className="flex-1 min-w-0 flex flex-col min-h-0">
             {isFolderDetail ? (
-                children
+                <div className="flex-1 min-h-0 overflow-hidden">{children}</div>
             ) : (
-                <div className="px-6 md:px-8 lg:px-10 py-6 lg:py-8 max-w-screen-2xl mx-auto w-full">{children}</div>
+                <div className="px-6 md:px-8 lg:px-10 py-6 lg:py-8 max-w-screen-2xl mx-auto w-full overflow-y-auto">{children}</div>
             )}
           </main>
         </div>
