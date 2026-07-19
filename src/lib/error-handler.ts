@@ -11,13 +11,19 @@ export function handleApiError(err: unknown, fallbackMsg = "Đã có lỗi xảy
 
   // Không spam toast với các lỗi network thông thường
 <<<<<<< HEAD
+<<<<<<< HEAD
   if (message?.toLowerCase().includes("fetch") || message === "Failed to fetch") {
 =======
+=======
+>>>>>>> origin/final/demo-v1
   if (
     message?.toLowerCase().includes("fetch") ||
     message === "Failed to fetch"
   ) {
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     toast.error("Không thể kết nối đến server. Vui lòng kiểm tra mạng.");
   } else {
     toast.error(message);

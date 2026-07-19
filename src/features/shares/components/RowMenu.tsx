@@ -2,13 +2,19 @@
 import { MoreHorizontal } from "lucide-react";
 import {
 <<<<<<< HEAD
+<<<<<<< HEAD
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 =======
+=======
+>>>>>>> origin/final/demo-v1
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
@@ -33,10 +39,13 @@ export function RowMenu({ items }: { items: MenuAction[] }) {
             key={it.label}
             onClick={it.onClick}
 <<<<<<< HEAD
+<<<<<<< HEAD
             className={cn("cursor-pointer", it.danger && "text-destructive focus:text-destructive")}
           >
             {it.icon}<span className="ml-2">{it.label}</span>
 =======
+=======
+>>>>>>> origin/final/demo-v1
             className={cn(
               "cursor-pointer",
               it.danger && "text-destructive focus:text-destructive",
@@ -44,7 +53,10 @@ export function RowMenu({ items }: { items: MenuAction[] }) {
           >
             {it.icon}
             <span className="ml-2">{it.label}</span>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

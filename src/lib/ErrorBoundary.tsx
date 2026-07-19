@@ -28,6 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       return this.props.fallback || (
         <div className="min-h-screen flex items-center justify-center bg-background">
           <div className="max-w-md text-center">
@@ -46,6 +47,8 @@ export class ErrorBoundary extends Component<Props, State> {
           </div>
         </div>
 =======
+=======
+>>>>>>> origin/final/demo-v1
       return (
         this.props.fallback || (
           <div className="min-h-screen flex items-center justify-center bg-background">
@@ -65,7 +68,10 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
           </div>
         )
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       );
     }
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -57,6 +58,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDocuments, useFolders, useSharedDocuments } from "@/lib/queries";
+=======
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
+import { toast } from "sonner";
+import { FileText, FolderKanban, Share2, Pencil, Save, X, Crown } from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useDocuments, useFolders, useSharedDocuments } from "@/lib/queries";
+import { remainingDaysUntil } from "@/features/payment/proration";
+>>>>>>> origin/final/demo-v1
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: ProfilePage,
@@ -74,6 +88,7 @@ function ProfilePage() {
       fullName: user?.fullName ?? "",
       username: user?.username ?? "",
       email: user?.email ?? "",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -104,6 +119,8 @@ function ProfilePage() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     }),
     [user],
   );
@@ -112,6 +129,11 @@ function ProfilePage() {
   const update = (k: keyof typeof form, v: string) =>
     setForm((p) => ({ ...p, [k]: v }));
 
+<<<<<<< HEAD
+=======
+  const planRemainingDays = remainingDaysUntil(user?.planExpiresAt);
+
+>>>>>>> origin/final/demo-v1
   const save = (e: React.FormEvent) => {
     e.preventDefault();
     toast.success("Đã cập nhật hồ sơ");
@@ -132,6 +154,7 @@ function ProfilePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -144,6 +167,8 @@ function ProfilePage() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     {
       label: "Tài liệu",
       value: docs.data?.length ?? 0,
@@ -165,7 +190,11 @@ function ProfilePage() {
   ];
 
   return (
+<<<<<<< HEAD
     <div className="space-y-6 max-w-3xl">
+=======
+    <div className="space-y-6 max-w-5xl">
+>>>>>>> origin/final/demo-v1
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Hồ sơ</h1>
@@ -203,6 +232,47 @@ function ProfilePage() {
         ))}
       </div>
 
+<<<<<<< HEAD
+=======
+      {/* Gói hiện tại + hạn dùng */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Crown className="h-4 w-4 text-primary" /> Gói dịch vụ
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-wrap items-center gap-x-10 gap-y-3">
+          <div>
+            <div className="text-xs text-muted-foreground">Gói hiện tại</div>
+            <div className="font-semibold text-lg">
+              {String(user?.plan ?? "FREE").toUpperCase()}
+            </div>
+          </div>
+          <div>
+            <div className="text-xs text-muted-foreground">Ngày hết hạn</div>
+            <div className="font-semibold">
+              {planRemainingDays > 0
+                ? new Date(user?.planExpiresAt as string).toLocaleDateString("vi-VN")
+                : "Không giới hạn (Free)"}
+            </div>
+          </div>
+          {planRemainingDays > 0 && (
+            <div>
+              <div className="text-xs text-muted-foreground">Còn lại</div>
+              <div className="font-semibold text-primary">
+                {planRemainingDays} ngày
+              </div>
+            </div>
+          )}
+          <div className="ml-auto">
+            <Button asChild variant="outline" size="sm">
+              <Link to="/premium">Quản lý gói</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+>>>>>>> origin/final/demo-v1
       <form onSubmit={save}>
         <Card>
           <CardHeader>
@@ -223,6 +293,7 @@ function ProfilePage() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Họ và tên</Label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -297,12 +368,15 @@ function ProfilePage() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
                 <Input
                   value={form.fullName}
                   onChange={(e) => update("fullName", e.target.value)}
                   disabled={!editing}
                 />
               </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -323,6 +397,8 @@ function ProfilePage() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
               <div className="space-y-2">
                 <Label>Tên đăng nhập</Label>
                 <Input
@@ -333,6 +409,7 @@ function ProfilePage() {
               </div>
               <div className="space-y-2">
                 <Label>Email</Label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -359,6 +436,8 @@ function ProfilePage() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
                 <Input
                   type="email"
                   value={form.email}
@@ -366,6 +445,7 @@ function ProfilePage() {
                   disabled={!editing}
                 />
               </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -386,6 +466,8 @@ function ProfilePage() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
             </div>
           </CardContent>
         </Card>
@@ -404,6 +486,7 @@ function ProfilePage() {
     </div>
   );
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -493,3 +576,5 @@ function ProfilePage() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1

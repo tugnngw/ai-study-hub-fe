@@ -4,10 +4,14 @@
 export interface Quiz {
   id: number;
 <<<<<<< HEAD
+<<<<<<< HEAD
   documentId: number;
 =======
   documentId: string;
 >>>>>>> origin/Flashcars
+=======
+  documentId: string;
+>>>>>>> origin/final/demo-v1
   questions: QuizQuestion[];
   createdAt: string;
 }
@@ -22,6 +26,7 @@ export interface QuizQuestion {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/Flashcards-fix
@@ -31,13 +36,18 @@ export interface QuizQuestion {
 // ── Tùy chọn khởi tạo Quiz (UI) ────────────────────────
 export type QuizQuestionType = "multiple_choice" | "true_false" | "multiple_answer";
 =======
+=======
+>>>>>>> origin/final/demo-v1
 
 // ── Tùy chọn khởi tạo Quiz (UI) ────────────────────────
 export type QuizQuestionType =
   | "multiple_choice"
   | "true_false"
   | "multiple_answer";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
 export interface QuizGenerateOptions {
   // "all" = dùng toàn bộ tài liệu trong thư mục; hoặc 1 documentId cụ thể
@@ -51,6 +61,7 @@ export interface QuizItem {
   id: number;
   type: QuizQuestionType;
   question: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
   options: string[];          // true_false: ["Đúng","Sai"]
   correctAnswers: number[];   // multiple_answer có thể >1 index
@@ -67,3 +78,8 @@ export interface QuizItem {
   correctAnswers: number[]; // multiple_answer có thể >1 index
 }
 >>>>>>> origin/Flashcars
+=======
+  options: string[]; // true_false: ["Đúng","Sai"]
+  correctAnswers: number[]; // multiple_answer có thể >1 index
+}
+>>>>>>> origin/final/demo-v1

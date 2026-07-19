@@ -34,6 +34,7 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     const onSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       const parsed = schema.safeParse(form);
@@ -59,6 +60,8 @@ function LoginPage() {
     };
 
 =======
+=======
+>>>>>>> origin/final/demo-v1
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const parsed = schema.safeParse(form);
@@ -82,7 +85,10 @@ function LoginPage() {
       setLoading(false);
     }
   };
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
   const onSocialLogin = (provider: string) => {
     window.location.href = `${import.meta.env.VITE_API_BASE}/oauth2/authorization/google`;

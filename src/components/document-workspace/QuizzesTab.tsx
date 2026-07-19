@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/components/document-workspace/QuizzesTab.tsx
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -9,11 +10,16 @@ import { Sparkles, RotateCw, Check, X } from "lucide-react";
 import { Check, RotateCw, Sparkles, X } from "lucide-react";
 import { useMemo, useState } from "react";
 >>>>>>> origin/Flashcars
+=======
+import { Check, RotateCw, Sparkles, X } from "lucide-react";
+import { useMemo, useState } from "react";
+>>>>>>> origin/final/demo-v1
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface Quiz {
+<<<<<<< HEAD
 <<<<<<< HEAD
   q: string;
   options: string[];
@@ -394,6 +400,8 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
   );
 }
 =======
+=======
+>>>>>>> origin/final/demo-v1
     q: string;
     options: string[];
     answer: number;
@@ -538,5 +546,9 @@ export function QuizzesTab({ title }: { title: string }) {
             </div>
         </div>
     );
+<<<<<<< HEAD
 }
 >>>>>>> origin/Flashcars
+=======
+}
+>>>>>>> origin/final/demo-v1

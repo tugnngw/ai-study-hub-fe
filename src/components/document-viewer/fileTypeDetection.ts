@@ -11,6 +11,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
 =======
 export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
@@ -36,6 +37,9 @@ export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported"
 =======
 export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
 >>>>>>> origin/Flashcars
+=======
+export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
+>>>>>>> origin/final/demo-v1
 
 interface MimeTypeMap {
   [key: string]: SupportedFileType;
@@ -50,6 +54,7 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -62,11 +67,14 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   // PDF
   "application/pdf": "pdf",
   "application/x-pdf": "pdf",
 
   // DOCX
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -95,10 +103,13 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
     "docx",
   "application/msword": "docx",
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -119,6 +130,8 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   // TXT
   "text/plain": "txt",
   "text/x-plain": "txt",
@@ -154,6 +167,7 @@ const EXTENSION_MAP: MimeTypeMap = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -183,6 +197,8 @@ const EXTENSION_MAP: MimeTypeMap = {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 };
 
 /**
@@ -261,6 +277,7 @@ export function getTypeLabel(type: SupportedFileType): string {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     image: "Image",
 >>>>>>> origin/AI-Study-fix
@@ -280,6 +297,8 @@ export function getTypeLabel(type: SupportedFileType): string {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     unsupported: "Unsupported File",
   };
   return labels[type];

@@ -16,6 +16,7 @@ import { Toaster } from "@/components/ui/sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { ThemeProvider, themeInitScript } from "@/lib/theme";
 >>>>>>> origin/Flashcards-fix
@@ -25,6 +26,9 @@ import { ThemeProvider, themeInitScript } from "@/lib/theme";
 =======
 import { ThemeProvider, themeInitScript } from "@/lib/theme";
 >>>>>>> origin/Flashcars
+=======
+import { ThemeProvider, themeInitScript } from "@/lib/theme";
+>>>>>>> origin/final/demo-v1
 
 function NotFoundComponent() {
   return (
@@ -139,6 +143,7 @@ function RootShell({ children }: { children: ReactNode }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <html lang="en">
       <head>
         <HeadContent />
@@ -147,10 +152,13 @@ function RootShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
@@ -158,6 +166,8 @@ function RootShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       </head>
       <body>
         {children}
@@ -177,6 +187,7 @@ function RootComponent() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <AuthProvider>
           <Outlet />
           <Toaster richColors position="top-right" />
@@ -186,6 +197,8 @@ function RootComponent() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
         <ThemeProvider>
           <AuthProvider>
             <Outlet />
@@ -194,11 +207,14 @@ function RootComponent() {
         </ThemeProvider>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       </QueryClientProvider>
     </ErrorBoundary>
   );

@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 // Layouts
@@ -152,6 +153,11 @@ import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 >>>>>>> origin/Flashcars
+=======
+import { QueryClient } from "@tanstack/react-query";
+import { createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+>>>>>>> origin/final/demo-v1
 export const getRouter = () => {
   const queryClient = new QueryClient();
 
@@ -164,6 +170,7 @@ export const getRouter = () => {
 
   return router;
 };
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -192,3 +199,5 @@ export const getRouter = () => {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1

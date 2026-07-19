@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/components/document-workspace/ChatPanel.tsx
 // AI Chat panel with message history, typing indicator, Enter to send
 
@@ -108,6 +109,8 @@ export function ChatPanel({ docId, docTitle }: { docId?: number; docTitle: strin
   );
 }
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { Send, Sparkles } from "lucide-react";
 import { forwardRef, RefObject } from "react";
 import { toast } from "sonner";
@@ -250,5 +253,9 @@ export const ChatPanel = forwardRef<
         </aside>
     );
 });
+<<<<<<< HEAD
 ChatPanel.displayName = "ChatPanel";
 >>>>>>> origin/Flashcars
+=======
+ChatPanel.displayName = "ChatPanel";
+>>>>>>> origin/final/demo-v1

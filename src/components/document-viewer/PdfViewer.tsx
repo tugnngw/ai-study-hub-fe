@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Enhanced PDF viewer with drag-to-pan, smooth zoom, scroll-based navigation
 =======
 >>>>>>> origin/AI-Study-fix
@@ -52,10 +53,15 @@ import * as pdfjsLib from "pdfjs-dist";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 >>>>>>> origin/Flashcars
+=======
+
+import React, { useState, useEffect, useRef } from "react";
+>>>>>>> origin/final/demo-v1
 import {
   Loader2,
   Download,
   ExternalLink,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -115,6 +121,8 @@ import {
 =======
 >>>>>>> origin/Flashcars
   RotateCw,
+=======
+>>>>>>> origin/final/demo-v1
   ZoomIn,
   ZoomOut,
   Maximize2,
@@ -123,6 +131,7 @@ import {
   Hand,
   MousePointer2,
   FileText,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
@@ -140,11 +149,14 @@ import {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -205,10 +217,16 @@ import { API_BASE } from "@/lib/api";
 import { tokenStore } from "@/lib/api";
 
 >>>>>>> origin/Flashcars
+=======
+import { API_BASE } from "@/lib/api";
+import { tokenStore } from "@/lib/api";
+
+>>>>>>> origin/final/demo-v1
 interface PdfViewerProps {
   url: string;
   fileName?: string;
   className?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -255,11 +273,21 @@ interface PdfViewerProps {
 }
 
 >>>>>>> origin/admin-added-fix
+=======
+  documentId?: string;
+  fileSize?: number | null;
+  mimeType?: string | null;
+  totalPages?: number | null;
+  createdAt?: string;
+}
+
+>>>>>>> origin/final/demo-v1
 export const PdfViewer: React.FC<PdfViewerProps> = ({
   url,
   fileName = "document.pdf",
   className,
   documentId,
+<<<<<<< HEAD
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -408,6 +436,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                                                       className,
                                                       documentId,
                                                     }) => {
+=======
+  fileSize,
+  mimeType,
+  totalPages,
+  createdAt,
+}) => {
+>>>>>>> origin/final/demo-v1
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -415,6 +450,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   const [pdfDoc, setPdfDoc] = useState<any>(null);
   const [pageNum, setPageNum] = useState(1);
   const [numPages, setNumPages] = useState<number | null>(null);
+<<<<<<< HEAD
   const [renderError, setRenderError] = useState(false);
   const renderTaskRef = React.useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -423,6 +459,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [scrollStart, setScrollStart] = useState({ left: 0, top: 0 });
+=======
+  const [isPanMode, setIsPanMode] = useState(true);
+  const renderTaskRef = React.useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  const [scaledCanvasW, setScaledCanvasW] = useState(0);
+>>>>>>> origin/final/demo-v1
 
   // Load PDF.js library dynamically
   useEffect(() => {
@@ -441,12 +484,16 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
       setLoading(true);
       setError(null);
       setPdfUrl(null);
+<<<<<<< HEAD
       setRenderError(false);
+=======
+>>>>>>> origin/final/demo-v1
 
       try {
         const token = tokenStore.get();
         let blob: Blob | null = null;
 
+<<<<<<< HEAD
         // Step 1: Try backend download API
         if (documentId) {
           console.log("[PdfViewer] Step 1: Backend download API for doc", documentId);
@@ -474,10 +521,21 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+        if (documentId) {
+          try {
+            const downloadResp = await fetch(
+              `${API_BASE}/api/documents/${documentId}/download`,
+              {
+                method: "GET",
+                headers: { Authorization: `Bearer ${token}` },
+              }
+>>>>>>> origin/final/demo-v1
             );
 
             if (downloadResp.ok) {
               const ct = downloadResp.headers.get("content-type") || "";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -647,44 +705,85 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
               }
             } else {
               console.warn("[PdfViewer] API failed:", downloadResp.status);
+=======
+
+              if (ct.includes("json") || ct.includes("text")) {
+                const text = await downloadResp.text();
+                try {
+                  const data = JSON.parse(text);
+                  const signedUrl = data?.url || data?.data?.url || data?.signedUrl || data?.cloudinaryUrl;
+                  if (signedUrl) {
+                    const pdfResp = await fetch(signedUrl, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
+                    if (pdfResp.ok) {
+                      const b = await pdfResp.blob();
+                      if (b.size > 0) blob = b;
+                    }
+                  }
+                } catch {
+                  const b = new Blob([text], { type: "application/pdf" });
+                  if (b.size > 500) blob = b;
+                }
+              } else {
+                const b = await downloadResp.blob();
+                if (b.size > 0) blob = b;
+              }
+>>>>>>> origin/final/demo-v1
             }
           } catch (e) {
             console.warn("[PdfViewer] API error:", e);
           }
         }
 
+<<<<<<< HEAD
         // Step 2: Fetch Cloudinary URL directly
         if (!blob) {
           // Try multiple URL formats for Cloudinary
           const urlsToTry = [url];
           // Cloudinary PDFs need /raw/upload/ not /image/upload/
+=======
+        if (!blob) {
+          const urlsToTry = [url];
+>>>>>>> origin/final/demo-v1
           if (url.includes("/image/upload/")) {
             urlsToTry.push(url.replace("/image/upload/", "/raw/upload/"));
             urlsToTry.push(url + "?fl_attachment=true");
           }
 
           for (const tryUrl of urlsToTry) {
+<<<<<<< HEAD
             console.log("[PdfViewer] Step 2: Trying URL:", tryUrl.substring(0, 80));
+=======
+>>>>>>> origin/final/demo-v1
             try {
               const directResp = await fetch(tryUrl, {
                 headers: token ? { Authorization: `Bearer ${token}` } : {},
               });
               if (directResp.ok) {
                 const b = await directResp.blob();
+<<<<<<< HEAD
                 console.log("[PdfViewer] Direct blob:", b.type, b.size, "from:", tryUrl.substring(0, 60));
+=======
+>>>>>>> origin/final/demo-v1
                 if (b.size > 500) {
                   blob = b;
                   break;
                 }
+<<<<<<< HEAD
               } else {
                 console.warn("[PdfViewer] Fetch status:", directResp.status, "for:", tryUrl.substring(0, 60));
               }
             } catch (e) {
               console.warn("[PdfViewer] Fetch error:", e, "for:", tryUrl.substring(0, 60));
+=======
+              }
+            } catch (e) {
+              console.warn("[PdfViewer] Fetch error:", e);
+>>>>>>> origin/final/demo-v1
             }
           }
         }
 
+<<<<<<< HEAD
         // Step 3: Create object URL from blob
         if (blob && blob.size > 500) {
           objectUrl = URL.createObjectURL(blob);
@@ -721,11 +820,24 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+        if (blob && blob.size > 500) {
+          objectUrl = URL.createObjectURL(blob);
+          setPdfUrl(objectUrl);
+        } else {
+          throw new Error("Không thể tải PDF");
+        }
+      } catch (e) {
+        if (!cancelled) {
+          setError(e instanceof Error ? e.message : "Không thể tải PDF");
+        }
+>>>>>>> origin/final/demo-v1
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1036,6 +1148,11 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
       loadPdf();
     } else {
       // Không có documentId, nhưng vẫn cần fetch và tạo blob URL
+=======
+    if (documentId) {
+      loadPdf();
+    } else {
+>>>>>>> origin/final/demo-v1
       const fetchDirectly = async () => {
         try {
           const token = tokenStore.get();
@@ -1076,15 +1193,23 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 
     const renderPage = async () => {
       try {
+<<<<<<< HEAD
         // Cancel previous render
+=======
+>>>>>>> origin/final/demo-v1
         if (renderTaskRef.current) {
           renderTaskRef.current.cancel();
           renderTaskRef.current = null;
         }
 
+<<<<<<< HEAD
         setRenderError(false);
         const page = await pdfDoc.getPage(pageNum);
         const viewport = page.getViewport({ scale });
+=======
+        const page = await pdfDoc.getPage(pageNum);
+        const vp = page.getViewport({ scale: 1 });
+>>>>>>> origin/final/demo-v1
 
         const canvas = canvasRef.current!;
         if (!canvas) return;
@@ -1092,6 +1217,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         const context = canvas.getContext("2d")!;
         if (!context) return;
 
+<<<<<<< HEAD
         // Clear canvas first
         canvas.width = viewport.width;
         canvas.height = viewport.height;
@@ -1100,6 +1226,22 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 
         // Render and track the task
         const renderTask = page.render({ canvasContext: context, viewport });
+=======
+        const hdScale = window.devicePixelRatio || 1;
+        const displayW = vp.width;
+        const displayH = vp.height;
+
+        canvas.width = displayW * hdScale;
+        canvas.height = displayH * hdScale;
+        canvas.style.width = `${displayW}px`;
+        canvas.style.height = `${displayH}px`;
+
+        context.fillStyle = "white";
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.scale(hdScale, hdScale);
+
+        const renderTask = page.render({ canvasContext: context, viewport: vp });
+>>>>>>> origin/final/demo-v1
         renderTaskRef.current = renderTask;
 
         await renderTask.promise;
@@ -1107,6 +1249,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         if (cancelled) return;
         renderTaskRef.current = null;
       } catch (e: any) {
+<<<<<<< HEAD
         // Ignore "Render cancelled" errors
         if (e?.message?.includes("cancelled")) {
           console.log("[PdfViewer] Render cancelled");
@@ -1114,6 +1257,10 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         }
         console.error("[PdfViewer] Render error:", e);
         if (!cancelled) setRenderError(true);
+=======
+        if (e?.message?.message?.includes("cancelled")) return;
+        if (!cancelled) setError("Render error");
+>>>>>>> origin/final/demo-v1
       }
     };
 
@@ -1126,7 +1273,11 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         renderTaskRef.current = null;
       }
     };
+<<<<<<< HEAD
   }, [pdfDoc, pageNum, scale]);
+=======
+  }, [pdfDoc, pageNum]);
+>>>>>>> origin/final/demo-v1
 
   // Load PDF document
   useEffect(() => {
@@ -1142,7 +1293,10 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         setNumPages(pdf.numPages);
         setPageNum(1);
       } catch (e) {
+<<<<<<< HEAD
         console.error("[PdfViewer] PDF load error:", e);
+=======
+>>>>>>> origin/final/demo-v1
         setError("Không thể hiển thị PDF. Vui lòng tải xuống để xem.");
       }
     };
@@ -1150,17 +1304,41 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
     loadDocument();
   }, [pdfUrl]);
 
+<<<<<<< HEAD
   // Fit to container width on page load / doc load
+=======
+  // Fit to container width on page load
+>>>>>>> origin/final/demo-v1
   useEffect(() => {
     if (!pdfDoc || !containerRef.current) return;
     const fit = async () => {
       const page = await pdfDoc.getPage(pageNum);
       const vp = page.getViewport({ scale: 1 });
+<<<<<<< HEAD
       const w = containerRef.current!.clientWidth - 48;
       setScale(Math.min(Math.max((w / vp.width) * 0.95, 0.5), 2.5));
     };
     fit();
   }, [pdfDoc, pageNum]);
+=======
+      const availableWidth = containerRef.current!.clientWidth;
+      const newScale = (availableWidth / vp.width) * 0.95;
+      setScale(Math.min(Math.max(newScale, 0.5), 2.5));
+    };
+    fit();
+  }, [pdfDoc]);
+
+  // Track canvas display size for proper overflow
+  useEffect(() => {
+    if (!pdfDoc) return;
+    const updateCanvasSize = async () => {
+      const page = await pdfDoc.getPage(pageNum);
+      const vp = page.getViewport({ scale });
+      setScaledCanvasW(vp.width * scale);
+    };
+    updateCanvasSize();
+  }, [pdfDoc, pageNum, scale]);
+>>>>>>> origin/final/demo-v1
 
   // Ctrl+scroll zoom
   useEffect(() => {
@@ -1176,6 +1354,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
     return () => el.removeEventListener("wheel", handleWheel);
   }, []);
 
+<<<<<<< HEAD
   // Pan/drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!isPanMode || scale <= 1) return;
@@ -1373,11 +1552,34 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
       </div>
 
       <div className="flex items-center gap-1 flex-wrap">
+=======
+  // Fit to width handler
+  const handleFitToWidth = async () => {
+    if (!pdfDoc || !containerRef.current) return;
+    const page = await pdfDoc.getPage(pageNum);
+    const vp = page.getViewport({ scale: 1 });
+    const availableWidth = containerRef.current.clientWidth;
+    const newScale = (availableWidth / vp.width) * 0.95;
+    setScale(Math.min(Math.max(newScale, 0.5), 2.5));
+  };
+
+  // Toolbar
+  const Toolbar = (
+    <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-1.5 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm gap-1 flex-wrap min-h-[42px]">
+      <div className="flex items-center gap-2 min-w-0">
+        <FileText className="h-4 w-4 text-primary shrink-0" />
+        <span className="text-sm font-semibold truncate max-w-[160px]">{fileName}</span>
+        {numPages && <span className="text-[11px] text-muted-foreground whitespace-nowrap">/ {numPages} trang</span>}
+      </div>
+
+      <div className="flex items-center gap-0.5 flex-wrap">
+>>>>>>> origin/final/demo-v1
         {/* Pan mode toggle */}
         <Button
           variant="ghost"
           size="sm"
           onClick={() => setIsPanMode(!isPanMode)}
+<<<<<<< HEAD
           title={isPanMode ? "Chuyển sang chế độ chọn" : "Chuyển sang chế độ kéo"}
           className={cn("h-8 w-8 p-0", isPanMode && "bg-accent text-primary")}
         >
@@ -1555,6 +1757,71 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         <Button variant="ghost" size="sm" asChild className="h-8 px-2 text-xs">
           <a href={url} target="_blank" rel="noopener noreferrer">
             <ExternalLink className="h-4 w-4 mr-1" />
+=======
+          title={isPanMode ? "Chế độ kéo" : "Chế độ chọn"}
+          className={cn("h-7 w-7 p-0", isPanMode && "bg-accent text-primary")}
+        >
+          {isPanMode ? <Hand className="h-3.5 w-3.5" /> : <MousePointer2 className="h-3.5 w-3.5" />}
+        </Button>
+
+        <div className="h-4 w-px bg-border mx-1" />
+
+        {/* Zoom controls */}
+        <Button variant="ghost" size="sm" onClick={() => setScale((s) => Math.max(s - 0.15, 0.5))} disabled={scale <= 0.5} className="h-7 w-7 p-0" title="Thu nhỏ">
+          <ZoomOut className="h-3.5 w-3.5" />
+        </Button>
+        <Input
+          type="number"
+          min={50}
+          max={250}
+          value={Math.round(scale * 100)}
+          onChange={(e) => {
+            const v = Math.min(Math.max(Number(e.target.value) || 100, 50), 250);
+            setScale(v / 100);
+          }}
+          className="h-6 w-12 px-1 py-0 text-center text-[11px]"
+        />
+        <Button variant="ghost" size="sm" onClick={() => setScale((s) => Math.min(s + 0.15, 2.5))} disabled={scale >= 2.5} className="h-7 w-7 p-0" title="Phóng to">
+          <ZoomIn className="h-3.5 w-3.5" />
+        </Button>
+        <Button variant="ghost" size="sm" onClick={handleFitToWidth} className="h-7 w-7 p-0" title="Vừa khung">
+          <Maximize2 className="h-3.5 w-3.5" />
+        </Button>
+
+        <div className="h-4 w-px bg-border mx-1" />
+
+        {/* Page navigation */}
+        <Button variant="ghost" size="sm" onClick={() => setPageNum((p) => Math.max(1, p - 1))} disabled={pageNum <= 1} className="h-7 w-7 p-0">
+          <ChevronLeft className="h-3.5 w-3.5" />
+        </Button>
+        <Input
+          type="number"
+          min={1} max={numPages || 1}
+          value={pageNum}
+          onChange={(e) => {
+            const num = Math.min(Math.max(parseInt(e.target.value) || 1, 1), numPages || 1);
+            setPageNum(num);
+          }}
+          className="h-6 w-10 px-1 py-0 text-center text-[11px]"
+        />
+        <span className="text-[11px] text-muted-foreground">/ {numPages || "—"}</span>
+        <Button variant="ghost" size="sm" onClick={() => setPageNum((p) => Math.min(numPages || 1, p + 1))} disabled={pageNum >= (numPages || 1)} className="h-7 w-7 p-0">
+          <ChevronRight className="h-3.5 w-3.5" />
+        </Button>
+
+        <div className="h-4 w-px bg-border mx-1" />
+
+        {/* Actions */}
+        <Button variant="ghost" size="sm" asChild className="h-7 px-1.5 text-[11px]">
+          <a href={url} download target="_blank" rel="noopener noreferrer">
+            <Download className="h-3.5 w-3.5 mr-1" />
+            Tải
+          </a>
+        </Button>
+        <Button variant="ghost" size="sm" asChild className="h-7 px-1.5 text-[11px]">
+          <a href={url} target="_blank" rel="noopener noreferrer">
+            <ExternalLink className="h-3.5 w-3.5 mr-1" />
+>>>>>>> origin/final/demo-v1
             Mở mới
           </a>
         </Button>
@@ -1562,6 +1829,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
     </div>
   );
 
+<<<<<<< HEAD
   // Error state
   if (error) {
     return (
@@ -1613,11 +1881,22 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added-fix
             </a>
           </Button>
+=======
+  // Loading state
+  if (loading) {
+    return (
+      <Card className={cn("flex flex-col min-h-0", className)} style={{ minHeight: "400px" }}>
+        {Toolbar}
+        <div className="flex-1 flex items-center justify-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary mb-3" />
+          <p className="text-sm text-muted-foreground">Đang tải PDF...</p>
+>>>>>>> origin/final/demo-v1
         </div>
       </Card>
     );
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1836,11 +2115,80 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
             </Button>
           </div>
         </Card>
+=======
+  // Error state — hiển thị THÔNG TIN FILE thay vì chỉ báo lỗi + link.
+  if (error) {
+    const fmtSize = (n?: number | null) => {
+      if (!n) return "—";
+      if (n < 1024 ** 2) return `${(n / 1024).toFixed(1)} KB`;
+      if (n < 1024 ** 3) return `${(n / 1024 ** 2).toFixed(1)} MB`;
+      return `${(n / 1024 ** 3).toFixed(2)} GB`;
+    };
+    const ext = (fileName.split(".").pop() || "PDF").toUpperCase();
+    return (
+      <Card className={cn("flex flex-col min-h-0", className)} style={{ minHeight: "400px" }}>
+        {Toolbar}
+        <div className="flex-1 flex flex-col items-center justify-center p-8">
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-muted/30 p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="h-12 w-12 rounded-xl bg-gradient-brand flex items-center justify-center shrink-0">
+                <FileText className="h-6 w-6 text-white" />
+              </div>
+              <div className="min-w-0">
+                <div className="font-semibold truncate">{fileName}</div>
+                <div className="text-xs text-muted-foreground">
+                  Không thể xem trước trong trình duyệt
+                </div>
+              </div>
+            </div>
+
+            <dl className="space-y-2 text-sm">
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Loại tệp</dt>
+                <dd className="font-medium">{mimeType || ext}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-muted-foreground">Kích thước</dt>
+                <dd className="font-medium">{fmtSize(fileSize)}</dd>
+              </div>
+              {totalPages != null && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Số trang</dt>
+                  <dd className="font-medium">{totalPages}</dd>
+                </div>
+              )}
+              {createdAt && (
+                <div className="flex justify-between gap-4">
+                  <dt className="text-muted-foreground">Ngày tải lên</dt>
+                  <dd className="font-medium">
+                    {new Date(createdAt).toLocaleDateString("vi-VN")}
+                  </dd>
+                </div>
+              )}
+            </dl>
+
+            <div className="flex gap-2 mt-5">
+              <Button variant="outline" size="sm" className="flex-1" asChild>
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-4 w-4 mr-1.5" /> Mở tab mới
+                </a>
+              </Button>
+              <Button size="sm" className="flex-1" asChild>
+                <a href={url} download={fileName}>
+                  <Download className="h-4 w-4 mr-1.5" /> Tải xuống
+                </a>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Card>
+>>>>>>> origin/final/demo-v1
     );
   }
 
   // Main PDF display
   return (
+<<<<<<< HEAD
 <<<<<<< HEAD
       <Card className={cn("flex flex-col min-h-0", className)}>
         {Toolbar}
@@ -1930,3 +2278,34 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   );
 };
 >>>>>>> origin/Flashcars
+=======
+    <Card className={cn("flex flex-col min-h-0", className)} style={{ minHeight: "400px" }}>
+      {Toolbar}
+      <div
+        ref={containerRef}
+        className="flex-1 overflow-auto flex items-center justify-center bg-muted/20"
+        style={{ minHeight: "400px" }}
+      >
+        {pdfDoc ? (
+          <div
+            style={{
+              transform: `scale(${scale})`,
+              transformOrigin: "center center",
+            }}
+          >
+            <canvas
+              ref={canvasRef}
+              className="border border-border/50 shadow-lg bg-white"
+              style={{ display: "block" }}
+            />
+          </div>
+        ) : !loading && !error ? (
+          <div className="flex items-center justify-center">
+            <p className="text-muted-foreground">Đang chuẩn bị...</p>
+          </div>
+        ) : null}
+      </div>
+    </Card>
+  );
+};
+>>>>>>> origin/final/demo-v1

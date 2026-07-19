@@ -1,5 +1,6 @@
 // src/hooks/useDocumentPolling.ts
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { docKeys } from '@/lib/queries';
@@ -38,15 +39,21 @@ export function useDocumentPolling(documentId: number, status: string) {
 =======
 >>>>>>> origin/uichange
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { docKeys } from "@/lib/queries";
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 export function useDocumentPolling(documentId: string, status: string) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
+<<<<<<< HEAD
 <<<<<<< HEAD
     if (status !== 'processing' || !documentId) return;
 <<<<<<< HEAD
@@ -72,13 +79,18 @@ export function useDocumentPolling(documentId: string, status: string) {
     const interval = setInterval(() => {
       console.log('[Polling] Refetching document:', documentId);
 =======
+=======
+>>>>>>> origin/final/demo-v1
     if (status !== "processing" || !documentId) return;
 
     console.log("[Polling] Starting polling for document:", documentId);
 
     const interval = setInterval(() => {
       console.log("[Polling] Refetching document:", documentId);
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       queryClient.invalidateQueries({
         queryKey: docKeys.detail(documentId),
       });
@@ -86,15 +98,21 @@ export function useDocumentPolling(documentId: string, status: string) {
 
     return () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
       console.log('[Polling] Stopping polling for document:', documentId);
       clearInterval(interval);
     };
   }, [documentId, status, queryClient]);
 }
 =======
+=======
+>>>>>>> origin/final/demo-v1
       console.log("[Polling] Stopping polling for document:", documentId);
       clearInterval(interval);
     };
   }, [documentId, status, queryClient]);
 }
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Download, ExternalLink, File } from "lucide-react";
 =======
 import { Download, ExternalLink, File, FileText } from "lucide-react";
@@ -33,6 +34,9 @@ import { Download, ExternalLink, File } from "lucide-react";
 =======
 import { Download, ExternalLink, File, FileText } from "lucide-react";
 >>>>>>> origin/Flashcars
+=======
+import { Download, ExternalLink, File, FileText } from "lucide-react";
+>>>>>>> origin/final/demo-v1
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -44,6 +48,7 @@ interface UnsupportedFileViewerProps {
 }
 
 export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
+<<<<<<< HEAD
 <<<<<<< HEAD
   fileName,
   detectedType,
@@ -213,6 +218,8 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
       </div>
     </Card>
 =======
+=======
+>>>>>>> origin/final/demo-v1
                                                                               fileName,
                                                                               detectedType,
                                                                               fileUrl,
@@ -268,6 +275,9 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
           </div>
         </div>
       </Card>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   );
 };

@@ -4,8 +4,11 @@ import { toast } from "sonner";
 import { Lock, Unlock, Trash2, Search } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import {
   Table,
   TableBody,
@@ -14,12 +17,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { PlanBadge } from "./PlanBadge";
+<<<<<<< HEAD
 <<<<<<< HEAD
 import { useAdminUsers, useToggleUserStatus, useDeleteUser } from "../hooks";
 
@@ -137,6 +144,8 @@ export const AdminUsersPage: React.FC = () => {
   );
 };
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { useAdminUsers, useDeleteUser, useLockUser, useUnlockUser } from "../hooks";
 
 export const AdminUsersPage: React.FC = () => {
@@ -285,5 +294,9 @@ export const AdminUsersPage: React.FC = () => {
         </Card>
       </div>
   );
+<<<<<<< HEAD
 };
 >>>>>>> origin/Flashcars
+=======
+};
+>>>>>>> origin/final/demo-v1

@@ -1,5 +1,6 @@
 // src/features/admin/components/AdminFilesPage.tsx
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React, { useState } from "react";
 import { toast } from "sonner";
 import { FileText, AlertTriangle, Flag, CheckCircle2 } from "lucide-react";
@@ -50,6 +51,11 @@ export const AdminFilesPage: React.FC = () => {
 import React, { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search, AlertTriangle } from "lucide-react";
+=======
+import React, { useState, useMemo } from "react";
+import { toast } from "sonner";
+import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search, AlertTriangle, Eye } from "lucide-react";
+>>>>>>> origin/final/demo-v1
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -64,8 +70,14 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAdminDocuments, useApproveDocument, useRejectDocument, useDeleteDocument, useRestoreDocument } from "../hooks";
+<<<<<<< HEAD
 
 type TabValue = "all" | "pending" | "approved" | "rejected" | "trash";
+=======
+import { FilePreviewDialog } from "./FilePreviewDialog";
+
+type TabValue = "all" | "pending" | "approved" | "rejected";
+>>>>>>> origin/final/demo-v1
 
 const statusLabel: Record<string, string> = {
   COMPLETED: "Đã upload",
@@ -85,6 +97,13 @@ export const AdminFilesPage: React.FC = () => {
   const deleteDocument = useDeleteDocument();
   const restoreDocument = useRestoreDocument();
 
+<<<<<<< HEAD
+=======
+  // File đang xem trước + tập hợp id đã được admin xem (để bắt buộc xem trước khi duyệt).
+  const [preview, setPreview] = useState<{ title: string; url?: string | null; mimeType?: string | null } | null>(null);
+  const [reviewedIds, setReviewedIds] = useState<Set<string>>(new Set());
+
+>>>>>>> origin/final/demo-v1
   const documents = Array.isArray(documentsResponse) ? documentsResponse : [];
 
   const filtered = useMemo(
@@ -104,11 +123,15 @@ export const AdminFilesPage: React.FC = () => {
       </div>
     );
   }
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
   return (
     <div className="space-y-6">
       <div>
+<<<<<<< HEAD
 <<<<<<< HEAD
         <h1 className="text-2xl font-bold tracking-tight font-display">Quản lý Tài liệu</h1>
         <p className="text-muted-foreground mt-1 text-sm">Xử lý các tài liệu bị báo cáo vi phạm</p>
@@ -269,6 +292,8 @@ export const AdminFilesPage: React.FC = () => {
         </DialogContent>
       </Dialog>
 =======
+=======
+>>>>>>> origin/final/demo-v1
         <h1 className="text-2xl font-bold tracking-tight font-display">
           Quản lý File
         </h1>
@@ -293,11 +318,25 @@ export const AdminFilesPage: React.FC = () => {
               <TabsTrigger value="pending">Chờ duyệt</TabsTrigger>
               <TabsTrigger value="approved">Đã duyệt</TabsTrigger>
               <TabsTrigger value="rejected">Từ chối</TabsTrigger>
+<<<<<<< HEAD
               <TabsTrigger value="trash">Thùng rác</TabsTrigger>
             </TabsList>
 
             {["all", "pending", "approved", "rejected", "trash"].map((tab) => (
               <TabsContent key={tab} value={tab} className="space-y-4">
+=======
+            </TabsList>
+
+            {["all", "pending", "approved", "rejected"].map((tab) => (
+              <TabsContent key={tab} value={tab} className="space-y-4">
+                {tab === "trash" && (
+                  <div className="px-4 py-3 bg-muted/50 rounded-lg border border-muted">
+                    <p className="text-sm text-muted-foreground">
+                      💡 File trong thùng rác có thể được khôi phục lại cho user. Admin không thể xóa vĩnh viễn file tại đây.
+                    </p>
+                  </div>
+                )}
+>>>>>>> origin/final/demo-v1
                 <div className="relative w-full max-w-xs">
                   <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -313,7 +352,11 @@ export const AdminFilesPage: React.FC = () => {
                     <TableRow>
                       <TableHead>File</TableHead>
                       <TableHead>Owner</TableHead>
+<<<<<<< HEAD
                       <TableHead>Trạng thái</TableHead>
+=======
+                      <TableHead>{tab === "trash" ? "Thời gian xóa" : "Trạng thái"}</TableHead>
+>>>>>>> origin/final/demo-v1
                       <TableHead>Size</TableHead>
                       <TableHead className="text-right">Hành động</TableHead>
                     </TableRow>
@@ -345,21 +388,63 @@ export const AdminFilesPage: React.FC = () => {
                             {d.ownerId?.slice(0, 8)}...
                           </TableCell>
                           <TableCell>
+<<<<<<< HEAD
                             <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
                               {statusLabel[d.status as string] ?? d.status}
                             </Badge>
+=======
+                            {tab === "trash" && d.deletedAt ? (
+                              <span className="text-sm text-muted-foreground">
+                                {new Date(d.deletedAt).toLocaleDateString("vi-VN", {
+                                  year: "numeric",
+                                  month: "2-digit",
+                                  day: "2-digit",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </span>
+                            ) : (
+                              <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
+                                {statusLabel[d.status as string] ?? d.status}
+                              </Badge>
+                            )}
+>>>>>>> origin/final/demo-v1
                           </TableCell>
                           <TableCell className="text-muted-foreground">
                             {d.fileSize ? `${(d.fileSize / 1024).toFixed(1)} KB` : "-"}
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
+<<<<<<< HEAD
+=======
+                              {tab !== "trash" && (
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    setPreview({
+                                      title: d.title,
+                                      url: d.cloudinaryUrl,
+                                      mimeType: d.mimeType,
+                                    });
+                                    setReviewedIds((prev) => new Set(prev).add(d.id));
+                                  }}
+                                >
+                                  <Eye className="h-3.5 w-3.5" /> Xem
+                                </Button>
+                              )}
+>>>>>>> origin/final/demo-v1
                               {activeTab === "pending" && (
                                 <>
                                   <Button
                                     variant="outline"
                                     size="sm"
+<<<<<<< HEAD
                                     disabled={approveDocument.isPending}
+=======
+                                    disabled={approveDocument.isPending || !reviewedIds.has(d.id)}
+                                    title={!reviewedIds.has(d.id) ? "Bạn cần xem file trước khi duyệt" : undefined}
+>>>>>>> origin/final/demo-v1
                                     onClick={() => {
                                       approveDocument.mutate(d.id, {
                                         onSuccess: () => toast.success("Đã duyệt file"),
@@ -372,7 +457,12 @@ export const AdminFilesPage: React.FC = () => {
                                   <Button
                                     variant="outline"
                                     size="sm"
+<<<<<<< HEAD
                                     disabled={rejectDocument.isPending}
+=======
+                                    disabled={rejectDocument.isPending || !reviewedIds.has(d.id)}
+                                    title={!reviewedIds.has(d.id) ? "Bạn cần xem file trước khi từ chối" : undefined}
+>>>>>>> origin/final/demo-v1
                                     onClick={() => {
                                       rejectDocument.mutate(d.id, {
                                         onSuccess: () => toast.success("Đã từ chối file"),
@@ -384,11 +474,16 @@ export const AdminFilesPage: React.FC = () => {
                                   </Button>
                                 </>
                               )}
+<<<<<<< HEAD
                               {activeTab === "trash" ? (
+=======
+                              {activeTab === "trash" && (
+>>>>>>> origin/final/demo-v1
                                 <Button
                                   variant="outline"
                                   size="sm"
                                   disabled={restoreDocument.isPending}
+<<<<<<< HEAD
                                   onClick={() =>
                                     restoreDocument.mutate(d.id, {
                                       onSuccess: () => toast.success("Đã khôi phục file"),
@@ -407,11 +502,22 @@ export const AdminFilesPage: React.FC = () => {
                                     if (window.confirm("Xóa file này?")) {
                                       deleteDocument.mutate(d.id, {
                                         onSuccess: () => toast.success("Đã xóa file"),
+=======
+                                  onClick={() => {
+                                    if (window.confirm(`Khôi phục file "${d.title}" cho user?`)) {
+                                      restoreDocument.mutate(d.id, {
+                                        onSuccess: () => toast.success("Đã khôi phục file"),
+                                        onError: (err) => toast.error("Lỗi: " + err.message),
+>>>>>>> origin/final/demo-v1
                                       });
                                     }
                                   }}
                                 >
+<<<<<<< HEAD
                                   <Trash2 className="h-3.5 w-3.5" /> Xóa
+=======
+                                  <RotateCcw className="h-3.5 w-3.5" /> Khôi phục
+>>>>>>> origin/final/demo-v1
                                 </Button>
                               )}
                             </div>
@@ -426,7 +532,18 @@ export const AdminFilesPage: React.FC = () => {
           </Tabs>
         </CardContent>
       </Card>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+
+      <FilePreviewDialog
+        open={!!preview}
+        onOpenChange={(v) => !v && setPreview(null)}
+        title={preview?.title ?? ""}
+        url={preview?.url}
+        mimeType={preview?.mimeType}
+      />
+>>>>>>> origin/final/demo-v1
     </div>
   );
 };

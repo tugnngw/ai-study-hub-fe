@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TODO(backend): api<T>("/api/admin/premium...")
 import type { PremiumRequestItem, PremiumStats, PremiumDecision } from "../types/admin.types";
 const empty: PremiumStats = { totalPremiumUsers:0,totalPremiumTrend:0,pendingRequests:0,pendingRequestsTrend:0,revenueThisMonth:0,revenueTrend:0,expiredSubscriptions:0,expiredTrend:0 };
@@ -35,6 +36,8 @@ export const premiumApi = {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { api } from "@/lib/api";
 import type {
   PremiumRequestItem,
@@ -49,5 +52,8 @@ export const premiumApi = {
       method: "POST",
       body: { decision },
     }),
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 };

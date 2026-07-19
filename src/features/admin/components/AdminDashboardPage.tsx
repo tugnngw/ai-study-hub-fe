@@ -2,8 +2,11 @@
 import React from "react";
 import {
 <<<<<<< HEAD
+<<<<<<< HEAD
   Users, FileStack, Download, UserPlus, Upload, Flag, Trash, TrendingUp, TrendingDown,
 =======
+=======
+>>>>>>> origin/final/demo-v1
   Users,
   FileStack,
   Download,
@@ -13,7 +16,10 @@ import {
   Trash,
   TrendingUp,
   TrendingDown,
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -37,10 +43,13 @@ const activityTone: Record<ActivityType, string> = {
 
 function StatCard({
 <<<<<<< HEAD
+<<<<<<< HEAD
   label, value, trend, icon, tone,
 }: {
   label: string; value: string; trend?: number; icon: React.ReactNode; tone: string;
 =======
+=======
+>>>>>>> origin/final/demo-v1
   label,
   value,
   trend,
@@ -52,13 +61,17 @@ function StatCard({
   trend?: number;
   icon: React.ReactNode;
   tone: string;
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 }) {
   const up = (trend ?? 0) >= 0;
   return (
     <Card>
       <CardContent className="pt-6">
         <div className="flex items-start justify-between">
+<<<<<<< HEAD
 <<<<<<< HEAD
           <div className={cn("h-11 w-11 rounded-xl flex items-center justify-center", tone)}>{icon}</div>
           {trend !== undefined && (
@@ -68,6 +81,8 @@ function StatCard({
             )}>
               {up ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
 =======
+=======
+>>>>>>> origin/final/demo-v1
           <div
             className={cn(
               "h-11 w-11 rounded-xl flex items-center justify-center",
@@ -90,34 +105,57 @@ function StatCard({
               ) : (
                 <TrendingDown className="h-3.5 w-3.5" />
               )}
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
               {Math.abs(trend)}%
             </span>
           )}
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <p className="text-muted-foreground text-sm font-medium mt-4">{label}</p>
         <h3 className="text-3xl font-bold tracking-tight mt-1 font-display">{value}</h3>
 =======
+=======
+>>>>>>> origin/final/demo-v1
         <p className="text-muted-foreground text-sm font-medium mt-4">
           {label}
         </p>
         <h3 className="text-3xl font-bold tracking-tight mt-1 font-display">
           {value}
         </h3>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       </CardContent>
     </Card>
   );
 }
 
 export const AdminDashboardPage: React.FC = () => {
+<<<<<<< HEAD
   const { data: stats } = useAdminStats();
   const { data: activity = [] } = useAdminActivity();
+=======
+  const { data: stats, isLoading: statsLoading, error: statsError } = useAdminStats();
+  const { data: activity = [], isLoading: activityLoading, error: activityError } = useAdminActivity();
+
+  if (statsError || activityError) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <p className="text-destructive">Không thể tải dữ liệu dashboard</p>
+      </div>
+    );
+  }
+>>>>>>> origin/final/demo-v1
 
   return (
     <div className="space-y-6">
       <div>
+<<<<<<< HEAD
 <<<<<<< HEAD
         <h1 className="text-2xl font-bold tracking-tight font-display">Dashboard</h1>
         <p className="text-muted-foreground mt-1 text-sm">Tổng quan hoạt động hệ thống</p>
@@ -128,6 +166,8 @@ export const AdminDashboardPage: React.FC = () => {
         <StatCard label="Tổng Tài liệu" value={stats?.totalDocs.toLocaleString("vi-VN") ?? "—"} trend={stats?.totalDocsTrend} icon={<FileStack className="h-5 w-5" />} tone="bg-emerald-500/10 text-emerald-600" />
         <StatCard label="Download" value={stats?.totalDownloads.toLocaleString("vi-VN") ?? "—"} trend={stats?.totalDownloadsTrend} icon={<Download className="h-5 w-5" />} tone="bg-amber-500/10 text-amber-600" />
 =======
+=======
+>>>>>>> origin/final/demo-v1
         <h1 className="text-2xl font-bold tracking-tight font-display">
           Dashboard
         </h1>
@@ -158,7 +198,10 @@ export const AdminDashboardPage: React.FC = () => {
           icon={<Download className="h-5 w-5" />}
           tone="bg-amber-500/10 text-amber-600"
         />
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       </div>
 
       <Card>
@@ -167,14 +210,19 @@ export const AdminDashboardPage: React.FC = () => {
         </CardHeader>
         <CardContent className="p-0">
 <<<<<<< HEAD
+<<<<<<< HEAD
           {activity.map((item, i) => (
 =======
           {activity?.map((item, i) => ( 
 >>>>>>> origin/Flashcars
+=======
+          {activity?.map((item, i) => ( 
+>>>>>>> origin/final/demo-v1
             <div
               key={item.id}
               className={cn(
                 "flex items-center gap-4 px-6 py-3.5 hover:bg-muted/40 transition-colors",
+<<<<<<< HEAD
 <<<<<<< HEAD
                 i !== activity.length - 1 && "border-b border-border"
               )}
@@ -191,6 +239,8 @@ export const AdminDashboardPage: React.FC = () => {
               </div>
               <span className="text-muted-foreground text-xs shrink-0">{item.time}</span>
 =======
+=======
+>>>>>>> origin/final/demo-v1
                 i !== activity.length - 1 && "border-b border-border",
               )}
             >
@@ -216,7 +266,10 @@ export const AdminDashboardPage: React.FC = () => {
               <span className="text-muted-foreground text-xs shrink-0">
                 {item.time}
               </span>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
             </div>
           ))}
         </CardContent>

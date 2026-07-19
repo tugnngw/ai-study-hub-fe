@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AlertTriangle } from "lucide-react";
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -30,6 +31,8 @@ import { AlertTriangle } from "lucide-react";
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 import { toast } from "sonner";
 import { useReportDocument } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -70,6 +73,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   documentId: number;
 =======
   documentId: string;
@@ -98,6 +102,9 @@ export function ReportDocumentDialog({
 =======
   documentId: string;
 >>>>>>> origin/Flashcars
+=======
+  documentId: string;
+>>>>>>> origin/final/demo-v1
   documentTitle: string;
 }) {
   const report = useReportDocument();
@@ -117,6 +124,7 @@ export function ReportDocumentDialog({
       return;
     }
     try {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -147,11 +155,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       await report.mutateAsync({
         id: documentId,
         reason,
         description: description.trim() || undefined,
       });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -180,6 +191,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
@@ -191,6 +204,7 @@ export function ReportDocumentDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -233,6 +247,9 @@ export function ReportDocumentDialog({
 =======
           <DialogTitle className="truncate">
 >>>>>>> origin/Flashcars
+=======
+          <DialogTitle className="truncate">
+>>>>>>> origin/final/demo-v1
             Báo cáo "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
@@ -243,6 +260,7 @@ export function ReportDocumentDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Lý do báo cáo</Label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -273,11 +291,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
             <RadioGroup
               value={reason}
               onValueChange={setReason}
               className="space-y-2"
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -306,6 +327,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
               {REPORT_REASONS.map((r) => (
                 <label
                   key={r.value}
@@ -343,6 +366,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button variant="destructive" onClick={submit} disabled={report.isPending}>
 =======
 =======
@@ -363,11 +387,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
           <Button
             variant="destructive"
             onClick={submit}
             disabled={report.isPending}
           >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -396,6 +423,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
             {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>

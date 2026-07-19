@@ -4,8 +4,11 @@ import { toast } from "sonner";
 import { FileText, RotateCcw, Trash2, Info } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import {
   Table,
   TableBody,
@@ -14,7 +17,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -22,13 +28,19 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import {
 <<<<<<< HEAD
+<<<<<<< HEAD
   useDeletedFiles, useDeletedAccounts, usePermanentDelete, useRestoreItem,
 =======
+=======
+>>>>>>> origin/final/demo-v1
   useDeletedFiles,
   useDeletedAccounts,
   usePermanentDelete,
   useRestoreItem,
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 } from "../hooks";
 import type { TrashItemType, TrashAction } from "../types/admin.types";
 
@@ -40,10 +52,14 @@ function CountdownBadge({ days }: { days: number }) {
         days <= 5
           ? "bg-destructive/10 text-destructive"
 <<<<<<< HEAD
+<<<<<<< HEAD
           : "bg-amber-500/10 text-amber-600"
 =======
           : "bg-amber-500/10 text-amber-600",
 >>>>>>> origin/Flashcars
+=======
+          : "bg-amber-500/10 text-amber-600",
+>>>>>>> origin/final/demo-v1
       )}
     >
       {days} ngày
@@ -62,10 +78,13 @@ export const AdminTrashPage: React.FC = () => {
     if (act === "delete") {
       if (!window.confirm("Xóa vĩnh viễn mục này?")) return;
 <<<<<<< HEAD
+<<<<<<< HEAD
       permanentDelete.mutate({ id, type }, { onSuccess: () => toast.success("Đã xóa vĩnh viễn") });
     } else {
       restoreItem.mutate({ id, type }, { onSuccess: () => toast.success("Đã khôi phục") });
 =======
+=======
+>>>>>>> origin/final/demo-v1
       permanentDelete.mutate(
         { id, type },
         { onSuccess: () => toast.success("Đã xóa vĩnh viễn") },
@@ -75,21 +94,30 @@ export const AdminTrashPage: React.FC = () => {
         { id, type },
         { onSuccess: () => toast.success("Đã khôi phục") },
       );
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     }
   };
 
   const ActionButtons = ({ id, type }: { id: number; type: TrashItemType }) => (
     <div className="flex justify-end gap-2">
 <<<<<<< HEAD
+<<<<<<< HEAD
       <Button variant="outline" size="sm" onClick={() => handleAction(id, type, "restore")}>
 =======
+=======
+>>>>>>> origin/final/demo-v1
       <Button
         variant="outline"
         size="sm"
         onClick={() => handleAction(id, type, "restore")}
       >
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
         <RotateCcw /> Khôi phục
       </Button>
       <Button
@@ -107,29 +135,41 @@ export const AdminTrashPage: React.FC = () => {
     <div className="space-y-6">
       <div>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <h1 className="text-2xl font-bold tracking-tight font-display">Thùng rác</h1>
         <p className="text-muted-foreground mt-1 text-sm">Khôi phục hoặc xóa vĩnh viễn các mục đã xóa</p>
 =======
+=======
+>>>>>>> origin/final/demo-v1
         <h1 className="text-2xl font-bold tracking-tight font-display">
           Thùng rác
         </h1>
         <p className="text-muted-foreground mt-1 text-sm">
           Khôi phục hoặc xóa vĩnh viễn các mục đã xóa
         </p>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       </div>
 
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
           <CardTitle className="text-base">Thùng rác</CardTitle>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Tabs value={subTab} onValueChange={(v) => setSubTab(v as TrashItemType)}>
 =======
+=======
+>>>>>>> origin/final/demo-v1
           <Tabs
             value={subTab}
             onValueChange={(v) => setSubTab(v as TrashItemType)}
           >
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
             <TabsList>
               <TabsTrigger value="file">File</TabsTrigger>
               <TabsTrigger value="account">Tài khoản</TabsTrigger>
@@ -152,13 +192,19 @@ export const AdminTrashPage: React.FC = () => {
                   {delFiles.length === 0 ? (
                     <TableRow>
 <<<<<<< HEAD
+<<<<<<< HEAD
                       <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
 =======
+=======
+>>>>>>> origin/final/demo-v1
                       <TableCell
                         colSpan={4}
                         className="h-24 text-center text-muted-foreground"
                       >
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
                         Thùng rác trống
                       </TableCell>
                     </TableRow>
@@ -171,6 +217,7 @@ export const AdminTrashPage: React.FC = () => {
                               <FileText className="h-4 w-4" />
                             </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <span className="font-medium truncate">{f.name}</span>
                           </div>
                         </TableCell>
@@ -178,6 +225,8 @@ export const AdminTrashPage: React.FC = () => {
                         <TableCell><CountdownBadge days={f.remainingDays} /></TableCell>
                         <TableCell className="text-right"><ActionButtons id={f.id} type="file" /></TableCell>
 =======
+=======
+>>>>>>> origin/final/demo-v1
                             <span className="font-medium truncate">
                               {f.name}
                             </span>
@@ -192,7 +241,10 @@ export const AdminTrashPage: React.FC = () => {
                         <TableCell className="text-right">
                           <ActionButtons id={f.id} type="file" />
                         </TableCell>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
                       </TableRow>
                     ))
                   )}
@@ -214,13 +266,19 @@ export const AdminTrashPage: React.FC = () => {
                   {delAccs.length === 0 ? (
                     <TableRow>
 <<<<<<< HEAD
+<<<<<<< HEAD
                       <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
 =======
+=======
+>>>>>>> origin/final/demo-v1
                       <TableCell
                         colSpan={4}
                         className="h-24 text-center text-muted-foreground"
                       >
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
                         Thùng rác trống
                       </TableCell>
                     </TableRow>
@@ -231,6 +289,7 @@ export const AdminTrashPage: React.FC = () => {
                           <div className="flex items-center gap-3 min-w-0">
                             <Avatar className="h-9 w-9">
 <<<<<<< HEAD
+<<<<<<< HEAD
                               <AvatarFallback className="bg-muted text-sm">{a.name.charAt(0)}</AvatarFallback>
                             </Avatar>
                             <span className="font-medium truncate">{a.name}</span>
@@ -240,6 +299,8 @@ export const AdminTrashPage: React.FC = () => {
                         <TableCell><CountdownBadge days={a.remainingDays} /></TableCell>
                         <TableCell className="text-right"><ActionButtons id={a.id} type="account" /></TableCell>
 =======
+=======
+>>>>>>> origin/final/demo-v1
                               <AvatarFallback className="bg-muted text-sm">
                                 {a.name.charAt(0)}
                               </AvatarFallback>
@@ -258,7 +319,10 @@ export const AdminTrashPage: React.FC = () => {
                         <TableCell className="text-right">
                           <ActionButtons id={a.id} type="account" />
                         </TableCell>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
                       </TableRow>
                     ))
                   )}

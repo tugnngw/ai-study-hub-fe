@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -55,6 +56,11 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff } from "lucide-react";
 >>>>>>> origin/Flashcars
+=======
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff, Share2, Pencil } from "lucide-react";
+>>>>>>> origin/final/demo-v1
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -62,6 +68,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -101,11 +108,20 @@ import { usePinnedDocuments } from "@/lib/preferences";
 >>>>>>> origin/Flashcars
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
+=======
+import { useDeleteDocument, useDownloadDocument } from "@/lib/queries";
+import { usePinnedDocuments } from "@/lib/preferences";
+import { ReportDocumentDialog } from "@/components/report-document-dialog";
+import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
+import { ShareEntityDialog } from "@/components/share-entity-dialog";
+import { EditDocumentDialog } from "@/components/edit-document-dialog";
+>>>>>>> origin/final/demo-v1
 
 export function DocumentActionsMenu({
   documentId,
   folderId,
   title,
+<<<<<<< HEAD
   className,
   iconClassName,
 }: {
@@ -161,11 +177,26 @@ export function DocumentActionsMenu({
   folderId: string;
 >>>>>>> origin/Flashcars
   title: string;
+=======
+  status,
+  description,
+  subjectId,
+  className,
+  iconClassName,
+}: {
+  documentId: string;
+  folderId: string;
+  title: string;
+  status?: string;
+  description?: string;
+  subjectId?: string;
+>>>>>>> origin/final/demo-v1
   className?: string;
   iconClassName?: string;
 }) {
   const navigate = useNavigate();
   const del = useDeleteDocument();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -189,6 +220,17 @@ export function DocumentActionsMenu({
 >>>>>>> origin/Flashcars
   const [reportOpen, setReportOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+=======
+  const download = useDownloadDocument();
+  const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
+  const pinned = isPinned(documentId);
+  const isRejected = status?.toUpperCase() === "REJECT";
+
+  const [reportOpen, setReportOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+>>>>>>> origin/final/demo-v1
 
   const handleDelete = async () => {
     try {
@@ -203,11 +245,14 @@ export function DocumentActionsMenu({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   const handleDownload = async () => {
     try {
       const res = await download.mutateAsync(documentId);
@@ -219,11 +264,14 @@ export function DocumentActionsMenu({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   return (
     <>
       <DropdownMenu>
@@ -242,6 +290,7 @@ export function DocumentActionsMenu({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -272,12 +321,15 @@ export function DocumentActionsMenu({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
             onClick={() =>
               navigate({
                 to: "/ai",
                 search: { folderId, docId: documentId },
               })
             }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -322,6 +374,29 @@ export function DocumentActionsMenu({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+          >
+            <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setEditOpen(true)}>
+            <Pencil className="h-3.5 w-3.5 mr-2" /> Sửa thông tin
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDownload} disabled={download.isPending}>
+            <Download className="h-3.5 w-3.5 mr-2" /> Tải xuống
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              if (isRejected) {
+                toast.error("Tài liệu bị từ chối duyệt, không thể chia sẻ");
+                return;
+              }
+              setShareOpen(true);
+            }}
+            disabled={isRejected}
+            className={isRejected ? "opacity-50 cursor-not-allowed" : ""}
+          >
+            <Share2 className="h-3.5 w-3.5 mr-2" /> Chia sẻ
+>>>>>>> origin/final/demo-v1
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setReportOpen(true)}>
             <Flag className="h-3.5 w-3.5 mr-2" /> Báo cáo
@@ -332,6 +407,7 @@ export function DocumentActionsMenu({
           >
             <Trash2 className="h-3.5 w-3.5 mr-2" /> Xóa
           </DropdownMenuItem>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -394,6 +470,8 @@ export function DocumentActionsMenu({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
           <DropdownMenuItem
             onClick={() => {
               togglePin(documentId);
@@ -412,11 +490,14 @@ export function DocumentActionsMenu({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       <ReportDocumentDialog
         open={reportOpen}
         onOpenChange={setReportOpen}
@@ -430,6 +511,21 @@ export function DocumentActionsMenu({
         onConfirm={handleDelete}
         isPending={del.isPending}
       />
+<<<<<<< HEAD
+=======
+      <ShareEntityDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        title={title}
+        documentId={documentId}
+      />
+      <EditDocumentDialog
+        open={editOpen}
+        onOpenChange={setEditOpen}
+        documentId={documentId}
+        initial={{ title, description, folderId, subjectId }}
+      />
+>>>>>>> origin/final/demo-v1
     </>
   );
 }

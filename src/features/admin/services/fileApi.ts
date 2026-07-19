@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TODO(backend): api<T>("/api/admin/files...","/api/admin/trash...")
 =======
 import { api } from "@/lib/api";
@@ -57,6 +58,8 @@ export const adminFileApi = {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
 // src/features/admin/services/fileApi.ts
 import { adminDocumentApi } from "./documentApi";
 import { reportApi } from "./reportApi";
@@ -138,5 +141,8 @@ export const adminFileApi = {
     }
     return true;
   },
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 };

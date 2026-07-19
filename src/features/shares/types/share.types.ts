@@ -3,6 +3,7 @@
 
 export interface ShareResponse {
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
   folderId: string;
   sharedUsername?: string;
@@ -10,6 +11,8 @@ export interface ShareResponse {
   visibility: "public" | "private";
   createdAt: string;
 =======
+=======
+>>>>>>> origin/final/demo-v1
   id: string;
   folderId: string | null;
   documentId: string | null;
@@ -27,7 +30,10 @@ export interface ShareResponse {
   documentTitle: string | null;
   folderName: string | null;
   fileCount: number | null;
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 }
 
 export interface ShareRequest {
@@ -46,6 +52,7 @@ export interface ShareRecipient {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/AI/Quiz
@@ -55,19 +62,26 @@ export interface ShareRecipient {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
 // ── Trang Chia sẻ (figma) — CHỈ chia sẻ folder ─────────
 // Người liên quan (người chia sẻ / người được chia sẻ)
 export interface SharePerson {
 <<<<<<< HEAD
+<<<<<<< HEAD
   name: string;            // tên hiển thị
 =======
   name: string; // tên hiển thị
 >>>>>>> origin/Flashcars
+=======
+  name: string; // tên hiển thị
+>>>>>>> origin/final/demo-v1
   avatarUrl?: string | null; // ảnh đại diện (backend trả; rỗng → hiện chữ cái đầu)
 }
 
 export interface SharedWithMeItem {
+<<<<<<< HEAD
 <<<<<<< HEAD
   id: number;              // id THẬT của folder
   name: string;            // tên thư mục
@@ -100,6 +114,8 @@ export type ShareSort = "newest" | "oldest";
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
   id: string; // id THẬT của folder
   name: string; // tên thư mục
   size: string; // "11.4mb"
@@ -124,4 +140,7 @@ export interface SharedByMeItem {
 }
 
 export type ShareSort = "newest" | "oldest";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1

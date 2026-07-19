@@ -1,6 +1,7 @@
 /**
  * Cloudinary URL utilities
 <<<<<<< HEAD
+<<<<<<< HEAD
  *
  * Issue: Cloudinary PDF URLs are blocked by CORS when using fetch() or react-pdf.
  * Solution: Use iframe for Cloudinary PDFs (browser native PDF viewer, no CORS issues).
@@ -10,6 +11,8 @@
  * If it IS Cloudinary and not PDF, we'll need to decide if iframe works or if we need to fetch.
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
  */
 
 const CLOUDINARY_HOSTS = [
@@ -17,6 +20,7 @@ const CLOUDINARY_HOSTS = [
   'res.cloudinary.com',
 ];
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 /**
  * Check if a URL is a Cloudinary URL
@@ -30,6 +34,10 @@ export function isCloudinaryUrl(url: string | null | undefined): boolean {
 export function isCloudinaryUrl(url: string | null | undefined): boolean {
   if (!url || typeof url !== 'string' || url.trim() === '') return false;
 >>>>>>> origin/Flashcars
+=======
+export function isCloudinaryUrl(url: string | null | undefined): boolean {
+  if (!url || typeof url !== 'string' || url.trim() === '') return false;
+>>>>>>> origin/final/demo-v1
   try {
     const urlObj = new URL(url);
     return CLOUDINARY_HOSTS.some(host => urlObj.hostname.includes(host));
@@ -39,6 +47,7 @@ export function isCloudinaryUrl(url: string | null | undefined): boolean {
 }
 
 /**
+<<<<<<< HEAD
 <<<<<<< HEAD
  * Transform Cloudinary URL to ensure it works with iframe or direct fetch
  *
@@ -115,6 +124,8 @@ export async function fetchCloudinaryFile(
       mode: 'cors', // Explicitly request CORS
       credentials: 'omit', // Don't send credentials for Cloudinary
 =======
+=======
+>>>>>>> origin/final/demo-v1
  * Fetch file content from Cloudinary URL.
  * Sửa lỗi bằng cách thêm `fl_attachment=false` vào query string nếu cần.
  */
@@ -148,11 +159,15 @@ export async function fetchCloudinaryFile(
       signal: controller.signal,
       mode: 'cors',
       credentials: 'omit',
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     });
 
     clearTimeout(timeoutId);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -205,6 +220,8 @@ export function cleanupBlobUrl(objectUrl: string | null | undefined) {
     }
   }
 =======
+=======
+>>>>>>> origin/final/demo-v1
     if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
 
     return await response.blob();
@@ -212,5 +229,8 @@ export function cleanupBlobUrl(objectUrl: string | null | undefined) {
     console.error('[CloudinaryUtils] Error fetching file:', error);
     return null;
   }
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 }

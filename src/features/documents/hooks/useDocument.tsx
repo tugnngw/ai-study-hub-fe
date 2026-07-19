@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 // src/features/documents/hooks/useDocument.tsx
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+=======
+import { useQuery } from "@tanstack/react-query";
+>>>>>>> origin/final/demo-v1
 import { documentApi } from "../services";
 import { docKeys } from "../types";
 import type { Document } from "../types/document.types";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export function useDocument(id: number) {
   const enabled = !!id;
@@ -37,6 +42,16 @@ export function useDocument(id: string) {
         return 3000; // Poll every 3 seconds
       }
       return false;
+=======
+export function useDocument(id: string) {
+  return useQuery({
+    queryKey: docKeys.detail(id),
+    queryFn: () => documentApi.getById(id),
+    enabled: !!id,
+    refetchInterval: (query) => {
+      const data = query.state.data as Document | undefined;
+      return data?.status === "processing" ? 3000 : false;
+>>>>>>> origin/final/demo-v1
     },
     refetchOnWindowFocus: (query) => {
       const data = query.state.data as Document | undefined;

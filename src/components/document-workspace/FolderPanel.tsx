@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/components/document-workspace/FolderPanel.tsx
 // Panel 1 - folder info + quick upload + document list
 
@@ -238,6 +239,8 @@ export function FolderPanel({ folderId, docId }: FolderPanelProps) {
   );
 }
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { FileText } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -257,6 +260,7 @@ export function FolderPanel({
 }) {
     return (
         <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
+<<<<<<< HEAD
             {/* Folder details - hidden when viewing a document */}
             {!docId && (
                 <div className="rounded-xl bg-gradient-soft p-3 border border-border/50">
@@ -268,6 +272,15 @@ export function FolderPanel({
                     </div>
                     <div className="text-xs text-muted-foreground mt-0.5">
                         {folderDocs.data?.length ?? 0} tài liệu
+=======
+            {!docId && (
+                <div className="rounded-xl bg-gradient-soft p-3 border border-border/50">
+                    <div className="text-sm font-semibold font-display truncate">
+                        {folder.data?.name || "Thư mục"}
+                    </div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5">
+                        {folderDocs.data?.length || 0} tài liệu
+>>>>>>> origin/final/demo-v1
                     </div>
                 </div>
             )}
@@ -310,5 +323,9 @@ export function FolderPanel({
             </div>
         </aside>
     );
+<<<<<<< HEAD
 }
 >>>>>>> origin/Flashcars
+=======
+}
+>>>>>>> origin/final/demo-v1

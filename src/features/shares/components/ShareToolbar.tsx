@@ -4,14 +4,20 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
 <<<<<<< HEAD
+<<<<<<< HEAD
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 =======
+=======
+>>>>>>> origin/final/demo-v1
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 } from "@/components/ui/select";
 import type { ShareSort } from "../types/share.types";
 
@@ -19,17 +25,23 @@ export type ShareTabKey = "all" | "with-me" | "by-me";
 
 interface Props {
 <<<<<<< HEAD
+<<<<<<< HEAD
   q: string; onQ: (v: string) => void;
   sort: ShareSort; onSort: (v: ShareSort) => void;
   tab: ShareTabKey; onTab: (v: ShareTabKey) => void;
 =======
+=======
+>>>>>>> origin/final/demo-v1
   q: string;
   onQ: (v: string) => void;
   sort: ShareSort;
   onSort: (v: ShareSort) => void;
   tab: ShareTabKey;
   onTab: (v: ShareTabKey) => void;
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 }
 
 export function ShareToolbar({ q, onQ, sort, onSort, tab, onTab }: Props) {
@@ -39,11 +51,14 @@ export function ShareToolbar({ q, onQ, sort, onSort, tab, onTab }: Props) {
         <div className="relative flex-1 min-w-[240px]">
           <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Input value={q} onChange={(e) => onQ(e.target.value)} placeholder="Tìm kiếm theo thư mục, người dùng…" className="pl-9" />
         </div>
         <Select value={sort} onValueChange={(v) => onSort(v as ShareSort)}>
           <SelectTrigger className="w-[160px]"><SelectValue /></SelectTrigger>
 =======
+=======
+>>>>>>> origin/final/demo-v1
           <Input
             value={q}
             onChange={(e) => onQ(e.target.value)}
@@ -55,7 +70,10 @@ export function ShareToolbar({ q, onQ, sort, onSort, tab, onTab }: Props) {
           <SelectTrigger className="w-[160px]">
             <SelectValue />
           </SelectTrigger>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
           <SelectContent>
             <SelectItem value="oldest">Sắp xếp: Cũ nhất</SelectItem>
             <SelectItem value="newest">Sắp xếp: Mới nhất</SelectItem>

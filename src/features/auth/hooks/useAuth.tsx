@@ -70,6 +70,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // --- Periodically refresh token (every 10 min) ---
   useEffect(() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     const interval = setInterval(async () => {
       if (!tokenStore.get() || !tokenStore.getRefresh()) {
         setUser(null);
@@ -91,6 +92,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }, 10 * 60 * 1000); // 10 minutes
 =======
+=======
+>>>>>>> origin/final/demo-v1
     const interval = setInterval(
       async () => {
         if (!tokenStore.get() || !tokenStore.getRefresh()) {
@@ -114,7 +117,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
       10 * 60 * 1000,
     ); // 10 minutes
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
     return () => clearInterval(interval);
   }, []);
@@ -170,12 +176,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await authApi.logout();
     } catch (error: any) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       console.error("Logout API call failed, but clearing local tokens anyway:", error);
     }
     tokenStore.clear();
     setUser(null);
     if (typeof window !== 'undefined') {
 =======
+=======
+>>>>>>> origin/final/demo-v1
       console.error(
         "Logout API call failed, but clearing local tokens anyway:",
         error,
@@ -184,7 +193,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     tokenStore.clear();
     setUser(null);
     if (typeof window !== "undefined") {
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       window.location.href = "/auth/login";
     }
   };
@@ -205,13 +217,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(u);
         } catch (userFetchError) {
 <<<<<<< HEAD
+<<<<<<< HEAD
           console.error("Failed to fetch user info after token refresh:", userFetchError);
 =======
+=======
+>>>>>>> origin/final/demo-v1
           console.error(
             "Failed to fetch user info after token refresh:",
             userFetchError,
           );
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
         }
       } else {
         throw new Error("Refresh failed: Backend response invalid.");

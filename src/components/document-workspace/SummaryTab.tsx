@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/components/document-workspace/SummaryTab.tsx
 import { useEffect, useState, useMemo } from "react";
 import { Sparkles, RotateCw } from "lucide-react";
@@ -6,10 +7,15 @@ import { Sparkles, RotateCw } from "lucide-react";
 import { RotateCw, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 >>>>>>> origin/Flashcars
+=======
+import { RotateCw, Sparkles } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+>>>>>>> origin/final/demo-v1
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function SummaryTab({
+<<<<<<< HEAD
 <<<<<<< HEAD
   title,
   description,
@@ -94,6 +100,8 @@ export function SummaryTab({
   );
 }
 =======
+=======
+>>>>>>> origin/final/demo-v1
                                title,
                                description,
                            }: {
@@ -175,5 +183,9 @@ export function SummaryTab({
             )}
         </div>
     );
+<<<<<<< HEAD
 }
 >>>>>>> origin/Flashcars
+=======
+}
+>>>>>>> origin/final/demo-v1

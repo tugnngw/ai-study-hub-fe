@@ -47,6 +47,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName;
 =======
 DropdownMenuSubTrigger.displayName =
@@ -88,6 +89,10 @@ DropdownMenuSubTrigger.displayName =
 DropdownMenuSubTrigger.displayName =
   DropdownMenuPrimitive.SubTrigger.displayName;
 >>>>>>> origin/Flashcars
+=======
+DropdownMenuSubTrigger.displayName =
+  DropdownMenuPrimitive.SubTrigger.displayName;
+>>>>>>> origin/final/demo-v1
 
 const DropdownMenuSubContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
@@ -102,6 +107,7 @@ const DropdownMenuSubContent = React.forwardRef<
     {...props}
   />
 ));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -153,6 +159,10 @@ DropdownMenuSubContent.displayName =
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName;
 >>>>>>> origin/Flashcars
+=======
+DropdownMenuSubContent.displayName =
+  DropdownMenuPrimitive.SubContent.displayName;
+>>>>>>> origin/final/demo-v1
 
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
@@ -222,6 +232,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 DropdownMenuCheckboxItem.displayName = DropdownMenuPrimitive.CheckboxItem.displayName;
 =======
 DropdownMenuCheckboxItem.displayName =
@@ -263,6 +274,10 @@ DropdownMenuCheckboxItem.displayName =
 DropdownMenuCheckboxItem.displayName =
   DropdownMenuPrimitive.CheckboxItem.displayName;
 >>>>>>> origin/Flashcars
+=======
+DropdownMenuCheckboxItem.displayName =
+  DropdownMenuPrimitive.CheckboxItem.displayName;
+>>>>>>> origin/final/demo-v1
 
 const DropdownMenuRadioItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
@@ -304,6 +319,7 @@ const DropdownMenuLabel = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className)}
 =======
 =======
@@ -324,11 +340,14 @@ const DropdownMenuLabel = React.forwardRef<
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     className={cn(
       "px-2 py-1.5 text-sm font-semibold",
       inset && "pl-8",
       className,
     )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -357,6 +376,8 @@ const DropdownMenuLabel = React.forwardRef<
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     {...props}
   />
 ));
@@ -374,6 +395,7 @@ const DropdownMenuSeparator = React.forwardRef<
 ));
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -406,6 +428,8 @@ const DropdownMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTML
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 const DropdownMenuShortcut = ({
   className,
   ...props
@@ -415,6 +439,7 @@ const DropdownMenuShortcut = ({
       className={cn("ml-auto text-xs tracking-widest opacity-60", className)}
       {...props}
     />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -443,6 +468,8 @@ const DropdownMenuShortcut = ({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   );
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";

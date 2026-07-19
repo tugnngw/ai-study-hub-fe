@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TODO(backend): api<T>("/api/admin/approvals...")
 import type { ApprovalItem } from "../types/admin.types";
 export const approvalApi = {
@@ -34,6 +35,8 @@ export const approvalApi = {
 >>>>>>> origin/admin-added-fix
 };
 =======
+=======
+>>>>>>> origin/final/demo-v1
 // src/features/admin/services/approvalApi.ts
 import { reportApi } from "./reportApi";
 import type { ApprovalItem } from "../types/admin.types";
@@ -52,6 +55,10 @@ export const approvalApi = {
       const pendingReports = reports.filter(r => !r.status || r.status === "pending");
       const data = pendingReports.map((r) => ({
         id: r.id,
+<<<<<<< HEAD
+=======
+        documentId: (r as any).documentId,
+>>>>>>> origin/final/demo-v1
         title: r.name || "Unknown",
         uploader: r.uploader,
         date: new Date(r.createdAt).toLocaleDateString("vi-VN"),
@@ -75,5 +82,9 @@ export const approvalApi = {
     await reportApi.handleReportDecision(id, "reject");
     return true;
   },
+<<<<<<< HEAD
 };
 >>>>>>> origin/Flashcars
+=======
+};
+>>>>>>> origin/final/demo-v1

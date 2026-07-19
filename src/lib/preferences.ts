@@ -59,9 +59,12 @@ function useIdSet(store: ReturnType<typeof createIdSetStore>) {
     () => new Set<string>(),
   );
 <<<<<<< HEAD
+<<<<<<< HEAD
   const isMarked = useCallback((id: string | number) => ids.has(String(id)), [ids]);
   const toggle = useCallback((id: string | number) => store.toggle(String(id)), []);
 =======
+=======
+>>>>>>> origin/final/demo-v1
   const isMarked = useCallback(
     (id: string | number) => ids.has(String(id)),
     [ids],
@@ -70,7 +73,10 @@ function useIdSet(store: ReturnType<typeof createIdSetStore>) {
     (id: string | number) => store.toggle(String(id)),
     [],
   );
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   return { ids, isMarked, toggle };
 }
 

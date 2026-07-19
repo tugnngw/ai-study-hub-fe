@@ -17,13 +17,19 @@ const labels: Record<PlanId, string> = {
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export const PlanBadge: React.FC<{ plan: PlanId; className?: string }> = ({ plan, className }) => (
 =======
+=======
+>>>>>>> origin/final/demo-v1
 export const PlanBadge: React.FC<{ plan: PlanId; className?: string }> = ({
   plan,
   className,
 }) => (
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   <Badge variant="secondary" className={cn(styles[plan], className)}>
     {labels[plan]}
   </Badge>

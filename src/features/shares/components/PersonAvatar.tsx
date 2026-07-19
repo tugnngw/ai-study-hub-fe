@@ -3,8 +3,11 @@ import type { SharePerson } from "../types/share.types";
 import { avatarColor, initial } from "./avatar-utils";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function PersonAvatar({ person, size = 28 }: { person: SharePerson; size?: number }) {
 =======
+=======
+>>>>>>> origin/final/demo-v1
 export function PersonAvatar({
   person,
   size = 28,
@@ -12,7 +15,10 @@ export function PersonAvatar({
   person: SharePerson;
   size?: number;
 }) {
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   const { name, avatarUrl } = person;
   if (avatarUrl) {
     return (

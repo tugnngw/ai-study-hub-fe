@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // auth.tsx — AuthContext. Gọi thẳng BE thật (không còn mock).
 // =============================================================
@@ -42,11 +43,15 @@
 =======
 // src/lib/auth.tsx
 >>>>>>> origin/Flashcars
+=======
+// src/lib/auth.tsx
+>>>>>>> origin/final/demo-v1
 import {
   createContext,
   useContext,
   useState,
   useEffect,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -110,6 +115,8 @@ const authSource = {
 =======
 >>>>>>> origin/uichange
 =======
+=======
+>>>>>>> origin/final/demo-v1
   useCallback,
   type ReactNode,
 } from "react";
@@ -117,11 +124,15 @@ import type { User, RegisterRequest, AuthResponse } from "./types";
 import { authApi, accountApi } from "./realApi";
 import { tokenStore } from "./api";
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -167,10 +178,13 @@ interface AuthContextValue {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   login: (username: string, password: string) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
+<<<<<<< HEAD
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
@@ -191,6 +205,12 @@ interface AuthContextValue {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+  reloadUser: () => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<void>;
+  verifyResetOtp: (email: string, otp: string) => Promise<void>;
+  resetPassword: (email: string, password: string) => Promise<void>;
+>>>>>>> origin/final/demo-v1
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -199,6 +219,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -345,19 +366,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Nếu không có cả hai token, user chưa đăng nhập
 =======
+=======
+>>>>>>> origin/final/demo-v1
   // --- Initial Auth Check ---
   useEffect(() => {
     const initializeAuth = async () => {
       const accessToken = tokenStore.get();
+<<<<<<< HEAD
       const refreshToken = tokenStore.getRefresh();
 
 >>>>>>> origin/Flashcars
       if (!accessToken || !refreshToken) {
+=======
+
+      // Nếu không có access token, người dùng chưa đăng nhập
+      if (!accessToken) {
+>>>>>>> origin/final/demo-v1
         setIsLoading(false);
         setUser(null);
         return;
       }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
       // Khi có token, thử fetch user info bằng access token hiện tại
       try {
@@ -397,12 +427,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/Flashcars
           setUser(null);
         }
+=======
+      try {
+        // Validate token by calling /me endpoint
+        const u = await accountApi.me();
+        setUser(u);
+        console.log("✅ Auth initialized, user:", u.username);
+      } catch (err: any) {
+        // Token is invalid or expired
+        console.warn("⚠️ Token validation failed during init:", err.status);
+        tokenStore.clear();
+        setUser(null);
+>>>>>>> origin/final/demo-v1
       } finally {
         setIsLoading(false);
       }
     };
 
     initializeAuth();
+<<<<<<< HEAD
 <<<<<<< HEAD
   }, []); // Dependency array rỗng để chỉ chạy một lần khi mount
 
@@ -463,20 +506,78 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const interval = setInterval(async () => {
       if (!tokenStore.get() || !tokenStore.getRefresh()) {
+=======
+  }, []);
+
+  // --- Listen for token changes (auto-logout when token cleared) ---
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "auth_token" || e.key === "refresh_token") {
+        // Only logout if the token was actually cleared/set to null
+        if (e.newValue === null) {
+          console.log("🔔 Token cleared in another tab, clearing local user state");
+          setUser(null);
+        }
+        // If token was updated to a new value, we don't need to do anything
+        // tokenStore.get() will return the correct value on next access
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  // --- Listen for sessionStorage changes within same tab ---
+  useEffect(() => {
+    const handleSessionChange = () => {
+      const token = tokenStore.get();
+      if (!token && user) {
+        console.log("⚠️ Session cleared, logging out");
+        setUser(null);
+      }
+    };
+
+    window.addEventListener("storage", handleSessionChange);
+    return () => window.removeEventListener("storage", handleSessionChange);
+  }, [user]);
+
+  // --- Periodically refresh token (every 10 min) ---
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const token = tokenStore.get();
+      const refreshToken = tokenStore.getRefresh();
+
+      if (!token || !refreshToken) {
+>>>>>>> origin/final/demo-v1
         setUser(null);
         clearInterval(interval);
         return;
       }
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/final/demo-v1
       try {
         const res = await authApi.refresh();
         if (res?.accessToken && res.refreshToken) {
           tokenStore.set(res.accessToken);
           tokenStore.setRefresh(res.refreshToken);
+<<<<<<< HEAD
         } else {
           tokenStore.clear();
           setUser(null);
         }
       } catch {
+=======
+          console.log("✅ Token refreshed successfully");
+        } else {
+          console.warn("⚠️ Refresh response invalid");
+          tokenStore.clear();
+          setUser(null);
+        }
+      } catch (err) {
+        console.error("❌ Token refresh failed:", err);
+>>>>>>> origin/final/demo-v1
         tokenStore.clear();
         setUser(null);
       }
@@ -487,15 +588,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // --- Authentication Functions ---
   const login = async (username: string, password: string) => {
+<<<<<<< HEAD
     // Clear old tokens
     tokenStore.clear();
 
+=======
+>>>>>>> origin/final/demo-v1
     const res: AuthResponse = await authApi.login({ username, password });
 
     const accessToken = res?.accessToken;
     const refreshToken = res?.refreshToken;
 
     if (accessToken && refreshToken) {
+<<<<<<< HEAD
       // Lưu token
       tokenStore.set(accessToken);
       tokenStore.setRefresh(refreshToken);
@@ -521,12 +626,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('Login successful. Tokens stored.');
 =======
 >>>>>>> origin/Flashcars
+=======
+      tokenStore.set(accessToken);
+      tokenStore.setRefresh(refreshToken);
+
+      try {
+        const fullUser = await accountApi.me();
+        setUser(fullUser);
+        console.log("✅ Login success, user loaded with storageGb:", fullUser.storageGb);
+      } catch (error) {
+        console.error("Failed to fetch full user info after login:", error);
+        const userObj: User = {
+          id: res.userId,
+          username: res.username,
+          email: res.email,
+          fullName: res.fullName,
+          role: res.role,
+          status: "ACTIVE",
+          authProvider: "LOCAL",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        setUser(userObj);
+      }
+>>>>>>> origin/final/demo-v1
     } else {
       throw new Error("Login failed: Missing tokens from backend.");
     }
   };
 
   const register = async (data: RegisterRequest) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
     // Backend register trả về AuthResponse, cần lấy token từ đó
     const res = await authApi.register(data);
@@ -552,12 +682,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.log('Registration successful. Tokens stored.');
 =======
 >>>>>>> origin/Flashcars
+=======
+    const res: AuthResponse = await authApi.register(data);
+    if (res?.accessToken && res.refreshToken) {
+      tokenStore.set(res.accessToken);
+      tokenStore.setRefresh(res.refreshToken);
+      
+      try {
+        const fullUser = await accountApi.me();
+        setUser(fullUser);
+        console.log("✅ Register success, user loaded with storageGb:", fullUser.storageGb);
+      } catch (error) {
+        console.error("Failed to fetch full user info after register:", error);
+        const userObj: User = {
+          id: res.userId,
+          username: res.username,
+          email: res.email,
+          fullName: res.fullName,
+          role: res.role,
+          status: "ACTIVE",
+          authProvider: "LOCAL",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+        setUser(userObj);
+      }
+>>>>>>> origin/final/demo-v1
     } else {
       throw new Error("Registration failed: Missing tokens from backend.");
     }
   };
 
   const logout = async () => {
+<<<<<<< HEAD
 <<<<<<< HEAD
     // Gọi logout API của backend để clear session/token trên server nếu cần
     try {
@@ -581,21 +738,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       // Hard reload khi logout để reset all state
 =======
+=======
+>>>>>>> origin/final/demo-v1
     try {
       await authApi.logout();
     } catch {
       // Ignore logout API error
     }
 
+<<<<<<< HEAD
     tokenStore.clear();
     setUser(null);
 
     if (typeof window !== "undefined") {
 >>>>>>> origin/Flashcars
+=======
+    // Clear session immediately
+    tokenStore.clear();
+    setUser(null);
+    console.log("✅ Logged out successfully");
+
+    // Redirect to login page
+    if (typeof window !== "undefined") {
+>>>>>>> origin/final/demo-v1
       window.location.href = "/auth/login";
     }
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   // Hàm refresh này chủ yếu được gọi bởi setInterval hoặc khi có lỗi 401/403
   // Nó sẽ làm mới access token và refresh token nếu có thể
@@ -609,10 +779,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const refreshToken = tokenStore.getRefresh();
     if (!refreshToken) {
 >>>>>>> origin/Flashcars
+=======
+  const refresh = useCallback(async () => {
+    const refreshToken = tokenStore.getRefresh();
+    if (!refreshToken) {
+>>>>>>> origin/final/demo-v1
       throw new Error("No refresh token available.");
     }
 
     try {
+<<<<<<< HEAD
 <<<<<<< HEAD
       // Gọi API refresh token của backend
       // Backend sẽ trả về AuthResponse chứa accessToken và refreshToken mới
@@ -678,6 +854,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
       const res = await authApi.refresh();
       if (res?.accessToken && res.refreshToken) {
         tokenStore.set(res.accessToken);
@@ -699,7 +877,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+  const reloadUser = useCallback(async () => {
+    try {
+      const u = await accountApi.me();
+      setUser(u);
+    } catch (error) {
+      console.error("Reload user failed:", error);
+      throw error;
+    }
+  }, []);
+
+>>>>>>> origin/final/demo-v1
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
   };
@@ -710,6 +901,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resetPassword = async (email: string, password: string) => {
     await authApi.resetPassword(email, password);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -819,6 +1011,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
 =======
+=======
+>>>>>>> origin/final/demo-v1
   };
 
   return (
@@ -831,6 +1025,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             register,
             logout,
             refresh,
+<<<<<<< HEAD
+=======
+            reloadUser,
+>>>>>>> origin/final/demo-v1
             requestPasswordReset,
             verifyResetOtp,
             resetPassword,
@@ -838,7 +1036,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       >
         {children}
       </AuthContext.Provider>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   );
 }
 
@@ -848,6 +1049,7 @@ export function useAuth() {
   return ctx;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -881,3 +1083,6 @@ export type { RegisterRequest };
 =======
 export type { RegisterRequest };
 >>>>>>> origin/Flashcars
+=======
+export type { RegisterRequest };
+>>>>>>> origin/final/demo-v1

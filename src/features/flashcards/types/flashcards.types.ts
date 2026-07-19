@@ -4,10 +4,14 @@
 export interface Flashcard {
   id: number;
 <<<<<<< HEAD
+<<<<<<< HEAD
   documentId: number;
 =======
   documentId: string;
 >>>>>>> origin/Flashcars
+=======
+  documentId: string;
+>>>>>>> origin/final/demo-v1
   question: string;
   answer: string;
   createdAt: string;

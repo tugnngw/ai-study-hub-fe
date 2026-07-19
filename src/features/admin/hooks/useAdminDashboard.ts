@@ -10,9 +10,16 @@ export function useAdminStats() {
   });
 }
 
+<<<<<<< HEAD
 export function useAdminActivity() {
   return useQuery({
     queryKey: adminKeys.dashboardActivity(),
     queryFn: () => dashboardApi.getRecentActivity(),
+=======
+export function useAdminActivity(limit: number = 15) {
+  return useQuery({
+    queryKey: adminKeys.dashboardActivity(),
+    queryFn: () => dashboardApi.getRecentActivity(limit),
+>>>>>>> origin/final/demo-v1
   });
 }

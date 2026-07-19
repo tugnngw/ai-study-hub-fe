@@ -3,14 +3,20 @@
 import { useEffect, useMemo, useState } from "react";
 import { sharesApi } from "../services";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import type { SharedWithMeItem, SharedByMeItem, ShareSort } from "../types/share.types";
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import type {
   SharedWithMeItem,
   SharedByMeItem,
   ShareSort,
 } from "../types/share.types";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
 const PAGE_SIZE = 4;
 
@@ -30,6 +36,7 @@ export function useShares() {
     setLoading(true);
     Promise.all([sharesApi.getSharedWithMe(), sharesApi.getSharedByMe()])
 <<<<<<< HEAD
+<<<<<<< HEAD
       .then(([a, b]) => { if (alive) { setWithMe(a); setByMe(b); } })
       .finally(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
@@ -47,6 +54,17 @@ export function useShares() {
       .finally(() => {
         if (alive) setLoading(false);
       });
+=======
+        .then(([a, b]) => {
+          if (alive) {
+            setWithMe(a);
+            setByMe(b);
+          }
+        })
+        .finally(() => {
+          if (alive) setLoading(false);
+        });
+>>>>>>> origin/final/demo-v1
     return () => {
       alive = false;
     };
@@ -57,6 +75,7 @@ export function useShares() {
     setPageWithMe(1);
     setPageByMe(1);
   }, [q, sort]);
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
 
   const match = (s: string) => s.toLowerCase().includes(q.toLowerCase());
@@ -103,6 +122,32 @@ export function useShares() {
   const pagedByMe = filteredByMe.slice(
     (pageByMe - 1) * PAGE_SIZE,
     pageByMe * PAGE_SIZE,
+=======
+
+  const match = (s: string) => s.toLowerCase().includes(q.toLowerCase());
+  const sortFn = <T extends { order: number }>(a: T, b: T) =>
+      sort === "newest" ? b.order - a.order : a.order - b.order;
+
+  const filteredWithMe = useMemo(
+      () =>
+          withMe
+              .filter((x) => match(x.name) || match(x.sharedBy.name))
+              .sort(sortFn),
+      [withMe, q, sort],
+  );
+  const filteredByMe = useMemo(
+      () => byMe.filter((x) => match(x.name)).sort(sortFn),
+      [byMe, q, sort],
+  );
+
+  const pagedWithMe = filteredWithMe.slice(
+      (pageWithMe - 1) * PAGE_SIZE,
+      pageWithMe * PAGE_SIZE,
+  );
+  const pagedByMe = filteredByMe.slice(
+      (pageByMe - 1) * PAGE_SIZE,
+      pageByMe * PAGE_SIZE,
+>>>>>>> origin/final/demo-v1
   );
 
   return {
@@ -116,11 +161,15 @@ export function useShares() {
     pagedWithMe,
     pageWithMe,
     setPageWithMe,
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     totalPagesWithMe: Math.max(1, Math.ceil(filteredWithMe.length / PAGE_SIZE)),
     // tôi đã chia sẻ
     byMeCount: filteredByMe.length,
     pagedByMe,
+<<<<<<< HEAD
 <<<<<<< HEAD
     pageByMe, setPageByMe,
     totalPagesByMe: Math.max(1, Math.ceil(filteredByMe.length / PAGE_SIZE)),
@@ -128,14 +177,22 @@ export function useShares() {
     removeWithMeLocal: (id: number) => setWithMe((l) => l.filter((x) => x.id !== id)),
     removeByMeLocal: (id: number) => setByMe((l) => l.filter((x) => x.id !== id)),
 =======
+=======
+>>>>>>> origin/final/demo-v1
     pageByMe,
     setPageByMe,
     totalPagesByMe: Math.max(1, Math.ceil(filteredByMe.length / PAGE_SIZE)),
     // cập nhật state sau khi xóa
     removeWithMeLocal: (id: string) =>
+<<<<<<< HEAD
       setWithMe((l) => l.filter((x) => x.id !== id)),
     removeByMeLocal: (id: string) =>
       setByMe((l) => l.filter((x) => x.id !== id)),
 >>>>>>> origin/Flashcars
+=======
+        setWithMe((l) => l.filter((x) => x.id !== id)),
+    removeByMeLocal: (id: string) =>
+        setByMe((l) => l.filter((x) => x.id !== id)),
+>>>>>>> origin/final/demo-v1
   };
 }

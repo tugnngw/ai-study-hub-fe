@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // realApi.ts — Real API calls, 1-1 mapping với BE endpoints
 // =============================================================
@@ -99,6 +100,8 @@ import type {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
 // src/lib/realApi.ts
 import { api } from "./api";
 import { tokenStore } from "./api";
@@ -108,7 +111,12 @@ import type {
   AuthResponse,
   RefreshResponse,
   RegisterRequest,
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+  Semester,
+  Subject,
+>>>>>>> origin/final/demo-v1
   Folder,
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -116,6 +124,7 @@ import type {
   UploadDocumentRequest,
   UpdateDocumentRequest,
   DownloadUrlResponse,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -222,12 +231,28 @@ import type { QuizItem } from "@/features/quiz/types/quiz.types";
 } from "./types";
 import type { QuizItem } from "@/features/quiz/types/quiz.types";
 >>>>>>> origin/Flashcars
+=======
+  ShareResponse,
+  ShareRequest,
+  AskRequest,
+  AskResponse,
+  ReportDocumentRequest,
+  QuizResponse,
+  FlashcardResponse,
+  FlashcardProgress,
+  GenerateSummaryRequest,
+  GenerateSummaryResponse,
+  GenerateFlashcardsRequest,
+  GenerateQuizRequest,
+} from "./types";
+>>>>>>> origin/final/demo-v1
 
 // ================================================================
 // AUTH  →  /api/auth
 // ================================================================
 
 export const authApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -344,6 +369,8 @@ export const authApi = {
       body: { refreshToken: tokenStore.getRefresh() },
     }),
 =======
+=======
+>>>>>>> origin/final/demo-v1
   register: (data: RegisterRequest): Promise<AuthResponse> =>
       api<AuthResponse>("/api/auth/register", { method: "POST", body: data }),
 
@@ -372,13 +399,17 @@ export const authApi = {
         method: "POST",
         body: { refreshToken: tokenStore.getRefresh() },
       }),
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
   logout: async (): Promise<void> => {
     await api("/api/auth/logout", { method: "POST" }).catch(() => {});
     tokenStore.clear();
   },
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   // Password reset flow
   requestPasswordReset: (email: string) =>
@@ -416,6 +447,8 @@ export const authApi = {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
   requestPasswordReset: (email: string): Promise<void> =>
       api<void>("/api/auth/request-reset", { method: "POST", body: { email } }),
   verifyResetOtp: (email: string, otp: string): Promise<void> =>
@@ -425,7 +458,10 @@ export const authApi = {
         method: "POST",
         body: { email, password: newPassword },
       }),
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 };
 
 // ================================================================
@@ -433,6 +469,7 @@ export const authApi = {
 // ================================================================
 
 export const accountApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -539,6 +576,30 @@ export const subjectApi = {
 =======
   me: (): Promise<User> => api<User>("/api/account/me"),
 >>>>>>> origin/Flashcars
+=======
+  me: (): Promise<User> => api<User>("/api/account/me"),
+};
+
+// ================================================================
+// SEMESTER  →  /api/semesters
+// ================================================================
+
+export const semesterApi = {
+  list: (): Promise<Semester[]> => api<Semester[]>("/api/semesters"),
+  getById: (id: string): Promise<Semester> =>
+      api<Semester>(`/api/semesters/${id}`),
+};
+
+// ================================================================
+// SUBJECT  →  /api/subjects
+// ================================================================
+
+export const subjectApi = {
+  listBySemester: (semesterId: string): Promise<Subject[]> =>
+      api<Subject[]>(`/api/subjects/semester/${semesterId}`),
+  getById: (id: string): Promise<Subject> =>
+      api<Subject>(`/api/subjects/${id}`),
+>>>>>>> origin/final/demo-v1
 };
 
 // ================================================================
@@ -546,6 +607,7 @@ export const subjectApi = {
 // ================================================================
 
 export const folderApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -624,6 +686,8 @@ export const folderApi = {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
   list: (): Promise<Folder[]> => api<Folder[]>("/api/folder/getall"),
   getById: (id: string): Promise<Folder> =>
       api<Folder>(`/api/folder/getbyid/${id}`),
@@ -633,7 +697,10 @@ export const folderApi = {
       api<Folder>(`/api/folder/update/${id}`, { method: "PUT", body }),
   delete: (id: string): Promise<void> =>
       api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 };
 
 // ================================================================
@@ -641,6 +708,7 @@ export const folderApi = {
 // ================================================================
 
 export const documentApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -807,6 +875,22 @@ export const shareApi = {
     const fd = new FormData();
     fd.append("files", input.file);
 >>>>>>> origin/Flashcars
+=======
+  list: (): Promise<Document[]> => api<Document[]>("/api/documents"),
+  listByFolder: (folderId: string): Promise<Document[]> =>
+      api<Document[]>(`/api/documents/folder/${folderId}`),
+  listSharedFolder: (folderId: string): Promise<Document[]> =>
+      api<Document[]>(`/api/documents/shared/folder/${folderId}`),
+  getById: (id: string): Promise<Document> =>
+      api<Document>(`/api/documents/${id}`),
+  getSharedById: (id: string): Promise<Document> =>
+      api<Document>(`/api/documents/shared/${id}`),
+
+  upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
+    const fd = new FormData();
+    const list = input.files ?? (input.file ? [input.file] : []);
+    list.forEach((f) => fd.append("files", f));
+>>>>>>> origin/final/demo-v1
     fd.append("title", input.title);
     if (input.description) {
       fd.append("description", input.description);
@@ -814,6 +898,7 @@ export const shareApi = {
     if (input.folderId) {
       fd.append("folderId", input.folderId);
     }
+<<<<<<< HEAD
     if (input.subjectId) {
       fd.append("subjectId", String(input.subjectId));
     }
@@ -945,6 +1030,8 @@ export const shareApi = {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
     return api<Document[]>("/api/documents", {
       method: "POST",
       formData: fd,
@@ -966,7 +1053,10 @@ export const shareApi = {
       api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
   emptyTrash: (id: string): Promise<void> =>
       api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 };
 
 // ================================================================
@@ -974,6 +1064,7 @@ export const shareApi = {
 // ================================================================
 
 export const ragApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1299,6 +1390,12 @@ export const shareApi = {
       api<AskResponse>("/api/rag/ask", {
         method: "POST",
         body: { id: input.id, question: input.question },
+=======
+  ask: (input: AskRequest): Promise<AskResponse> =>
+      api<AskResponse>("/api/rag/ask", {
+        method: "POST",
+        body: { documentId: input.documentId, question: input.question },
+>>>>>>> origin/final/demo-v1
       }),
 };
 
@@ -1313,6 +1410,11 @@ export const shareApi = {
       api<ShareResponse[]>("/api/shares/shared-with-me"),
   shareFolder: (request: ShareRequest): Promise<ShareResponse> =>
       api<ShareResponse>("/api/shares", { method: "POST", body: request }),
+<<<<<<< HEAD
+=======
+  shareDocument: (request: ShareRequest): Promise<ShareResponse> =>
+      api<ShareResponse>("/api/shares", { method: "POST", body: request }),
+>>>>>>> origin/final/demo-v1
   removeShare: (shareId: string): Promise<void> =>
       api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
   saveToMyFolder: (shareId: string, folderId: string, title: string, description?: string): Promise<ShareResponse> =>
@@ -1325,6 +1427,7 @@ export const shareApi = {
         method: "POST",
         body: { documentId: body.id, reason: body.reason, description: body.description },
       }),
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
 };
 
@@ -1591,3 +1694,49 @@ export const flashcardApi = {
       }),
 };
 >>>>>>> origin/Flashcars
+=======
+};
+
+// ================================================================
+// QUIZ  →  /api/quizzes
+// ================================================================
+
+export const quizApi = {
+  listByDocument: (documentId: string): Promise<QuizResponse[]> =>
+      api<QuizResponse[]>(`/api/quizzes/${documentId}`),
+  generate: (input: GenerateQuizRequest): Promise<QuizResponse> =>
+      api<QuizResponse>("/api/quizzes/generate", {
+        method: "POST",
+        body: input,
+      }),
+};
+
+// ================================================================
+// FLASHCARD  →  /api/flashcards
+// ================================================================
+
+export const flashcardApi = {
+  listByDocument: (documentId: string): Promise<FlashcardResponse[]> =>
+      api<FlashcardResponse[]>(`/api/flashcards/${documentId}`),
+  generate: (input: GenerateFlashcardsRequest): Promise<FlashcardResponse[]> =>
+      api<FlashcardResponse[]>("/api/flashcards/generate", {
+        method: "POST",
+        body: input,
+      }),
+};
+
+// ================================================================
+// AI SUMMARY
+// ================================================================
+
+export const summaryApi = {
+  generate: (request: GenerateSummaryRequest): Promise<GenerateSummaryResponse> =>
+      api<GenerateSummaryResponse>("/api/ai/summary", {
+        method: "POST",
+        body: request,
+      }),
+
+  getCached: (documentId: string): Promise<GenerateSummaryResponse> =>
+      api<GenerateSummaryResponse>(`/api/ai/summary/${documentId}`),
+};
+>>>>>>> origin/final/demo-v1

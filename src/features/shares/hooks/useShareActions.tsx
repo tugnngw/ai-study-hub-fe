@@ -6,6 +6,7 @@ import { sharesApi } from "../services";
 
 export function useShareActions(opts?: {
 <<<<<<< HEAD
+<<<<<<< HEAD
   onRemovedWithMe?: (id: number) => void;
   onRemovedByMe?: (id: number) => void;
 =======
@@ -13,10 +14,16 @@ export function useShareActions(opts?: {
   onRemovedByMe?: (id: string) => void;
   onOpenInAI?: (folderId: string) => void;
 >>>>>>> origin/Flashcars
+=======
+  onRemovedWithMe?: (id: string) => void;
+  onRemovedByMe?: (id: string) => void;
+  onOpenInAI?: (folderId: string) => void;
+>>>>>>> origin/final/demo-v1
 }) {
   const navigate = useNavigate();
 
   // Mở folder trong AI chat. /ai yêu cầu search { folderId, docId? }.
+<<<<<<< HEAD
 <<<<<<< HEAD
   // TODO(backend): thay "shared-<id>" bằng folderId THẬT của mục chia sẻ.
   const openInAI = (id: number) => {
@@ -30,6 +37,8 @@ export function useShareActions(opts?: {
       a.href = url; a.download = name; a.target = "_blank"; a.rel = "noopener";
       document.body.appendChild(a); a.click(); a.remove();
 =======
+=======
+>>>>>>> origin/final/demo-v1
   const openInAI = (id: string, folderId?: string) => {
     navigate({ to: "/ai", search: { folderId: folderId ?? `shared-${id}` } });
   };
@@ -45,7 +54,10 @@ export function useShareActions(opts?: {
       document.body.appendChild(a);
       a.click();
       a.remove();
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       toast.success(`Đang tải xuống "${name}"`);
     } catch {
       toast.error("Không tải xuống được");
@@ -54,10 +66,14 @@ export function useShareActions(opts?: {
 
   // Xóa = xóa thẳng folder (soft-delete) -> hiện trong Thùng rác.
 <<<<<<< HEAD
+<<<<<<< HEAD
   const removeWithMe = async (id: number, name: string) => {
 =======
   const removeWithMe = async (id: string, name: string) => {
 >>>>>>> origin/Flashcars
+=======
+  const removeWithMe = async (id: string, name: string) => {
+>>>>>>> origin/final/demo-v1
     try {
       await sharesApi.deleteShared(id);
       opts?.onRemovedWithMe?.(id);
@@ -67,10 +83,14 @@ export function useShareActions(opts?: {
     }
   };
 <<<<<<< HEAD
+<<<<<<< HEAD
   const removeByMe = async (id: number, name: string) => {
 =======
   const removeByMe = async (id: string, name: string) => {
 >>>>>>> origin/Flashcars
+=======
+  const removeByMe = async (id: string, name: string) => {
+>>>>>>> origin/final/demo-v1
     try {
       await sharesApi.deleteShared(id);
       opts?.onRemovedByMe?.(id);
@@ -81,10 +101,14 @@ export function useShareActions(opts?: {
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   const copyLink = async (id: number, name: string) => {
 =======
   const copyLink = async (id: string, name: string) => {
 >>>>>>> origin/Flashcars
+=======
+  const copyLink = async (id: string, name: string) => {
+>>>>>>> origin/final/demo-v1
     try {
       const { url } = await sharesApi.getShareLink(id);
       await navigator.clipboard?.writeText(url);

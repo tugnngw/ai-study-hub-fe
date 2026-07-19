@@ -3,10 +3,14 @@ import {
   createContext,
   useContext,
 <<<<<<< HEAD
+<<<<<<< HEAD
   useLayoutEffect,
 =======
   useEffect,
 >>>>>>> origin/Flashcars
+=======
+  useEffect,
+>>>>>>> origin/final/demo-v1
   useState,
   type ReactNode,
 } from "react";
@@ -17,13 +21,19 @@ const STORAGE_KEY = "ai-study-hub:theme";
 
 function getInitialTheme(): Theme {
 <<<<<<< HEAD
+<<<<<<< HEAD
   if (typeof document !== "undefined" && document.documentElement.classList.contains("dark")) {
 =======
+=======
+>>>>>>> origin/final/demo-v1
   if (
     typeof document !== "undefined" &&
     document.documentElement.classList.contains("dark")
   ) {
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     return "dark";
   }
   if (typeof window === "undefined") return "light";
@@ -50,6 +60,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // useLayoutEffect (not useEffect) so the <html> class is updated
   // synchronously before the browser paints — this avoids a visible
   // flash of the wrong theme when the theme value changes.
@@ -57,6 +68,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 =======
   useEffect(() => {
 >>>>>>> origin/Flashcars
+=======
+  useEffect(() => {
+>>>>>>> origin/final/demo-v1
     const root = document.documentElement;
     root.classList.toggle("dark", theme === "dark");
     try {
@@ -83,6 +97,7 @@ export function useTheme() {
   return ctx;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // Module-level (not component-level) bookkeeping so that navigating
 // directly between two "always light" pages (e.g. trang chủ -> đăng nhập)
@@ -119,4 +134,7 @@ export function useForceLightTheme() {
 =======
 /** Inline script to set the theme class before paint (avoids a flash of the wrong theme). */
 >>>>>>> origin/Flashcars
+=======
+/** Inline script to set the theme class before paint (avoids a flash of the wrong theme). */
+>>>>>>> origin/final/demo-v1
 export const themeInitScript = `(function(){try{var t=localStorage.getItem('${STORAGE_KEY}');if(!t){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(t==='dark'){document.documentElement.classList.add('dark');}}catch(e){}})();`;

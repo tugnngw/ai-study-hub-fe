@@ -43,7 +43,11 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
     publicId: document.publicId,
   });
 
+<<<<<<< HEAD
   if (document.status === "processing") {
+=======
+  if (document.status === "PROCESSING") {
+>>>>>>> origin/final/demo-v1
     return (
       <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
         <div className="flex-1 flex flex-col items-center justify-center p-8">
@@ -54,8 +58,13 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
       </Card>
     );
   }
+<<<<<<< HEAD
   
   if (document.status === "failed") {
+=======
+
+  if (document.status === "REJECT") {
+>>>>>>> origin/final/demo-v1
     return (
       <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
         <div className="flex-1 flex flex-col items-center justify-center p-8">
@@ -95,7 +104,11 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   // Detect file type with priority: mimeType > extension
   const fileType = detectFileType(document.mimeType, fileUrl);
   console.log('[Debug Flow] DocumentViewer: Detected File Type:', fileType);
+<<<<<<< HEAD
   const fileName =document.title || extractFileName(fileUrl);
+=======
+  const fileName = document.title || extractFileName(fileUrl);
+>>>>>>> origin/final/demo-v1
 
   // Render appropriate viewer based on detected type
   switch (fileType) {
@@ -107,6 +120,13 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
           fileName={fileName}
           className={className}
           documentId={document.id}
+<<<<<<< HEAD
+=======
+          fileSize={document.fileSize}
+          mimeType={document.mimeType}
+          totalPages={document.totalPages}
+          createdAt={document.createdAt}
+>>>>>>> origin/final/demo-v1
         />
       );
 

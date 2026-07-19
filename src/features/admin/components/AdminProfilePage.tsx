@@ -24,17 +24,23 @@ export const AdminProfilePage: React.FC = () => {
       email: user?.email ?? "",
     }),
 <<<<<<< HEAD
+<<<<<<< HEAD
     [user]
   );
   const [form, setForm] = useState(initialForm);
   const update = (k: keyof typeof form, v: string) => setForm((p) => ({ ...p, [k]: v }));
 =======
+=======
+>>>>>>> origin/final/demo-v1
     [user],
   );
   const [form, setForm] = useState(initialForm);
   const update = (k: keyof typeof form, v: string) =>
     setForm((p) => ({ ...p, [k]: v }));
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
   const save = (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,11 +56,16 @@ export const AdminProfilePage: React.FC = () => {
   // Đổi mật khẩu
   const [pwd, setPwd] = useState({ current: "", next: "", confirm: "" });
 <<<<<<< HEAD
+<<<<<<< HEAD
   const updatePwd = (k: keyof typeof pwd, v: string) => setPwd((p) => ({ ...p, [k]: v }));
 =======
   const updatePwd = (k: keyof typeof pwd, v: string) =>
     setPwd((p) => ({ ...p, [k]: v }));
 >>>>>>> origin/Flashcars
+=======
+  const updatePwd = (k: keyof typeof pwd, v: string) =>
+    setPwd((p) => ({ ...p, [k]: v }));
+>>>>>>> origin/final/demo-v1
   const changePassword = (e: React.FormEvent) => {
     e.preventDefault();
     if (!pwd.current || !pwd.next) {
@@ -75,16 +86,22 @@ export const AdminProfilePage: React.FC = () => {
       <div className="flex items-center justify-between">
         <div>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <h1 className="text-2xl font-bold tracking-tight font-display">Hồ sơ quản trị</h1>
           <p className="text-muted-foreground mt-1 text-sm">Thông tin tài khoản admin của bạn</p>
 =======
+=======
+>>>>>>> origin/final/demo-v1
           <h1 className="text-2xl font-bold tracking-tight font-display">
             Hồ sơ quản trị
           </h1>
           <p className="text-muted-foreground mt-1 text-sm">
             Thông tin tài khoản admin của bạn
           </p>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
         </div>
         {!editing && (
           <Button onClick={() => setEditing(true)} variant="outline">
@@ -94,6 +111,7 @@ export const AdminProfilePage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+<<<<<<< HEAD
 <<<<<<< HEAD
 
       {/* Thông tin tài khoản */}
@@ -181,6 +199,8 @@ export const AdminProfilePage: React.FC = () => {
         </Card>
       </form>
 =======
+=======
+>>>>>>> origin/final/demo-v1
         {/* Thông tin tài khoản */}
         <form onSubmit={save}>
           <Card>
@@ -295,7 +315,10 @@ export const AdminProfilePage: React.FC = () => {
             </CardContent>
           </Card>
         </form>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
       </div>
     </div>
   );

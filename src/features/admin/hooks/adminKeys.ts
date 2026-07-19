@@ -9,13 +9,17 @@ export const adminKeys = {
   reportedFiles: () => [...adminKeys.all, "reported-files"] as const,
   approvals: () => [...adminKeys.all, "approvals"] as const,
 <<<<<<< HEAD
+<<<<<<< HEAD
   deletedFiles: () => [...adminKeys.all, "trash", "files"] as const,
   deletedAccounts: () => [...adminKeys.all, "trash", "accounts"] as const,
 =======
+=======
+>>>>>>> origin/final/demo-v1
   documents: (tab?: string) => [...adminKeys.all, "documents", tab ?? "all"] as const,
   deletedFiles: () => [...adminKeys.all, "trash", "files"] as const,
   deletedAccounts: () => [...adminKeys.all, "trash", "accounts"] as const,
   reportHistory: () => [...adminKeys.all, "report-history"] as const,
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
   premiumStats: () => [...adminKeys.all, "premium", "stats"] as const,
   premiumRequests: () => [...adminKeys.all, "premium", "requests"] as const,
@@ -28,3 +32,13 @@ export const adminKeys = {
 =======
 };
 >>>>>>> origin/Flashcars
+=======
+  premiumStats: () => [...adminKeys.all, "premium", "stats"] as const,
+  premiumRequests: () => [...adminKeys.all, "premium", "requests"] as const,
+  transactions: (page?: number, size?: number) => [...adminKeys.all, "payment", "transactions", page ?? 0, size ?? 20] as const,
+  transactionsByUser: (accountId: string, page?: number, size?: number) => [...adminKeys.all, "payment", "transactions", "user", accountId, page ?? 0, size ?? 20] as const,
+  transactionsByStatus: (status: string, page?: number, size?: number) => [...adminKeys.all, "payment", "transactions", "status", status, page ?? 0, size ?? 20] as const,
+  planOptions: () => [...adminKeys.all, "payment", "plans"] as const,
+  adminPlans: () => [...adminKeys.all, "plans", "admin"] as const,
+};
+>>>>>>> origin/final/demo-v1

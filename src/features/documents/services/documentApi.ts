@@ -1,6 +1,9 @@
+<<<<<<< HEAD
 // src/features/documents/services/documentApi.ts
 // Document API — CRUD operations for documents
 
+=======
+>>>>>>> origin/final/demo-v1
 import { api } from "@/lib/api";
 import type {
   Document,
@@ -16,6 +19,7 @@ export const documentApi = {
     api<Document[]>(`/api/documents/folder/${folderId}`),
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   getById: (id: number) => {
     console.log('[TRACE-6] documentApi.getById called with id:', id);
 =======
@@ -24,6 +28,9 @@ export const documentApi = {
 >>>>>>> origin/Flashcars
     return api<Document>(`/api/documents/${id}`);
   },
+=======
+  getById: (id: string) => api<Document>(`/api/documents/${id}`),
+>>>>>>> origin/final/demo-v1
 
   upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
     const fd = new FormData();
@@ -45,6 +52,7 @@ export const documentApi = {
   },
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   update: (id: number, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
@@ -53,6 +61,8 @@ export const documentApi = {
 
   getDownloadUrl: (id: number) =>
 =======
+=======
+>>>>>>> origin/final/demo-v1
   update: (id: string, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
@@ -60,21 +70,30 @@ export const documentApi = {
     api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
   getDownloadUrl: (id: string) =>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   listTrash: () => api<Document[]>("/api/documents/trash"),
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   restoreFromTrash: (id: number) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
 
   emptyTrash: (id: number) =>
 =======
+=======
+>>>>>>> origin/final/demo-v1
   restoreFromTrash: (id: string) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
 
   emptyTrash: (id: string) =>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
 };

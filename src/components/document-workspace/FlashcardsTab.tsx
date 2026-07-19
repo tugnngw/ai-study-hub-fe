@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/components/document-workspace/FlashcardsTab.tsx
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -395,6 +396,8 @@ export function FlashcardsTab({ documentId, title }: { documentId: number; title
   );
 }
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -490,5 +493,9 @@ export function FlashcardsTab({ title }: { title: string }) {
             </div>
         </div>
     );
+<<<<<<< HEAD
 }
 >>>>>>> origin/Flashcars
+=======
+}
+>>>>>>> origin/final/demo-v1

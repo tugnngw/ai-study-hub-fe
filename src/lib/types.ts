@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // types.ts — Data models aligned with DB schema & BE API
 // =============================================================
@@ -84,11 +85,16 @@ export interface RegisterRequest {
 =======
 // src/lib/types.ts
 >>>>>>> origin/Flashcars
+=======
+// src/lib/types.ts
+
+>>>>>>> origin/final/demo-v1
 export interface LoginRequest {
   username: string;
   password: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -452,6 +458,8 @@ export interface Document {
 =======
 >>>>>>> origin/uichange
 =======
+=======
+>>>>>>> origin/final/demo-v1
 export interface AuthResponse {
   userId: string;
   username: string;
@@ -470,7 +478,10 @@ export interface RefreshResponse {
 
 export interface RegisterRequest {
   username: string;
+<<<<<<< HEAD
   email: string;
+=======
+>>>>>>> origin/final/demo-v1
   password: string;
   fullName: string;
 }
@@ -483,26 +494,71 @@ export interface User {
   role: string;
   status: string;
   authProvider: string;
+<<<<<<< HEAD
+=======
+  plan?: "FREE" | "BASIC" | "PRO" | "PREMIUM" | "PLUS";
+  storageGb?: number;
+  planExpiresAt?: string | null;
+  planStartedAt?: string | null;
+>>>>>>> origin/final/demo-v1
   createdAt: string;
   updatedAt: string;
 }
 
+<<<<<<< HEAD
 export interface Folder {
   id: string;
   name: string;
   description?: string;
   aiSummary?: string;
+=======
+// =============================================================
+// SEMESTER
+// =============================================================
+export interface Semester {
+  id: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+}
+
+// =============================================================
+// SUBJECT  →  /api/subjects
+// =============================================================
+export interface Subject {
+  id: string;
+  semesterId: string;
+  code: string | null;
+  name: string;
+  defaultSubject: boolean;
+}
+
+// =============================================================
+// FOLDER  →  /api/folder
+// =============================================================
+export interface Folder {
+  id: string;
+  name: string;
+  subjectId?: string;
+  aiSummary?: string | null;
+  documentCount?: number;
+>>>>>>> origin/final/demo-v1
   createdAt: string;
   updatedAt: string;
 }
 
 export interface CreateFolderRequest {
   name: string;
+<<<<<<< HEAD
   description?: string;
+=======
+  subjectId: string;
+>>>>>>> origin/final/demo-v1
 }
 
 export interface UpdateFolderRequest {
   name?: string;
+<<<<<<< HEAD
   description?: string;
 }
 
@@ -540,6 +596,22 @@ export interface Document {
   summary?: string | null;
   status: "processing" | "ready" | "failed" | "deleted";
 >>>>>>> origin/Flashcars
+=======
+  subjectId?: string;
+}
+
+// =============================================================
+// DOCUMENT  →  /api/documents
+// =============================================================
+export interface Document {
+  id: string;
+  ownerId: string;
+  folderId?: string | null;
+  title: string;
+  description?: string | null;
+  summary?: string | null;
+  status: "PROCESSING" | "READY" | "REJECT" | "COMPLETED";
+>>>>>>> origin/final/demo-v1
   cloudinaryUrl?: string | null;
   publicId?: string | null;
   mimeType?: string | null;
@@ -548,6 +620,7 @@ export interface Document {
   totalPages?: number | null;
   createdAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -678,12 +751,26 @@ export interface UploadDocumentRequest {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+  updatedAt?: string;
+}
+
+export interface UploadDocumentRequest {
+  file?: File;
+  files?: File[];
+  title: string;
+  description?: string;
+  folderId?: string;
+}
+
+>>>>>>> origin/final/demo-v1
 export interface UpdateDocumentRequest {
   title?: string;
   description?: string;
   folderId?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -830,13 +917,24 @@ export interface ShareResponse {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
 export interface DownloadUrlResponse {
   url: string;
   expiresAt: string;
 }
 
+<<<<<<< HEAD
 export interface ShareRequest {
   folderId: string;
+=======
+// =============================================================
+// SHARE  →  /api/shares
+// =============================================================
+export interface ShareRequest {
+  folderId?: string;
+  documentId?: string;
+>>>>>>> origin/final/demo-v1
   username?: string;
   email?: string;
   visibility: "private" | "public";
@@ -860,12 +958,18 @@ export interface ShareResponse {
   documentTitle: string | null;
   folderName: string | null;
   fileCount: number | null;
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+  cloudinaryUrl: string | null;
+  documentStatus?: string | null;
+>>>>>>> origin/final/demo-v1
 }
 
 export interface ShareRecipient {
   accountId: string;
   email: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
   fullName?: string;
 }
@@ -991,18 +1095,29 @@ export interface AskRequest {
   id: number;
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
   username: string;
   fullName: string;
 }
 
+<<<<<<< HEAD
 export interface AskRequest {
   documentId: string;
 >>>>>>> origin/Flashcars
+=======
+// =============================================================
+// RAG  →  /api/rag
+// =============================================================
+export interface AskRequest {
+  documentId: string;
+>>>>>>> origin/final/demo-v1
   question: string;
 }
 
 export interface AskResponse {
   answer: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
   referencedChunks?: ReferencedChunk[];
 }
@@ -1124,11 +1239,39 @@ export interface Question {
   id: number;
 >>>>>>> origin/admin-added-fix
   quizId: number;
+=======
+  sources?: unknown[];
+}
+
+// =============================================================
+// REPORT  →  /api/reports
+// =============================================================
+export interface ReportDocumentRequest {
+  id: string;
+  reason: string;
+  description?: string;
+}
+
+// =============================================================
+// QUIZ  →  /api/quizzes
+// =============================================================
+export interface QuizResponse {
+  id: string;
+  title: string;
+  generatedByAi: boolean;
+  createdAt: string;
+  questions: QuestionResponse[];
+}
+
+export interface QuestionResponse {
+  id: string;
+>>>>>>> origin/final/demo-v1
   content: string;
   optionA: string;
   optionB: string;
   optionC: string;
   optionD: string;
+<<<<<<< HEAD
   correctAnswer: "A" | "B" | "C" | "D";
 }
 
@@ -1256,6 +1399,9 @@ export interface ReportDocumentRequest {
   id: string;
   reason: string;
   description?: string;
+=======
+  correctAnswer: string; // "A" | "B" | "C" | "D"
+>>>>>>> origin/final/demo-v1
 }
 
 export interface Quiz {
@@ -1268,16 +1414,34 @@ export interface Quiz {
   createdAt: string;
 }
 
+<<<<<<< HEAD
+=======
+// =============================================================
+// FLASHCARD  →  /api/flashcards
+// =============================================================
+export interface FlashcardResponse {
+  id: string;
+  frontContent: string;
+  backContent: string;
+  generatedByAi: boolean;
+  createdAt: string;
+}
+
+>>>>>>> origin/final/demo-v1
 export interface Flashcard {
   id: string;
   documentId: string;
   front: string;
   back: string;
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   createdAt: string;
 }
 
 export interface FlashcardProgress {
+<<<<<<< HEAD
 <<<<<<< HEAD
   flashcardId: number;
   status: "new" | "learning" | "mastered";
@@ -1436,9 +1600,49 @@ export interface RagChatResponse {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
   id: string;
   flashcardId: string;
   status: "new" | "learning" | "mastered";
   lastReviewed: string;
 }
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+
+// =============================================================
+// AI SUMMARY
+// =============================================================
+export interface GenerateSummaryRequest {
+  documentId: string;
+  force?: boolean;
+}
+
+export interface GenerateSummaryResponse {
+  markdown: string;
+}
+
+// =============================================================
+// AI GENERATION REQUESTS
+// =============================================================
+export interface GenerateFlashcardsRequest {
+  documentId: string;
+  numberOfCards?: number;
+  force?: boolean;
+}
+
+export interface GenerateQuizRequest {
+  documentId: string;
+  numberOfQuestions?: number;
+  force?: boolean;
+}
+
+export interface SharedDocument {
+  id: string;
+  title: string;
+  description?: string;
+  sharedBy: string;
+  sharedAt: string;
+}
+>>>>>>> origin/final/demo-v1

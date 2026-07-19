@@ -1,5 +1,8 @@
 // src/features/admin/services/reportApi.ts
+<<<<<<< HEAD
 import { api } from "@/lib/api";
+=======
+>>>>>>> origin/final/demo-v1
 import type { 
   ReportedFileItem,
   ReportDecision,

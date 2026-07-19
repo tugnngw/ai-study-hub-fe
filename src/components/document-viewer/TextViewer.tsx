@@ -9,6 +9,7 @@ import React, { useEffect, useState, useCallback } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Loader2, Download, ExternalLink, RotateCw } from "lucide-react";
 =======
 import { Loader2, Download, ExternalLink, RotateCw, FileText } from "lucide-react";
@@ -34,6 +35,9 @@ import { Loader2, Download, ExternalLink, RotateCw } from "lucide-react";
 =======
 import { Loader2, Download, ExternalLink, RotateCw, FileText } from "lucide-react";
 >>>>>>> origin/Flashcars
+=======
+import { Loader2, Download, ExternalLink, RotateCw, FileText } from "lucide-react";
+>>>>>>> origin/final/demo-v1
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -47,16 +51,22 @@ interface TextViewerProps {
 
 export const TextViewer: React.FC<TextViewerProps> = ({
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/final/demo-v1
   url,
   fileName = "document.txt",
   className,
 }) => {
+<<<<<<< HEAD
 =======
                                                         url,
                                                         fileName = "document.txt",
                                                         className,
                                                       }) => {
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -83,10 +93,14 @@ export const TextViewer: React.FC<TextViewerProps> = ({
       if (isCloudinary) {
         setError(
 <<<<<<< HEAD
+<<<<<<< HEAD
           "Không thể tải file text từ Cloudinary do CORS. Vui lòng tải xuống để xem."
 =======
             "Không thể tải file text từ Cloudinary do CORS. Vui lòng tải xuống để xem."
 >>>>>>> origin/Flashcars
+=======
+          "Không thể tải file text từ Cloudinary do CORS. Vui lòng tải xuống để xem."
+>>>>>>> origin/final/demo-v1
         );
       } else {
         setError(`Không thể tải file: ${errorMsg}`);
@@ -103,6 +117,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
     setRetryCount((prev) => prev + 1);
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -140,6 +155,8 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/final/demo-v1
   // Toolbar - matches PdfViewer styling
   const Toolbar = (
     <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-1.5 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm gap-1 flex-wrap min-h-[42px]">
@@ -152,6 +169,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-3.5 w-3.5 mr-1" /> Tải
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
@@ -165,6 +183,8 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/final/demo-v1
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
@@ -176,6 +196,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <ExternalLink className="h-4 w-4 mr-1" />
             Mở tab mới
 =======
@@ -204,6 +225,9 @@ export const TextViewer: React.FC<TextViewerProps> = ({
             <ExternalLink className="h-4 w-4 mr-1" />
             Mở tab mới
 >>>>>>> origin/admin-added-fix
+=======
+            <ExternalLink className="h-3.5 w-3.5 mr-1" /> Mở mới
+>>>>>>> origin/final/demo-v1
           </a>
         </Button>
       </div>
@@ -218,6 +242,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
@@ -240,6 +265,9 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 =======
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 >>>>>>> origin/admin-added-fix
+=======
+    <Card className={cn("flex flex-col min-h-0", className)}>
+>>>>>>> origin/final/demo-v1
       {Toolbar}
 
       {/* Loading State */}
@@ -280,6 +308,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
         </div>
       )}
     </Card>
+<<<<<<< HEAD
 =======
   // Toolbar - matches PdfViewer styling
   const Toolbar = (
@@ -346,5 +375,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
         )}
       </Card>
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   );
 };

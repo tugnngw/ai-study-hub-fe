@@ -48,6 +48,7 @@ const SelectScrollUpButton = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("flex cursor-default items-center justify-center py-1", className)}
 =======
 =======
@@ -68,10 +69,13 @@ const SelectScrollUpButton = React.forwardRef<
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className,
     )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -100,6 +104,8 @@ const SelectScrollUpButton = React.forwardRef<
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     {...props}
   >
     <ChevronUp className="h-4 w-4" />
@@ -123,6 +129,7 @@ const SelectScrollDownButton = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("flex cursor-default items-center justify-center py-1", className)}
 =======
 =======
@@ -143,10 +150,13 @@ const SelectScrollDownButton = React.forwardRef<
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className,
     )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -175,11 +185,14 @@ const SelectScrollDownButton = React.forwardRef<
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     {...props}
   >
     <ChevronDown className="h-4 w-4" />
   </SelectPrimitive.ScrollDownButton>
 ));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -231,6 +244,10 @@ SelectScrollDownButton.displayName =
 SelectScrollDownButton.displayName =
   SelectPrimitive.ScrollDownButton.displayName;
 >>>>>>> origin/Flashcars
+=======
+SelectScrollDownButton.displayName =
+  SelectPrimitive.ScrollDownButton.displayName;
+>>>>>>> origin/final/demo-v1
 
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,

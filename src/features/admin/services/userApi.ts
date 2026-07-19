@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TODO(backend): api<T>("/api/admin/users...")
 import type { AdminUserItem } from "../types/admin.types";
 export const adminUserApi = {
@@ -33,6 +34,8 @@ export const adminUserApi = {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
 // src/features/admin/services/userApi.ts
 import { api } from "@/lib/api";
 import type { AdminUserItem } from "../types/admin.types";
@@ -77,5 +80,8 @@ export const adminUserApi = {
 
   toggleStatus: (id: string): Promise<AdminUserItem> =>
       api<AdminUserItem>(`/api/admin/users/${id}/toggle-status`, { method: "PATCH" }),
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 };

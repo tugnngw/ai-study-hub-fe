@@ -19,6 +19,7 @@ if (typeof globalThis.addEventListener === "function") {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   globalThis.addEventListener("error", (event) => record((event as ErrorEvent).error ?? event));
 =======
   globalThis.addEventListener("error", (event) =>
@@ -70,6 +71,11 @@ if (typeof globalThis.addEventListener === "function") {
     record((event as ErrorEvent).error ?? event),
   );
 >>>>>>> origin/Flashcars
+=======
+  globalThis.addEventListener("error", (event) =>
+    record((event as ErrorEvent).error ?? event),
+  );
+>>>>>>> origin/final/demo-v1
   globalThis.addEventListener("unhandledrejection", (event) =>
     record((event as PromiseRejectionEvent).reason),
   );

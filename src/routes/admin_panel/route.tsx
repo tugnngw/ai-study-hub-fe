@@ -32,12 +32,18 @@ function AdminLayoutRoute() {
   }
   if (!isAuthenticated || !isAdmin) return null;
 <<<<<<< HEAD
+<<<<<<< HEAD
   return <AdminShell><Outlet /></AdminShell>;
 =======
+=======
+>>>>>>> origin/final/demo-v1
   return (
     <AdminShell>
       <Outlet />
     </AdminShell>
   );
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 }

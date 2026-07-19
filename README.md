@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # AI Study Hub — Frontend
 
 Ứng dụng web quản lý tài liệu học tập có tích hợp AI (chatbot, tóm tắt, flashcard, quiz),
@@ -637,6 +638,31 @@ thẳng từ **`src/lib/auth.tsx`** (`AuthProvider`/`useAuth()`), không qua
 | `src/routes/__root.tsx`                                | Sửa lỗi cú pháp JSX có sẵn trong code gốc: thẻ `</head>` bị lặp 2 lần khiến app không build được.                                                                                                                         |
 | `src/routes/index.tsx`                                 | Trang chủ (`/`) luôn hiển thị chế độ sáng — tự gỡ class `dark` khỏi `<html>` khi mount, khôi phục lại khi rời trang.                                                                                                      |
 
+=======
+# Tổng hợp Thay đổi UI (Ghim / Gắn sao / Sidebar / AIChat) — Theo Checklist
+
+---
+
+## A. THAY ĐỔI (Thêm / Sửa / Xóa)
+
+### ✅ Thêm mới
+
+| File                                      | Nội dung                                                                                                                                                                                              |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/lib/preferences.ts` (dòng 51, 77–79) | Thêm store `useStarredSharedDocuments` — gắn sao/bỏ sao cho mục "Được chia sẻ với tôi", lưu localStorage (tái dùng cơ chế `createIdSetStore` đã có sẵn cho `useStarredFolders`/`usePinnedDocuments`). |
+
+### ✏️ Sửa
+
+| File                                                   | Sửa gì                                                                                                                                                                                                                    |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/components/document-actions-menu.tsx`             | Thêm mục **Ghim / Bỏ ghim** vào menu "⋮" của tài liệu (dùng trong AIChat). Import `Pin/PinOff`, dùng `usePinnedDocuments`.                                                                                                |
+| `src/components/ui/AIChat.tsx`                         | (1) Sắp xếp tài liệu đã ghim lên đầu danh sách "TÀI LIỆU ĐANG CÓ" + hiện icon 📌. (2) Tab "AI Flashcards" trước render rỗng → render `<FlashcardsTab>`. (3) Tab "AI Summary" trước render rỗng → hiện `document.summary`. |
+| `src/features/shares/components/SharedWithMeTable.tsx` | Thêm cột icon ☆ đầu mỗi dòng để gắn sao nhanh; thêm mục **Gắn sao / Bỏ gắn sao** vào menu "•••"; sắp xếp mục đã gắn sao lên đầu danh sách.                                                                                |
+| `src/components/app-shell.tsx`                         | Trạng thái thu/phóng sidebar (`collapsed`) được lưu vào `localStorage`, không bị reset khi tải lại trang.                                                                                                                 |
+| `src/routes/__root.tsx`                                | Sửa lỗi cú pháp JSX có sẵn trong code gốc: thẻ `</head>` bị lặp 2 lần khiến app không build được.                                                                                                                         |
+| `src/routes/index.tsx`                                 | Trang chủ (`/`) luôn hiển thị chế độ sáng — tự gỡ class `dark` khỏi `<html>` khi mount, khôi phục lại khi rời trang.                                                                                                      |
+
+>>>>>>> origin/final/demo-v1
 ### ❌ Xóa
 
 | File                                           | Lý do                                                                                                                                                               |
@@ -644,12 +670,16 @@ thẳng từ **`src/lib/auth.tsx`** (`AuthProvider`/`useAuth()`), không qua
 | `src/lib/mockApi.ts`                           | Gỡ toàn bộ lớp mock data (login, folder, document, flashcard, quiz, chia sẻ) đã thêm để test UI khi chưa có backend — theo yêu cầu chuyển hẳn về dùng backend thật. |
 | `src/lib/api.ts` (đoạn `if (MOCK_MODE) {...}`) | Bỏ nhánh chặn request sang mock; mọi request lại đi thẳng qua `fetch()` thật như code gốc.                                                                          |
 | `.env` (`VITE_MOCK_MODE`)                      | Bỏ biến bật/tắt mock mode, chỉ giữ `VITE_API_BASE`.                                                                                                                 |
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
 ---
 
 ## B. KHU VỰC CHO TỪNG CHECKLIST
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 ### ☑ 1. Flow Quizzes + chuyển từ trong session qua Quizzes
 - `src/components/ui/AIChat.tsx`
@@ -681,6 +711,8 @@ thẳng từ **`src/lib/auth.tsx`** (`AuthProvider`/`useAuth()`), không qua
 - Dòng 161: hiển thị "Điểm: X / N".
 - Tô xanh (đúng) / đỏ (sai) từng đáp án; hỗ trợ câu nhiều đáp án.
 =======
+=======
+>>>>>>> origin/final/demo-v1
 ### ☑ 1. Ghim tài liệu trong AIChat
 
 - `src/components/document-actions-menu.tsx`
@@ -723,11 +755,15 @@ thẳng từ **`src/lib/auth.tsx`** (`AuthProvider`/`useAuth()`), không qua
 - `src/lib/mockApi.ts` — xóa file.
 - `src/lib/api.ts` — bỏ nhánh `if (MOCK_MODE)`, trả về luồng `fetch()` thật như ban đầu.
 - `.env` — bỏ `VITE_MOCK_MODE`.
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
 ---
 
 ## C. ĐIỂM NỐI BACKEND
+<<<<<<< HEAD
 <<<<<<< HEAD
 - `src/lib/realApi.ts` (dòng 220): `quizApi.generateAdvanced` → `POST /api/quiz/generate`
   body `{ scope: "all" | documentId, types: string[], questionCount }`, trả `QuizItem[]`
@@ -743,6 +779,8 @@ thẳng từ **`src/lib/auth.tsx`** (`AuthProvider`/`useAuth()`), không qua
 - ⚠️ Backend cần hiện thực endpoint này nhận `scope` + `types` (API cũ `generate` chỉ có documentId + questionCount).
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
 
 Các tính năng **Ghim** và **Gắn sao** ở trên là state thuần client-side (`localStorage`), **chưa có** field tương ứng ở backend — giống cách `useStarredFolders` cho trang Folders đã làm từ trước. Nếu muốn đồng bộ đa thiết bị, cần:
 
@@ -750,4 +788,7 @@ Các tính năng **Ghim** và **Gắn sao** ở trên là state thuần client-s
 - Frontend thay `usePinnedDocuments()` / `useStarredSharedDocuments()` bằng gọi API thật (`documentApi.update(id, {pinned})`, `shareApi.toggleStar(id)`...) qua `src/lib/realApi.ts` + hook trong `src/lib/queries.ts`, theo đúng pattern hiện có của `folderApi`/`documentApi`.
 
 ⚠️ Toàn bộ mock data (login, folders, file, tài liệu, chia sẻ) đã bị xóa — app hiện **bắt buộc cần backend thật chạy tại `VITE_API_BASE`** (`http://localhost:4040`) để hoạt động, kể cả đăng nhập.
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1

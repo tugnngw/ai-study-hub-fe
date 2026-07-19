@@ -1,10 +1,14 @@
+<<<<<<< HEAD
 // src/features/documents/services/ragApi.ts
 // RAG (Retrieval-Augmented Generation) API — document analysis and Q&A
 
+=======
+>>>>>>> origin/final/demo-v1
 import { api } from "@/lib/api";
 import type { AskRequest, AskResponse } from "@/lib/types";
 
 export const ragApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   upload: (file: File, documentId: number) => {
     const fd = new FormData();
@@ -18,6 +22,8 @@ export const ragApi = {
     fd.append("file", file);
     fd.append("documentId", String(documentId));
 =======
+=======
+>>>>>>> origin/final/demo-v1
   processDocument: (documentId: string) =>
     api<void>(`/api/v1/rag/process/${documentId}`, { method: "POST" }),
 
@@ -43,7 +49,10 @@ export const ragApi = {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", documentId);
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
   },
 

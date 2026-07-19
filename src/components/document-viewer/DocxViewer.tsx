@@ -7,6 +7,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -34,11 +35,14 @@ import { Button } from "@/components/ui/button";
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Loader2, RotateCw, Download, ExternalLink, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 <<<<<<< HEAD
 import { Skeleton } from "@/components/ui/skeleton";
 <<<<<<< HEAD
@@ -61,11 +65,16 @@ import {
   createCloudinaryBlobUrl,
   cleanupBlobUrl,
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { cn } from "@/lib/utils";
 import {
   isCloudinaryUrl,
   fetchCloudinaryFile, // Chỉ dùng fetch thuần
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 } from "./cloudinaryUtils";
 
 interface DocxViewerProps {
@@ -76,20 +85,27 @@ interface DocxViewerProps {
 
 export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
+<<<<<<< HEAD
   url,
   fileName = "document.docx",
   className,
 }) => {
 =======
+=======
+>>>>>>> origin/final/demo-v1
                                                         url,
                                                         fileName = "document.docx",
                                                         className,
                                                       }) => {
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   const containerRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+<<<<<<< HEAD
 <<<<<<< HEAD
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
   const isCloudinary = isCloudinaryUrl(url);
@@ -231,6 +247,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
 >>>>>>> origin/uichange
 =======
+=======
+>>>>>>> origin/final/demo-v1
   const isCloudinary = isCloudinaryUrl(url);
 
   const fetchAndRender = useCallback(async () => {
@@ -241,12 +259,16 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       return;
     }
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     try {
       setLoading(true);
       setError(null);
       containerRef.current.innerHTML = "";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
       // Use processedUrl (blob) for Cloudinary, original URL for others
 <<<<<<< HEAD
@@ -625,6 +647,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
   );
 };
 =======
+=======
+>>>>>>> origin/final/demo-v1
       // 🟢 SỬA ĐỔI: Dùng trực tiếp fetch để lấy ArrayBuffer
       let arrayBuffer: ArrayBuffer | null = null;
 
@@ -728,5 +752,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
         )}
       </Card>
   );
+<<<<<<< HEAD
 };
 >>>>>>> origin/Flashcars
+=======
+};
+>>>>>>> origin/final/demo-v1

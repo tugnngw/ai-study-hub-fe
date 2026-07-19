@@ -1,8 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/components/document-workspace/DocumentWorkspace.tsx
 import { PanelGroup, Panel, PanelResizeHandle } from "react-resizable-panels";
 import { useNavigate } from "@tanstack/react-router";
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -27,11 +30,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 import { FolderPanel } from "./FolderPanel";
 import { ContentPanel } from "./ContentPanel";
 import { ChatPanel } from "./ChatPanel";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 interface DocumentWorkspaceProps {
   folderId: string;
@@ -70,6 +77,8 @@ export function DocumentWorkspace({ folderId, docId }: DocumentWorkspaceProps) {
   );
 }
 =======
+=======
+>>>>>>> origin/final/demo-v1
 type Tab = "original" | "notes" | "summary" | "flashcards" | "quizzes";
 
 export function DocumentWorkspace({
@@ -220,5 +229,9 @@ export function UploadDialog({
         </DialogContent>
       </Dialog>
   );
+<<<<<<< HEAD
 }
 >>>>>>> origin/Flashcars
+=======
+}
+>>>>>>> origin/final/demo-v1

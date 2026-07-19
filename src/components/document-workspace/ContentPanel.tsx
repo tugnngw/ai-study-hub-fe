@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/components/document-workspace/ContentPanel.tsx
 // Full content panel with sticky toolbar, features tabs, zoom/pan, horizontal scroll
 
@@ -20,17 +21,23 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { Download, FileText, Loader2, RotateCw, Trash2, Upload } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { DocumentViewer } from "@/components/document-viewer";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 import { cn } from "@/lib/utils";
 import { SummaryTab } from "./SummaryTab";
 import { FlashcardsTab } from "./FlashcardsTab";
 import { QuizzesTab } from "./QuizzesTab";
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 type Tab = "summary" | "flashcards" | "quizzes" | "original" | "notes";
@@ -291,12 +298,15 @@ function NotesTab() {
   );
 }
 =======
+=======
+>>>>>>> origin/final/demo-v1
 import { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 import { UploadDialog } from "./DocumentWorkspace";
 
 type Tab = "original" | "notes" | "summary" | "flashcards" | "quizzes";
 
 export function ContentPanel({
+<<<<<<< HEAD
                                  folderId,
                                  docId,
                                  tab,
@@ -311,6 +321,22 @@ export function ContentPanel({
                                  download,
                                  del,
                              }: {
+=======
+    folderId,
+    docId,
+    tab,
+    setTab,
+    notes,
+    setNotes,
+    folder,
+    folderDocs,
+    doc,
+    uploadOpen,
+    setUploadOpen,
+    download,
+    del,
+}: {
+>>>>>>> origin/final/demo-v1
     folderId: string;
     docId?: string;
     tab: Tab;
@@ -379,6 +405,7 @@ export function ContentPanel({
                 ))}
             </div>
 
+<<<<<<< HEAD
             {/* File pill row */}
             {tab === "original" && (folderDocs.data?.length ?? 0) > 0 && (
                 <div className="flex gap-2 px-4 py-2.5 border-b border-border overflow-x-auto items-center">
@@ -419,6 +446,8 @@ export function ContentPanel({
             )}
 
             {/* Folder navigation - only show when viewing PDF */}
+=======
+>>>>>>> origin/final/demo-v1
             {tab === "original" && docId && (
                 <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30">
                     <div className="flex items-center gap-3">
@@ -446,7 +475,10 @@ export function ContentPanel({
             <div className="flex-1 overflow-y-auto p-6">
                 {tab === "original" ? (
                     docId && doc.data ? (
+<<<<<<< HEAD
                         // ✅ QUAN TRỌNG: Đã thêm className="flex-1 min-h-0 w-full h-full" vào đây
+=======
+>>>>>>> origin/final/demo-v1
                         <DocumentViewer document={doc.data} className="flex-1 min-h-0 w-full h-full" />
                     ) : doc.isLoading ? (
                         <div className="flex items-center justify-center h-full">
@@ -580,5 +612,9 @@ export function ContentPanel({
             />
         </section>
     );
+<<<<<<< HEAD
 }
 >>>>>>> origin/Flashcars
+=======
+}
+>>>>>>> origin/final/demo-v1

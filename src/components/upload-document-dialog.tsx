@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 <<<<<<< HEAD
@@ -39,6 +40,17 @@ import { useFolders, useUploadDocument } from "@/lib/queries";
 =======
 import { useFolders, useUploadDocument } from "@/lib/queries";
 >>>>>>> origin/Flashcars
+=======
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
+import { FileText, X, Loader2, GraduationCap, BookOpen, FolderKanban, Upload } from "lucide-react";
+import {
+  useFolders,
+  useSubjectsBySemester,
+  useSemesters,
+  useUploadDocument,
+} from "@/lib/queries";
+>>>>>>> origin/final/demo-v1
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -58,6 +70,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -102,6 +115,11 @@ function formatBytes(n: number) {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+import { Badge } from "@/components/ui/badge";
+import type { Subject } from "@/lib/types";
+
+>>>>>>> origin/final/demo-v1
 export function UploadDocumentDialog({
   open,
   onOpenChange,
@@ -109,6 +127,7 @@ export function UploadDocumentDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
+<<<<<<< HEAD
   defaultFolderId?: number;
 }) {
   const folders = useFolders();
@@ -344,6 +363,95 @@ export function UploadDocumentDialog({
     }
   };
 
+=======
+  defaultFolderId?: string;
+}) {
+  const semesters = useSemesters();
+  const upload = useUploadDocument();
+  const [files, setFiles] = useState<File[]>([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [semesterId, setSemesterId] = useState("");
+  const [subjectId, setSubjectId] = useState("");
+  const [folderId, setFolderId] = useState("");
+
+  const subjects = useSubjectsBySemester(semesterId);
+  const allFolders = useFolders();
+
+  // Filter folders by selected subject
+  const foldersInSubject = useMemo(
+    () => (allFolders.data ?? []).filter((f) => f.subjectId === subjectId),
+    [allFolders.data, subjectId],
+  );
+
+  const selectedSubject = useMemo(
+    () => (subjects.data ?? []).find((s) => s.id === subjectId),
+    [subjects.data, subjectId],
+  );
+
+  useEffect(() => {
+    if (open && defaultFolderId) {
+      setFolderId(defaultFolderId);
+      // Try to infer from defaultFolderId
+      const found = (allFolders.data ?? []).find(f => f.id === defaultFolderId);
+      if (found?.subjectId) {
+        setSubjectId(found.subjectId);
+        // Need semester for that subject — we'll just keep what user picks
+      }
+    }
+  }, [open, defaultFolderId, allFolders.data]);
+
+  const multiple = files.length > 1;
+
+  const reset = () => {
+    setFiles([]);
+    setTitle("");
+    setDescription("");
+    setFolderId("");
+    setSemesterId("");
+    setSubjectId("");
+  };
+
+  const removeFile = (idx: number) =>
+    setFiles((prev) => prev.filter((_, i) => i !== idx));
+
+  const handleSemesterChange = useCallback((v: string) => {
+    setSemesterId(v);
+    setSubjectId("");
+    setFolderId("");
+  }, []);
+
+  const handleSubjectChange = useCallback((v: string) => {
+    setSubjectId(v);
+    setFolderId("");
+  }, []);
+
+  const submit = async () => {
+    if (files.length === 0) return toast.error("Select at least one file");
+    if (!multiple && !title.trim()) return toast.error("Enter a title");
+    if (!semesterId) return toast.error("Select a semester");
+    if (!subjectId) return toast.error("Select a subject");
+    if (!folderId) return toast.error("Select a folder");
+    try {
+      await upload.mutateAsync({
+        files,
+        title: multiple ? files[0].name : title,
+        description,
+        folderId,
+      });
+      toast.success(
+        multiple ? `Uploaded ${files.length} documents` : "Document uploaded",
+      );
+      onOpenChange(false);
+      reset();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    }
+  };
+
+  const canSubmit = files.length > 0 && (multiple || title.trim()) && folderId && subjectId;
+
+>>>>>>> origin/final/demo-v1
   return (
     <Dialog
       open={open}
@@ -354,6 +462,7 @@ export function UploadDocumentDialog({
     >
       <DialogContent>
         <DialogHeader>
+<<<<<<< HEAD
           <DialogTitle>Tải lên tài liệu</DialogTitle>
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -735,11 +844,110 @@ export function UploadDocumentDialog({
                   {(folders.data ?? []).map((f) => (
                     <SelectItem key={f.id} value={String(f.id)}>
                       {f.name}
+=======
+          <DialogTitle className="flex items-center gap-2">
+            <Upload className="h-5 w-5 text-primary" />
+            Upload document
+          </DialogTitle>
+          <DialogDescription>
+            Select semester, subject, and folder before uploading.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-5">
+          {/* Files */}
+          <div className="space-y-2">
+            <Label>Files (can select multiple)</Label>
+            <Input
+              type="file"
+              multiple
+              onChange={(e) => {
+                const picked = Array.from(e.target.files ?? []);
+                if (picked.length) setFiles((prev) => [...prev, ...picked]);
+                e.target.value = "";
+              }}
+            />
+            {files.length > 0 && (
+              <ul className="space-y-1 max-h-40 overflow-y-auto rounded-md border border-border/60 p-2">
+                {files.map((f, i) => (
+                  <li
+                    key={`${f.name}-${i}`}
+                    className="flex items-center justify-between gap-2 text-sm px-2 py-1 rounded hover:bg-accent/40"
+                  >
+                    <span className="truncate flex items-center gap-2 min-w-0">
+                      <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                      <span className="truncate">{f.name}</span>
+                      <span className="text-xs text-muted-foreground shrink-0">
+                        ({(f.size / 1024 / 1024).toFixed(1)} MB)
+                      </span>
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeFile(i)}
+                      className="text-muted-foreground hover:text-destructive shrink-0"
+                      title="Remove file"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {!multiple && (
+            <div className="space-y-2">
+              <Label>Title</Label>
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                disabled={!subjectId}
+                placeholder={!subjectId ? !semesterId ? "Select a semester first" : "Select a subject first" : "Document title"}
+              />
+            </div>
+          )}
+          {multiple && (
+            <p className="text-xs text-muted-foreground -mt-3">
+              Each file becomes its own document, named after the filename.
+            </p>
+          )}
+
+          <div className="space-y-2">
+            <Label>Description (optional)</Label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              disabled={!subjectId}
+              placeholder={!subjectId ? "Select a subject first" : "Brief description..."}
+              rows={2}
+            />
+          </div>
+
+          <div className="border-t border-border pt-4 space-y-4">
+            {/* Semester */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-1.5">
+                <GraduationCap className="h-4 w-4 text-muted-foreground" />
+                Semester
+              </Label>
+              <Select
+                value={semesterId}
+                onValueChange={handleSemesterChange}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a semester" />
+                </SelectTrigger>
+                <SelectContent>
+                  {(semesters.data ?? []).map((s) => (
+                    <SelectItem key={s.id} value={s.id}>
+                      {s.name}
+>>>>>>> origin/final/demo-v1
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
+<<<<<<< HEAD
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => onOpenChange(false)}>
@@ -821,5 +1029,115 @@ export function UploadDocumentDialog({
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+
+            {/* Subject */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-1.5">
+                <BookOpen className="h-4 w-4 text-muted-foreground" />
+                Subject
+              </Label>
+              <Select
+                value={subjectId}
+                onValueChange={handleSubjectChange}
+                disabled={!semesterId}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={
+                      !semesterId
+                        ? "Select a semester first"
+                        : subjects.isLoading
+                          ? "Loading subjects..."
+                          : "Select a subject"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {subjects.isLoading ? (
+                    <div className="flex items-center justify-center p-3">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    </div>
+                  ) : (subjects.data ?? []).length === 0 ? (
+                    <div className="px-3 py-2 text-sm text-muted-foreground">
+                      No subjects available
+                    </div>
+                  ) : (
+                    (subjects.data ?? []).map((s) => (
+                      <SelectItem key={s.id} value={s.id}>
+                        <span className="flex items-center gap-2">
+                          {s.code && <span className="font-mono text-xs text-muted-foreground">{s.code}</span>}
+                          <span>{s.name}</span>
+                          {s.defaultSubject && (
+                            <Badge variant="outline" className="ml-auto text-[10px] px-1.5 py-0 h-auto border-primary/30 text-primary">
+                              Default
+                            </Badge>
+                          )}
+                        </span>
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Folder */}
+            <div className="space-y-2">
+              <Label className="flex items-center gap-1.5">
+                <FolderKanban className="h-4 w-4 text-muted-foreground" />
+                Folder
+              </Label>
+              <Select
+                value={folderId}
+                onValueChange={setFolderId}
+                disabled={!subjectId}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={
+                      !subjectId
+                        ? "Select a subject first"
+                        : "Select a folder"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {foldersInSubject.length === 0 ? (
+                    <div className="px-3 py-2 text-sm text-muted-foreground">
+                      No folders available
+                    </div>
+                  ) : (
+                    foldersInSubject.map((f) => (
+                      <SelectItem key={f.id} value={f.id}>
+                        {f.name}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+              {subjectId && foldersInSubject.length === 0 && (
+                <p className="text-xs text-amber-600 dark:text-amber-400">
+                  No folders found for this subject. <a href="/folders" className="underline">Create one</a> first.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <Button onClick={submit} disabled={upload.isPending || !canSubmit}>
+            {upload.isPending ? (
+              <><Loader2 className="h-4 w-4 mr-1 animate-spin" />Uploading...</>
+            ) : (
+              <><Upload className="h-4 w-4 mr-1" /> Upload</>
+            )}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+>>>>>>> origin/final/demo-v1
   );
 }

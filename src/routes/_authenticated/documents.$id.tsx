@@ -17,6 +17,7 @@ function DocumentDetail() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   console.log('[TRACE-1] Route param id:', id, 'type:', typeof id);
 <<<<<<< HEAD
   const docId = Number(id);
@@ -65,6 +66,9 @@ function DocumentDetail() {
   console.log('[TRACE-2] Converted docId:', docId, 'isNaN:', isNaN(docId));
   const doc = useDocument(docId);
 >>>>>>> origin/Flashcars
+=======
+  const doc = useDocument(id);
+>>>>>>> origin/final/demo-v1
 
   if (doc.isLoading) {
     return <Skeleton className="h-[calc(100vh-8rem)] w-full" />;
@@ -74,6 +78,7 @@ function DocumentDetail() {
       <div className="text-sm text-muted-foreground">Document not found.</div>
     );
   }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -111,4 +116,7 @@ function DocumentDetail() {
 =======
   return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
 >>>>>>> origin/Flashcars
+=======
+  return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={id} />;
+>>>>>>> origin/final/demo-v1
 }

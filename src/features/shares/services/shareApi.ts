@@ -5,14 +5,19 @@
 
 import { api } from "@/lib/api";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import type { SharedWithMeItem, SharedByMeItem } from "../types/share.types";
 =======
 import type { SharedWithMeItem, SharedByMeItem, ShareResponse } from "../types/share.types";
 >>>>>>> origin/Flashcars
+=======
+import type { SharedWithMeItem, SharedByMeItem, ShareResponse } from "../types/share.types";
+>>>>>>> origin/final/demo-v1
 
 export const sharesApi = {
   // GET — danh sách (backend trả đủ field figma: name, size, items,
   // sharedBy{name,avatarUrl}, sharedWith[], time, order)
+<<<<<<< HEAD
 <<<<<<< HEAD
   getSharedWithMe: () => api<SharedWithMeItem[]>("/api/shares/with-me"),
   getSharedByMe: () => api<SharedByMeItem[]>("/api/shares/by-me"),
@@ -59,6 +64,8 @@ export const sharesApi = {
 >>>>>>> origin/admin-added-fix
 };
 =======
+=======
+>>>>>>> origin/final/demo-v1
   getSharedWithMe: async (): Promise<SharedWithMeItem[]> => {
     const response = await api<ShareResponse[]>("/api/shares/shared-with-me");
     return response.map(mapShareResponseToSharedWithMe);
@@ -70,6 +77,7 @@ export const sharesApi = {
 
   // DELETE — Xóa: xóa THẲNG share -> hiện trong Thùng rác.
   deleteShared: (shareToken: string) =>
+<<<<<<< HEAD
     api<void>(`/api/shares/${shareToken}`, { method: "DELETE" }),
 
   // GET — Lấy link chia sẻ (Sao chép link)
@@ -79,6 +87,17 @@ export const sharesApi = {
   // GET — Lấy URL tải xuống (Tải xuống)
   getDownloadUrl: (shareToken: string) =>
     api<{ url: string }>(`/api/shares/${shareToken}/download`),
+=======
+      api<void>(`/api/shares/token/${shareToken}`, { method: "DELETE" }),
+
+  // GET — Lấy link chia sẻ (Sao chép link)
+  getShareLink: (shareToken: string) =>
+      api<{ url: string }>(`/api/shares/${shareToken}/link`),
+
+  // GET — Lấy URL tải xuống (Tải xuống)
+  getDownloadUrl: (shareToken: string) =>
+      api<{ url: string }>(`/api/shares/${shareToken}/download`),
+>>>>>>> origin/final/demo-v1
 };
 
 function mapShareResponseToSharedWithMe(resp: ShareResponse): SharedWithMeItem {
@@ -118,4 +137,7 @@ function mapShareResponseToSharedByMe(resp: ShareResponse): SharedByMeItem {
     savedFolderId: resp.folderId ?? undefined,
   };
 }
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1

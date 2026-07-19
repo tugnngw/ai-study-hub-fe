@@ -6,11 +6,14 @@ import { adminKeys } from "./adminKeys";
 
 export function useApprovals() {
 <<<<<<< HEAD
+<<<<<<< HEAD
   return useQuery({
     queryKey: adminKeys.approvals(),
     queryFn: () => approvalApi.getPendingList(),
   });
 =======
+=======
+>>>>>>> origin/final/demo-v1
   const query = useQuery({
     queryKey: adminKeys.approvals(),
     queryFn: async () => {
@@ -27,17 +30,23 @@ export function useApprovals() {
   });
   console.log("[useApprovals] query state:", query);
   return query;
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 }
 
 export function useApprovalAction() {
   const qc = useQueryClient();
   return useMutation({
 <<<<<<< HEAD
+<<<<<<< HEAD
     mutationFn: ({ id, action }: { id: number; action: ApprovalAction }) =>
       action === "approve" ? approvalApi.approve(id) : approvalApi.reject(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.approvals() }),
 =======
+=======
+>>>>>>> origin/final/demo-v1
     mutationFn: ({ id, action }: { id: string; action: ApprovalAction }) => {
       console.log("[useApprovalAction] mutating:", { id, action });
       return action === "approve" ? approvalApi.approve(id) : approvalApi.reject(id);
@@ -60,6 +69,9 @@ export function useApprovalAction() {
     onError: (err) => {
       console.error("[useApprovalAction] error:", err);
     },
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   });
 }

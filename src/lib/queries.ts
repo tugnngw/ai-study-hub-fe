@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // queries.ts — TanStack Query hooks
 // =============================================================
@@ -46,6 +47,11 @@
 // src/lib/queries.ts
 >>>>>>> origin/Flashcars
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+=======
+// src/lib/queries.ts
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { paymentApi } from "@/features/admin/services/paymentApi";
+>>>>>>> origin/final/demo-v1
 import {
   accountApi,
   authApi,
@@ -54,6 +60,7 @@ import {
   folderApi,
   quizApi,
   ragApi,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -131,10 +138,22 @@ import type {
   SharedDocument,
   ShareResponse,
 >>>>>>> origin/Flashcars
+=======
+  semesterApi,
+  shareApi,
+  subjectApi,
+  summaryApi,
+} from "./realApi";
+import { tokenStore, ApiError } from "./api";
+import type {
+  Document,
+  Folder,
+>>>>>>> origin/final/demo-v1
   UploadDocumentRequest,
   UpdateDocumentRequest,
   CreateFolderRequest,
   UpdateFolderRequest,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -194,6 +213,32 @@ import type {
 >>>>>>> origin/Flashcars
 } from "./types";
 
+=======
+  AskRequest,
+  ReportDocumentRequest,
+  GenerateSummaryRequest,
+  GenerateSummaryResponse,
+  GenerateFlashcardsRequest,
+  GenerateQuizRequest,
+  FlashcardResponse,
+  QuizResponse,
+} from "./types";
+
+function handleAccountLockedError(error: unknown): boolean {
+  if (error instanceof ApiError && error.status === 403) {
+    const data = error.data as any;
+    if (data?.accountLocked === true || data?.error === "ACCOUNT_LOCKED") {
+      if (typeof window !== "undefined") {
+        alert("Tài khoản của bạn đã bị khóa bởi quản trị viên.");
+        window.location.href = "/login";
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
+>>>>>>> origin/final/demo-v1
 // ================================================================
 // AUTH
 // ================================================================
@@ -202,6 +247,12 @@ export function useLogin() {
   return useMutation({
     mutationFn: (input: { username: string; password: string }) =>
       authApi.login(input),
+<<<<<<< HEAD
+=======
+    onError: (error) => {
+      handleAccountLockedError(error);
+    }
+>>>>>>> origin/final/demo-v1
   });
 }
 
@@ -229,6 +280,7 @@ export function useCurrentUser() {
     queryKey: ["account", "me"],
     queryFn: () => accountApi.me(),
     staleTime: 5 * 60_000,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -279,10 +331,14 @@ export function useChangePassword() {
 =======
     retry: false,
 >>>>>>> origin/Flashcars
+=======
+    retry: false,
+>>>>>>> origin/final/demo-v1
   });
 }
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -372,10 +428,64 @@ export function useCreateSubject() {
 =======
     retry: false,
 >>>>>>> origin/AI-Study-fix
+=======
+// PLANS
+// ================================================================
+
+export function usePlans() {
+  return useQuery({
+    queryKey: ["plans"],
+    queryFn: () => paymentApi.getPlans(),
+    staleTime: 30_000,
   });
 }
 
 // ================================================================
+// SEMESTER
+// ================================================================
+
+export function useSemesters() {
+  return useQuery({
+    queryKey: ["semesters"],
+    queryFn: () => semesterApi.list(),
+    staleTime: 10 * 60_000,
+  });
+}
+
+// ================================================================
+// SUBJECT
+// ================================================================
+
+export function useSubjectsBySemester(semesterId: string) {
+  return useQuery({
+    queryKey: ["subjects", "semester", semesterId],
+    queryFn: () => subjectApi.listBySemester(semesterId),
+    enabled: !!semesterId,
+    staleTime: 10 * 60_000,
+  });
+}
+
+// Backward compat: deprecated, use useSubjectsBySemester
+// Fetches all semesters → subjects for each → flattens
+export function useSubjects() {
+  return useQuery({
+    queryKey: ["subjects", "all"],
+    queryFn: async () => {
+      const semesters = await semesterApi.list();
+      const results = await Promise.all(
+        semesters.map((s) =>
+          subjectApi.listBySemester(s.id).catch(() => [] as never[])
+        )
+      );
+      return results.flat();
+    },
+    staleTime: 10 * 60_000,
+>>>>>>> origin/final/demo-v1
+  });
+}
+
+// ================================================================
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
 =======
@@ -395,6 +505,64 @@ export function useCreateSubject() {
 // FOLDER
 // ================================================================
 
+=======
+// DASHBOARD (backward compat until phase 2 rewrite)
+// ================================================================
+
+export function useDashboard() {
+  return useQuery({
+    queryKey: ["dashboard"],
+    queryFn: async () => {
+      const [folders, documents, semesters] = await Promise.all([
+        folderApi.list().catch(() => []),
+        documentApi.list().catch(() => []),
+        semesterApi.list().catch(() => []),
+      ]);
+
+      // Build subject list from all semesters
+      const subjectPromises = semesters.map((sem) =>
+        subjectApi.listBySemester(sem.id).catch(() => [] as never[])
+      );
+      const subjectArrays = await Promise.all(subjectPromises);
+      const allSubjects = subjectArrays.flat();
+
+      // Count docs by folder (since Document no longer has subjectId)
+      const docCountByFolder: Record<string, number> = {};
+      documents.forEach((d) => {
+        if (d.folderId != null) {
+          docCountByFolder[String(d.folderId)] =
+            (docCountByFolder[String(d.folderId)] ?? 0) + 1;
+        }
+      });
+
+      const recentNotes = [...folders]
+        .map((f) => ({
+          ...f,
+          documentCount: f.documentCount ?? docCountByFolder[String(f.id)] ?? 0,
+        }))
+        .sort((a, b) =>
+          (b.updatedAt ?? b.createdAt ?? "").localeCompare(
+            a.updatedAt ?? a.createdAt ?? "",
+          ),
+        )
+        .slice(0, 3);
+
+      const recentDocuments = [...documents]
+        .sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""))
+        .slice(0, 6);
+
+      return {
+        recentNotes,
+        recentDocuments,
+        subjects: allSubjects,
+        docCountBySubject: {} as Record<string, number>,
+      };
+    },
+    staleTime: 60_000,
+  });
+}
+
+>>>>>>> origin/final/demo-v1
 export const folderKeys = {
   all: ["folders"] as const,
   detail: (id: string) => ["folders", id] as const,
@@ -411,6 +579,7 @@ export function useFolder(id: string) {
   return useQuery({
     queryKey: folderKeys.detail(id),
     queryFn: () => folderApi.getById(id),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -452,6 +621,9 @@ export function useFolder(id: string) {
 =======
     enabled: !!id && id > 0,
 >>>>>>> origin/Flashcars
+=======
+    enabled: !!id,
+>>>>>>> origin/final/demo-v1
   });
 }
 
@@ -499,6 +671,7 @@ export const docKeys = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   detail: (id: number) => ["documents", id] as const,
 =======
   detail: (id: string) => ["documents", "detail", id] as const,
@@ -527,6 +700,9 @@ export const docKeys = {
 =======
   detail: (id: string) => ["documents", id] as const,
 >>>>>>> origin/Flashcars
+=======
+  detail: (id: string) => ["documents", id] as const,
+>>>>>>> origin/final/demo-v1
   trash: ["documents", "trash"] as const,
 };
 
@@ -540,11 +716,27 @@ export function useDocuments() {
 export function useDocumentsByFolder(folderId: string) {
   return useQuery({
     queryKey: docKeys.byFolder(folderId),
+<<<<<<< HEAD
     queryFn: () => documentApi.listByFolder(folderId),
+=======
+    queryFn: async () => {
+      try {
+        return await documentApi.listByFolder(folderId);
+      } catch (err: unknown) {
+        const status = (err as { status?: number }).status;
+        if (status === 401 || status === 403) {
+          console.log("[useDocumentsByFolder] Owner folder access failed, falling back to shared folder endpoint");
+          return await documentApi.listSharedFolder(folderId);
+        }
+        throw err;
+      }
+    },
+>>>>>>> origin/final/demo-v1
     enabled: !!folderId,
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -652,6 +844,34 @@ export function useDocument(id: string) {
     refetchOnWindowFocus: (query) => {
       const data = query.state.data as Document | undefined;
       return data?.status === "processing";
+=======
+export function useDocument(id: string) {
+  return useQuery({
+    queryKey: docKeys.detail(id),
+    queryFn: async () => {
+      try {
+        return await documentApi.getById(id);
+      } catch (err: unknown) {
+        const status = (err as { status?: number }).status;
+        if (status === 401 || status === 403) {
+          console.log("[useDocument] Owner fetch failed, trying shared endpoint");
+          return documentApi.getSharedById(id);
+        }
+        throw err;
+      }
+    },
+    enabled: !!id,
+    refetchInterval: (query) => {
+      const data = query.state.data as Document | undefined;
+      if (data?.status === "PROCESSING") {
+        return 3000;
+      }
+      return false;
+    },
+    refetchOnWindowFocus: (query) => {
+      const data = query.state.data as Document | undefined;
+      return data?.status === "PROCESSING";
+>>>>>>> origin/final/demo-v1
     },
   });
 }
@@ -659,6 +879,7 @@ export function useDocument(id: string) {
 export function useUploadDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
     mutationFn: (input: UploadDocumentRequest) => documentApi.upload(input),
 =======
@@ -668,10 +889,17 @@ export function useUploadDocument() {
       return docs;
     },
 >>>>>>> origin/Flashcars
+=======
+    mutationFn: async (input: UploadDocumentRequest) => {
+      const docs = await documentApi.upload(input);
+      return docs;
+    },
+>>>>>>> origin/final/demo-v1
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
       if (v.folderId)
         qc.invalidateQueries({ queryKey: docKeys.byFolder(v.folderId) });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -700,6 +928,8 @@ export function useUploadDocument() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     },
   });
 }
@@ -707,6 +937,7 @@ export function useUploadDocument() {
 export function useUpdateDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -744,6 +975,9 @@ export function useUpdateDocument() {
 =======
     mutationFn: ({ id, ...body }: { id: string } & UpdateDocumentRequest) =>
 >>>>>>> origin/Flashcars
+=======
+    mutationFn: ({ id, ...body }: { id: string } & UpdateDocumentRequest) =>
+>>>>>>> origin/final/demo-v1
       documentApi.update(id, body),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -755,6 +989,7 @@ export function useUpdateDocument() {
 export function useDeleteDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -809,11 +1044,16 @@ export function useDeleteDocument() {
     mutationFn: (id: string) => documentApi.delete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
 >>>>>>> origin/Flashcars
+=======
+    mutationFn: (id: string) => documentApi.delete(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
+>>>>>>> origin/final/demo-v1
   });
 }
 
 export function useDownloadDocument() {
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -860,6 +1100,8 @@ export function useDownloadDocument() {
 =======
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     mutationFn: (id: string) => documentApi.getDownloadUrl(id),
   });
 }
@@ -867,6 +1109,7 @@ export function useDownloadDocument() {
 // ================================================================
 // TRASH
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
 =======
@@ -906,6 +1149,8 @@ export function useDownloadDocument() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 
 export function useTrash() {
   return useQuery({
@@ -914,6 +1159,7 @@ export function useTrash() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -958,10 +1204,13 @@ export function useRestoreFromTrash() {
 =======
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 export function useRestoreFromTrash() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => documentApi.restoreFromTrash(id),
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
 =======
@@ -980,6 +1229,8 @@ export function useRestoreFromTrash() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -987,6 +1238,7 @@ export function useRestoreFromTrash() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1035,6 +1287,8 @@ export function useEmptyTrash() {
 =======
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 export function useEmptyTrash() {
   const qc = useQueryClient();
   return useMutation({
@@ -1042,6 +1296,7 @@ export function useEmptyTrash() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
     },
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
 =======
@@ -1060,6 +1315,8 @@ export function useEmptyTrash() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   });
 }
 
@@ -1069,6 +1326,7 @@ export function useEmptyTrash() {
 
 export const sharedKeys = {
   all: ["shared"] as const,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1117,6 +1375,10 @@ export const sharedKeys = {
   owned: ["shared-owned"] as const,
   info: (docId: string) => ["share-info", docId] as const,
 >>>>>>> origin/Flashcars
+=======
+  owned: ["shared-owned"] as const,
+  info: (docId: string) => ["share-info", docId] as const,
+>>>>>>> origin/final/demo-v1
 };
 
 export function useSharedDocuments() {
@@ -1126,6 +1388,7 @@ export function useSharedDocuments() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1182,10 +1445,13 @@ export function useShareDocument() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 export function useOwnedShares() {
   return useQuery({
     queryKey: sharedKeys.owned,
     queryFn: () => shareApi.listOwned(),
+<<<<<<< HEAD
     enabled: !!tokenStore.get(), // Only run if authenticated
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1217,12 +1483,16 @@ export function useOwnedShares() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+    enabled: !!tokenStore.get(),
+>>>>>>> origin/final/demo-v1
   });
 }
 
 export function useShareFolder() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1291,10 +1561,29 @@ export function useShareFolder() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+    mutationFn: (request: {
+      folderId?: string;
+      documentId?: string;
+      username?: string;
+      email?: string;
+    }) =>
+        shareApi.shareFolder({
+          folderId: request.folderId,
+          documentId: request.documentId,
+          username: request.username,
+          email: request.email,
+          visibility: "private",
+        }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: sharedKeys.all });
+      qc.invalidateQueries({ queryKey: sharedKeys.owned });
+>>>>>>> origin/final/demo-v1
     },
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1340,15 +1629,25 @@ export function useDeleteSharedDocument() {
 >>>>>>> origin/admin-added-fix
     mutationFn: (shareId: number) => shareApi.removeShare(shareId),
 =======
+=======
+export function useShareDocument() {
+  return useShareFolder();
+}
+
+>>>>>>> origin/final/demo-v1
 export function useDeleteSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (shareId: string) => shareApi.removeShare(shareId),
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: sharedKeys.all });
       qc.invalidateQueries({ queryKey: sharedKeys.owned });
     },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1396,6 +1695,8 @@ export function useDeleteSharedDocument() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   });
 }
 
@@ -1403,6 +1704,7 @@ export function useSaveSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: {
+<<<<<<< HEAD
 <<<<<<< HEAD
       sharedId: number;
       folderId: string;
@@ -1477,6 +1779,8 @@ export function useSaveSharedDocument() {
 =======
 >>>>>>> origin/admin-added-fix
 =======
+=======
+>>>>>>> origin/final/demo-v1
       sharedId: string;
       folderId: string;
       title: string;
@@ -1488,7 +1792,10 @@ export function useSaveSharedDocument() {
       qc.invalidateQueries({ queryKey: docKeys.all });
       qc.invalidateQueries({ queryKey: sharedKeys.all });
     },
+<<<<<<< HEAD
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   });
 }
 
@@ -1498,6 +1805,7 @@ export function useReportDocument() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1520,6 +1828,8 @@ export function useReportFolder() {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 // ================================================================
 // RAG
 // ================================================================
@@ -1530,6 +1840,7 @@ export function useAskRag() {
   });
 }
 
+<<<<<<< HEAD
 export function useUploadRag() {
   return useMutation({
 <<<<<<< HEAD
@@ -1647,6 +1958,32 @@ export function useChatWithFolder() {
 
 =======
 >>>>>>> origin/Flashcars
+=======
+// ================================================================
+// SUMMARY
+// ================================================================
+
+export function useGenerateSummary() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: GenerateSummaryRequest) =>
+      summaryApi.generate(input),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["summary"] });
+    },
+  });
+}
+
+export function useSummary(documentId: string) {
+  return useQuery({
+    queryKey: ["summary", documentId],
+    queryFn: () => summaryApi.getCached(documentId),
+    enabled: !!documentId,
+    staleTime: 60_000,
+  });
+}
+
+>>>>>>> origin/final/demo-v1
 // ================================================================
 // QUIZ
 // ================================================================
@@ -1656,6 +1993,7 @@ export const quizKeys = {
 };
 
 export function useQuizByDocument(documentId: string) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
 =======
@@ -1674,6 +2012,8 @@ export function useQuizByDocument(documentId: string) {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   return useQuery({
     queryKey: quizKeys.byDocument(documentId),
     queryFn: () => quizApi.listByDocument(documentId),
@@ -1684,6 +2024,7 @@ export function useQuizByDocument(documentId: string) {
 export function useGenerateQuiz() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1724,10 +2065,21 @@ export function useGenerateQuiz() {
       quizApi.generate(input.documentId, input.questionCount),
     onSuccess: (_d, v) =>
       qc.invalidateQueries({ queryKey: quizKeys.byDocument(v.documentId) }),
+=======
+    mutationFn: (input: GenerateQuizRequest) =>
+      quizApi.generate(input),
+    onSuccess: (data) => {
+      qc.invalidateQueries({ queryKey: ["quizzes"] });
+      if (data?.id != null) {
+        qc.invalidateQueries({ queryKey: quizKeys.byDocument(data.id) });
+      }
+    },
+>>>>>>> origin/final/demo-v1
   });
 }
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1780,6 +2132,8 @@ export function useFlashcardsByDocument(documentId: number) {
 =======
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
 // FLASHCARD
 // ================================================================
 
@@ -1788,6 +2142,7 @@ export const flashcardKeys = {
 };
 
 export function useFlashcardsByDocument(documentId: string) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
 =======
@@ -1806,6 +2161,8 @@ export function useFlashcardsByDocument(documentId: string) {
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+>>>>>>> origin/final/demo-v1
   return useQuery({
     queryKey: flashcardKeys.byDocument(documentId),
     queryFn: () => flashcardApi.listByDocument(documentId),
@@ -1816,6 +2173,7 @@ export function useFlashcardsByDocument(documentId: string) {
 export function useGenerateFlashcards() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1923,3 +2281,14 @@ export type { Document, Folder, SharedDocument };
 >>>>>>> origin/admin-added-fix
 =======
 >>>>>>> origin/Flashcars
+=======
+    mutationFn: (input: GenerateFlashcardsRequest) =>
+      flashcardApi.generate(input),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["flashcards"] });
+    },
+  });
+}
+
+export type { Document, Folder };
+>>>>>>> origin/final/demo-v1

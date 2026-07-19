@@ -11,19 +11,34 @@ import {
   FileText,
   ClipboardCheck,
 <<<<<<< HEAD
+<<<<<<< HEAD
   Trash2,
 =======
   History,
 >>>>>>> origin/Flashcars
   Crown,
   ShieldCheck,
+=======
+  History,
+  Crown,
+  ShieldCheck,
+  Trash2,
+>>>>>>> origin/final/demo-v1
   User as UserIcon,
   LogOut,
   Search,
   PanelLeftClose,
   PanelLeft,
+<<<<<<< HEAD
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+=======
+  Sun,
+  Moon,
+} from "lucide-react";
+import { useAuth } from "@/lib/auth";
+import { useTheme } from "@/lib/theme";
+>>>>>>> origin/final/demo-v1
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -36,6 +51,7 @@ import {
 import { cn } from "@/lib/utils";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const nav = [
   { to: "/admin_panel", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin_panel/users", label: "Quản lý Users", icon: Users, exact: false },
@@ -43,6 +59,8 @@ const nav = [
   { to: "/admin_panel/approvals", label: "Phê duyệt", icon: ClipboardCheck, exact: false },
   { to: "/admin_panel/trash", label: "Thùng rác", icon: Trash2, exact: false },
 =======
+=======
+>>>>>>> origin/final/demo-v1
 // ❌ ĐÃ XÓA item "Thùng rác"
 const nav = [
   {
@@ -75,13 +93,18 @@ const nav = [
     icon: History,
     exact: false,
   },
+<<<<<<< HEAD
   // { to: "/admin_panel/trash", label: "Thùng rác", icon: Trash2, exact: false }, // ❌ ĐÃ XÓA
 >>>>>>> origin/Flashcars
+=======
+  { to: "/admin_panel/trash", label: "Thùng rác", icon: Trash2, exact: false },
+>>>>>>> origin/final/demo-v1
   { to: "/admin_panel/premium", label: "Premium", icon: Crown, exact: false },
   { to: "/admin_panel/profile", label: "Hồ sơ", icon: UserIcon, exact: false },
 ] as const;
 
 const isActivePath = (pathname: string, to: string, exact: boolean) =>
+<<<<<<< HEAD
 <<<<<<< HEAD
   exact ? pathname === to || pathname === `${to}/` : pathname.startsWith(to);
 =======
@@ -90,6 +113,13 @@ const isActivePath = (pathname: string, to: string, exact: boolean) =>
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const { user, logout } = useAuth();
+=======
+    exact ? pathname === to || pathname === `${to}/` : pathname.startsWith(to);
+
+export function AdminShell({ children }: { children: ReactNode }) {
+  const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+>>>>>>> origin/final/demo-v1
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [collapsed, setCollapsed] = useState(false);
@@ -102,6 +132,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
   const initial = (user?.fullName?.[0] ?? "A").toUpperCase();
 
   return (
+<<<<<<< HEAD
 <<<<<<< HEAD
     <div className="min-h-screen flex">
       {/* Sidebar */}
@@ -259,6 +290,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
   );
 }
 =======
+=======
+>>>>>>> origin/final/demo-v1
       <div className="min-h-screen flex">
         {/* Sidebar */}
         <aside
@@ -372,6 +405,21 @@ export function AdminShell({ children }: { children: ReactNode }) {
             </div>
 
             <div className="ml-auto flex items-center gap-2">
+<<<<<<< HEAD
+=======
+              <button
+                onClick={toggleTheme}
+                className="p-2 hover:bg-accent rounded-lg text-muted-foreground hover:text-foreground transition-colors"
+                title={theme === "dark" ? "Chuyển nền sáng" : "Chuyển nền tối"}
+                aria-label="Đổi giao diện sáng/tối"
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5" />
+                ) : (
+                  <Moon className="h-5 w-5" />
+                )}
+              </button>
+>>>>>>> origin/final/demo-v1
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2 hover:bg-accent rounded-full pr-3 pl-1 py-1 transition-colors">
@@ -453,5 +501,9 @@ export function AdminShell({ children }: { children: ReactNode }) {
         </div>
       </div>
   );
+<<<<<<< HEAD
 }
 >>>>>>> origin/Flashcars
+=======
+}
+>>>>>>> origin/final/demo-v1

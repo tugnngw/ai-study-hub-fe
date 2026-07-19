@@ -12,6 +12,7 @@ const searchSchema = z.object({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   docId: z.coerce.number().optional(),
 =======
   docId: z.string().optional(),
@@ -40,6 +41,9 @@ const searchSchema = z.object({
 =======
   docId: z.string().optional(),
 >>>>>>> origin/Flashcars
+=======
+  docId: z.string().optional(),
+>>>>>>> origin/final/demo-v1
 });
 
 export const Route = createFileRoute("/_authenticated/folders/$id")({
