@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -39,6 +40,8 @@ export const Route = createFileRoute("/auth")({
 
 function AuthLayout() {
 =======
+=======
+>>>>>>> origin/admin-added-fix
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { useForceLightTheme } from "@/lib/theme";
 
@@ -52,7 +55,10 @@ function AuthLayout() {
   // khác.
   useForceLightTheme();
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
       <div className="absolute inset-0 -z-10 opacity-40">
@@ -65,6 +71,7 @@ function AuthLayout() {
     </div>
   );
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -109,3 +116,5 @@ function AuthNotFoundComponent() {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix

@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Admin related types
 
 // Placeholder for admin types. Example:
@@ -17,6 +18,8 @@ export interface AdminStats {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // Admin feature domain types
 
 // ── Dashboard ──────────────────────────────────────────
@@ -157,6 +160,7 @@ export interface TopUpMethod {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -164,4 +168,6 @@ export interface TopUpMethod {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 }

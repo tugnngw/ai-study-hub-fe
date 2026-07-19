@@ -1,5 +1,6 @@
 // src/components/document-workspace/FlashcardsTab.tsx
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState, useEffect, useMemo } from "react";
 import { Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,8 @@ export function FlashcardsTab({ title }: { title: string }) {
     <div className="space-y-5">
       <div className="flex items-center justify-between">
 =======
+=======
+>>>>>>> origin/admin-added-fix
 // AI Flashcards for a single document. Fully independent per document:
 // data is fetched/keyed by documentId, and learning progress is stored
 // per documentId+flashcardId so different files never share state.
@@ -214,12 +217,16 @@ export function FlashcardsTab({ documentId, title }: { documentId: number; title
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between gap-3 flex-wrap">
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
         <div>
           <h2 className="text-xl font-bold flex items-center gap-2 text-gradient-brand font-display">
             <Sparkles className="h-5 w-5" /> AI Flashcards
           </h2>
           <p className="text-xs text-muted-foreground mt-1">
+<<<<<<< HEAD
 <<<<<<< HEAD
             Thẻ ghi nhớ từ "{title}" — bấm vào thẻ để lật mặt
           </p>
@@ -266,6 +273,8 @@ export function FlashcardsTab({ documentId, title }: { documentId: number; title
         </Button>
       </div>
 =======
+=======
+>>>>>>> origin/admin-added-fix
             Thẻ ghi nhớ từ "{title}" — bấm vào thẻ để lật mặt, dùng ← → để chuyển thẻ
           </p>
         </div>
@@ -377,7 +386,10 @@ export function FlashcardsTab({ documentId, title }: { documentId: number; title
           </div>
         </>
       )}
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     </div>
   );
 }

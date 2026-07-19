@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FileText, Users } from "lucide-react";
 import { useSharedDocuments } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
@@ -121,6 +122,8 @@ function SharedPage() {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { SharePage } from "@/features/shares";
 
 export const Route = createFileRoute("/_authenticated/shared")({
@@ -128,8 +131,11 @@ export const Route = createFileRoute("/_authenticated/shared")({
 });
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix

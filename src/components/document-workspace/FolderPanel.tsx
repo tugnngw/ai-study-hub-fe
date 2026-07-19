@@ -4,6 +4,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { ChevronLeft, FileText, Plus, Loader2, FolderKanban } from "lucide-react";
 import { useFolder, useDocumentsByFolder, useUploadDocument } from "@/lib/queries";
 =======
@@ -11,6 +12,11 @@ import { ChevronLeft, FileText, Plus, Loader2, FolderKanban, Pin } from "lucide-
 import { useFolder, useDocumentsByFolder, useUploadDocument } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 >>>>>>> origin/Flashcards-fix
+=======
+import { ChevronLeft, FileText, Plus, Loader2, FolderKanban, Pin } from "lucide-react";
+import { useFolder, useDocumentsByFolder, useUploadDocument } from "@/lib/queries";
+import { usePinnedDocuments } from "@/lib/preferences";
+>>>>>>> origin/admin-added-fix
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
@@ -28,13 +34,19 @@ export function FolderPanel({ folderId, docId }: FolderPanelProps) {
   const folderDocs = useDocumentsByFolder(folderId);
   const upload = useUploadDocument();
 <<<<<<< HEAD
+<<<<<<< HEAD
   const files = folderDocs.data ?? [];
 =======
+=======
+>>>>>>> origin/admin-added-fix
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
   const files = [...(folderDocs.data ?? [])].sort(
     (a, b) => Number(isPinned(b.id)) - Number(isPinned(a.id)),
   );
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   const size = files.reduce((s, d) => s + (d.fileSize || 0), 0);
   const total = 15 * 1024 * 1024 * 1024;
   const pct = Math.min(100, (size / total) * 100);
@@ -141,6 +153,7 @@ export function FolderPanel({ folderId, docId }: FolderPanelProps) {
         {files.map((d) => {
           const active = d.id === docId;
 <<<<<<< HEAD
+<<<<<<< HEAD
           return (
             <Link
               key={d.id}
@@ -163,6 +176,8 @@ export function FolderPanel({ folderId, docId }: FolderPanelProps) {
               </div>
             </Link>
 =======
+=======
+>>>>>>> origin/admin-added-fix
           const pinned = isPinned(d.id);
           return (
             <div key={d.id} className="relative group/item">
@@ -208,7 +223,10 @@ export function FolderPanel({ folderId, docId }: FolderPanelProps) {
                 <Pin className={cn("h-3.5 w-3.5", pinned && !active && "fill-amber-400 text-amber-500")} />
               </button>
             </div>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
           );
         })}
         {!folderDocs.isLoading && files.length === 0 && (

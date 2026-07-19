@@ -5,6 +5,7 @@ import { createFileRoute } from "@tanstack/react-router";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -13,11 +14,14 @@ import { createFileRoute } from "@tanstack/react-router";
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { Cloud, Database, HardDrive } from "lucide-react";
 import { useDocuments } from "@/lib/queries";
 // import { mockStorage } from "@/lib/mock-data"; // removed mock storage
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -38,11 +42,14 @@ import { useDocuments, useFolders } from "@/lib/queries";
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
 export const Route = createFileRoute("/_authenticated/cloud")({
   component: CloudPage,
 });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -57,6 +64,8 @@ export const Route = createFileRoute("/_authenticated/cloud")({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 function formatBytes(n: number) {
   if (n < 1024) return `${n} B`;
   if (n < 1024 ** 2) return `${(n / 1024).toFixed(2)} KB`;
@@ -68,8 +77,15 @@ function CloudPage() {
   const docs = useDocuments();
   // Calculate storage from actual document sizes
   const used = docs.data?.reduce((sum, d) => sum + (d.fileSize ?? 0), 0) ?? 0;
+<<<<<<< HEAD
   const total = 15 * 1024 * 1024 * 1024; // 15 GB limit (or fetch from backend if available)
   const pct = (used / total) * 100;
+=======
+  const total = 1 * 1024 * 1024 * 1024; // 1 GB limit (or fetch from backend if available)
+  // Dung lượng còn lại = tổng dung lượng - dung lượng đã dùng (không cho âm khi vượt quota)
+  const remaining = Math.max(total - used, 0);
+  const pct = Math.min((used / total) * 100, 100);
+>>>>>>> origin/admin-added-fix
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -123,11 +139,16 @@ function CloudPage() {
             <div>
               <div className="text-sm text-muted-foreground">Còn trống</div>
               <div className="text-2xl font-semibold">
+<<<<<<< HEAD
                 {formatBytes(total - used)}
+=======
+                {formatBytes(remaining)}
+>>>>>>> origin/admin-added-fix
               </div>
             </div>
           </CardContent>
         </Card>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -324,6 +345,8 @@ function CloudPage() {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
       </div>
     </div>
   );

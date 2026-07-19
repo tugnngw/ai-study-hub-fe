@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // types.ts — Data models aligned with DB schema & BE API
 // =============================================================
@@ -41,6 +42,8 @@ export interface RegisterRequest {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // src/lib/types.ts
 // =============================================================
 // 1. AUTH / ACCOUNT
@@ -52,6 +55,7 @@ export interface RegisterRequest {
   fullName?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -74,11 +78,14 @@ export interface RegisterRequest {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 export interface LoginRequest {
   username: string;
   password: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -112,6 +119,8 @@ export interface User {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 export interface LoginResponse {
   accessToken: string;
   refreshToken?: string;
@@ -121,6 +130,7 @@ export interface LoginResponse {
 
 export interface User {
   id: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -143,6 +153,8 @@ export interface User {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   username: string;
   email: string;
   fullName: string;
@@ -150,6 +162,7 @@ export interface User {
   role: "USER" | "ADMIN";
   status: "ACTIVE" | "BANNED";
   authProvider: "LOCAL" | "GOOGLE";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -223,6 +236,8 @@ export interface Folder {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   providerId?: string;
   lastLoginAt?: string;
   createdAt: string;
@@ -245,6 +260,7 @@ export interface Folder {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -260,11 +276,14 @@ export interface Folder {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   name: string;
   aiSummary?: string | null;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -309,10 +328,15 @@ export interface Folder {
 }
 
 >>>>>>> origin/Flashcards-fix
+=======
+}
+
+>>>>>>> origin/admin-added-fix
 export interface CreateFolderRequest {
   name: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -338,10 +362,13 @@ export interface CreateFolderRequest {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 export interface UpdateFolderRequest {
   name: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -377,6 +404,8 @@ export interface Document {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // =============================================================
 // 3. DOCUMENT
 // =============================================================
@@ -384,6 +413,7 @@ export interface Document {
 export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
 export interface Document {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -399,10 +429,13 @@ export interface Document {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   id: number;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -432,6 +465,8 @@ export interface Document {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   title: string;
   description?: string | null;
   summary?: string | null;
@@ -444,6 +479,7 @@ export interface Document {
   totalPages?: number | null;
   createdAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -493,10 +529,15 @@ export interface Document {
 }
 
 >>>>>>> origin/Flashcards-fix
+=======
+}
+
+>>>>>>> origin/admin-added-fix
 export interface UploadDocumentRequest {
   file: File;
   title: string;
   description?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -525,10 +566,13 @@ export interface UploadDocumentRequest {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   folderId?: string;
   subjectId?: number;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -551,12 +595,15 @@ export interface UploadDocumentRequest {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 export interface UpdateDocumentRequest {
   title?: string;
   description?: string;
   folderId?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -582,11 +629,14 @@ export interface UpdateDocumentRequest {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 export interface DownloadUrlResponse {
   url: string;
   expiresAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -633,6 +683,8 @@ export interface ShareInfo {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // =============================================================
 // 4. SHARE
 // =============================================================
@@ -640,6 +692,7 @@ export interface ShareInfo {
 export type Visibility = "private" | "shared" | "public";
 
 export interface ShareRequest {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -654,6 +707,8 @@ export interface ShareRequest {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   folderId: string;
   email?: string;      // Search by email
   username?: string;   // Search by username
@@ -674,6 +729,7 @@ export interface ShareResponse {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
   // Temporary addition to prevent TS errors on shared page
@@ -689,6 +745,8 @@ export interface ShareResponse {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 }
 
 export interface ShareRecipient {
@@ -697,6 +755,7 @@ export interface ShareRecipient {
   fullName?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -768,6 +827,8 @@ export interface ShareResponse {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 export interface SharedDocument extends Document {
   sharedBy: string;
   sharedAt: string;
@@ -779,6 +840,7 @@ export interface SharedDocument extends Document {
 // =============================================================
 
 export interface AskRequest {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -810,6 +872,9 @@ export interface AskRequest {
 =======
   id: number;
 >>>>>>> origin/Flashcards-fix
+=======
+  id: number;
+>>>>>>> origin/admin-added-fix
   question: string;
 }
 
@@ -824,6 +889,7 @@ export interface ReferencedChunk {
   similarity?: number;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -853,12 +919,15 @@ export interface Quiz {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // =============================================================
 // 6. QUIZ
 // =============================================================
 
 export interface Quiz {
   id: number;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -891,6 +960,9 @@ export interface Quiz {
 =======
   documentId: number;
 >>>>>>> origin/Flashcards-fix
+=======
+  documentId: number;
+>>>>>>> origin/admin-added-fix
   title: string;
   generatedByAi: boolean;
   createdAt: string;
@@ -898,6 +970,7 @@ export interface Quiz {
 }
 
 export interface Question {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -923,6 +996,9 @@ export interface Question {
 =======
   id: number;
 >>>>>>> origin/Flashcards-fix
+=======
+  id: number;
+>>>>>>> origin/admin-added-fix
   quizId: number;
   content: string;
   optionA: string;
@@ -939,6 +1015,7 @@ export interface QuizAttempt {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
 =======
   id: string;
@@ -958,6 +1035,9 @@ export interface QuizAttempt {
 =======
   id: number;
 >>>>>>> origin/Flashcards-fix
+=======
+  id: number;
+>>>>>>> origin/admin-added-fix
   quizId: number;
   accountId: string;
   score?: number;
@@ -967,6 +1047,7 @@ export interface QuizAttempt {
   completedAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -996,12 +1077,15 @@ export interface Flashcard {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // =============================================================
 // 7. FLASHCARD
 // =============================================================
 
 export interface Flashcard {
   id: number;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1034,6 +1118,9 @@ export interface Flashcard {
 =======
   documentId: number;
 >>>>>>> origin/Flashcards-fix
+=======
+  documentId: number;
+>>>>>>> origin/admin-added-fix
   frontContent: string;
   backContent: string;
   generatedByAi: boolean;
@@ -1048,6 +1135,7 @@ export interface FlashcardProgress {
   nextReviewAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1116,11 +1204,14 @@ export interface PagedResponse<T> {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // =============================================================
 // 8. REPORT
 // =============================================================
 
 export interface ReportDocumentRequest {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1136,10 +1227,13 @@ export interface ReportDocumentRequest {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   id: number;
   reason: string;
   description?: string;
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1188,3 +1282,5 @@ export interface RagChatResponse {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix

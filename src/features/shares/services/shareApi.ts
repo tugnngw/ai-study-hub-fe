@@ -24,7 +24,10 @@ export const sharesApi = {
   getDownloadUrl: (shareId: number) =>
     api<{ url: string }>(`/api/shares/${shareId}/download`),
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/admin-added-fix
 
   // POST — Lưu một bản sao của folder được chia sẻ vào thư mục của tôi
   // (thư mục có sẵn hoặc thư mục mới), với tiêu đề/mô tả tuỳ chỉnh.
@@ -45,5 +48,8 @@ export const sharesApi = {
         description: body.description,
       },
     }),
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 };

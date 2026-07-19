@@ -1,6 +1,7 @@
 // src/components/document-workspace/QuizzesTab.tsx
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState, useMemo } from "react";
 import { Sparkles, RotateCw, Check, X } from "lucide-react";
 import { toast } from "sonner";
@@ -56,6 +57,8 @@ export function QuizzesTab({ title }: { title: string }) {
 =======
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // Tab AI Quizzes (trong session AIChat): màn TÙY CHỌN khởi tạo -> màn LÀM BÀI.
 import { useState, useMemo, useEffect } from "react";
 import { Sparkles, RotateCw, Check, X, FileText, Files, Loader2, Settings2 } from "lucide-react";
@@ -204,9 +207,12 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
 
   // ── MÀN LÀM BÀI ──
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -215,6 +221,7 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
             <Sparkles className="h-5 w-5" /> AI Quizzes
           </h2>
           <p className="text-xs text-muted-foreground mt-1">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             Câu hỏi trắc nghiệm từ "{title}"
@@ -227,19 +234,25 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
 =======
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
             {scope === "all" ? `Toàn bộ thư mục` : `Từ "${title}"`} · {quizzes.length} câu
           </p>
         </div>
         {submitted && (
           <div className="text-sm font-semibold">Điểm: <span className="text-gradient-brand">{score} / {quizzes.length}</span></div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
         )}
       </div>
 
       <div className="space-y-4">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         {quizzes.map((quiz, qi) => (
@@ -286,6 +299,8 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
 =======
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
         {quizzes.map((quiz, qi) => {
           const multi = quiz.type === "multiple_answer";
           return (
@@ -331,13 +346,17 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
         {submitted ? (
           <Button variant="outline" onClick={() => { setAnswers({}); setSubmitted(false); }}>
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
             <RotateCw className="h-4 w-4 mr-2" /> Làm lại
           </Button>
         ) : (
           <Button onClick={() => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             if (Object.keys(answers).length < quizzes.length) {
@@ -358,6 +377,11 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
             setSubmitted(true);
           }}>Nộp bài</Button>
 >>>>>>> origin/Flashcards-fix
+=======
+            if (Object.keys(answers).length < quizzes.length) { toast.error("Vui lòng trả lời tất cả câu hỏi"); return; }
+            setSubmitted(true);
+          }}>Nộp bài</Button>
+>>>>>>> origin/admin-added-fix
         )}
       </div>
     </div>

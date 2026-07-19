@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/features/admin/services/paymentApi.ts
 // Service Payment/Premium (phía user).
 //
@@ -80,6 +81,8 @@ export const paymentApi = {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // Service Payment/Premium (user). Nội dung gói/bank/methods để cứng ở đây cho
 // dễ chỉnh; lịch sử giao dịch lấy qua api() từ backend.
 import { api } from "@/lib/api";
@@ -102,11 +105,14 @@ export const paymentApi = {
   getTransactions: () => api<TransactionItem[]>("/api/payment/transactions"),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   getPlanOptions: (): Promise<PlanOption[]> => Promise.resolve([...PLAN_OPTIONS]),
   getTopUpMethods: (): Promise<TopUpMethod[]> => Promise.resolve([...TOP_UP_METHODS]),
   getBankInfo: () => Promise.resolve({ ...BANK_INFO }),

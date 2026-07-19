@@ -1,16 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FileText, Plus, Search, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { useDocuments, useFolders, useUploadDocument } from "@/lib/queries";
 =======
+=======
+>>>>>>> origin/admin-added-fix
 import { FileText, Plus, Search, Upload, Pin } from "lucide-react";
 import { toast } from "sonner";
 import { useDocuments, useFolders, useUploadDocument } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 import { cn } from "@/lib/utils";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -43,17 +49,23 @@ function DocumentsPage() {
   const [query, setQuery] = useState("");
   const [uploadOpen, setUploadOpen] = useState(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   const filtered = (data ?? []).filter((d) =>
     d.title.toLowerCase().includes(query.toLowerCase()),
   );
 =======
+=======
+>>>>>>> origin/admin-added-fix
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
 
   const filtered = (data ?? [])
     .filter((d) => d.title.toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => Number(isPinned(b.id)) - Number(isPinned(a.id)));
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
   return (
     <div className="space-y-6">
@@ -116,10 +128,15 @@ function DocumentsPage() {
                   title={d.title}
                   description={d.description ?? ""}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
                   pinned={isPinned(d.id)}
                   onTogglePin={() => togglePin(d.id)}
 >>>>>>> origin/Flashcards-fix
+=======
+                  pinned={isPinned(d.id)}
+                  onTogglePin={() => togglePin(d.id)}
+>>>>>>> origin/admin-added-fix
                 />
               ))}
             </tbody>
@@ -127,6 +144,7 @@ function DocumentsPage() {
         </div>
       )}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -156,6 +174,9 @@ function DocumentsPage() {
 =======
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
 >>>>>>> origin/Flashcards-fix
+=======
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+>>>>>>> origin/admin-added-fix
     </div>
   );
 }
@@ -165,6 +186,7 @@ function DocumentRow({
   folderId,
   title,
   description,
+<<<<<<< HEAD
 <<<<<<< HEAD
 }: {
 <<<<<<< HEAD
@@ -208,6 +230,8 @@ function DocumentRow({
           <span className="font-medium">{title}</span>
         </Link>
 =======
+=======
+>>>>>>> origin/admin-added-fix
   pinned,
   onTogglePin,
 }: {
@@ -239,7 +263,10 @@ function DocumentRow({
             <span className="font-medium truncate">{title}</span>
           </Link>
         </div>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
       </td>
       <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
         {description}
@@ -315,6 +342,7 @@ function UploadDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Label>Title</Label>
 =======
             <Label>File Name</Label>
@@ -334,6 +362,9 @@ function UploadDialog({
 =======
             <Label>Title</Label>
 >>>>>>> origin/Flashcards-fix
+=======
+            <Label>Title</Label>
+>>>>>>> origin/admin-added-fix
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="space-y-2">

@@ -1,24 +1,34 @@
 // src/features/shares/components/SharedWithMeTable.tsx
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FolderOpen, Download, Trash2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 =======
+=======
+>>>>>>> origin/admin-added-fix
 import { useState } from "react";
 import { FolderOpen, Download, Trash2, Star, Save } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useStarredSharedDocuments } from "@/lib/preferences";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import type { SharedWithMeItem } from "../types/share.types";
 import { ItemIcon } from "./ItemIcon";
 import { PersonAvatar } from "./PersonAvatar";
 import { RowMenu } from "./RowMenu";
 import { Pager } from "./Pager";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { SaveFileDialog } from "./SaveFileDialog";
 >>>>>>> origin/Flashcards-fix
+=======
+import { SaveFileDialog } from "./SaveFileDialog";
+>>>>>>> origin/admin-added-fix
 
 interface Props {
   items: SharedWithMeItem[];
@@ -33,13 +43,19 @@ interface Props {
 
 export function SharedWithMeTable({ items, count, page, totalPages, onPage, onOpen, onDownload, onRemove }: Props) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/admin-added-fix
   const { isMarked: isStarred, toggle: toggleStar } = useStarredSharedDocuments();
   const [saving, setSaving] = useState<SharedWithMeItem | null>(null);
   const sortedItems = [...items].sort(
     (a, b) => Number(isStarred(b.id)) - Number(isStarred(a.id)),
   );
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   return (
     <section className="space-y-3">
       <h2 className="flex items-center gap-2 font-bold">
@@ -48,6 +64,7 @@ export function SharedWithMeTable({ items, count, page, totalPages, onPage, onOp
       </h2>
       <Card>
         <CardContent className="p-0">
+<<<<<<< HEAD
 <<<<<<< HEAD
           <div className="grid grid-cols-[1fr_220px_160px_44px] items-center px-4 h-11 bg-muted/40 rounded-t-xl text-xs font-semibold text-muted-foreground">
             <div>Tên tài liệu</div><div>Được chia sẻ bởi</div><div>Thời gian</div><div />
@@ -82,6 +99,8 @@ export function SharedWithMeTable({ items, count, page, totalPages, onPage, onOp
   );
 }
 =======
+=======
+>>>>>>> origin/admin-added-fix
           <div className="grid grid-cols-[28px_1fr_220px_160px_44px] items-center px-4 h-11 bg-muted/40 rounded-t-xl text-xs font-semibold text-muted-foreground">
             <div /><div>Tên tài liệu</div><div>Được chia sẻ bởi</div><div>Thời gian</div><div />
           </div>
@@ -137,4 +156,7 @@ export function SharedWithMeTable({ items, count, page, totalPages, onPage, onOp
   );
 }
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix

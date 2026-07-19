@@ -22,6 +22,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const MOCK_SESSIONS = [
   {
     id: "1",
@@ -48,6 +49,8 @@ const MOCK_SESSIONS = [
 
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 function SettingsPage() {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -55,14 +58,20 @@ function SettingsPage() {
   const [twoFAOpen, setTwoFAOpen] = useState(false);
   const [pwdOpen, setPwdOpen] = useState(false);
 <<<<<<< HEAD
+<<<<<<< HEAD
   const [sessions, setSessions] = useState(MOCK_SESSIONS);
 =======
+=======
+>>>>>>> origin/admin-added-fix
   // TODO(backend): chưa có API trả về danh sách phiên đăng nhập thật.
   // Để trống thay vì hiển thị dữ liệu giả cho tới khi BE cung cấp endpoint.
   const [sessions, setSessions] = useState<
     { id: string; device: string; location: string; lastActive: string; current: boolean }[]
   >([]);
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
   const [pwd, setPwd] = useState({ current: "", next: "", confirm: "" });
 
@@ -159,15 +168,21 @@ function SettingsPage() {
         </CardHeader>
         <CardContent className="space-y-2">
 <<<<<<< HEAD
+<<<<<<< HEAD
           {sessions.map((s) => (
 =======
+=======
+>>>>>>> origin/admin-added-fix
           {sessions.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               Chưa có dữ liệu phiên đăng nhập.
             </p>
           ) : (
             sessions.map((s) => (
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
             <div
               key={s.id}
               className="flex items-center justify-between p-3 rounded-md border border-border"
@@ -206,11 +221,16 @@ function SettingsPage() {
               )}
             </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
           ))}
 =======
             ))
           )}
 >>>>>>> origin/Flashcards-fix
+=======
+            ))
+          )}
+>>>>>>> origin/admin-added-fix
         </CardContent>
       </Card>
 

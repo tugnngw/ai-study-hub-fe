@@ -6,6 +6,7 @@ import { useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
 =======
 import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-react";
@@ -25,10 +26,14 @@ import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
 =======
 import { FolderKanban, Plus, Search, Star } from "lucide-react";
 >>>>>>> origin/Flashcards-fix
+=======
+import { FolderKanban, Plus, Search, Star } from "lucide-react";
+>>>>>>> origin/admin-added-fix
 import { toast } from "sonner";
 import {
   useCreateFolder,
   useDeleteFolder,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -51,22 +56,32 @@ import {
   useUpdateFolder,
 } from "@/lib/queries";
 =======
+=======
+>>>>>>> origin/admin-added-fix
   useFolders,
   useUpdateFolder,
   useReportFolder,
 } from "@/lib/queries";
 import { useStarredFolders } from "@/lib/preferences";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 >>>>>>> origin/Flashcards-fix
+=======
+import { Textarea } from "@/components/ui/textarea";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+>>>>>>> origin/admin-added-fix
 import {
   Dialog,
   DialogContent,
@@ -86,13 +101,19 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import type { Folder } from "@/lib/types";
 =======
+=======
+>>>>>>> origin/admin-added-fix
 import { ShareDocumentDialog } from "@/components/share-document-dialog";
 import { FolderActionsMenu } from "@/components/folder-actions-menu";
 import type { Folder } from "@/lib/types";
 import { cn } from "@/lib/utils";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
 export const Route = createFileRoute("/_authenticated/folders")({
   component: FoldersPage,
@@ -100,6 +121,7 @@ export const Route = createFileRoute("/_authenticated/folders")({
 
 function FoldersPage() {
   const { data, isLoading } = useFolders();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -120,10 +142,13 @@ function FoldersPage() {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Folder | null>(null);
   const [deleting, setDeleting] = useState<Folder | null>(null);
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 <<<<<<< HEAD
@@ -156,6 +181,8 @@ function FoldersPage() {
     f.name.toLowerCase().includes(query.toLowerCase()),
   );
 =======
+=======
+>>>>>>> origin/admin-added-fix
   const [sharing, setSharing] = useState<Folder | null>(null);
   const [reporting, setReporting] = useState<Folder | null>(null);
   const { isMarked: isStarred, toggle: toggleStar } = useStarredFolders();
@@ -163,7 +190,10 @@ function FoldersPage() {
   const filtered = (data ?? [])
     .filter((f) => f.name.toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => Number(isStarred(b.id)) - Number(isStarred(a.id)));
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
   return (
     <div className="space-y-6">
@@ -213,9 +243,12 @@ function FoldersPage() {
             <Card
               key={f.id}
 <<<<<<< HEAD
+<<<<<<< HEAD
               className="group hover:border-primary/40 transition-colors"
             >
 =======
+=======
+>>>>>>> origin/admin-added-fix
               className={cn(
                 "group hover:border-primary/40 transition-colors relative",
                 isStarred(f.id) && "border-amber-400/60 bg-amber-50/40 dark:bg-amber-400/5",
@@ -238,7 +271,10 @@ function FoldersPage() {
                   onDelete={() => setDeleting(f)}
                 />
               </div>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
               <CardContent className="p-5">
                 <Link to="/ai" search={{ folderId: f.id }} className="block">
                   <div className="flex items-start gap-3">
@@ -246,6 +282,7 @@ function FoldersPage() {
                       <FolderKanban className="h-5 w-5 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
+<<<<<<< HEAD
 <<<<<<< HEAD
                       <div className="font-medium truncate">{f.name}</div>
 <<<<<<< HEAD
@@ -273,12 +310,16 @@ function FoldersPage() {
 =======
                       <div className="font-medium truncate pr-9">{f.name}</div>
 >>>>>>> origin/Flashcards-fix
+=======
+                      <div className="font-medium truncate pr-9">{f.name}</div>
+>>>>>>> origin/admin-added-fix
                       <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
                         {f.aiSummary || "No summary"}
                       </div>
                     </div>
                   </div>
                 </Link>
+<<<<<<< HEAD
 <<<<<<< HEAD
                 <div className="flex justify-end gap-1 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
                   <Button
@@ -301,6 +342,8 @@ function FoldersPage() {
                 </div>
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
               </CardContent>
             </Card>
           ))}
@@ -310,7 +353,10 @@ function FoldersPage() {
       <FolderFormDialog open={open} onOpenChange={setOpen} folder={editing} />
       <DeleteFolderDialog folder={deleting} onClose={() => setDeleting(null)} />
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/admin-added-fix
       <ShareDocumentDialog
         open={!!sharing}
         onOpenChange={(v) => !v && setSharing(null)}
@@ -318,7 +364,10 @@ function FoldersPage() {
         folderId={sharing?.id ?? ""}
       />
       <ReportFolderDialog folder={reporting} onClose={() => setReporting(null)} />
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     </div>
   );
 }
@@ -402,7 +451,10 @@ function FolderFormDialog({
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/admin-added-fix
 function ReportFolderDialog({
   folder,
   onClose,
@@ -511,7 +563,10 @@ function ReportFolderDialog({
   );
 }
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 function DeleteFolderDialog({
   folder,
   onClose,

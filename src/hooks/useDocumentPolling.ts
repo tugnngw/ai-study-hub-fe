@@ -10,6 +10,7 @@ import { docKeys } from '@/lib/queries';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -18,11 +19,14 @@ import { docKeys } from '@/lib/queries';
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 export function useDocumentPolling(documentId: number, status: string) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
     if (status !== 'processing' || !documentId || documentId <= 0) return;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -52,6 +56,8 @@ export function useDocumentPolling(documentId: string, status: string) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
     console.log('[Polling] Starting polling for document:', documentId);
 

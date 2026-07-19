@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # AI Study Hub — Frontend
 
 Ứng dụng web quản lý tài liệu học tập có tích hợp AI (chatbot, tóm tắt, flashcard, quiz),
@@ -473,6 +474,46 @@ thẳng từ **`src/lib/auth.tsx`** (`AuthProvider`/`useAuth()`), không qua
 | Nút "Đăng xuất" (`app-shell.tsx`, `routes/_authenticated/admin.tsx`) | `useAuth().logout` | `authApi.logout` | `POST /api/auth/logout` |
 | Header/avatar người dùng, `routes/_authenticated/profile.tsx` | `AuthProvider` tự gọi khi khởi tạo | `accountApi.me` | `GET /api/account/me` |
 
+=======
+# AI Study Hub — Frontend
+
+## Bản đồ kết nối UI ↔ Backend
+
+Toàn bộ giao tiếp với backend đi qua một hàm dùng chung duy nhất:
+**`src/lib/api.ts`** (hàm `api()`), hàm này gắn token, tự refresh khi gặp lỗi
+401, và bóc tách `ApiResponse<T>` của backend về thẳng dữ liệu `T`. Mọi nơi
+khác trong UI **không** gọi `fetch` trực tiếp tới backend.
+
+Phía trên `api()` là 2 lớp "API client" theo từng nhóm tính năng — nơi khai
+báo endpoint thật (URL, method, body):
+- **`src/lib/realApi.ts`** — `authApi`, `accountApi`, `folderApi`,
+  `documentApi`, `ragApi`, `shareApi`, `quizApi`, `flashcardApi`.
+- **`src/features/shares/services/shareApi.ts`** (export tên `sharesApi`) —
+  dành riêng cho trang **"Chia sẻ"** (`/shared`): danh sách
+  được/đã chia sẻ, xóa, lấy link, tải xuống, lưu bản sao.
+
+Phía trên 2 lớp đó là **`src/lib/queries.ts`** — các React Query hook
+(`useFolders`, `useDocuments`, `useAskRag`, ...) mà các trang/component gọi
+trực tiếp. Riêng đăng nhập/đăng ký/refresh/đăng xuất/quên mật khẩu được gọi
+thẳng từ **`src/lib/auth.tsx`** (`AuthProvider`/`useAuth()`), không qua
+`queries.ts`.
+
+> Cách dò một tính năng: mở UI → tìm hook `useXxx` được gọi trong
+> component đó → mở `queries.ts` xem hook gọi hàm nào trong `realApi.ts`
+> (hoặc `shareApi.ts` trong `features/shares`) → đó chính là endpoint thật.
+
+### Auth (đăng nhập / đăng ký / mật khẩu)
+| UI | Hook / Provider | API client | Endpoint |
+|---|---|---|---|
+| `routes/auth/login.tsx` | `useAuth().login` (`lib/auth.tsx`) | `authApi.login` | `POST /api/auth/login` |
+| `routes/auth/register.tsx` | `useAuth().register` | `authApi.register` | `POST /api/auth/register` |
+| `routes/auth/forgot-password.tsx` | `useAuth().requestPasswordReset` / `verifyResetOtp` | `authApi.requestPasswordReset` / `verifyResetOtp` | `POST /api/auth/request-reset`, `POST /api/auth/verify-otp` |
+| `routes/auth/reset-password.tsx` | `useAuth().resetPassword` | `authApi.resetPassword` | `POST /api/auth/reset-password` |
+| Tự động khi gặp lỗi 401 (mọi trang) | `attemptRefresh()` trong `lib/api.ts` | `authApi.refresh` (gọi trực tiếp) | `POST /api/auth/refresh` |
+| Nút "Đăng xuất" (`app-shell.tsx`, `routes/_authenticated/admin.tsx`) | `useAuth().logout` | `authApi.logout` | `POST /api/auth/logout` |
+| Header/avatar người dùng, `routes/_authenticated/profile.tsx` | `AuthProvider` tự gọi khi khởi tạo | `accountApi.me` | `GET /api/account/me` |
+
+>>>>>>> origin/admin-added-fix
 ### Thư mục (Folders)
 | UI | Hook | API client | Endpoint |
 |---|---|---|---|
@@ -548,7 +589,10 @@ thẳng từ **`src/lib/auth.tsx`** (`AuthProvider`/`useAuth()`), không qua
 
 ---
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 # Chức năng Quizzes — Thay đổi & Khu vực theo Checklist
 
 
@@ -610,8 +654,12 @@ thẳng từ **`src/lib/auth.tsx`** (`AuthProvider`/`useAuth()`), không qua
   body `{ scope: "all" | documentId, types: string[], questionCount }`, trả `QuizItem[]`
   (`{ id, type, question, options[], correctAnswers[] }`).
 <<<<<<< HEAD
+<<<<<<< HEAD
 - ⚠️ Backend cần hiện thực endpoint này nhận `scope` + `types` (API cũ `generate` chỉ có documentId + questionCount).
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 - ⚠️ Backend cần hiện thực endpoint này nhận `scope` + `types` (API cũ `generate` chỉ có documentId + questionCount).
 >>>>>>> origin/Flashcards-fix
+=======
+- ⚠️ Backend cần hiện thực endpoint này nhận `scope` + `types` (API cũ `generate` chỉ có documentId + questionCount).
+>>>>>>> origin/admin-added-fix

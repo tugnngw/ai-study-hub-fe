@@ -16,9 +16,12 @@ export interface QuizQuestion {
 }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
 // ── Tùy chọn khởi tạo Quiz (UI) ────────────────────────
 export type QuizQuestionType = "multiple_choice" | "true_false" | "multiple_answer";
@@ -39,6 +42,9 @@ export interface QuizItem {
   correctAnswers: number[];   // multiple_answer có thể >1 index
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix

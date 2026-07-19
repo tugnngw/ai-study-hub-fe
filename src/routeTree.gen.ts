@@ -15,6 +15,7 @@ import { Route as AuthRouteRouteImport } from './routes/auth/route'
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
@@ -25,11 +26,14 @@ import { Route as AuthIndexRouteImport } from './routes/auth/index'
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { Route as Admin_panelRouteRouteImport } from './routes/admin_panel/route'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as Admin_panelIndexRouteImport } from './routes/admin_panel/index'
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -40,10 +44,13 @@ import { Route as Admin_panelIndexRouteImport } from './routes/admin_panel/index
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -65,6 +72,8 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { Route as Admin_panelUsersRouteImport } from './routes/admin_panel/users'
 import { Route as Admin_panelTrashRouteImport } from './routes/admin_panel/trash'
 import { Route as Admin_panelProfileRouteImport } from './routes/admin_panel/profile'
@@ -75,6 +84,7 @@ import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -82,6 +92,8 @@ import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated/folders'
 import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
@@ -106,6 +118,7 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -113,11 +126,14 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 const Admin_panelRouteRoute = Admin_panelRouteRouteImport.update({
   id: '/admin_panel',
   path: '/admin_panel',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -128,6 +144,8 @@ const Admin_panelRouteRoute = Admin_panelRouteRouteImport.update({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -146,6 +164,7 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -153,11 +172,14 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 const Admin_panelIndexRoute = Admin_panelIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => Admin_panelRouteRoute,
 } as any)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -168,6 +190,8 @@ const Admin_panelIndexRoute = Admin_panelIndexRouteImport.update({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -192,6 +216,7 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -199,6 +224,8 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 const Admin_panelUsersRoute = Admin_panelUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -227,6 +254,7 @@ const Admin_panelApprovalsRoute = Admin_panelApprovalsRouteImport.update({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -234,6 +262,8 @@ const Admin_panelApprovalsRoute = Admin_panelApprovalsRouteImport.update({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 const AuthenticatedTrashRoute = AuthenticatedTrashRouteImport.update({
   id: '/trash',
   path: '/trash',
@@ -244,6 +274,7 @@ const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
   path: '/shared',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -270,6 +301,8 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -323,6 +356,7 @@ export interface FileRoutesByFullPath {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/admin-added
@@ -335,6 +369,9 @@ export interface FileRoutesByFullPath {
 =======
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/Flashcards-fix
+=======
+  '/admin_panel': typeof Admin_panelRouteRouteWithChildren
+>>>>>>> origin/admin-added-fix
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -344,6 +381,7 @@ export interface FileRoutesByFullPath {
   '/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -365,6 +403,8 @@ export interface FileRoutesByFullPath {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   '/shared': typeof AuthenticatedSharedRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
@@ -375,6 +415,7 @@ export interface FileRoutesByFullPath {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -382,6 +423,8 @@ export interface FileRoutesByFullPath {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -390,6 +433,7 @@ export interface FileRoutesByFullPath {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/admin_panel/': typeof Admin_panelIndexRoute
 >>>>>>> origin/admin-added
@@ -402,6 +446,9 @@ export interface FileRoutesByFullPath {
 =======
   '/admin_panel/': typeof Admin_panelIndexRoute
 >>>>>>> origin/Flashcards-fix
+=======
+  '/admin_panel/': typeof Admin_panelIndexRoute
+>>>>>>> origin/admin-added-fix
   '/auth/': typeof AuthIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
@@ -422,6 +469,7 @@ export interface FileRoutesByTo {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/settings': typeof AuthenticatedSettingsRoute
 >>>>>>> origin/test/share-document-cloudinary
@@ -437,6 +485,8 @@ export interface FileRoutesByTo {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   '/shared': typeof AuthenticatedSharedRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
@@ -447,6 +497,7 @@ export interface FileRoutesByTo {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -454,6 +505,8 @@ export interface FileRoutesByTo {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -462,6 +515,7 @@ export interface FileRoutesByTo {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/admin_panel': typeof Admin_panelIndexRoute
 >>>>>>> origin/admin-added
@@ -474,6 +528,9 @@ export interface FileRoutesByTo {
 =======
   '/admin_panel': typeof Admin_panelIndexRoute
 >>>>>>> origin/Flashcards-fix
+=======
+  '/admin_panel': typeof Admin_panelIndexRoute
+>>>>>>> origin/admin-added-fix
   '/auth': typeof AuthIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
@@ -486,6 +543,7 @@ export interface FileRoutesById {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/admin-added
@@ -498,6 +556,9 @@ export interface FileRoutesById {
 =======
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/Flashcards-fix
+=======
+  '/admin_panel': typeof Admin_panelRouteRouteWithChildren
+>>>>>>> origin/admin-added-fix
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -513,6 +574,7 @@ export interface FileRoutesById {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
 >>>>>>> origin/test/share-document-cloudinary
@@ -528,6 +590,8 @@ export interface FileRoutesById {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   '/_authenticated/shared': typeof AuthenticatedSharedRoute
   '/_authenticated/trash': typeof AuthenticatedTrashRoute
   '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
@@ -538,6 +602,7 @@ export interface FileRoutesById {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -545,6 +610,8 @@ export interface FileRoutesById {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -553,6 +620,7 @@ export interface FileRoutesById {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/admin_panel/': typeof Admin_panelIndexRoute
 >>>>>>> origin/admin-added
@@ -565,6 +633,9 @@ export interface FileRoutesById {
 =======
   '/admin_panel/': typeof Admin_panelIndexRoute
 >>>>>>> origin/Flashcards-fix
+=======
+  '/admin_panel/': typeof Admin_panelIndexRoute
+>>>>>>> origin/admin-added-fix
   '/auth/': typeof AuthIndexRoute
   '/_authenticated/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/_authenticated/folders/$id': typeof AuthenticatedFoldersIdRoute
@@ -577,6 +648,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/admin_panel'
 >>>>>>> origin/admin-added
@@ -589,6 +661,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel'
 >>>>>>> origin/Flashcards-fix
+=======
+    | '/admin_panel'
+>>>>>>> origin/admin-added-fix
     | '/auth'
     | '/oauth-success'
     | '/admin'
@@ -604,6 +679,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/settings'
 >>>>>>> origin/test/share-document-cloudinary
@@ -619,6 +695,8 @@ export interface FileRouteTypes {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     | '/shared'
     | '/trash'
     | '/admin_panel/approvals'
@@ -629,6 +707,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -636,6 +715,8 @@ export interface FileRouteTypes {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -644,6 +725,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/admin_panel/'
 >>>>>>> origin/admin-added
@@ -656,6 +738,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel/'
 >>>>>>> origin/Flashcards-fix
+=======
+    | '/admin_panel/'
+>>>>>>> origin/admin-added-fix
     | '/auth/'
     | '/documents/$id'
     | '/folders/$id'
@@ -676,6 +761,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/settings'
 >>>>>>> origin/test/share-document-cloudinary
@@ -691,6 +777,8 @@ export interface FileRouteTypes {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     | '/shared'
     | '/trash'
     | '/admin_panel/approvals'
@@ -701,6 +789,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -708,6 +797,8 @@ export interface FileRouteTypes {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -716,6 +807,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/admin_panel'
 >>>>>>> origin/admin-added
@@ -728,6 +820,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel'
 >>>>>>> origin/Flashcards-fix
+=======
+    | '/admin_panel'
+>>>>>>> origin/admin-added-fix
     | '/auth'
     | '/documents/$id'
     | '/folders/$id'
@@ -739,6 +834,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/admin_panel'
 >>>>>>> origin/admin-added
@@ -751,6 +847,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel'
 >>>>>>> origin/Flashcards-fix
+=======
+    | '/admin_panel'
+>>>>>>> origin/admin-added-fix
     | '/auth'
     | '/oauth-success'
     | '/_authenticated/admin'
@@ -766,6 +865,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/_authenticated/settings'
 >>>>>>> origin/test/share-document-cloudinary
@@ -781,6 +881,8 @@ export interface FileRouteTypes {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     | '/_authenticated/shared'
     | '/_authenticated/trash'
     | '/admin_panel/approvals'
@@ -791,6 +893,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -798,6 +901,8 @@ export interface FileRouteTypes {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
@@ -806,6 +911,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/admin_panel/'
 >>>>>>> origin/admin-added
@@ -818,6 +924,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel/'
 >>>>>>> origin/Flashcards-fix
+=======
+    | '/admin_panel/'
+>>>>>>> origin/admin-added-fix
     | '/auth/'
     | '/_authenticated/documents/$id'
     | '/_authenticated/folders/$id'
@@ -830,6 +939,7 @@ export interface RootRouteChildren {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   Admin_panelRouteRoute: typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/admin-added
@@ -842,6 +952,9 @@ export interface RootRouteChildren {
 =======
   Admin_panelRouteRoute: typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/Flashcards-fix
+=======
+  Admin_panelRouteRoute: typeof Admin_panelRouteRouteWithChildren
+>>>>>>> origin/admin-added-fix
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   OauthSuccessRoute: typeof OauthSuccessRoute
 }
@@ -866,6 +979,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -873,6 +987,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     '/admin_panel': {
       id: '/admin_panel'
       path: '/admin_panel'
@@ -883,6 +999,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -890,6 +1007,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -915,6 +1034,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -922,6 +1042,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     '/admin_panel/': {
       id: '/admin_panel/'
       path: '/'
@@ -932,6 +1054,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -939,6 +1062,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     '/auth/reset-password': {
       id: '/auth/reset-password'
       path: '/reset-password'
@@ -971,6 +1096,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -978,6 +1104,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     '/admin_panel/users': {
       id: '/admin_panel/users'
       path: '/users'
@@ -1016,6 +1144,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -1023,6 +1152,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     '/_authenticated/trash': {
       id: '/_authenticated/trash'
       path: '/trash'
@@ -1037,6 +1168,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSharedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1065,6 +1197,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -1170,6 +1304,7 @@ interface AuthenticatedRouteRouteChildren {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
 >>>>>>> origin/test/share-document-cloudinary
@@ -1184,6 +1319,8 @@ interface AuthenticatedRouteRouteChildren {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
 }
@@ -1202,6 +1339,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
 >>>>>>> origin/test/share-document-cloudinary
@@ -1216,6 +1354,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   AuthenticatedSharedRoute: AuthenticatedSharedRoute,
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,
 }
@@ -1227,6 +1367,7 @@ const AuthenticatedRouteRouteWithChildren =
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -1234,6 +1375,8 @@ const AuthenticatedRouteRouteWithChildren =
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 interface Admin_panelRouteRouteChildren {
   Admin_panelApprovalsRoute: typeof Admin_panelApprovalsRoute
   Admin_panelFilesRoute: typeof Admin_panelFilesRoute
@@ -1258,6 +1401,7 @@ const Admin_panelRouteRouteWithChildren =
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -1265,6 +1409,8 @@ const Admin_panelRouteRouteWithChildren =
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 interface AuthRouteRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
@@ -1292,6 +1438,7 @@ const rootRouteChildren: RootRouteChildren = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   Admin_panelRouteRoute: Admin_panelRouteRouteWithChildren,
 >>>>>>> origin/admin-added
@@ -1304,6 +1451,9 @@ const rootRouteChildren: RootRouteChildren = {
 =======
   Admin_panelRouteRoute: Admin_panelRouteRouteWithChildren,
 >>>>>>> origin/Flashcards-fix
+=======
+  Admin_panelRouteRoute: Admin_panelRouteRouteWithChildren,
+>>>>>>> origin/admin-added-fix
   AuthRouteRoute: AuthRouteRouteWithChildren,
   OauthSuccessRoute: OauthSuccessRoute,
 }
@@ -1311,6 +1461,7 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1333,6 +1484,10 @@ import type { startInstance } from './D:/OneDrive/Documents/GitHub/ai-study-hub-
 import type { getRouter } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/router.tsx'
 import type { startInstance } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/start.ts'
 >>>>>>> origin/Flashcards-fix
+=======
+import type { getRouter } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/router.tsx'
+import type { startInstance } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/start.ts'
+>>>>>>> origin/admin-added-fix
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true

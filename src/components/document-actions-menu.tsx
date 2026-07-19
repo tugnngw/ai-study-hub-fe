@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -43,6 +44,11 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff } from "lucide-react";
 >>>>>>> origin/Flashcards-fix
+=======
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff } from "lucide-react";
+>>>>>>> origin/admin-added-fix
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -50,6 +56,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+<<<<<<< HEAD
 <<<<<<< HEAD
 import { useDeleteDocument } from "@/lib/queries";
 <<<<<<< HEAD
@@ -77,6 +84,10 @@ import { ShareDocumentDialog } from "@/components/share-document-dialog";
 import { useDeleteDocument, useDownloadDocument } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 >>>>>>> origin/Flashcards-fix
+=======
+import { useDeleteDocument, useDownloadDocument } from "@/lib/queries";
+import { usePinnedDocuments } from "@/lib/preferences";
+>>>>>>> origin/admin-added-fix
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 
@@ -87,6 +98,7 @@ export function DocumentActionsMenu({
   className,
   iconClassName,
 }: {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -128,6 +140,10 @@ export function DocumentActionsMenu({
   documentId: number;
   folderId: string;
 >>>>>>> origin/Flashcards-fix
+=======
+  documentId: number;
+  folderId: string;
+>>>>>>> origin/admin-added-fix
   title: string;
   className?: string;
   iconClassName?: string;
@@ -135,14 +151,20 @@ export function DocumentActionsMenu({
   const navigate = useNavigate();
   const del = useDeleteDocument();
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   const [shareOpen, setShareOpen] = useState(false);
 =======
+=======
+>>>>>>> origin/admin-added-fix
   const download = useDownloadDocument();
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
   const pinned = isPinned(documentId);
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   const [reportOpen, setReportOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -157,7 +179,10 @@ export function DocumentActionsMenu({
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/admin-added-fix
   const handleDownload = async () => {
     try {
       const res = await download.mutateAsync(documentId);
@@ -167,7 +192,10 @@ export function DocumentActionsMenu({
     }
   };
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   return (
     <>
       <DropdownMenu>
@@ -194,6 +222,7 @@ export function DocumentActionsMenu({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             onClick={() => navigate(`/aichat?folderId=${folderId}&docId=${documentId}`)}
 =======
 =======
@@ -210,12 +239,15 @@ export function DocumentActionsMenu({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
             onClick={() =>
               navigate({
                 to: "/ai",
                 search: { folderId, docId: documentId },
               })
             }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -242,12 +274,17 @@ export function DocumentActionsMenu({
           <DropdownMenuItem onClick={() => setShareOpen(true)}>
             <Share2 className="h-3.5 w-3.5 mr-2" /> Chia sẻ
 =======
+=======
+>>>>>>> origin/admin-added-fix
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleDownload} disabled={download.isPending}>
             <Download className="h-3.5 w-3.5 mr-2" /> Tải xuống
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setReportOpen(true)}>
             <Flag className="h-3.5 w-3.5 mr-2" /> Báo cáo
@@ -258,6 +295,7 @@ export function DocumentActionsMenu({
           >
             <Trash2 className="h-3.5 w-3.5 mr-2" /> Xóa
           </DropdownMenuItem>
+<<<<<<< HEAD
 <<<<<<< HEAD
         </DropdownMenuContent>
       </DropdownMenu>
@@ -314,6 +352,8 @@ export function DocumentActionsMenu({
 >>>>>>> origin/update/feature/AI/Quiz
       />
 =======
+=======
+>>>>>>> origin/admin-added-fix
           <DropdownMenuItem
             onClick={() => {
               togglePin(documentId);
@@ -330,7 +370,10 @@ export function DocumentActionsMenu({
         </DropdownMenuContent>
       </DropdownMenu>
 
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
       <ReportDocumentDialog
         open={reportOpen}
         onOpenChange={setReportOpen}

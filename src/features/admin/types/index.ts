@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Admin types
 =======
 // Admin types barrel
@@ -15,4 +16,7 @@
 =======
 // Admin types barrel
 >>>>>>> origin/Flashcards-fix
+=======
+// Admin types barrel
+>>>>>>> origin/admin-added-fix
 export * from "./admin.types";

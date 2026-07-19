@@ -46,6 +46,7 @@ const SelectScrollUpButton = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("flex cursor-default items-center justify-center py-1", className)}
 =======
 =======
@@ -62,10 +63,13 @@ const SelectScrollUpButton = React.forwardRef<
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className,
     )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -88,6 +92,8 @@ const SelectScrollUpButton = React.forwardRef<
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     {...props}
   >
     <ChevronUp className="h-4 w-4" />
@@ -109,6 +115,7 @@ const SelectScrollDownButton = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("flex cursor-default items-center justify-center py-1", className)}
 =======
 =======
@@ -125,10 +132,13 @@ const SelectScrollDownButton = React.forwardRef<
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className,
     )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -151,11 +161,14 @@ const SelectScrollDownButton = React.forwardRef<
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     {...props}
   >
     <ChevronDown className="h-4 w-4" />
   </SelectPrimitive.ScrollDownButton>
 ));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -197,6 +210,10 @@ SelectScrollDownButton.displayName =
 SelectScrollDownButton.displayName =
   SelectPrimitive.ScrollDownButton.displayName;
 >>>>>>> origin/Flashcards-fix
+=======
+SelectScrollDownButton.displayName =
+  SelectPrimitive.ScrollDownButton.displayName;
+>>>>>>> origin/admin-added-fix
 
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,

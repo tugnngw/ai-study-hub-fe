@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Lightweight API client. JWT stored in localStorage.
 export const API_BASE =
   (import.meta.env.VITE_API_BASE as string | undefined) ?? "http://localhost:8080";
@@ -46,17 +47,23 @@ export const API_BASE =
 =======
 >>>>>>> origin/update/feature/AI/Quiz
 =======
+=======
+>>>>>>> origin/admin-added-fix
 // src/lib/api.ts
 
 export const API_BASE =
   (import.meta.env.VITE_API_BASE as string | undefined) ??
   "http://localhost:4040";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
 const TOKEN_KEY = "auth_token";
 const REFRESH_KEY = "refresh_token";
 
 export const tokenStore = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -98,6 +105,10 @@ export const tokenStore = {
   get: () =>
     typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY),
 >>>>>>> origin/Flashcards-fix
+=======
+  get: () =>
+    typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY),
+>>>>>>> origin/admin-added-fix
   set: (t: string) => localStorage.setItem(TOKEN_KEY, t),
   clear: () => {
     localStorage.removeItem(TOKEN_KEY);
@@ -125,6 +136,7 @@ type Options = {
   headers?: Record<string, string>;
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -174,10 +186,13 @@ export async function api<T = unknown>(path: string, opts: Options = {}): Promis
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // ── Refresh token queue ─────────────────────────────────────
 let refreshPromise: Promise<boolean> | null = null;
 
 export async function attemptRefresh(): Promise<boolean> {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -211,6 +226,8 @@ async function attemptRefresh(): Promise<boolean> {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   const refreshToken = tokenStore.getRefresh();
   if (!refreshToken) return false;
 
@@ -244,6 +261,7 @@ export async function api<T = unknown>(
   path: string,
   opts: Options = {},
 ): Promise<T> {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -288,6 +306,11 @@ export async function api<T = unknown>(
     const token = tokenStore.get();
   console.log('🔑 api request', { path, tokenPresent: !!token });
 >>>>>>> origin/Flashcards-fix
+=======
+  const doFetch = async (): Promise<Response> => {
+    const token = tokenStore.get();
+  console.log('🔑 api request', { path, tokenPresent: !!token });
+>>>>>>> origin/admin-added-fix
     const headers: Record<string, string> = { ...(opts.headers ?? {}) };
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
@@ -348,6 +371,7 @@ export async function api<T = unknown>(
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -356,6 +380,8 @@ export async function api<T = unknown>(
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     // Do NOT clear token on 403 – user may simply lack permission.
     // Token clearing is only for 401 (unauthenticated) after refresh failure.
     // 403 means the request was understood but the user lacks required rights.
@@ -367,6 +393,7 @@ export async function api<T = unknown>(
   // Unwrap ApiResponse<T> { code, message, data } -> T
   const result = (json as any)?.data !== undefined ? (json as any).data : json;
   return result as T;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -401,4 +428,6 @@ export async function api<T = unknown>(
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 }

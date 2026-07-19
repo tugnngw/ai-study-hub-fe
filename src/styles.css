@@ -65,6 +65,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -72,6 +73,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
   /* ── Admin feature palette ──────────────────────────
    * Used by the admin dashboard UI (features/admin).
@@ -108,6 +111,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -115,6 +119,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 }
 
 :root {
@@ -171,6 +177,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   --gradient-brand: linear-gradient(135deg, oklch(0.55 0.23 275), oklch(0.6 0.24 305));
   --gradient-soft: linear-gradient(135deg, oklch(0.97 0.03 285), oklch(0.97 0.035 305));
   --gradient-page: radial-gradient(at 0% 0%, oklch(0.96 0.04 285) 0%, transparent 50%),
@@ -192,6 +199,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   --gradient-brand: linear-gradient(
     135deg,
     oklch(0.55 0.23 275),
@@ -215,6 +224,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -230,6 +240,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   --shadow-brand: 0 8px 30px -8px oklch(0.5 0.22 275 / 0.45);
 
   --sidebar: oklch(0.985 0.008 285);
@@ -244,6 +256,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -251,6 +264,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
   /* ── Admin feature palette (light) ── */
   --admin-ink: #15131F;
@@ -283,6 +298,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -290,6 +306,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 }
 
 .dark {
@@ -325,6 +343,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   --gradient-brand: linear-gradient(135deg, oklch(0.6 0.22 275), oklch(0.65 0.22 310));
   --gradient-soft: linear-gradient(135deg, oklch(0.24 0.05 275), oklch(0.24 0.06 310));
   --gradient-page: radial-gradient(at 0% 0%, oklch(0.24 0.06 275) 0%, transparent 50%),
@@ -344,6 +363,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   --gradient-brand: linear-gradient(
     135deg,
     oklch(0.6 0.22 275),
@@ -357,6 +378,7 @@
   --gradient-page:
     radial-gradient(at 0% 0%, oklch(0.24 0.06 275) 0%, transparent 50%),
     radial-gradient(at 100% 0%, oklch(0.24 0.06 320) 0%, transparent 50%);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -379,6 +401,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   --shadow-soft: 0 8px 24px -8px oklch(0 0 0 / 0.4);
   --shadow-brand: 0 8px 30px -8px oklch(0.7 0.2 280 / 0.5);
   --sidebar: oklch(0.19 0.04 275);
@@ -393,6 +417,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -400,6 +425,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
   /* ── Admin feature palette (dark) ── */
   --admin-ink: #F5F3FB;
@@ -432,6 +459,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -439,6 +467,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 }
 
 @layer base {
@@ -446,6 +476,7 @@
     border-color: var(--color-border);
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -487,6 +518,10 @@
   html,
   body {
 >>>>>>> origin/Flashcards-fix
+=======
+  html,
+  body {
+>>>>>>> origin/admin-added-fix
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
@@ -500,6 +535,7 @@
     color: var(--color-foreground);
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -524,6 +560,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   h1,
   h2,
   h3,
@@ -531,6 +569,7 @@
   h5,
   h6,
   .font-display {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -553,6 +592,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }

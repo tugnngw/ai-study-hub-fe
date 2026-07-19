@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AlertTriangle } from "lucide-react";
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -24,6 +25,8 @@ import { AlertTriangle } from "lucide-react";
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { toast } from "sonner";
 import { useReportDocument } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -62,6 +65,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   documentId: number;
 =======
   documentId: string;
@@ -84,6 +88,9 @@ export function ReportDocumentDialog({
 =======
   documentId: number;
 >>>>>>> origin/Flashcards-fix
+=======
+  documentId: number;
+>>>>>>> origin/admin-added-fix
   documentTitle: string;
 }) {
   const report = useReportDocument();
@@ -111,6 +118,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       await report.mutateAsync({ id: documentId, reason, description: description.trim() || undefined });
 =======
 =======
@@ -127,11 +135,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
       await report.mutateAsync({
         id: documentId,
         reason,
         description: description.trim() || undefined,
       });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -154,6 +165,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
@@ -165,6 +178,7 @@ export function ReportDocumentDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -199,6 +213,9 @@ export function ReportDocumentDialog({
 =======
           <DialogTitle className="truncate">
 >>>>>>> origin/Flashcards-fix
+=======
+          <DialogTitle className="truncate">
+>>>>>>> origin/admin-added-fix
             Báo cáo "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
@@ -209,6 +226,7 @@ export function ReportDocumentDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Lý do báo cáo</Label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -233,11 +251,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
             <RadioGroup
               value={reason}
               onValueChange={setReason}
               className="space-y-2"
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -260,6 +281,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
               {REPORT_REASONS.map((r) => (
                 <label
                   key={r.value}
@@ -295,6 +318,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button variant="destructive" onClick={submit} disabled={report.isPending}>
 =======
 =======
@@ -311,11 +335,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
           <Button
             variant="destructive"
             onClick={submit}
             disabled={report.isPending}
           >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -338,6 +365,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
             {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>

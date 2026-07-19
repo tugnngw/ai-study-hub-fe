@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -13,6 +14,8 @@
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 // Renders DOCX files using mammoth.js (converts to clean HTML)
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
@@ -20,6 +23,7 @@ import { Loader2, RotateCw, Download, ExternalLink } from "lucide-react";
 import * as mammoth from "mammoth";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -45,6 +49,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import { cn } from "@/lib/utils";
 import {
   isCloudinaryUrl,
@@ -76,6 +82,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Process Cloudinary URL if needed
 =======
   // Process URL on mount and when URL changes
@@ -95,6 +102,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
   // Process Cloudinary URL if needed
 >>>>>>> origin/Flashcards-fix
+=======
+  // Process Cloudinary URL if needed
+>>>>>>> origin/admin-added-fix
   useEffect(() => {
     let isMounted = true;
     let currentBlobUrl: string | null = null;
@@ -125,6 +135,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     } else {
       setProcessedUrl(null);
       setLoading(false);
@@ -152,6 +163,11 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       setProcessedUrl(null);
       setLoading(false);
 >>>>>>> origin/Flashcards-fix
+=======
+    } else {
+      setProcessedUrl(null);
+      setLoading(false);
+>>>>>>> origin/admin-added-fix
     }
 
     return () => {
@@ -171,6 +187,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -179,12 +196,15 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     let isMounted = true;
 
     try {
       setLoading(true);
       setError(null);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -210,6 +230,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
       const targetUrl = (isCloudinary && processedUrl) ? processedUrl : url;
 
       const response = await fetch(targetUrl, {
@@ -230,6 +252,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -238,6 +261,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
       if (!isMounted) return;
 
@@ -274,6 +299,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -297,6 +323,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
       console.error("DOCX render error:", e);
       const errorMsg = e instanceof Error ? e.message : "Unknown error";
 
@@ -320,6 +348,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -328,10 +357,13 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 
     return () => {
       isMounted = false;
     };
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -348,6 +380,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   }, [url, isCloudinary, processedUrl]);
 
   useEffect(() => {
@@ -364,6 +398,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -372,6 +407,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   // Toolbar
   const Toolbar = (
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
@@ -383,6 +420,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -413,10 +451,13 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={url} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -447,6 +488,10 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
             <ExternalLink className="h-4 w-4 mr-1" />
             Mở tab mới
 >>>>>>> origin/Flashcards-fix
+=======
+            <ExternalLink className="h-4 w-4 mr-1" />
+            Mở tab mới
+>>>>>>> origin/admin-added-fix
           </a>
         </Button>
       </div>
@@ -460,6 +505,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
@@ -479,6 +525,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 >>>>>>> origin/Flashcards-fix
+=======
+    <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+>>>>>>> origin/admin-added-fix
       {Toolbar}
 
       {/* Loading State */}
@@ -511,6 +560,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
 =======
             className="docx-viewer prose prose-sm max-w-none dark:prose-invert"
@@ -530,6 +580,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
             className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
 >>>>>>> origin/Flashcards-fix
+=======
+            className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
+>>>>>>> origin/admin-added-fix
             style={{
               fontSize: "14px",
               lineHeight: "1.6",

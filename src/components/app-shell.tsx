@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { useState } from "react";
@@ -63,12 +64,18 @@ import { useState, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useState, type ReactNode } from "react";
 >>>>>>> origin/Flashcards-fix
+=======
+// src/components/app-shell.tsx
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { useState, type ReactNode } from "react";
+>>>>>>> origin/admin-added-fix
 import {
   LayoutDashboard,
   FolderKanban,
   FileText,
   Database,
   User as UserIcon,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -93,11 +100,14 @@ import {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   LogOut,
   Trash2,
   Users,
   Cloud,
   Sparkles,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -156,12 +166,15 @@ import { Progress } from "@/components/ui/progress";
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   Crown,
   Receipt,
   Search,
   PanelLeftClose,
   PanelLeft,
   Settings,
+<<<<<<< HEAD
 <<<<<<< HEAD
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
@@ -173,6 +186,8 @@ import { Progress } from "@/components/ui/progress";
 =======
 >>>>>>> origin/update/feature/AI/Quiz
 =======
+=======
+>>>>>>> origin/admin-added-fix
   Sun,
   Moon,
 } from "lucide-react";
@@ -181,7 +196,10 @@ import { useDocuments, useDocument } from "@/lib/queries";
 import { useTheme } from "@/lib/theme";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -190,6 +208,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -327,6 +346,9 @@ import { cn } from "@/lib/utils";
 =======
 import { cn } from "@/lib/utils";
 >>>>>>> origin/Flashcards-fix
+=======
+import { cn } from "@/lib/utils";
+>>>>>>> origin/admin-added-fix
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -334,6 +356,7 @@ const nav = [
   { to: "/documents", label: "Tài liệu", icon: FileText },
   { to: "/shared", label: "Được chia sẻ", icon: Users },
   { to: "/trash", label: "Thùng rác", icon: Trash2 },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -367,6 +390,11 @@ const nav = [
   { to: "/premium", label: "Nâng cấp Premium", icon: Crown },
   { to: "/transactions", label: "Lịch sử giao dịch", icon: Receipt },
 >>>>>>> origin/Flashcards-fix
+=======
+  { to: "/cloud", label: "Lưu trữ Cloud", icon: Cloud },
+  { to: "/premium", label: "Nâng cấp Premium", icon: Crown },
+  { to: "/transactions", label: "Lịch sử giao dịch", icon: Receipt },
+>>>>>>> origin/admin-added-fix
 ] as const;
 
 function formatBytes(n: number) {
@@ -377,6 +405,7 @@ function formatBytes(n: number) {
   return `${(n / 1024 ** 3).toFixed(2)} GB`;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -452,6 +481,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 =======
 >>>>>>> origin/update/feature/AI/Quiz
 =======
+=======
+>>>>>>> origin/admin-added-fix
 const SIDEBAR_COLLAPSED_KEY = "ai-study-hub:sidebar-collapsed";
 
 function getInitialCollapsed(): boolean {
@@ -486,7 +517,10 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   const used = documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
   const total = 15 * 1024 * 1024 * 1024;
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
   const pct = Math.min(100, (used / total) * 100);
 
   const handleLogout = async () => {
@@ -495,6 +529,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   };
 
   const initial = user?.fullName?.[0]?.toUpperCase() ?? "U";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -536,10 +571,16 @@ export function AppShell({ children }: { children: ReactNode }) {
   // Detect if current page is a folder detail (needs full-bleed layout)
   const isFolderDetail = pathname.startsWith("/folders/") || pathname.startsWith("/documents/");
 >>>>>>> origin/Flashcards-fix
+=======
+
+  // Detect if current page is a folder detail (needs full-bleed layout)
+  const isFolderDetail = pathname.startsWith("/folders/") || pathname.startsWith("/documents/");
+>>>>>>> origin/admin-added-fix
 
   return (
     <div className="min-h-screen flex">
       {/* Sidebar */}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -555,6 +596,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
       <aside className={cn(
         "hidden md:flex md:flex-col shrink-0 border-r border-border bg-sidebar/80 backdrop-blur-xl sticky top-0 h-screen transition-all duration-300",
         collapsed ? "md:w-16" : "md:w-64",
@@ -562,6 +605,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* Logo area with collapase toggle */}
         <div className={cn("px-5 py-5 border-b border-border flex items-center gap-2", collapsed ? "justify-center px-0" : "")}>
           <Link to="/dashboard" className="flex items-center gap-2.5 group min-w-0">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -594,10 +638,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
             <div className="h-9 w-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-brand group-hover:scale-105 transition-transform shrink-0">
               <Sparkles className="h-4.5 w-4.5 text-white" strokeWidth={2.5} />
             </div>
             {!collapsed && (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -641,10 +688,16 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <div className="font-display font-bold text-base leading-tight truncate">AI Study Hub</div>
                 <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Learn smarter</div>
 >>>>>>> origin/Flashcards-fix
+=======
+              <div className="min-w-0">
+                <div className="font-display font-bold text-base leading-tight truncate">AI Study Hub</div>
+                <div className="text-[10px] text-muted-foreground tracking-wider uppercase">Learn smarter</div>
+>>>>>>> origin/admin-added-fix
               </div>
             )}
           </Link>
           {!collapsed && (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -659,6 +712,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
             <button onClick={() => setCollapsed(true)} className="p-1 hover:bg-accent rounded-lg ml-auto shrink-0">
               <PanelLeftClose className="h-4 w-4" />
             </button>
@@ -675,6 +730,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {!collapsed && (
             <div className="text-[10px] font-semibold tracking-wider text-muted-foreground px-3 pt-2 pb-1.5">WORKSPACE</div>
           )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -747,12 +803,15 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
           {nav.map((item) => {
             const active = pathname.startsWith(item.to);
             return (
               <Link
                 key={item.to}
                 to={item.to}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -796,10 +855,16 @@ export function AppShell({ children }: { children: ReactNode }) {
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all group relative",
                   collapsed && "justify-center px-0",
 >>>>>>> origin/Flashcards-fix
+=======
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-all group relative",
+                  collapsed && "justify-center px-0",
+>>>>>>> origin/admin-added-fix
                   active
                     ? "bg-gradient-brand text-white shadow-brand font-medium"
                     : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-foreground",
                 )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -815,10 +880,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
                 title={collapsed ? item.label : undefined}
               >
                 <item.icon className={cn("h-4 w-4 shrink-0", active && "drop-shadow-sm")} strokeWidth={active ? 2.5 : 2} />
                 {!collapsed && <span className="truncate">{item.label}</span>}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -851,11 +919,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
               </Link>
             );
           })}
         </nav>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -896,6 +967,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         {!collapsed && (
           <div className="p-3">
 >>>>>>> origin/Flashcards-fix
+=======
+        {/* Storage */}
+        {!collapsed && (
+          <div className="p-3">
+>>>>>>> origin/admin-added-fix
             <div className="rounded-xl border border-sidebar-border bg-card/60 p-3.5 space-y-2.5">
               <div className="flex items-center gap-2">
                 <Database className="h-3.5 w-3.5 text-primary" />
@@ -903,6 +979,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               </div>
               <Progress value={pct} className="h-1.5" />
               <div className="text-[11px] text-muted-foreground">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -933,10 +1010,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 =======
                 <span className="font-medium text-foreground">{formatBytes(used)}</span> / {formatBytes(total)}
 >>>>>>> origin/Flashcards-fix
+=======
+                <span className="font-medium text-foreground">{formatBytes(used)}</span> / {formatBytes(total)}
+>>>>>>> origin/admin-added-fix
               </div>
             </div>
           </div>
         )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1004,6 +1085,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
       </aside>
 
       {/* Main */}
@@ -1016,6 +1099,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
           </Link>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1061,6 +1145,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 
           <div className="ml-auto flex items-center gap-2">
 =======
+=======
+>>>>>>> origin/admin-added-fix
           {/* Mobile sidebar toggle */}
           <button
             onClick={() => setCollapsed(!collapsed)}
@@ -1095,7 +1181,10 @@ export function AppShell({ children }: { children: ReactNode }) {
             >
               {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="flex items-center gap-2 hover:bg-accent rounded-full pr-3 pl-1 py-1 transition-colors">
@@ -1103,6 +1192,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     {initial}
                   </div>
                   <div className="hidden sm:flex flex-col items-start leading-tight">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1146,6 +1236,10 @@ export function AppShell({ children }: { children: ReactNode }) {
                     <span className="text-xs font-medium">{user?.fullName ?? "User"}</span>
                     <span className="text-[10px] text-muted-foreground">@{user?.username ?? "user"}</span>
 >>>>>>> origin/Flashcards-fix
+=======
+                    <span className="text-xs font-medium">{user?.fullName ?? "User"}</span>
+                    <span className="text-[10px] text-muted-foreground">@{user?.username ?? "user"}</span>
+>>>>>>> origin/admin-added-fix
                   </div>
                 </button>
               </DropdownMenuTrigger>
@@ -1156,6 +1250,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                       {initial}
                     </div>
                     <div className="min-w-0">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1199,11 +1294,16 @@ export function AppShell({ children }: { children: ReactNode }) {
                       <div className="font-semibold truncate">{user?.fullName}</div>
                       <div className="text-xs text-muted-foreground font-normal truncate">{user?.email}</div>
 >>>>>>> origin/Flashcards-fix
+=======
+                      <div className="font-semibold truncate">{user?.fullName}</div>
+                      <div className="text-xs text-muted-foreground font-normal truncate">{user?.email}</div>
+>>>>>>> origin/admin-added-fix
                     </div>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1261,6 +1361,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
                   <Link to="/profile" className="cursor-pointer"><UserIcon className="h-4 w-4 mr-2" /> Hồ sơ</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -1270,11 +1372,14 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
                   <LogOut className="h-4 w-4 mr-2" /> Đăng xuất
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -1282,6 +1387,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1328,6 +1434,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="md:hidden border-b border-border bg-card/60 backdrop-blur-md">
           <nav className="flex overflow-x-auto px-2 py-2 gap-1">
 >>>>>>> origin/Flashcards-fix
+=======
+        {/* Mobile bottom nav */}
+        <div className="md:hidden border-b border-border bg-card/60 backdrop-blur-md">
+          <nav className="flex overflow-x-auto px-2 py-2 gap-1">
+>>>>>>> origin/admin-added-fix
             {nav.map((item) => {
               const active = pathname.startsWith(item.to);
               return (
@@ -1335,6 +1446,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   key={item.to}
                   to={item.to}
                   className={cn(
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1386,10 +1498,15 @@ export function AppShell({ children }: { children: ReactNode }) {
                     "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs whitespace-nowrap",
                     active ? "bg-gradient-brand text-white" : "text-muted-foreground hover:bg-accent",
 >>>>>>> origin/Flashcards-fix
+=======
+                    "flex items-center gap-2 rounded-md px-3 py-1.5 text-xs whitespace-nowrap",
+                    active ? "bg-gradient-brand text-white" : "text-muted-foreground hover:bg-accent",
+>>>>>>> origin/admin-added-fix
                   )}
                 >
                   <item.icon className="h-3.5 w-3.5" />
                   {item.label}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1412,10 +1529,13 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
                 </Link>
               );
             })}
           </nav>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1477,6 +1597,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
         </div>
 
         {/* Content */}
@@ -1488,6 +1610,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           )}
         </main>
       </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1528,6 +1651,8 @@ export function AppShell({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/AI/Quiz
 =======
 >>>>>>> origin/Flashcards-fix
+=======
+>>>>>>> origin/admin-added-fix
     </div>
   );
 }
