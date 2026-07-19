@@ -1,6 +1,7 @@
 // src/components/document-viewer/PdfViewer.tsx
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Enhanced PDF viewer with drag-to-pan, smooth zoom, scroll-based navigation
 =======
 >>>>>>> origin/AI-Study-fix
@@ -11,10 +12,15 @@ import * as pdfjsLib from "pdfjs-dist";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 >>>>>>> origin/test/share-document-cloudinary
+=======
+
+import React, { useState, useEffect, useRef, useCallback } from "react";
+>>>>>>> origin/uichange
 import {
   Loader2,
   Download,
   ExternalLink,
+<<<<<<< HEAD
 <<<<<<< HEAD
   ChevronLeft,
   ChevronRight,
@@ -32,6 +38,8 @@ import {
 =======
 >>>>>>> origin/AI-Study-fix
 =======
+=======
+>>>>>>> origin/uichange
   RotateCw,
   ZoomIn,
   ZoomOut,
@@ -41,12 +49,16 @@ import {
   Hand,
   MousePointer2,
   FileText,
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import { API_BASE, tokenStore } from "@/lib/api";
@@ -64,10 +76,16 @@ import { API_BASE } from "@/lib/api";
 import { tokenStore } from "@/lib/api";
 
 >>>>>>> origin/test/share-document-cloudinary
+=======
+import { API_BASE } from "@/lib/api";
+import { tokenStore } from "@/lib/api";
+
+>>>>>>> origin/uichange
 interface PdfViewerProps {
   url: string;
   fileName?: string;
   className?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   documentId?: number;
@@ -148,6 +166,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                 headers: { Authorization: `Bearer ${token}` },
               }
 =======
+=======
+>>>>>>> origin/uichange
   documentId?: string; // UUID
 }
 
@@ -215,20 +235,29 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                   method: "GET",
                   headers: { Authorization: `Bearer ${token}` },
                 }
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
             );
 
             if (downloadResp.ok) {
               const ct = downloadResp.headers.get("content-type") || "";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
               console.log("[PdfViewer] Download OK:", downloadResp.status, ct);
 
 >>>>>>> origin/test/share-document-cloudinary
+=======
+              console.log("[PdfViewer] Download OK:", downloadResp.status, ct);
+
+>>>>>>> origin/uichange
               if (ct.includes("json")) {
                 const data = await downloadResp.json();
                 const signedUrl = data?.url || data?.data?.url || data?.signedUrl;
                 if (signedUrl) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                   try { arrayBuffer = await fetchBuffer(signedUrl, token); } catch { throw new Error("signed URL failed"); }
@@ -286,6 +315,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/AI-Study-fix
         if (!cancelled) setError(e.message || "Không thể tải PDF");
 =======
+=======
+>>>>>>> origin/uichange
                   console.log("[PdfViewer] Fetching signed URL...");
                   const pdfResp = await fetch(signedUrl, {
                     headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -355,12 +386,16 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         if (!cancelled) {
           setError(e instanceof Error ? e.message : "Không thể tải PDF");
         }
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
     loadPdfData();
 <<<<<<< HEAD
@@ -516,6 +551,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
     if (!isPanMode) return;
     setDragging(true);
 =======
+=======
+>>>>>>> origin/uichange
     if (documentId) {
       loadPdf();
     } else {
@@ -664,7 +701,10 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!isPanMode || scale <= 1) return;
     setIsDragging(true);
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     setDragStart({ x: e.clientX, y: e.clientY });
     if (containerRef.current) {
       setScrollStart({ left: containerRef.current.scrollLeft, top: containerRef.current.scrollTop });
@@ -673,16 +713,21 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 
   const handleMouseMove = (e: React.MouseEvent) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (!dragging || !containerRef.current) return;
 =======
     if (!isDragging || !containerRef.current) return;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    if (!isDragging || !containerRef.current) return;
+>>>>>>> origin/uichange
     const dx = e.clientX - dragStart.x;
     const dy = e.clientY - dragStart.y;
     containerRef.current.scrollLeft = scrollStart.left - dx;
     containerRef.current.scrollTop = scrollStart.top - dy;
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   const handleMouseUp = () => setDragging(false);
 
@@ -994,6 +1039,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   );
 };
 =======
+=======
+>>>>>>> origin/uichange
   const handleMouseUp = () => setIsDragging(false);
   const handleMouseLeave = () => setIsDragging(false);
 
@@ -1167,5 +1214,9 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         </div>
       </Card>
   );
+<<<<<<< HEAD
 };
 >>>>>>> origin/test/share-document-cloudinary
+=======
+};
+>>>>>>> origin/uichange

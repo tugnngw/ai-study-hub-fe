@@ -112,6 +112,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   --gradient-brand: linear-gradient(135deg, oklch(0.55 0.23 275), oklch(0.6 0.24 305));
   --gradient-soft: linear-gradient(135deg, oklch(0.97 0.03 285), oklch(0.97 0.035 305));
   --gradient-page: radial-gradient(at 0% 0%, oklch(0.96 0.04 285) 0%, transparent 50%),
@@ -123,6 +124,8 @@
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   --gradient-brand: linear-gradient(
     135deg,
     oklch(0.55 0.23 275),
@@ -141,11 +144,14 @@
     0 8px 24px -8px oklch(0.5 0.22 275 / 0.12);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   --shadow-brand: 0 8px 30px -8px oklch(0.5 0.22 275 / 0.45);
 
   --sidebar: oklch(0.985 0.008 285);
@@ -186,6 +192,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   --gradient-brand: linear-gradient(135deg, oklch(0.6 0.22 275), oklch(0.65 0.22 310));
   --gradient-soft: linear-gradient(135deg, oklch(0.24 0.05 275), oklch(0.24 0.06 310));
   --gradient-page: radial-gradient(at 0% 0%, oklch(0.24 0.06 275) 0%, transparent 50%),
@@ -195,6 +202,8 @@
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   --gradient-brand: linear-gradient(
     135deg,
     oklch(0.6 0.22 275),
@@ -210,11 +219,14 @@
     radial-gradient(at 100% 0%, oklch(0.24 0.06 320) 0%, transparent 50%);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   --shadow-soft: 0 8px 24px -8px oklch(0 0 0 / 0.4);
   --shadow-brand: 0 8px 30px -8px oklch(0.7 0.2 280 / 0.5);
   --sidebar: oklch(0.19 0.04 275);
@@ -235,6 +247,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   html, body {
 =======
   html,
@@ -248,6 +261,10 @@
   html,
   body {
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  html,
+  body {
+>>>>>>> origin/uichange
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
@@ -264,12 +281,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   h1, h2, h3, h4, h5, h6, .font-display {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   h1,
   h2,
   h3,
@@ -279,11 +299,14 @@
   .font-display {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }

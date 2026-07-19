@@ -1,28 +1,39 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/routes/auth.register.tsx
 =======
 // src/routes/auth/register.tsx
 >>>>>>> origin/test/share-document-cloudinary
+=======
+// src/routes/auth.register.tsx
+>>>>>>> origin/uichange
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { ArrowLeft } from "lucide-react";
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/uichange
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+<<<<<<< HEAD
 =======
   Select,
   SelectContent,
@@ -31,6 +42,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 
 const schema = z
   .object({
@@ -46,6 +59,7 @@ const schema = z
       .min(2, "Vui lòng nhập họ và tên")
       .max(30, "Tối đa 30 ký tự"),
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     birthDay: z.string().min(1, "Chọn ngày"),
     birthMonth: z.string().min(1, "Chọn tháng"),
@@ -57,6 +71,8 @@ const schema = z
       .regex(/^[0-9]{9,11}$/, "Số điện thoại không hợp lệ"),
     email: z.string().trim().email("Email không hợp lệ"),
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     password: z.string().min(6, "Tối thiểu 6 ký tự"),
     confirmPassword: z.string().min(6, "Tối thiểu 6 ký tự"),
   })
@@ -70,6 +86,9 @@ export const Route = createFileRoute("/auth/register")({
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/uichange
 function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -85,6 +104,7 @@ function RegisterPage() {
   const update =
     (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
       setForm((f) => ({ ...f, [field]: e.target.value }));
+<<<<<<< HEAD
 =======
 const DAYS = Array.from({ length: 31 }, (_, i) => String(i + 1));
 const MONTHS = Array.from({ length: 12 }, (_, i) => String(i + 1));
@@ -114,6 +134,8 @@ function RegisterPage() {
   const set = (field: keyof typeof form, value: string) =>
     setForm((f) => ({ ...f, [field]: value }));
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -128,11 +150,14 @@ function RegisterPage() {
     setLoading(true);
     try {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       // NOTE: backend hiện chỉ nhận username, fullName, password.
       // Khi backend bổ sung birthday/gender/phone/email thì thêm
       // các field tương ứng vào đối tượng dưới đây (và RegisterRequest type).
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
       await register({
         username: form.username,
         fullName: form.fullName,
@@ -149,6 +174,9 @@ function RegisterPage() {
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/uichange
     <Card className="backdrop-blur-xl bg-card/60 border-border/60 shadow-2xl">
       <CardHeader>
         <CardTitle className="text-2xl font-display">Tạo tài khoản</CardTitle>
@@ -219,6 +247,7 @@ function RegisterPage() {
           <p className="text-sm text-muted-foreground text-center">
             Đã có tài khoản?{" "}
             <Link to="/auth/login" className="text-primary hover:underline">
+<<<<<<< HEAD
 =======
     <div className="fixed inset-0 overflow-y-auto bg-gradient-to-br from-blue-500 via-indigo-400 to-purple-500 py-8 px-4 flex items-start justify-center">
       <div className="w-full max-w-xl bg-card rounded-3xl shadow-2xl p-8 my-auto">
@@ -391,10 +420,13 @@ function RegisterPage() {
               className="text-primary font-semibold hover:underline"
             >
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
               Đăng nhập
             </Link>
           </p>
         </form>
+<<<<<<< HEAD
 <<<<<<< HEAD
       </CardContent>
     </Card>
@@ -422,3 +454,9 @@ function Field({
 >>>>>>> origin/test/share-document-cloudinary
   );
 }
+=======
+      </CardContent>
+    </Card>
+  );
+}
+>>>>>>> origin/uichange

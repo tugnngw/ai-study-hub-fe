@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Cloud, Database, HardDrive } from "lucide-react";
 import { useDocuments } from "@/lib/queries";
 // import { mockStorage } from "@/lib/mock-data"; // removed mock storage
@@ -9,11 +10,16 @@ import { Progress } from "@/components/ui/progress";
 import { useMemo } from "react";
 import { useDocuments, useFolders } from "@/lib/queries";
 >>>>>>> origin/test/share-document-cloudinary
+=======
+import { useMemo } from "react";
+import { useDocuments, useFolders } from "@/lib/queries";
+>>>>>>> origin/uichange
 
 export const Route = createFileRoute("/_authenticated/cloud")({
   component: CloudPage,
 });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 function formatBytes(n: number) {
   if (n < 1024) return `${n} B`;
@@ -87,6 +93,8 @@ function CloudPage() {
           </CardContent>
         </Card>
 =======
+=======
+>>>>>>> origin/uichange
 function formatGB(bytes: number) {
   const gb = bytes / 1024 ** 3;
   if (gb >= 1) return `${gb.toFixed(1)}gb`;
@@ -264,7 +272,10 @@ function CloudPage() {
             ))}
           </div>
         </div>
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
       </div>
     </div>
   );

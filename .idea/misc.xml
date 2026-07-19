@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   <component name="KubernetesApiProvider"><![CDATA[{}]]></component>
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  <component name="KubernetesApiProvider"><![CDATA[{}]]></component>
+>>>>>>> origin/uichange
   <component name="ProjectRootManager" version="2" project-jdk-name="26" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

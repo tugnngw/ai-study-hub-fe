@@ -14,6 +14,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
 =======
@@ -21,10 +22,13 @@ const Toaster = ({ ...props }: ToasterProps) => {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
           actionButton:
             "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton:
             "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -32,6 +36,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
         },
       }}
       {...props}

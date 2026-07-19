@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // queries.ts — TanStack Query hooks
 // =============================================================
@@ -17,6 +18,9 @@
 =======
 // src/lib/queries.ts
 >>>>>>> origin/test/share-document-cloudinary
+=======
+// src/lib/queries.ts
+>>>>>>> origin/uichange
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   accountApi,
@@ -29,16 +33,21 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   semesterApi,
   shareApi,
   subjectApi,
 =======
   shareApi,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  shareApi,
+>>>>>>> origin/uichange
 } from "./realApi";
 import type {
   Document,
   Folder,
+<<<<<<< HEAD
 <<<<<<< HEAD
   Semester,
   Subject,
@@ -57,11 +66,14 @@ import type {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   SharedDocument,
   UploadDocumentRequest,
   UpdateDocumentRequest,
   CreateFolderRequest,
   UpdateFolderRequest,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -83,6 +95,11 @@ import type {
   ReportDocumentRequest,
   ShareResponse,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  AskRequest,
+  ReportDocumentRequest,
+  ShareResponse,
+>>>>>>> origin/uichange
 } from "./types";
 
 // ================================================================
@@ -123,6 +140,7 @@ export function useCurrentUser() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   });
 }
 
@@ -135,6 +153,9 @@ export function useUpdateProfile() {
 =======
     retry: false,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    retry: false,
+>>>>>>> origin/uichange
   });
 }
 
@@ -146,6 +167,7 @@ export function useChangePassword() {
 }
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 // SEMESTER  →  /api/semester
 // ================================================================
@@ -234,6 +256,8 @@ export function useCreateSubject() {
 // ================================================================
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 // FOLDER
 // ================================================================
 
@@ -256,6 +280,7 @@ export function useFolder(id: string) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     enabled: !!id,
 =======
     enabled: !!id && id > 0,
@@ -266,6 +291,9 @@ export function useFolder(id: string) {
 =======
     enabled: !!id,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    enabled: !!id,
+>>>>>>> origin/uichange
   });
 }
 
@@ -306,6 +334,7 @@ export const docKeys = {
   byFolder: (folderId: string) => ["documents", "folder", folderId] as const,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   detail: (id: number) => ["documents", id] as const,
 =======
   detail: (id: string) => ["documents", "detail", id] as const,
@@ -313,6 +342,9 @@ export const docKeys = {
 =======
   detail: (id: number) => ["documents", id] as const,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  detail: (id: number) => ["documents", id] as const,
+>>>>>>> origin/uichange
   trash: ["documents", "trash"] as const,
 };
 
@@ -331,6 +363,7 @@ export function useDocumentsByFolder(folderId: string) {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 export function useDocument(id: number) {
@@ -373,6 +406,10 @@ export function useDocument(id: string) {
 export function useDocument(id: string) {
   const enabled = !!id;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+export function useDocument(id: string) {
+  const enabled = !!id;
+>>>>>>> origin/uichange
   console.log('[TRACE-4] useDocument id:', id, 'enabled:', enabled);
   return useQuery({
     queryKey: docKeys.detail(id),
@@ -408,11 +445,14 @@ export function useUploadDocument() {
         qc.invalidateQueries({ queryKey: docKeys.byFolder(v.folderId) });
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     },
   });
 }
@@ -422,6 +462,7 @@ export function useUpdateDocument() {
   return useMutation({
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     mutationFn: ({ id, ...body }: { id: number } & UpdateDocumentRequest) =>
 =======
     mutationFn: ({ id, ...body }: { id: string } & UpdateDocumentRequest) =>
@@ -429,6 +470,9 @@ export function useUpdateDocument() {
 =======
     mutationFn: ({ id, ...body }: { id: number } & UpdateDocumentRequest) =>
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    mutationFn: ({ id, ...body }: { id: number } & UpdateDocumentRequest) =>
+>>>>>>> origin/uichange
       documentApi.update(id, body),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -440,6 +484,7 @@ export function useUpdateDocument() {
 export function useDeleteDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     mutationFn: (id: number) => documentApi.delete(id),
@@ -459,6 +504,10 @@ export function useDeleteDocument() {
     mutationFn: (id: number) => documentApi.delete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    mutationFn: (id: number) => documentApi.delete(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
+>>>>>>> origin/uichange
   });
 }
 
@@ -466,12 +515,16 @@ export function useDownloadDocument() {
   return useMutation({
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     mutationFn: (id: number) => documentApi.getDownloadUrl(id),
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 // ----------------------------------------------------------------
@@ -496,6 +549,11 @@ export function useDownloadDocument() {
 // TRASH
 // ================================================================
 >>>>>>> origin/test/share-document-cloudinary
+=======
+// ================================================================
+// TRASH
+// ================================================================
+>>>>>>> origin/uichange
 
 export function useTrash() {
   return useQuery({
@@ -507,6 +565,7 @@ export function useTrash() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function useRestoreDocument() {
   const qc = useQueryClient();
   return useMutation({
@@ -514,10 +573,13 @@ export function useRestoreDocument() {
 =======
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export function useRestoreFromTrash() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => documentApi.restoreFromTrash(id),
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -528,6 +590,8 @@ export function useRestoreFromTrash() {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -535,6 +599,7 @@ export function useRestoreFromTrash() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -546,6 +611,8 @@ export function usePermanentDeleteDocument() {
 =======
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export function useEmptyTrash() {
   const qc = useQueryClient();
   return useMutation({
@@ -553,6 +620,7 @@ export function useEmptyTrash() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
     },
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -566,6 +634,8 @@ export function useEmptyTrash() {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   });
 }
 
@@ -575,6 +645,7 @@ export function useEmptyTrash() {
 
 export const sharedKeys = {
   all: ["shared"] as const,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -589,6 +660,9 @@ export const sharedKeys = {
 =======
   info: (targetId: string) => ["share-info", targetId] as const,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  info: (targetId: string) => ["share-info", targetId] as const,
+>>>>>>> origin/uichange
 };
 
 export function useSharedDocuments() {
@@ -601,12 +675,15 @@ export function useSharedDocuments() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function useShareInfo(documentId: number, enabled = true) {
   return useQuery({
     queryKey: sharedKeys.info(documentId),
     queryFn: () => shareApi.getShareInfo(documentId),
     enabled: !!documentId && enabled,
 =======
+=======
+>>>>>>> origin/uichange
 export function useShareInfo(targetId: string, targetType: "document" | "folder", enabled = true) {
   return useQuery({
     queryKey: sharedKeys.info(targetId),
@@ -614,13 +691,17 @@ export function useShareInfo(targetId: string, targetType: "document" | "folder"
     enabled: !!targetId && enabled,
     // Silent fail on 401 - don't show error toast
     useErrorBoundary: false,
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   });
 }
 
 export function useShareDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
     mutationFn: (input: { id: number; email: string }) =>
       shareApi.shareWithEmail(input.id, input.email),
@@ -635,18 +716,24 @@ export function useOwnedShares() {
     queryFn: () => shareApi.listOwned(),
     enabled: !!tokenStore.get(), // Only run if authenticated
 =======
+=======
+>>>>>>> origin/uichange
     mutationFn: (input: { id: string; value: string }) =>
       shareApi.share(input.id, "document", input.value),
     onSuccess: (_data, variables) => {
       qc.invalidateQueries({ queryKey: sharedKeys.info(variables.id) });
     },
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   });
 }
 
 export function useShareFolder() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
     mutationFn: (request: { folderId: string; username?: string; email?: string }) =>
       shareApi.shareFolder({
@@ -663,15 +750,21 @@ export function useShareFolder() {
 =======
 >>>>>>> origin/AI-Study-fix
 =======
+=======
+>>>>>>> origin/uichange
     mutationFn: (input: { id: string; value: string }) =>
       shareApi.share(input.id, "folder", input.value),
     onSuccess: (_data, variables) => {
       qc.invalidateQueries({ queryKey: sharedKeys.info(variables.id) });
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     },
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export function useDeleteSharedDocument() {
   const qc = useQueryClient();
@@ -693,6 +786,8 @@ export function useDeleteSharedDocument() {
 =======
 >>>>>>> origin/AI-Study-fix
 =======
+=======
+>>>>>>> origin/uichange
 export function useCreateShareLink() {
   return useMutation({
     mutationFn: (input: { id: string; type: "document" | "folder" }) =>
@@ -711,7 +806,10 @@ export function useDeleteSharedDocument() {
   return useMutation({
     mutationFn: (shareId: number) => shareApi.removeFromShared(shareId),
     onSuccess: () => qc.invalidateQueries({ queryKey: sharedKeys.all }),
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   });
 }
 
@@ -723,6 +821,7 @@ export function useSaveSharedDocument() {
       folderId: string;
       title: string;
       description?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -746,6 +845,8 @@ export function useSaveSharedDocument() {
 =======
 >>>>>>> origin/AI-Study-fix
 =======
+=======
+>>>>>>> origin/uichange
     }) =>
       shareApi.saveToMyFolder(
         input.sharedId,
@@ -754,7 +855,10 @@ export function useSaveSharedDocument() {
         input.description,
       ),
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   });
 }
 
@@ -778,6 +882,7 @@ export function useUploadRag() {
   return useMutation({
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     mutationFn: (input: { file: File; documentId: number; chunk?: boolean }) =>
 =======
     mutationFn: (input: { file: File; documentId: string; chunk?: boolean }) =>
@@ -785,12 +890,16 @@ export function useUploadRag() {
 =======
     mutationFn: (input: { file: File; documentId: number; chunk?: boolean }) =>
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    mutationFn: (input: { file: File; documentId: number; chunk?: boolean }) =>
+>>>>>>> origin/uichange
       input.chunk
         ? ragApi.uploadAndChunk(input.file, input.documentId)
         : ragApi.upload(input.file, input.documentId),
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 // ================================================================
@@ -803,6 +912,10 @@ export function useUploadRag() {
 // ================================================================
 // QUIZ
 >>>>>>> origin/test/share-document-cloudinary
+=======
+// ================================================================
+// QUIZ
+>>>>>>> origin/uichange
 // ================================================================
 
 export const quizKeys = {
@@ -810,6 +923,7 @@ export const quizKeys = {
 };
 
 export function useQuizByDocument(documentId: number) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 export function useProcessRagPipeline() {
@@ -836,6 +950,8 @@ export function useQuizByDocument(documentId: string) {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   return useQuery({
     queryKey: quizKeys.byDocument(documentId),
     queryFn: () => quizApi.listByDocument(documentId),
@@ -848,6 +964,7 @@ export function useGenerateQuiz() {
   return useMutation({
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     mutationFn: (input: { documentId: number; questionCount?: number }) =>
 =======
     mutationFn: (input: { documentId: string; questionCount?: number }) =>
@@ -855,6 +972,9 @@ export function useGenerateQuiz() {
 =======
     mutationFn: (input: { documentId: number; questionCount?: number }) =>
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    mutationFn: (input: { documentId: number; questionCount?: number }) =>
+>>>>>>> origin/uichange
       quizApi.generate(input.documentId, input.questionCount),
     onSuccess: (_d, v) =>
       qc.invalidateQueries({ queryKey: quizKeys.byDocument(v.documentId) }),
@@ -865,6 +985,7 @@ export function useGenerateQuiz() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // FLASHCARD  (sẵn sàng khi BE implement /api/flashcard)
 =======
 // FLASHCARD
@@ -872,6 +993,9 @@ export function useGenerateQuiz() {
 =======
 // FLASHCARD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+// FLASHCARD
+>>>>>>> origin/uichange
 // ================================================================
 
 export const flashcardKeys = {
@@ -879,6 +1003,7 @@ export const flashcardKeys = {
 };
 
 export function useFlashcardsByDocument(documentId: number) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 // FLASHCARD
@@ -892,6 +1017,8 @@ export function useFlashcardsByDocument(documentId: string) {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   return useQuery({
     queryKey: flashcardKeys.byDocument(documentId),
     queryFn: () => flashcardApi.listByDocument(documentId),
@@ -904,6 +1031,7 @@ export function useGenerateFlashcards() {
   return useMutation({
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     mutationFn: (documentId: number) => flashcardApi.generate(documentId),
 =======
     mutationFn: (documentId: string) => flashcardApi.generate(documentId),
@@ -911,11 +1039,15 @@ export function useGenerateFlashcards() {
 =======
     mutationFn: (documentId: number) => flashcardApi.generate(documentId),
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    mutationFn: (documentId: number) => flashcardApi.generate(documentId),
+>>>>>>> origin/uichange
     onSuccess: (_d, documentId) =>
       qc.invalidateQueries({ queryKey: flashcardKeys.byDocument(documentId) }),
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -932,3 +1064,6 @@ export type { Document, Folder, SharedDocument };
 =======
 export type { Document, Folder, SharedDocument };
 >>>>>>> origin/test/share-document-cloudinary
+=======
+export type { Document, Folder, SharedDocument };
+>>>>>>> origin/uichange

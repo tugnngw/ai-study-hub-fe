@@ -40,6 +40,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName;
 =======
 DropdownMenuSubTrigger.displayName =
@@ -53,6 +54,10 @@ DropdownMenuSubTrigger.displayName =
 DropdownMenuSubTrigger.displayName =
   DropdownMenuPrimitive.SubTrigger.displayName;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+DropdownMenuSubTrigger.displayName =
+  DropdownMenuPrimitive.SubTrigger.displayName;
+>>>>>>> origin/uichange
 
 const DropdownMenuSubContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
@@ -70,6 +75,7 @@ const DropdownMenuSubContent = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayName;
 =======
 DropdownMenuSubContent.displayName =
@@ -83,6 +89,10 @@ DropdownMenuSubContent.displayName =
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+DropdownMenuSubContent.displayName =
+  DropdownMenuPrimitive.SubContent.displayName;
+>>>>>>> origin/uichange
 
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
@@ -145,6 +155,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 DropdownMenuCheckboxItem.displayName = DropdownMenuPrimitive.CheckboxItem.displayName;
 =======
 DropdownMenuCheckboxItem.displayName =
@@ -158,6 +169,10 @@ DropdownMenuCheckboxItem.displayName =
 DropdownMenuCheckboxItem.displayName =
   DropdownMenuPrimitive.CheckboxItem.displayName;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+DropdownMenuCheckboxItem.displayName =
+  DropdownMenuPrimitive.CheckboxItem.displayName;
+>>>>>>> origin/uichange
 
 const DropdownMenuRadioItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
@@ -192,12 +207,15 @@ const DropdownMenuLabel = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className)}
 =======
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     className={cn(
       "px-2 py-1.5 text-sm font-semibold",
       inset && "pl-8",
@@ -205,11 +223,14 @@ const DropdownMenuLabel = React.forwardRef<
     )}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     {...props}
   />
 ));
@@ -230,6 +251,7 @@ DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const DropdownMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
     <span className={cn("ml-auto text-xs tracking-widest opacity-60", className)} {...props} />
@@ -238,6 +260,8 @@ const DropdownMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTML
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 const DropdownMenuShortcut = ({
   className,
   ...props
@@ -249,11 +273,14 @@ const DropdownMenuShortcut = ({
     />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   );
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";

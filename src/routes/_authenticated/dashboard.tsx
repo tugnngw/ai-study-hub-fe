@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {
   FolderKanban,
   FileText,
@@ -14,6 +15,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 =======
+=======
+>>>>>>> origin/uichange
 import { useMemo, useState } from "react";
 import {
   FileText,
@@ -26,14 +29,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 import { UploadDocumentDialog } from "@/components/upload-document-dialog";
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
 });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/uichange
 function formatBytes(n?: number | null) {
   if (!n) return "—";
   if (n < 1024) return `${n} B`;
@@ -71,11 +80,15 @@ const FOLDER_ICON_COLORS = [
 
 const SEMESTERS = Array.from({ length: 9 }, (_, i) => i + 1);
 
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 function Dashboard() {
   const folders = useFolders();
   const docs = useDocuments();
   const { user } = useAuth();
+<<<<<<< HEAD
 <<<<<<< HEAD
 
   const recent = (docs.data ?? [])
@@ -253,6 +266,8 @@ function Dashboard() {
   );
 }
 =======
+=======
+>>>>>>> origin/uichange
   const [semester, setSemester] = useState(1);
   const [uploadOpen, setUploadOpen] = useState(false);
 
@@ -451,4 +466,7 @@ function Dashboard() {
   );
 }
 
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange

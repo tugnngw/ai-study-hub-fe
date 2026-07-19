@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 
 import {
@@ -17,6 +18,8 @@ import { cn } from "@/lib/utils";
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Bot, Share2, Cloud, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,11 +29,14 @@ export const Route = createFileRoute("/")({
 });
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 
 const features = [
   {
@@ -49,6 +55,7 @@ const features = [
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     description: "Lưu trữ tài liệu an toàn trên cloud với dung lượng không giới hạn",
 =======
     description:
@@ -62,6 +69,10 @@ const features = [
     description:
       "Lưu trữ tài liệu an toàn trên cloud với dung lượng không giới hạn",
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    description:
+      "Lưu trữ tài liệu an toàn trên cloud với dung lượng không giới hạn",
+>>>>>>> origin/uichange
   },
   {
     icon: Upload,
@@ -70,6 +81,7 @@ const features = [
   },
 ];
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -83,6 +95,8 @@ export function WelcomePage() {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 function WelcomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -90,16 +104,20 @@ function WelcomePage() {
       <header className="border-b border-border/60 sticky top-0 z-30 bg-background/80 backdrop-blur-xl">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="h-9 w-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-brand">
               <Cloud className="h-4.5 w-4.5 text-white" strokeWidth={2.5} />
             </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -120,6 +138,8 @@ function WelcomePage() {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
             <span className="font-display font-bold text-base">
               AI STUDY HUB
             </span>
@@ -136,11 +156,14 @@ function WelcomePage() {
             </Button>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
           </div>
         </div>
       </header>
@@ -158,6 +181,7 @@ function WelcomePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <span className="text-gradient-brand bg-clip-text text-transparent">cùng AI</span>
           </h1>
           <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
@@ -168,6 +192,8 @@ function WelcomePage() {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
             <span className="text-gradient-brand bg-clip-text text-transparent">
               cùng AI
             </span>
@@ -177,11 +203,14 @@ function WelcomePage() {
             câu trả lời tức thì được hỗ trợ bởi công nghệ AI tiên tiến.
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
           </p>
         </section>
 
@@ -207,6 +236,7 @@ function WelcomePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <h3 className="font-display font-semibold text-sm text-foreground">{f.title}</h3>
 =======
                 <h3 className="font-display font-semibold text-sm text-foreground">
@@ -223,6 +253,11 @@ function WelcomePage() {
                   {f.title}
                 </h3>
 >>>>>>> origin/test/share-document-cloudinary
+=======
+                <h3 className="font-display font-semibold text-sm text-foreground">
+                  {f.title}
+                </h3>
+>>>>>>> origin/uichange
                 <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
                   {f.description}
                 </p>
@@ -244,6 +279,7 @@ function WelcomePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               <Link
                 to="/auth/register"
                 className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "shadow-lg")}
@@ -255,6 +291,8 @@ function WelcomePage() {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
               <Button
                 size="lg"
                 variant="secondary"
@@ -265,11 +303,14 @@ function WelcomePage() {
               </Button>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
             </div>
           </div>
         </section>
@@ -288,6 +329,7 @@ function WelcomePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             Hệ thống quản lý tài liệu được hỗ trợ bởi AI dành cho sinh viên và giảng viên.
 =======
             Hệ thống quản lý tài liệu được hỗ trợ bởi AI dành cho sinh viên và
@@ -301,6 +343,10 @@ function WelcomePage() {
             Hệ thống quản lý tài liệu được hỗ trợ bởi AI dành cho sinh viên và
             giảng viên.
 >>>>>>> origin/test/share-document-cloudinary
+=======
+            Hệ thống quản lý tài liệu được hỗ trợ bởi AI dành cho sinh viên và
+            giảng viên.
+>>>>>>> origin/uichange
           </p>
         </div>
       </footer>

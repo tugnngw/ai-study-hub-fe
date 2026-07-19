@@ -5,9 +5,12 @@ import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { tokenStore } from "@/lib/api"; // Import tokenStore
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 
 export const Route = createFileRoute("/oauth-success")({
   component: OAuthSuccessPage,
@@ -15,6 +18,7 @@ export const Route = createFileRoute("/oauth-success")({
 
 function OAuthSuccessPage() {
   const navigate = useNavigate();
+<<<<<<< HEAD
 <<<<<<< HEAD
   const { refresh } = useAuth(); // useAuth hook để gọi hàm refresh
   const hasRunRef = useRef(false); // Track if effect has already run
@@ -53,6 +57,8 @@ function OAuthSuccessPage() {
         console.error(`Missing: ${!accessToken ? "accessToken " : ""}${!refreshToken ? "refreshToken " : ""}${!userId ? "userId" : ""}`);
         // Nếu thiếu, chuyển hướng về trang login
 =======
+=======
+>>>>>>> origin/uichange
   const { refresh } = useAuth();
   const processed = useRef(false);
 
@@ -69,11 +75,15 @@ function OAuthSuccessPage() {
 
       if (!token) {
         console.log("📱 OAuthSuccessPage: NO TOKEN, redirecting to /auth/login");
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
         navigate({ to: "/auth/login", replace: true });
         return;
       }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
       // Lưu tokens và user ID vào localStorage
       tokenStore.set(accessToken);           // Lưu access_token
@@ -96,6 +106,8 @@ function OAuthSuccessPage() {
       navigate({
         to: "/dashboard", // Thay '/dashboard' bằng route thực tế của bạn
 =======
+=======
+>>>>>>> origin/uichange
       console.log("📱 OAuthSuccessPage: SAVING token to localStorage");
       localStorage.setItem("auth_token", token);
 
@@ -111,18 +123,26 @@ function OAuthSuccessPage() {
       console.log("📱 OAuthSuccessPage: NAVIGATING to /dashboard");
       navigate({
         to: "/dashboard",
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
         replace: true,
       });
     };
 
     handleOAuth();
 <<<<<<< HEAD
+<<<<<<< HEAD
   }, []); // ⚠️ Empty dependency array - only run once on mount
 =======
    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 >>>>>>> origin/test/share-document-cloudinary
+=======
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+>>>>>>> origin/uichange
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

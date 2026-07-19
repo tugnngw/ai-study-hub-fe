@@ -5,6 +5,7 @@ import { docKeys } from '@/lib/queries';
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function useDocumentPolling(documentId: number, status: string) {
   const queryClient = useQueryClient();
 
@@ -13,15 +14,20 @@ export function useDocumentPolling(documentId: number, status: string) {
 =======
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export function useDocumentPolling(documentId: string, status: string) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
     if (status !== 'processing' || !documentId) return;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 
     console.log('[Polling] Starting polling for document:', documentId);
 

@@ -2,12 +2,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts", "eslint.config.js"],
 =======
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
@@ -16,11 +19,14 @@
   ],
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
@@ -30,6 +36,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     "esModuleInterop": true,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -39,6 +46,9 @@
 =======
     "esModuleInterop": true,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    "esModuleInterop": true,
+>>>>>>> origin/uichange
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
@@ -56,6 +66,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "baseUrl": ".",
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -64,6 +75,9 @@
 =======
     "baseUrl": ".",
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    "baseUrl": ".",
+>>>>>>> origin/uichange
     "paths": {
       "@/*": ["./src/*"]
     }

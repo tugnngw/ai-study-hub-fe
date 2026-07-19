@@ -32,6 +32,7 @@ export function ConfirmDeleteDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             {description ?? "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
 =======
             {description ??
@@ -45,6 +46,10 @@ export function ConfirmDeleteDialog({
             {description ??
               "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
 >>>>>>> origin/test/share-document-cloudinary
+=======
+            {description ??
+              "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
+>>>>>>> origin/uichange
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -54,12 +59,15 @@ export function ConfirmDeleteDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button variant="destructive" onClick={onConfirm} disabled={isPending}>
 =======
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
           <Button
             variant="destructive"
             onClick={onConfirm}
@@ -67,11 +75,14 @@ export function ConfirmDeleteDialog({
           >
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
             {isPending ? "Đang xóa..." : "Xóa"}
           </Button>
         </DialogFooter>

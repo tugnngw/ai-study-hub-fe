@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useFolders, useUploadDocument } from "@/lib/queries";
 =======
 import { useFolders, useUploadDocument, useProcessRagPipeline } from "@/lib/queries";
@@ -10,6 +11,10 @@ import { useFolders, useUploadDocument, useProcessRagPipeline } from "@/lib/quer
 import { CheckCircle2, Loader2, X, XCircle, FileText } from "lucide-react";
 import { useFolders, useUploadDocument } from "@/lib/queries";
 >>>>>>> origin/test/share-document-cloudinary
+=======
+import { CheckCircle2, Loader2, X, XCircle, FileText } from "lucide-react";
+import { useFolders, useUploadDocument } from "@/lib/queries";
+>>>>>>> origin/uichange
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -31,7 +36,10 @@ import {
 } from "@/components/ui/select";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/uichange
 type UploadStatus = "pending" | "uploading" | "done" | "error";
 
 interface UploadItem {
@@ -48,7 +56,10 @@ function formatBytes(n: number) {
   return `${(n / 1024 ** 2).toFixed(1)} MB`;
 }
 
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export function UploadDocumentDialog({
   open,
   onOpenChange,
@@ -62,6 +73,7 @@ export function UploadDocumentDialog({
   const upload = useUploadDocument();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const processRag = useProcessRagPipeline();
 >>>>>>> origin/AI-Study-fix
@@ -69,6 +81,9 @@ export function UploadDocumentDialog({
 =======
   const [files, setFiles] = useState<File[]>([]);
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  const [files, setFiles] = useState<File[]>([]);
+>>>>>>> origin/uichange
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [folderId, setFolderId] = useState<string>(
@@ -76,28 +91,39 @@ export function UploadDocumentDialog({
   );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/uichange
   // Bottom progress popup state (lives outside the dialog so it persists)
   const [items, setItems] = useState<UploadItem[]>([]);
   const [popupOpen, setPopupOpen] = useState(false);
 
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   useEffect(() => {
     if (open && defaultFolderId) setFolderId(String(defaultFolderId));
   }, [open, defaultFolderId]);
 
   const reset = () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     setFile(null);
 =======
     setFiles([]);
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    setFiles([]);
+>>>>>>> origin/uichange
     setTitle("");
     setDescription("");
     setFolderId(defaultFolderId ? String(defaultFolderId) : "");
   };
 
   const submit = async () => {
+<<<<<<< HEAD
 <<<<<<< HEAD
     if (!file) return toast.error("Chọn một file");
     if (!title.trim()) return toast.error("Nhập tiêu đề");
@@ -256,6 +282,8 @@ export function UploadDocumentDialog({
       </DialogContent>
     </Dialog>
 =======
+=======
+>>>>>>> origin/uichange
     if (files.length === 0) return toast.error("Chọn ít nhất một file");
     if (!folderId) return toast.error("Chọn thư mục");
 
@@ -471,6 +499,9 @@ export function UploadDocumentDialog({
         </div>
       )}
     </>
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   );
 }

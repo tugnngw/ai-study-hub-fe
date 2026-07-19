@@ -1,5 +1,6 @@
 // src/components/document-viewer/DocxViewer.tsx
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Renders DOCX files using mammoth.js (converts to clean HTML)
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
@@ -8,13 +9,18 @@ import * as mammoth from "mammoth";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 =======
+=======
+>>>>>>> origin/uichange
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Loader2, RotateCw, Download, ExternalLink, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 import { cn } from "@/lib/utils";
 import {
   isCloudinaryUrl,
@@ -41,10 +47,14 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
   const isCloudinary = isCloudinaryUrl(url);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Process Cloudinary URL if needed
 =======
   // Process URL on mount and when URL changes
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  // Process URL on mount and when URL changes
+>>>>>>> origin/uichange
   useEffect(() => {
     let isMounted = true;
     let currentBlobUrl: string | null = null;
@@ -70,11 +80,14 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
     if (isCloudinary) {
       processUrl();
 <<<<<<< HEAD
+<<<<<<< HEAD
     } else {
       setProcessedUrl(null);
       setLoading(false);
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     }
 
     return () => {
@@ -89,6 +102,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
     if (!containerRef.current) return;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     let isMounted = true;
 
     try {
@@ -96,13 +110,18 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       setError(null);
 
 =======
+=======
+>>>>>>> origin/uichange
     try {
       setLoading(true);
       setError(null);
       containerRef.current.innerHTML = "";
 
       // Use processedUrl (blob) for Cloudinary, original URL for others
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
       const targetUrl = (isCloudinary && processedUrl) ? processedUrl : url;
 
       const response = await fetch(targetUrl, {
@@ -117,6 +136,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       }
 
       const arrayBuffer = await response.arrayBuffer();
+<<<<<<< HEAD
 <<<<<<< HEAD
 
       if (!isMounted) return;
@@ -151,6 +171,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       if (!isMounted) return;
 
 =======
+=======
+>>>>>>> origin/uichange
       const { renderAsync } = await import("docx-preview");
 
       await renderAsync(arrayBuffer, containerRef.current, {
@@ -159,7 +181,10 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 
       setLoading(false);
     } catch (e) {
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
       console.error("DOCX render error:", e);
       const errorMsg = e instanceof Error ? e.message : "Unknown error";
 
@@ -178,12 +203,15 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       setLoading(false);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     return () => {
       isMounted = false;
     };
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   }, [url, isCloudinary, processedUrl]);
 
   useEffect(() => {
@@ -194,6 +222,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
     setRetryCount((prev) => prev + 1);
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   // Toolbar
   const Toolbar = (
@@ -207,6 +236,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
 =======
+=======
+>>>>>>> origin/uichange
   // Toolbar - matches PdfViewer styling
   const Toolbar = (
     <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-1.5 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm gap-1 flex-wrap min-h-[42px]">
@@ -218,17 +249,24 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
         <Button variant="ghost" size="sm" asChild>
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-3.5 w-3.5 mr-1" /> Tải
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={url} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
 <<<<<<< HEAD
             <ExternalLink className="h-4 w-4 mr-1" />
             Mở tab mới
 =======
             <ExternalLink className="h-3.5 w-3.5 mr-1" /> Mở mới
 >>>>>>> origin/test/share-document-cloudinary
+=======
+            <ExternalLink className="h-3.5 w-3.5 mr-1" /> Mở mới
+>>>>>>> origin/uichange
           </a>
         </Button>
       </div>
@@ -237,10 +275,14 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    <Card className={cn("flex flex-col min-h-0", className)}>
+>>>>>>> origin/uichange
       {Toolbar}
 
       {/* Loading State */}
@@ -268,10 +310,14 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
           <div
             ref={containerRef}
 <<<<<<< HEAD
+<<<<<<< HEAD
             className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
 =======
             className="docx-viewer prose prose-sm max-w-none dark:prose-invert"
 >>>>>>> origin/test/share-document-cloudinary
+=======
+            className="docx-viewer prose prose-sm max-w-none dark:prose-invert"
+>>>>>>> origin/uichange
             style={{
               fontSize: "14px",
               lineHeight: "1.6",

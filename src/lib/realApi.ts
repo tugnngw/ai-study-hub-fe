@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // realApi.ts — Real API calls, 1-1 mapping với BE endpoints
 // =============================================================
@@ -25,11 +26,17 @@ import { tokenStore } from "./api";
 import { api } from "./api";
 import { tokenStore } from "./api";
 >>>>>>> origin/test/share-document-cloudinary
+=======
+// src/lib/realApi.ts
+import { api } from "./api";
+import { tokenStore } from "./api";
+>>>>>>> origin/uichange
 import type {
   User,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -43,6 +50,8 @@ import type {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   Folder,
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -50,6 +59,7 @@ import type {
   UploadDocumentRequest,
   UpdateDocumentRequest,
   DownloadUrlResponse,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -67,12 +77,17 @@ import type {
   ShareResponse,
   ShareRequest,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  ShareResponse,
+  ShareRequest,
+>>>>>>> origin/uichange
   AskRequest,
   AskResponse,
   ReportDocumentRequest,
   Quiz,
   Flashcard,
   FlashcardProgress,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 } from "./types";
@@ -89,12 +104,16 @@ import { tokenStore } from "./api";
 =======
 } from "./types";
 >>>>>>> origin/test/share-document-cloudinary
+=======
+} from "./types";
+>>>>>>> origin/uichange
 
 // ================================================================
 // AUTH  →  /api/auth
 // ================================================================
 
 export const authApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -126,6 +145,8 @@ export const authApi = {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   register: (data: RegisterRequest) =>
     api<void>("/api/auth/register", { method: "POST", body: data }),
 
@@ -138,6 +159,7 @@ export const authApi = {
     
     // api() already unwraps ApiResponse<T> → res is the AuthResponse object
 <<<<<<< HEAD
+<<<<<<< HEAD
     const token = res?.accessToken ?? res?.token;
     if (token) {
       tokenStore.set(token);
@@ -145,6 +167,10 @@ export const authApi = {
     if (res?.accessToken) {
       tokenStore.set(res.accessToken);
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    if (res?.accessToken) {
+      tokenStore.set(res.accessToken);
+>>>>>>> origin/uichange
     }
     
     if (res?.refreshToken) tokenStore.setRefresh(res.refreshToken);
@@ -174,11 +200,14 @@ export const authApi = {
     }),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 };
 
 // ================================================================
@@ -186,6 +215,7 @@ export const authApi = {
 // ================================================================
 
 export const accountApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -262,6 +292,11 @@ export const subjectApi = {
   changePassword: (data: { currentPassword: string; newPassword: string }) =>
     api<void>("/api/account/change-password", { method: "POST", body: data }),
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  me: () => api<User>("/api/account/me"),
+  changePassword: (data: { currentPassword: string; newPassword: string }) =>
+    api<void>("/api/account/change-password", { method: "POST", body: data }),
+>>>>>>> origin/uichange
 };
 
 // ================================================================
@@ -269,6 +304,7 @@ export const subjectApi = {
 // ================================================================
 
 export const folderApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -294,6 +330,8 @@ export const folderApi = {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   list: () => api<Folder[]>("/api/folder/getall"),
   getById: (id: string) => api<Folder>(`/api/folder/getbyid/${id}`),
   create: (body: CreateFolderRequest) =>
@@ -304,11 +342,14 @@ export const folderApi = {
     api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 };
 
 // ================================================================
@@ -316,6 +357,7 @@ export const folderApi = {
 // ================================================================
 
 export const documentApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -414,10 +456,13 @@ export const shareApi = {
 =======
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   list: () => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
   getById: (id: number) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   list: () => api<Document[]>("/api/documents"),
@@ -427,6 +472,8 @@ export const shareApi = {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     console.log('[TRACE-6] documentApi.getById called with id:', id);
     return api<Document>(`/api/documents/${id}`);
   },
@@ -455,8 +502,11 @@ export const shareApi = {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   update: (id: number, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
@@ -464,6 +514,7 @@ export const shareApi = {
     api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
   getDownloadUrl: (id: number) =>
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   update: (id: string, body: UpdateDocumentRequest) =>
@@ -476,18 +527,24 @@ export const shareApi = {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   // Trash (soft-deleted docs)
   listTrash: () => api<Document[]>("/api/documents/trash"),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   restoreFromTrash: (id: number) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
   emptyTrash: (id: number) =>
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -498,6 +555,8 @@ export const shareApi = {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 };
 
 // ================================================================
@@ -505,6 +564,7 @@ export const shareApi = {
 // ================================================================
 
 export const ragApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -516,10 +576,13 @@ export const ragApi = {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   upload: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     return api<void>("/rag/upload", { method: "POST", formData: fd });
@@ -539,10 +602,16 @@ export const ragApi = {
   },
 
 >>>>>>> origin/test/share-document-cloudinary
+=======
+    return api<void>("/api/rag/upload", { method: "POST", formData: fd });
+  },
+
+>>>>>>> origin/uichange
   uploadAndChunk: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     return api<void>("/rag/upload/chunk", { method: "POST", formData: fd });
@@ -578,6 +647,8 @@ export const quizApi = {
 =======
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
   },
 
@@ -586,6 +657,7 @@ export const quizApi = {
       method: "POST",
       body: { id: input.id, question: input.question },
     }),
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   upload: (file: File, documentId: string) => {
@@ -616,6 +688,8 @@ export const quizApi = {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 };
 
 // ================================================================
@@ -623,6 +697,7 @@ export const quizApi = {
 // ================================================================
 
 export const shareApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   // List shares where current user is the owner
   listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
@@ -640,6 +715,8 @@ export const shareApi = {
 
   // Report a document
 =======
+=======
+>>>>>>> origin/uichange
   listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
   listSharedWithMe: () => api<ShareResponse[]>("/api/shares/shared-with-me"),
   getShareInfo: (id: string, type: "document" | "folder") => {
@@ -673,7 +750,10 @@ export const shareApi = {
       method: "POST",
       body: { folderId, title, description },
     }),
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   report: (body: ReportDocumentRequest) =>
     api<void>(`/api/documents/${body.id}/report`, {
       method: "POST",
@@ -688,13 +768,17 @@ export const shareApi = {
 export const quizApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   listByDocument: (documentId: number) =>
     api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
 
   generate: (documentId: number, questionCount = 10) =>
     api<Quiz>("/api/quiz/generate", {
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -706,12 +790,15 @@ export const quizApi = {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
       method: "POST",
       body: { documentId, questionCount },
     }),
 };
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -731,19 +818,25 @@ export const flashcardApi = {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 // FLASHCARD  →  /api/flashcard
 // ================================================================
 
 export const flashcardApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   listByDocument: (documentId: number) =>
     api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
 
   generate: (documentId: number) =>
     api<Flashcard[]>("/api/flashcard/generate", {
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -755,10 +848,13 @@ export const flashcardApi = {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
       method: "POST",
       body: { documentId },
     }),
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -777,6 +873,10 @@ export const flashcardApi = {
   updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
     api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
+    api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
+>>>>>>> origin/uichange
       method: "PUT",
       body: { status },
     }),

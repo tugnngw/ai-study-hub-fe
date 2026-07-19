@@ -4,16 +4,21 @@
  */
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
 =======
 export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
 >>>>>>> origin/test/share-document-cloudinary
+=======
+export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
+>>>>>>> origin/uichange
 
 interface MimeTypeMap {
   [key: string]: SupportedFileType;
 }
 
 const MIME_TYPE_MAP: MimeTypeMap = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   // PDF
   "application/pdf": "pdf",
@@ -25,10 +30,16 @@ const MIME_TYPE_MAP: MimeTypeMap = {
   "application/x-pdf": "pdf",
 
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  "application/pdf": "pdf",
+  "application/x-pdf": "pdf",
+
+>>>>>>> origin/uichange
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
     "docx",
   "application/msword": "docx",
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   // TXT
   "text/plain": "txt",
@@ -60,6 +71,8 @@ const EXTENSION_MAP: MimeTypeMap = {
   webp: "image",
   svg: "image",
 =======
+=======
+>>>>>>> origin/uichange
   "text/plain": "txt",
   "text/x-plain": "txt",
 };
@@ -70,7 +83,10 @@ const EXTENSION_MAP: MimeTypeMap = {
   doc: "docx",
   txt: "txt",
   text: "txt",
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 };
 
 /**
@@ -142,11 +158,14 @@ export function getTypeLabel(type: SupportedFileType): string {
     txt: "Text File",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     image: "Image",
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     unsupported: "Unsupported File",
   };
   return labels[type];

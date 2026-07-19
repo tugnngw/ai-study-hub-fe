@@ -15,6 +15,7 @@ const Label = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & VariantProps<typeof labelVariants>
 >(({ className, ...props }, ref) => (
   <LabelPrimitive.Root ref={ref} className={cn(labelVariants(), className)} {...props} />
@@ -23,6 +24,8 @@ const Label = React.forwardRef<
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
     VariantProps<typeof labelVariants>
 >(({ className, ...props }, ref) => (
@@ -33,11 +36,14 @@ const Label = React.forwardRef<
   />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 ));
 Label.displayName = LabelPrimitive.Root.displayName;
 

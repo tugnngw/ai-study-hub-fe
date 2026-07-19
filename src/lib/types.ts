@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // types.ts — Data models aligned with DB schema & BE API
 // =============================================================
@@ -26,6 +27,8 @@ export interface RegisterRequest {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 // src/lib/types.ts
 // =============================================================
 // 1. AUTH / ACCOUNT
@@ -39,16 +42,20 @@ export interface RegisterRequest {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export interface LoginRequest {
   username: string;
   password: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -67,6 +74,8 @@ export interface User {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export interface LoginResponse {
   accessToken: string;
   refreshToken?: string;
@@ -78,11 +87,14 @@ export interface User {
   id: string;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   username: string;
   email: string;
   fullName: string;
@@ -90,6 +102,7 @@ export interface User {
   role: "USER" | "ADMIN";
   status: "ACTIVE" | "BANNED";
   authProvider: "LOCAL" | "GOOGLE";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -148,6 +161,8 @@ export interface Folder {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   providerId?: string;
   lastLoginAt?: string;
   createdAt: string;
@@ -165,16 +180,20 @@ export interface Folder {
   ownerId: string;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   name: string;
   aiSummary?: string | null;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -194,10 +213,15 @@ export interface Folder {
 }
 
 >>>>>>> origin/test/share-document-cloudinary
+=======
+}
+
+>>>>>>> origin/uichange
 export interface CreateFolderRequest {
   name: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -208,10 +232,13 @@ export interface CreateFolderRequest {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export interface UpdateFolderRequest {
   name: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -232,6 +259,8 @@ export interface Document {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 // =============================================================
 // 3. DOCUMENT
 // =============================================================
@@ -239,6 +268,7 @@ export interface Document {
 export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
 export interface Document {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   id: number;
@@ -249,14 +279,19 @@ export interface Document {
 =======
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   id: string;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   title: string;
   description?: string | null;
   summary?: string | null;
@@ -269,6 +304,7 @@ export interface Document {
   totalPages?: number | null;
   createdAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -293,10 +329,15 @@ export interface Document {
 }
 
 >>>>>>> origin/test/share-document-cloudinary
+=======
+}
+
+>>>>>>> origin/uichange
 export interface UploadDocumentRequest {
   file: File;
   title: string;
   description?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -310,10 +351,13 @@ export interface UploadDocumentRequest {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   folderId?: string;
   subjectId?: number;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -321,12 +365,15 @@ export interface UploadDocumentRequest {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export interface UpdateDocumentRequest {
   title?: string;
   description?: string;
   folderId?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -337,11 +384,14 @@ export interface UpdateDocumentRequest {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export interface DownloadUrlResponse {
   url: string;
   expiresAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -373,6 +423,8 @@ export interface ShareInfo {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 // =============================================================
 // 4. SHARE
 // =============================================================
@@ -380,6 +432,7 @@ export interface ShareInfo {
 export type Visibility = "private" | "shared" | "public";
 
 export interface ShareRequest {
+<<<<<<< HEAD
 <<<<<<< HEAD
   folderId: string;
   email?: string;      // Search by email
@@ -432,6 +485,8 @@ export interface AskRequest {
 =======
 >>>>>>> origin/AI-Study-fix
 =======
+=======
+>>>>>>> origin/uichange
   folder: Folder;
   owner: User;
   sharedAccount?: User;
@@ -465,7 +520,10 @@ export interface ShareResponse {
   folderName?: string | null;
 }
 
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export interface SharedDocument extends Document {
   sharedBy: string;
   sharedAt: string;
@@ -479,6 +537,7 @@ export interface SharedDocument extends Document {
 export interface AskRequest {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -488,6 +547,9 @@ export interface AskRequest {
 =======
   id: string;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  id: string;
+>>>>>>> origin/uichange
   question: string;
 }
 
@@ -502,6 +564,7 @@ export interface ReferencedChunk {
   similarity?: number;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -527,6 +590,8 @@ export interface Quiz {
   documentId: string;
 >>>>>>> origin/AI-Study-fix
 =======
+=======
+>>>>>>> origin/uichange
 // =============================================================
 // 6. QUIZ
 // =============================================================
@@ -534,7 +599,10 @@ export interface Quiz {
 export interface Quiz {
   id: string;
   documentId: number;
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   title: string;
   generatedByAi: boolean;
   createdAt: string;
@@ -543,10 +611,14 @@ export interface Quiz {
 
 export interface Question {
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
 =======
   id: string;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  id: string;
+>>>>>>> origin/uichange
   quizId: number;
   content: string;
   optionA: string;
@@ -558,10 +630,14 @@ export interface Question {
 
 export interface QuizAttempt {
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
 =======
   id: string;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  id: string;
+>>>>>>> origin/uichange
   quizId: number;
   accountId: string;
   score?: number;
@@ -571,6 +647,7 @@ export interface QuizAttempt {
   completedAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -596,6 +673,8 @@ export interface Flashcard {
   documentId: string;
 >>>>>>> origin/AI-Study-fix
 =======
+=======
+>>>>>>> origin/uichange
 // =============================================================
 // 7. FLASHCARD
 // =============================================================
@@ -603,7 +682,10 @@ export interface Flashcard {
 export interface Flashcard {
   id: string;
   documentId: number;
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   frontContent: string;
   backContent: string;
   generatedByAi: boolean;
@@ -618,6 +700,7 @@ export interface FlashcardProgress {
   nextReviewAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -671,11 +754,14 @@ export interface PagedResponse<T> {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 // =============================================================
 // 8. REPORT
 // =============================================================
 
 export interface ReportDocumentRequest {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   id: number;
@@ -686,10 +772,13 @@ export interface ReportDocumentRequest {
 =======
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   id: string;
   reason: string;
   description?: string;
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 // =============================================================
@@ -713,3 +802,5 @@ export interface RagChatResponse {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange

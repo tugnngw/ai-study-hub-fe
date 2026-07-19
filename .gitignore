@@ -1,14 +1,21 @@
 node_modules
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 .claude
 =======
 >>>>>>> origin/AI-Study-fix
 =======
+=======
+>>>>>>> origin/uichange
 node_modules
 /.env.local
 AI
 dist
+<<<<<<< HEAD
 .env
 >>>>>>> origin/test/share-document-cloudinary
+=======
+.env
+>>>>>>> origin/uichange

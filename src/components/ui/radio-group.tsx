@@ -11,12 +11,15 @@ const RadioGroup = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   return <RadioGroupPrimitive.Root className={cn("grid gap-2", className)} {...props} ref={ref} />;
 =======
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   return (
     <RadioGroupPrimitive.Root
       className={cn("grid gap-2", className)}
@@ -26,11 +29,14 @@ const RadioGroup = React.forwardRef<
   );
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 });
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 

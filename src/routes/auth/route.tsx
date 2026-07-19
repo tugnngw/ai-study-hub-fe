@@ -1,15 +1,21 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth")({
   component: AuthLayout,
 =======
+=======
+>>>>>>> origin/uichange
 import { createFileRoute, Outlet, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth")({
   component: AuthLayout,
   notFoundComponent: AuthNotFoundComponent,
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 });
 
 function AuthLayout() {
@@ -26,7 +32,10 @@ function AuthLayout() {
   );
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/uichange
 
 function AuthNotFoundComponent() {
   return (
@@ -50,4 +59,7 @@ function AuthNotFoundComponent() {
     </div>
   );
 }
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange

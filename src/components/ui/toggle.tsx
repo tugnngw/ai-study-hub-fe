@@ -31,6 +31,7 @@ const Toggle = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>
 =======
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
@@ -44,6 +45,10 @@ const Toggle = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
     VariantProps<typeof toggleVariants>
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
+    VariantProps<typeof toggleVariants>
+>>>>>>> origin/uichange
 >(({ className, variant, size, ...props }, ref) => (
   <TogglePrimitive.Root
     ref={ref}

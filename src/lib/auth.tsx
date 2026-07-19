@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // auth.tsx — AuthContext. Gọi thẳng BE thật (không còn mock).
 // =============================================================
@@ -14,11 +15,15 @@
 =======
 // src/lib/auth.tsx
 >>>>>>> origin/test/share-document-cloudinary
+=======
+// src/lib/auth.tsx
+>>>>>>> origin/uichange
 import {
   createContext,
   useContext,
   useState,
   useEffect,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -30,12 +35,15 @@ import {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   type ReactNode,
 } from "react";
 import type { User, RegisterRequest } from "./types";
 import { authApi, accountApi } from "./realApi";
 import { tokenStore } from "./api";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -49,10 +57,13 @@ const authSource = {
 
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+<<<<<<< HEAD
 <<<<<<< HEAD
   login: (username: string, password: string) => Promise<User>;
   register: (data: RegisterRequest) => Promise<void>;
@@ -77,6 +88,8 @@ interface AuthContextValue {
 =======
 >>>>>>> origin/AI-Study-fix
 =======
+=======
+>>>>>>> origin/uichange
   login: (username: string, password: string) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
@@ -84,7 +97,10 @@ interface AuthContextValue {
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -96,15 +112,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Khi app khởi động: nếu đã có token → lấy thông tin user
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   useEffect(() => {
     const token = tokenStore.get();
     if (!token) {
       setIsLoading(false);
       return;
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
     authSource
       .me()
@@ -127,6 +147,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     await authSource.logout();
 =======
+=======
+>>>>>>> origin/uichange
     accountApi
       .me()
       .then((u) => {
@@ -189,12 +211,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     await authApi.logout();
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
     setUser(null);
   };
 
   const refresh = async () => {
     try {
+<<<<<<< HEAD
 <<<<<<< HEAD
       const u = await authSource.me();
       setUser(u);
@@ -413,6 +439,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []); // Empty deps: refresh function không thay đổi
 
 =======
+=======
+>>>>>>> origin/uichange
       const u = await accountApi.me();
       setUser(u);
     } catch (err) {
@@ -420,7 +448,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
   };
@@ -433,11 +464,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await authApi.resetPassword(email, password);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   };
 
   return (
@@ -448,13 +482,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
         isAuthenticated: !!user,
         login,
         register,
         logout,
         refresh,
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -477,6 +515,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         verifyResetOtp,
         resetPassword,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+        requestPasswordReset,
+        verifyResetOtp,
+        resetPassword,
+>>>>>>> origin/uichange
       }}
     >
       {children}
@@ -493,6 +536,7 @@ export function useAuth() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Re-export type để các component không cần import lại
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -500,4 +544,6 @@ export function useAuth() {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 export type { RegisterRequest };

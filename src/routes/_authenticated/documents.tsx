@@ -108,6 +108,7 @@ function DocumentsPage() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
 =======
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} isPipelineTriggerEnabled />
@@ -115,6 +116,9 @@ function DocumentsPage() {
 =======
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
 >>>>>>> origin/test/share-document-cloudinary
+=======
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+>>>>>>> origin/uichange
     </div>
   );
 }
@@ -127,6 +131,7 @@ function DocumentRow({
 }: {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
 =======
   id: string;
@@ -134,6 +139,9 @@ function DocumentRow({
 =======
   id: number;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  id: number;
+>>>>>>> origin/uichange
   folderId: string;
   title: string;
   description: string;
@@ -219,10 +227,14 @@ function UploadDialog({
           </div>
           <div className="space-y-2">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Label>Title</Label>
 =======
             <Label>File Name</Label>
 >>>>>>> origin/test/share-document-cloudinary
+=======
+            <Label>File Name</Label>
+>>>>>>> origin/uichange
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="space-y-2">

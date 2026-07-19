@@ -2,16 +2,22 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FileText, FolderKanban, Share2, Pencil, Save, X } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 =======
+=======
+>>>>>>> origin/uichange
 import { Pencil, Save, X } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDocuments, useFolders, useSharedDocuments } from "@/lib/queries";
@@ -33,11 +39,17 @@ function ProfilePage() {
       username: user?.username ?? "",
       email: user?.email ?? "",
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       address: "TP.HCM, Việt Nam",
       birthday: "XX/XX/XXXX",
       course: "K19",
 >>>>>>> origin/test/share-document-cloudinary
+=======
+      address: "TP.HCM, Việt Nam",
+      birthday: "XX/XX/XXXX",
+      course: "K19",
+>>>>>>> origin/uichange
     }),
     [user],
   );
@@ -58,6 +70,7 @@ function ProfilePage() {
   };
 
   const stats = [
+<<<<<<< HEAD
 <<<<<<< HEAD
     {
       label: "Tài liệu",
@@ -139,6 +152,8 @@ function ProfilePage() {
               <div className="space-y-2">
                 <Label>Họ và tên</Label>
 =======
+=======
+>>>>>>> origin/uichange
     { label: "Tài liệu", value: docs.data?.length ?? 0 },
     { label: "Thư mục", value: folders.data?.length ?? 0 },
     { label: "Chia sẻ", value: sharedDocs.data?.length ?? 0 },
@@ -188,13 +203,17 @@ function ProfilePage() {
             <div className="grid sm:grid-cols-2 gap-x-6 gap-y-4">
               <div className="space-y-1.5">
                 <Label className="text-muted-foreground">Họ và tên</Label>
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
                 <Input
                   value={form.fullName}
                   onChange={(e) => update("fullName", e.target.value)}
                   disabled={!editing}
                 />
               </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
               <div className="space-y-2">
                 <Label>Tên đăng nhập</Label>
@@ -210,6 +229,10 @@ function ProfilePage() {
               <div className="space-y-1.5">
                 <Label className="text-muted-foreground">Email</Label>
 >>>>>>> origin/test/share-document-cloudinary
+=======
+              <div className="space-y-1.5">
+                <Label className="text-muted-foreground">Email</Label>
+>>>>>>> origin/uichange
                 <Input
                   type="email"
                   value={form.email}
@@ -217,6 +240,7 @@ function ProfilePage() {
                   disabled={!editing}
                 />
               </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
             </div>
           </CardContent>
@@ -237,6 +261,8 @@ function ProfilePage() {
   );
 }
 =======
+=======
+>>>>>>> origin/uichange
               <div className="space-y-1.5">
                 <Label className="text-muted-foreground">Tên đăng nhập</Label>
                 <Input
@@ -301,4 +327,7 @@ function ProfilePage() {
   );
 }
 
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange

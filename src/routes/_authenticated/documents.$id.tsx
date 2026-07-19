@@ -10,6 +10,7 @@ export const Route = createFileRoute("/_authenticated/documents/$id")({
 function DocumentDetail() {
   const { id } = Route.useParams();
 <<<<<<< HEAD
+<<<<<<< HEAD
   console.log('[TRACE-1] Route param id:', id, 'type:', typeof id);
 <<<<<<< HEAD
   const docId = Number(id);
@@ -22,6 +23,10 @@ function DocumentDetail() {
   const docId = id;
   const doc = useDocument(docId);
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  const docId = id;
+  const doc = useDocument(docId);
+>>>>>>> origin/uichange
 
   if (doc.isLoading) {
     return <Skeleton className="h-[calc(100vh-8rem)] w-full" />;
@@ -33,6 +38,7 @@ function DocumentDetail() {
   }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
 =======
   return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={id} />;
@@ -40,4 +46,7 @@ function DocumentDetail() {
 =======
   return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
+>>>>>>> origin/uichange
 }

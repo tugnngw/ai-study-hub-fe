@@ -1,18 +1,26 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
 =======
 import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-react";
 >>>>>>> origin/test/share-document-cloudinary
+=======
+import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-react";
+>>>>>>> origin/uichange
 import { toast } from "sonner";
 import {
   useCreateFolder,
   useDeleteFolder,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   useDocuments,
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  useDocuments,
+>>>>>>> origin/uichange
   useFolders,
   useUpdateFolder,
 } from "@/lib/queries";
@@ -48,16 +56,23 @@ export const Route = createFileRoute("/_authenticated/folders")({
 function FoldersPage() {
   const { data, isLoading } = useFolders();
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const { data: allDocs } = useDocuments();
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  const { data: allDocs } = useDocuments();
+>>>>>>> origin/uichange
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Folder | null>(null);
   const [deleting, setDeleting] = useState<Folder | null>(null);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/uichange
   const countByFolder = (allDocs ?? []).reduce<Record<string, number>>(
     (acc, d) => {
       if (d.folderId) acc[d.folderId] = (acc[d.folderId] ?? 0) + 1;
@@ -66,7 +81,10 @@ function FoldersPage() {
     {},
   );
 
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
   const filtered = (data ?? []).filter((f) =>
     f.name.toLowerCase().includes(query.toLowerCase()),
   );
@@ -129,12 +147,18 @@ function FoldersPage() {
                     <div className="flex-1 min-w-0">
                       <div className="font-medium truncate">{f.name}</div>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/uichange
                       <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
                         <FileText className="h-3 w-3" />
                         <span>{countByFolder[f.id] ?? 0} tài liệu</span>
                       </div>
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
                       <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
                         {f.aiSummary || "No summary"}
                       </div>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AlertTriangle } from "lucide-react";
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -9,6 +10,8 @@ import { AlertTriangle } from "lucide-react";
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
 import { toast } from "sonner";
 import { useReportDocument } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -42,6 +45,7 @@ export function ReportDocumentDialog({
   onOpenChange: (v: boolean) => void;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   documentId: number;
 =======
   documentId: string;
@@ -49,6 +53,9 @@ export function ReportDocumentDialog({
 =======
   documentId: number;
 >>>>>>> origin/test/share-document-cloudinary
+=======
+  documentId: number;
+>>>>>>> origin/uichange
   documentTitle: string;
 }) {
   const report = useReportDocument();
@@ -71,12 +78,15 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       await report.mutateAsync({ id: documentId, reason, description: description.trim() || undefined });
 =======
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
       await report.mutateAsync({
         id: documentId,
         reason,
@@ -84,11 +94,14 @@ export function ReportDocumentDialog({
       });
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
@@ -103,6 +116,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <DialogTitle className="flex items-center gap-2 truncate">
             <AlertTriangle className="h-5 w-5 text-destructive shrink-0" />
 =======
@@ -114,6 +128,9 @@ export function ReportDocumentDialog({
 =======
           <DialogTitle className="truncate">
 >>>>>>> origin/test/share-document-cloudinary
+=======
+          <DialogTitle className="truncate">
+>>>>>>> origin/uichange
             Báo cáo "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
@@ -127,12 +144,15 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <RadioGroup value={reason} onValueChange={setReason} className="space-y-2">
 =======
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
             <RadioGroup
               value={reason}
               onValueChange={setReason}
@@ -140,11 +160,14 @@ export function ReportDocumentDialog({
             >
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
               {REPORT_REASONS.map((r) => (
                 <label
                   key={r.value}
@@ -175,12 +198,15 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button variant="destructive" onClick={submit} disabled={report.isPending}>
 =======
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
           <Button
             variant="destructive"
             onClick={submit}
@@ -188,11 +214,14 @@ export function ReportDocumentDialog({
           >
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/test/share-document-cloudinary
+=======
+>>>>>>> origin/uichange
             {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>
