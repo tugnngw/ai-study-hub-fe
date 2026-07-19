@@ -55,6 +55,7 @@ export function UploadDocumentDialog({
     if (!title.trim()) return toast.error("Nhập tiêu đề");
     if (!folderId) return toast.error("Chọn thư mục");
     try {
+<<<<<<< HEAD
       const doc = await upload.mutateAsync({
         file,
         folderId: Number(folderId),
@@ -66,6 +67,16 @@ export function UploadDocumentDialog({
       } else {
         toast.success("Đã tải lên tài liệu");
       }
+=======
+      await upload.mutateAsync({
+        file,
+        folderId,
+
+        title,
+        description,
+      });
+      toast.success("Đã tải lên tài liệu");
+>>>>>>> origin/Ai-Study-fix-folder-refactor
       onOpenChange(false);
       reset();
     } catch (e) {
@@ -84,12 +95,25 @@ export function UploadDocumentDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Tải lên tài liệu</DialogTitle>
+<<<<<<< HEAD
           <DialogDescription>Thêm tệp mới vào không gian làm việc của bạn.</DialogDescription>
+=======
+          <DialogDescription>
+            Thêm tệp mới vào không gian làm việc của bạn.
+          </DialogDescription>
+>>>>>>> origin/Ai-Study-fix-folder-refactor
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>File</Label>
+<<<<<<< HEAD
             <Input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
+=======
+            <Input
+              type="file"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
+>>>>>>> origin/Ai-Study-fix-folder-refactor
           </div>
           <div className="space-y-2">
             <Label>Tiêu đề</Label>
@@ -101,7 +125,14 @@ export function UploadDocumentDialog({
           </div>
           <div className="space-y-2">
             <Label>Mô tả (tuỳ chọn)</Label>
+<<<<<<< HEAD
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+=======
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+>>>>>>> origin/Ai-Study-fix-folder-refactor
           </div>
           <div className="space-y-2">
             <Label>Thư mục</Label>

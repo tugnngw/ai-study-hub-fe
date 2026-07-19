@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // =============================================================
 // realApi.ts — Real API calls, 1-1 mapping với BE endpoints
 // =============================================================
@@ -7,15 +8,23 @@
 // =============================================================
 
 import { api } from "./api"; // client có sẵn, tự gán Bearer token
+=======
+// src/lib/realApi.ts
+import { api } from "./api";
+import { tokenStore } from "./api";
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 import type {
   User,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
+<<<<<<< HEAD
   Semester,
   CreateSemesterRequest,
   Subject,
   CreateSubjectRequest,
+=======
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   Folder,
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -23,8 +32,13 @@ import type {
   UploadDocumentRequest,
   UpdateDocumentRequest,
   DownloadUrlResponse,
+<<<<<<< HEAD
   ShareInfo,
   SharedDocument,
+=======
+  ShareResponse,
+  ShareRequest,
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   AskRequest,
   AskResponse,
   ReportDocumentRequest,
@@ -32,13 +46,17 @@ import type {
   Flashcard,
   FlashcardProgress,
 } from "./types";
+<<<<<<< HEAD
 import { tokenStore } from "./api";
+=======
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 
 // ================================================================
 // AUTH  →  /api/auth
 // ================================================================
 
 export const authApi = {
+<<<<<<< HEAD
   /** POST /api/auth/register */
   register: (data: RegisterRequest) =>
     api<void>("/auth/register", { method: "POST", body: data }),
@@ -62,6 +80,49 @@ export const authApi = {
     await api("/auth/logout", { method: "POST", body: {} }).catch(() => {});
     tokenStore.clear();
   },
+=======
+  register: (data: RegisterRequest) =>
+    api<void>("/api/auth/register", { method: "POST", body: data }),
+
+  login: async (data: LoginRequest): Promise<any> => {
+    localStorage.clear(); // Clear old tokens before new login
+    const res = await api<any>("/api/auth/login", {
+      method: "POST",
+      body: data,
+    });
+    
+    // api() already unwraps ApiResponse<T> → res is the AuthResponse object
+    const token = res?.accessToken ?? res?.token;
+    if (token) {
+      tokenStore.set(token);
+    }
+    
+    if (res?.refreshToken) tokenStore.setRefresh(res.refreshToken);
+    return res;
+  },
+
+  refresh: (): Promise<{ accessToken: string; refreshToken?: string }> =>
+    api("/api/auth/refresh", {
+      method: "POST",
+      body: { refreshToken: tokenStore.getRefresh() },
+    }),
+
+  logout: async (): Promise<void> => {
+    await api("/api/auth/logout", { method: "POST" }).catch(() => {});
+    tokenStore.clear();
+  },
+
+  // Password reset flow
+  requestPasswordReset: (email: string) =>
+    api<void>("/api/auth/request-reset", { method: "POST", body: { email } }),
+  verifyResetOtp: (email: string, otp: string) =>
+    api<void>("/api/auth/verify-otp", { method: "POST", body: { email, otp } }),
+  resetPassword: (email: string, newPassword: string) =>
+    api<void>("/api/auth/reset-password", {
+      method: "POST",
+      body: { email, password: newPassword },
+    }),
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 };
 
 // ================================================================
@@ -69,6 +130,7 @@ export const authApi = {
 // ================================================================
 
 export const accountApi = {
+<<<<<<< HEAD
   /** GET /api/account/me */
   me: () => api<User>("/account/me"),
 
@@ -131,6 +193,9 @@ export const subjectApi = {
   /** POST /api/subject/create */
   create: (body: CreateSubjectRequest) =>
     api<Subject>("/subject/create", { method: "POST", body }),
+=======
+  me: () => api<User>("/api/account/me"),
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 };
 
 // ================================================================
@@ -138,6 +203,7 @@ export const subjectApi = {
 // ================================================================
 
 export const folderApi = {
+<<<<<<< HEAD
   /** GET /api/folder/getall */
   list: () => api<Folder[]>("/folder/getall"),
 
@@ -155,6 +221,16 @@ export const folderApi = {
   /** DELETE /api/folder/delete/:id */
   delete: (id: string) =>
     api<void>(`/folder/delete/${id}`, { method: "DELETE" }),
+=======
+  list: () => api<Folder[]>("/api/folder/getall"),
+  getById: (id: string) => api<Folder>(`/api/folder/getbyid/${id}`),
+  create: (body: CreateFolderRequest) =>
+    api<Folder>("/api/folder/create", { method: "POST", body }),
+  update: (id: string, body: UpdateFolderRequest) =>
+    api<Folder>(`/api/folder/update/${id}`, { method: "PUT", body }),
+  delete: (id: string) =>
+    api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 };
 
 // ================================================================
@@ -162,6 +238,7 @@ export const folderApi = {
 // ================================================================
 
 export const documentApi = {
+<<<<<<< HEAD
   /** GET /api/documents */
   list: () => api<Document[]>("/documents"),
 
@@ -254,6 +331,53 @@ export const shareApi = {
       method: "POST",
       body: { reason: body.reason, description: body.description },
     }),
+=======
+  list: () => api<Document[]>("/api/documents"),
+  listByFolder: (folderId: string) =>
+    api<Document[]>(`/api/documents/folder/${folderId}`),
+  getById: (id: number) => {
+    console.log('[TRACE-6] documentApi.getById called with id:', id);
+    return api<Document>(`/api/documents/${id}`);
+  },
+
+  upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
+    const fd = new FormData();
+    fd.append("files", input.file); // <-- file -> files
+    fd.append("title", input.title);
+    if (input.description) {
+      fd.append("description", input.description);
+    }
+    if (input.folderId) {
+      fd.append("folderId", input.folderId);
+    }
+    if (input.subjectId) {
+      fd.append("subjectId", String(input.subjectId));
+    }
+    return api<Document[]>(
+      "/api/documents",
+      {
+        method: "POST",
+        formData: fd,
+      }
+    );
+  },
+
+  update: (id: number, body: UpdateDocumentRequest) =>
+    api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
+
+  delete: (id: number) =>
+    api<void>(`/api/documents/${id}`, { method: "DELETE" }),
+
+  getDownloadUrl: (id: number) =>
+    api<DownloadUrlResponse>(`/api/documents/${id}/download`),
+
+  // Trash (soft-deleted docs)
+  listTrash: () => api<Document[]>("/api/documents/trash"),
+  restoreFromTrash: (id: number) =>
+    api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
+  emptyTrash: (id: number) =>
+    api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 };
 
 // ================================================================
@@ -261,14 +385,18 @@ export const shareApi = {
 // ================================================================
 
 export const ragApi = {
+<<<<<<< HEAD
   /**
    * POST /api/rag/upload
    * Upload file RAG — bước 2 sau khi tạo document
    */
+=======
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   upload: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
     return api<void>("/rag/upload", { method: "POST", formData: fd });
   },
 
@@ -276,10 +404,16 @@ export const ragApi = {
    * POST /api/rag/upload/chunk
    * Upload + chunk file với documentId
    */
+=======
+    return api<void>("/api/rag/upload", { method: "POST", formData: fd });
+  },
+
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   uploadAndChunk: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
     return api<void>("/rag/upload/chunk", { method: "POST", formData: fd });
   },
 
@@ -310,12 +444,62 @@ export const quizApi = {
   /** POST /api/quiz/generate */
   generate: (documentId: number, questionCount = 10) =>
     api<Quiz>("/quiz/generate", {
+=======
+    return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
+  },
+
+  ask: (input: AskRequest): Promise<AskResponse> =>
+    api<AskResponse>("/api/rag/ask", {
+      method: "POST",
+      body: { id: input.id, question: input.question },
+    }),
+};
+
+// ================================================================
+// SHARE  →  /api/documents
+// ================================================================
+
+export const shareApi = {
+  // List shares where current user is the owner
+  listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
+
+  // List shares where current user is shared with
+  listSharedWithMe: () => api<ShareResponse[]>("/api/shares/shared-with-me"),
+
+    // Create a new share (share folder with username)
+    shareFolder: (request: ShareRequest) =>
+      api<ShareResponse>("/api/shares", { method: "POST", body: request }),
+
+  // Remove a share by its ID
+  removeShare: (shareId: number) =>
+    api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
+
+  // Report a document
+  report: (body: ReportDocumentRequest) =>
+    api<void>(`/api/documents/${body.id}/report`, {
+      method: "POST",
+      body: { reason: body.reason, description: body.description },
+    }),
+};
+
+// ================================================================
+// QUIZ  →  /api/quiz
+// ================================================================
+
+export const quizApi = {
+  listByDocument: (documentId: number) =>
+    api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
+
+  generate: (documentId: number, questionCount = 10) =>
+    api<Quiz>("/api/quiz/generate", {
+>>>>>>> origin/Ai-Study-fix-folder-refactor
       method: "POST",
       body: { documentId, questionCount },
     }),
 };
 
 // ================================================================
+<<<<<<< HEAD
 // FLASHCARD  →  (chuẩn bị sẵn — chưa có trong API doc)
 // ================================================================
 
@@ -327,13 +511,29 @@ export const flashcardApi = {
   /** POST /api/flashcard/generate */
   generate: (documentId: number) =>
     api<Flashcard[]>("/flashcard/generate", {
+=======
+// FLASHCARD  →  /api/flashcard
+// ================================================================
+
+export const flashcardApi = {
+  listByDocument: (documentId: number) =>
+    api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
+
+  generate: (documentId: number) =>
+    api<Flashcard[]>("/api/flashcard/generate", {
+>>>>>>> origin/Ai-Study-fix-folder-refactor
       method: "POST",
       body: { documentId },
     }),
 
+<<<<<<< HEAD
   /** PUT /api/flashcard/:id/progress */
   updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
     api<FlashcardProgress>(`/flashcard/${flashcardId}/progress`, {
+=======
+  updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
+    api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
+>>>>>>> origin/Ai-Study-fix-folder-refactor
       method: "PUT",
       body: { status },
     }),

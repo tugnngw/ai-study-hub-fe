@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+=======
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 import { Flag, FolderOpen, MoreVertical, Share2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -22,7 +27,11 @@ export function DocumentActionsMenu({
   iconClassName,
 }: {
   documentId: number;
+<<<<<<< HEAD
   folderId: number;
+=======
+  folderId: string;
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   title: string;
   className?: string;
   iconClassName?: string;
@@ -62,7 +71,16 @@ export function DocumentActionsMenu({
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem
+<<<<<<< HEAD
             onClick={() => navigate(`/aichat?folderId=${folderId}&docId=${documentId}`)}
+=======
+            onClick={() =>
+              navigate({
+                to: "/ai",
+                search: { folderId, docId: documentId },
+              })
+            }
+>>>>>>> origin/Ai-Study-fix-folder-refactor
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>
@@ -84,8 +102,13 @@ export function DocumentActionsMenu({
       <ShareDocumentDialog
         open={shareOpen}
         onOpenChange={setShareOpen}
+<<<<<<< HEAD
         documentId={documentId}
         documentTitle={title}
+=======
+        documentTitle={title}
+        folderId={folderId!}
+>>>>>>> origin/Ai-Study-fix-folder-refactor
       />
       <ReportDocumentDialog
         open={reportOpen}

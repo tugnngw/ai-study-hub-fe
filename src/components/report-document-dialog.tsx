@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { AlertTriangle } from "lucide-react";
+=======
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 import { toast } from "sonner";
 import { useReportDocument } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -51,7 +54,15 @@ export function ReportDocumentDialog({
       return;
     }
     try {
+<<<<<<< HEAD
       await report.mutateAsync({ id: documentId, reason, description: description.trim() || undefined });
+=======
+      await report.mutateAsync({
+        id: documentId,
+        reason,
+        description: description.trim() || undefined,
+      });
+>>>>>>> origin/Ai-Study-fix-folder-refactor
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
@@ -63,8 +74,12 @@ export function ReportDocumentDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
+<<<<<<< HEAD
           <DialogTitle className="flex items-center gap-2 truncate">
             <AlertTriangle className="h-5 w-5 text-destructive shrink-0" />
+=======
+          <DialogTitle className="truncate">
+>>>>>>> origin/Ai-Study-fix-folder-refactor
             Báo cáo "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
@@ -75,7 +90,15 @@ export function ReportDocumentDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Lý do báo cáo</Label>
+<<<<<<< HEAD
             <RadioGroup value={reason} onValueChange={setReason} className="space-y-2">
+=======
+            <RadioGroup
+              value={reason}
+              onValueChange={setReason}
+              className="space-y-2"
+            >
+>>>>>>> origin/Ai-Study-fix-folder-refactor
               {REPORT_REASONS.map((r) => (
                 <label
                   key={r.value}
@@ -103,7 +126,15 @@ export function ReportDocumentDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Hủy
           </Button>
+<<<<<<< HEAD
           <Button variant="destructive" onClick={submit} disabled={report.isPending}>
+=======
+          <Button
+            variant="destructive"
+            onClick={submit}
+            disabled={report.isPending}
+          >
+>>>>>>> origin/Ai-Study-fix-folder-refactor
             {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>

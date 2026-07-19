@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+<<<<<<< HEAD
 
 export function formatBytes(n?: number | null) {
   if (!n) return "—";
@@ -34,3 +35,5 @@ export function formatDate(iso?: string | null) {
   if (!iso) return "—";
   return new Date(iso).toLocaleDateString("vi-VN");
 }
+=======
+>>>>>>> origin/Ai-Study-fix-folder-refactor

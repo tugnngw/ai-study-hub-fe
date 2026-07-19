@@ -1,0 +1,236 @@
+project-root/
+├── src/
+│   ├── components/                                 # Components dùng chung toàn hệ thống
+│   │   ├── ui/                                     # Shadcn UI components (50+ files)
+│   │   │   ├── accordion.tsx
+│   │   │   ├── alert-dialog.tsx
+│   │   │   ├── alert.tsx
+│   │   │   ├── aspect-ratio.tsx
+│   │   │   ├── avatar.tsx
+│   │   │   ├── badge.tsx
+│   │   │   ├── breadcrumb.tsx
+│   │   │   ├── button.tsx
+│   │   │   ├── calendar.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── carousel.tsx
+│   │   │   ├── chart.tsx
+│   │   │   ├── checkbox.tsx
+│   │   │   ├── collapsible.tsx
+│   │   │   ├── command.tsx
+│   │   │   ├── context-menu.tsx
+│   │   │   ├── dialog.tsx
+│   │   │   ├── drawer.tsx
+│   │   │   ├── dropdown-menu.tsx
+│   │   │   ├── form.tsx
+│   │   │   ├── hover-card.tsx
+│   │   │   ├── input-otp.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── label.tsx
+│   │   │   ├── menubar.tsx
+│   │   │   ├── navigation-menu.tsx
+│   │   │   ├── pagination.tsx
+│   │   │   ├── popover.tsx
+│   │   │   ├── progress.tsx
+│   │   │   ├── radio-group.tsx
+│   │   │   ├── resizable.tsx
+│   │   │   ├── scroll-area.tsx
+│   │   │   ├── select.tsx
+│   │   │   ├── separator.tsx
+│   │   │   ├── sheet.tsx
+│   │   │   ├── sidebar.tsx
+│   │   │   ├── skeleton.tsx
+│   │   │   ├── slider.tsx
+│   │   │   ├── sonner.tsx
+│   │   │   ├── switch.tsx
+│   │   │   ├── table.tsx
+│   │   │   ├── tabs.tsx
+│   │   │   ├── textarea.tsx
+│   │   │   ├── toast.tsx
+│   │   │   ├── toaster.tsx
+│   │   │   ├── toggle-group.tsx
+│   │   │   ├── toggle.tsx
+│   │   │   ├── tooltip.tsx
+│   │   │   └── use-toast.ts
+│   │   │
+│   │   └── app-shell.tsx                            # Layout chính (GIỮ NGUYÊN)
+│   │
+│   ├── hooks/                                       # React hooks TOÀN CỤC (Kỹ thuật)
+│   │   ├── use-mobile.ts                            # ✅ Giữ nguyên
+│   │   ├── useDebounce.ts                           # ✅ Giữ nguyên
+│   │   ├── useLocalStorage.ts                       # ✅ Giữ nguyên
+│   │   ├── useTheme.ts                              # ✅ Giữ nguyên
+│   │   ├── useMediaQuery.ts                         # ✅ Giữ nguyên
+│   │   └── index.ts                                 # Export global hooks
+│   │
+│   ├── lib/                                         # Core infrastructure (GIỮ LẠI)
+│   │   ├── api.ts                                   # ✅ API client, tokenStore, ApiError
+│   │   ├── ErrorBoundary.tsx                        # ✅ Error boundary component
+│   │   ├── error-capture.ts                         # ✅ Error capture utility
+│   │   ├── error-handler.ts                         # ✅ Error handler utility
+│   │   ├── error-page.ts                            # ✅ Error page renderer
+│   │   ├── error-reporting.ts                       # ✅ Error reporting utility
+│   │   ├── query-client.ts                          # ✅ React Query client config
+│   │   ├── utils.ts                                 # ✅ cn() utility
+│   │   └── constants.ts                             # ✅ App-wide constants
+│   │
+│   ├── types/                                       # Global types
+│   │   ├── index.ts                                 # Export tất cả types
+│   │   ├── global.types.ts                          # Window, ProcessEnv, etc.
+│   │   ├── api.types.ts                             # API response wrappers
+│   │   └── common.types.ts                          # Pagination, Sort, Filter, etc.
+│   │
+│   ├── features/                                    # ⭐ CÁC FEATURE CHÍNH
+│   │   │
+│   │   ├── auth/                                    # 🔐 Xác thực & Quản lý tài khoản
+│   │   │   ├── components/
+│   │   │   │   ├── LoginForm.tsx                    # Từ routes/auth/login.tsx
+│   │   │   │   ├── RegisterForm.tsx                 # Từ routes/auth/register.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── hooks/
+│   │   │   │   ├── useAuth.tsx                     # 📦 Từ lib/auth.tsx
+│   │   │   │   ├── useLogin.ts                     # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useRegister.ts                  # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useLogout.ts                    # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useCurrentUser.ts               # 📦 Từ lib/queries.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── services/
+│   │   │   │   ├── authApi.ts                      # 📦 Từ lib/realApi.ts
+│   │   │   │   ├── accountApi.ts                   # 📦 Từ lib/realApi.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── types/
+│   │   │   │   ├── auth.types.ts                   # 📦 Từ lib/types.ts
+│   │   │   │   └── index.ts
+│   │   │   └── index.ts                             # Barrel export
+│   │   │
+│   │   ├── documents/                               # 📄 Quản lý tài liệu & Lưu trữ
+│   │   │   ├── components/
+│   │   │   │   ├── DocumentViewer.tsx               # Từ components/document-viewer/
+│   │   │   │   ├── PdfViewer.tsx
+│   │   │   │   ├── DocxViewer.tsx
+│   │   │   │   ├── TextViewer.tsx
+│   │   │   │   ├── ImageViewer.tsx
+│   │   │   │   ├── UnsupportedFileViewer.tsx
+│   │   │   │   ├── fileTypeDetection.ts
+│   │   │   │   ├── cloudinaryUtils.ts
+│   │   │   │   ├── DocumentWorkspace.tsx            # Từ components/document-workspace.tsx
+│   │   │   │   ├── DocumentActionsMenu.tsx
+│   │   │   │   ├── SharedDocumentActionsMenu.tsx
+│   │   │   │   ├── UploadDocumentDialog.tsx
+│   │   │   │   ├── ShareDocumentDialog.tsx
+│   │   │   │   ├── SaveSharedDocumentDialog.tsx
+│   │   │   │   ├── ReportDocumentDialog.tsx
+│   │   │   │   ├── ConfirmDeleteDialog.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── hooks/
+│   │   │   │   ├── useDocuments.ts                 # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useFolder.ts                    # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useTrash.ts                     # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useShare.ts                     # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useDocumentPolling.ts           # 📦 Từ hooks/useDocumentPolling.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── services/
+│   │   │   │   ├── documentApi.ts                  # 📦 Từ lib/realApi.ts
+│   │   │   │   ├── folderApi.ts                    # 📦 Từ lib/realApi.ts
+│   │   │   │   ├── shareApi.ts                     # 📦 Từ lib/realApi.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── types/
+│   │   │   │   ├── document.types.ts               # 📦 Từ lib/types.ts
+│   │   │   │   ├── folder.types.ts                 # 📦 Từ lib/types.ts
+│   │   │   │   ├── share.types.ts                  # 📦 Từ lib/types.ts
+│   │   │   │   ├── report.types.ts                 # 📦 Từ lib/types.ts
+│   │   │   │   └── index.ts
+│   │   │   └── index.ts
+│   │   │
+│   │   ├── chatbot/                                 # 🤖 AI Chatbot
+│   │   │   ├── components/
+│   │   │   │   ├── AIChat.tsx                      # Từ components/AIChat.tsx
+│   │   │   │   ├── ChatWindow.tsx
+│   │   │   │   ├── MessageBubble.tsx
+│   │   │   │   ├── ChatHistory.tsx
+│   │   │   │   ├── AISummaryTab.tsx                # Từ document-workspace.tsx
+│   │   │   │   ├── AIFlashcardsTab.tsx             # Từ document-workspace.tsx
+│   │   │   │   ├── AIQuizzesTab.tsx                # Từ document-workspace.tsx
+│   │   │   │   └── index.ts
+│   │   │   ├── hooks/
+│   │   │   │   ├── useRag.ts                       # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useQuiz.ts                      # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useFlashcard.ts                 # 📦 Từ lib/queries.ts
+│   │   │   │   ├── useStreamingChat.ts             # Xử lý streaming
+│   │   │   │   └── index.ts
+│   │   │   ├── services/
+│   │   │   │   ├── ragApi.ts                       # 📦 Từ lib/realApi.ts
+│   │   │   │   ├── quizApi.ts                      # 📦 Từ lib/realApi.ts
+│   │   │   │   ├── flashcardApi.ts                 # 📦 Từ lib/realApi.ts
+│   │   │   │   └── index.ts
+│   │   │   ├── types/
+│   │   │   │   ├── rag.types.ts                    # 📦 Từ lib/types.ts
+│   │   │   │   ├── quiz.types.ts                   # 📦 Từ lib/types.ts
+│   │   │   │   ├── flashcard.types.ts              # 📦 Từ lib/types.ts
+│   │   │   │   └── index.ts
+│   │   │   └── index.ts
+│   │   │
+│   │   └── admin/                                   # 🛠️ Quản trị hệ thống
+│   │       ├── components/
+│   │       │   ├── UserTable.tsx
+│   │       │   ├── SystemLogViewer.tsx
+│   │       │   ├── StorageQuotaBar.tsx             # Từ app-shell.tsx
+│   │       │   └── index.ts
+│   │       ├── hooks/
+│   │       │   ├── useAdminStats.ts
+│   │       │   └── index.ts
+│   │       ├── services/
+│   │       │   ├── adminApi.ts
+│   │       │   └── index.ts
+│   │       ├── types/
+│   │       │   ├── admin.types.ts
+│   │       │   └── index.ts
+│   │       └── index.ts
+│   │
+│   ├── routes/                                      # 🗺️ File-based routing (TanStack Router)
+│   │   ├── __root.tsx                               # Root layout
+│   │   ├── index.tsx                                # Redirect hoặc landing
+│   │   │
+│   │   ├── auth/
+│   │   │   ├── login.tsx                           # Import { LoginForm } from '@/features/auth'
+│   │   │   └── register.tsx                        # Import { RegisterForm } from '@/features/auth'
+│   │   │
+│   │   ├── dashboard/
+│   │   │   └── index.tsx
+│   │   │
+│   │   ├── folders/
+│   │   │   ├── index.tsx                           # Import folder list components
+│   │   │   └── $id.tsx                             # Import { DocumentWorkspace } from '@/features/documents'
+│   │   │
+│   │   ├── documents/
+│   │   │   └── index.tsx
+│   │   │
+│   │   ├── shared/
+│   │   │   └── index.tsx
+│   │   │
+│   │   ├── trash/
+│   │   │   └── index.tsx
+│   │   │
+│   │   ├── cloud/
+│   │   │   └── index.tsx
+│   │   │
+│   │   ├── ai/
+│   │   │   └── index.tsx                            # Import { AIChat } from '@/features/chatbot'
+│   │   │
+│   │   └── profile/
+│   │       └── index.tsx
+│   │
+│   ├── main.tsx                                     # Entry point
+│   ├── App.tsx                                      # App component
+│   └── index.css                                    # Global styles
+│
+├── public/
+│   ├── pdfjs/                                       # PDF worker files
+│   │   └── pdf.worker.mjs
+│   └── favicon.ico
+│
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── tailwind.config.js
+├── postcss.config.js
+└── .env.local

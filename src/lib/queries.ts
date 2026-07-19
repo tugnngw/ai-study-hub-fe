@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // =============================================================
 // queries.ts — TanStack Query hooks
 // =============================================================
@@ -5,6 +6,9 @@
 // Khi BE chưa chạy, các hook sẽ reject — UI xử lý isLoading/isError.
 // =============================================================
 
+=======
+// src/lib/queries.ts
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   accountApi,
@@ -14,6 +18,7 @@ import {
   folderApi,
   quizApi,
   ragApi,
+<<<<<<< HEAD
   semesterApi,
   shareApi,
   subjectApi,
@@ -23,13 +28,24 @@ import type {
   Folder,
   Semester,
   Subject,
+=======
+  shareApi,
+} from "./realApi";
+import { tokenStore } from "./api";
+import type {
+  Document,
+  Folder,
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   SharedDocument,
   UploadDocumentRequest,
   UpdateDocumentRequest,
   CreateFolderRequest,
   UpdateFolderRequest,
+<<<<<<< HEAD
   CreateSemesterRequest,
   CreateSubjectRequest,
+=======
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   AskRequest,
   ReportDocumentRequest,
 } from "./types";
@@ -69,6 +85,7 @@ export function useCurrentUser() {
     queryKey: ["account", "me"],
     queryFn: () => accountApi.me(),
     staleTime: 5 * 60_000,
+<<<<<<< HEAD
   });
 }
 
@@ -164,6 +181,9 @@ export function useCreateSubject() {
         qc.invalidateQueries({ queryKey: subjectKeys.bySemester(v.semesterId) });
       }
     },
+=======
+    retry: false,
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   });
 }
 
@@ -187,7 +207,11 @@ export function useFolder(id: string) {
   return useQuery({
     queryKey: folderKeys.detail(id),
     queryFn: () => folderApi.getById(id),
+<<<<<<< HEAD
     enabled: !!id,
+=======
+    enabled: !!id && id > 0,
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   });
 }
 
@@ -246,6 +270,7 @@ export function useDocumentsByFolder(folderId: string) {
 }
 
 export function useDocument(id: number) {
+<<<<<<< HEAD
   return useQuery({
     queryKey: docKeys.detail(id),
     queryFn: () => documentApi.getById(id),
@@ -274,6 +299,42 @@ export function useUploadDocument() {
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
       if (v.folderId) qc.invalidateQueries({ queryKey: docKeys.byFolder(v.folderId) });
+=======
+  const enabled = !!id;
+  console.log('[TRACE-4] useDocument id:', id, 'enabled:', enabled);
+  return useQuery({
+    queryKey: docKeys.detail(id),
+    queryFn: () => {
+      console.log('[TRACE-5] queryFn executing for id:', id);
+      return documentApi.getById(id);
+    },
+    enabled: enabled,
+    // Thêm polling khi document đang processing
+    refetchInterval: (query) => {
+      const data = query.state.data as Document | undefined;
+      if (data?.status === "processing") {
+        console.log('[Polling] Document is processing, polling every 3s');
+        return 3000; // Poll every 3 seconds
+      }
+      return false;
+    },
+    // Refetch khi focus nếu đang processing
+    refetchOnWindowFocus: (query) => {
+      const data = query.state.data as Document | undefined;
+      return data?.status === "processing";
+    },
+  });
+}
+
+export function useUploadDocument() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (input: UploadDocumentRequest) => documentApi.upload(input),
+    onSuccess: (_d, v) => {
+      qc.invalidateQueries({ queryKey: docKeys.all });
+      if (v.folderId)
+        qc.invalidateQueries({ queryKey: docKeys.byFolder(v.folderId) });
+>>>>>>> origin/Ai-Study-fix-folder-refactor
     },
   });
 }
@@ -294,10 +355,14 @@ export function useDeleteDocument() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => documentApi.delete(id),
+<<<<<<< HEAD
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.all });
       qc.invalidateQueries({ queryKey: docKeys.trash });
     },
+=======
+    onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   });
 }
 
@@ -307,9 +372,15 @@ export function useDownloadDocument() {
   });
 }
 
+<<<<<<< HEAD
 // ----------------------------------------------------------------
 // TRASH  ⚠️ chưa có trong API doc — xem ghi chú trong realApi.ts
 // ----------------------------------------------------------------
+=======
+// ================================================================
+// TRASH
+// ================================================================
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 
 export function useTrash() {
   return useQuery({
@@ -318,10 +389,17 @@ export function useTrash() {
   });
 }
 
+<<<<<<< HEAD
 export function useRestoreDocument() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => documentApi.restore(id),
+=======
+export function useRestoreFromTrash() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => documentApi.restoreFromTrash(id),
+>>>>>>> origin/Ai-Study-fix-folder-refactor
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -329,11 +407,21 @@ export function useRestoreDocument() {
   });
 }
 
+<<<<<<< HEAD
 export function usePermanentDeleteDocument() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => documentApi.permanentDelete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.trash }),
+=======
+export function useEmptyTrash() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => documentApi.emptyTrash(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: docKeys.trash });
+    },
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   });
 }
 
@@ -343,6 +431,10 @@ export function usePermanentDeleteDocument() {
 
 export const sharedKeys = {
   all: ["shared"] as const,
+<<<<<<< HEAD
+=======
+  owned: ["shared-owned"] as const,
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   info: (docId: number) => ["share-info", docId] as const,
 };
 
@@ -353,6 +445,7 @@ export function useSharedDocuments() {
   });
 }
 
+<<<<<<< HEAD
 export function useShareInfo(documentId: number, enabled = true) {
   return useQuery({
     queryKey: sharedKeys.info(documentId),
@@ -368,6 +461,29 @@ export function useShareDocument() {
       shareApi.shareWithEmail(input.id, input.email),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: sharedKeys.info(v.id) });
+=======
+export function useOwnedShares() {
+  return useQuery({
+    queryKey: sharedKeys.owned,
+    queryFn: () => shareApi.listOwned(),
+    enabled: !!tokenStore.get(), // Only run if authenticated
+  });
+}
+
+export function useShareFolder() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (request: { folderId: string; username?: string; email?: string }) =>
+      shareApi.shareFolder({
+        folderId: request.folderId,
+        username: request.username,
+        email: request.email,
+        visibility: "private",
+      }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: sharedKeys.all });
+      qc.invalidateQueries({ queryKey: sharedKeys.owned });
+>>>>>>> origin/Ai-Study-fix-folder-refactor
     },
   });
 }
@@ -375,8 +491,16 @@ export function useShareDocument() {
 export function useDeleteSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
     mutationFn: (shareId: number) => shareApi.removeFromShared(shareId),
     onSuccess: () => qc.invalidateQueries({ queryKey: sharedKeys.all }),
+=======
+    mutationFn: (shareId: number) => shareApi.removeShare(shareId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: sharedKeys.all });
+      qc.invalidateQueries({ queryKey: sharedKeys.owned });
+    },
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   });
 }
 
@@ -388,9 +512,21 @@ export function useSaveSharedDocument() {
       folderId: string;
       title: string;
       description?: string;
+<<<<<<< HEAD
     }) =>
       shareApi.saveToMyFolder(input.sharedId, input.folderId, input.title, input.description),
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
+=======
+    }) => {
+      // Placeholder: BE doesn't have a "save shared doc" endpoint yet.
+      // For now, just simulate success.
+      console.log("useSaveSharedDocument called:", input);
+      return Promise.resolve({});
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: docKeys.all });
+    },
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   });
 }
 
@@ -420,7 +556,11 @@ export function useUploadRag() {
 }
 
 // ================================================================
+<<<<<<< HEAD
 // QUIZ  (sẵn sàng khi BE implement /api/quiz)
+=======
+// QUIZ
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 // ================================================================
 
 export const quizKeys = {
@@ -446,7 +586,11 @@ export function useGenerateQuiz() {
 }
 
 // ================================================================
+<<<<<<< HEAD
 // FLASHCARD  (sẵn sàng khi BE implement /api/flashcard)
+=======
+// FLASHCARD
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 // ================================================================
 
 export const flashcardKeys = {
@@ -470,7 +614,11 @@ export function useGenerateFlashcards() {
   });
 }
 
+<<<<<<< HEAD
 // ================================================================
 // Re-exports (giữ backward compat với code hiện tại)
 // ================================================================
 export type { Document, Folder, Semester, Subject, SharedDocument };
+=======
+export type { Document, Folder, SharedDocument };
+>>>>>>> origin/Ai-Study-fix-folder-refactor

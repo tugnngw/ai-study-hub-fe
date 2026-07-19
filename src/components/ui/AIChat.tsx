@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 
+=======
+import { Link, useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 import { useEffect, useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
   FileText,
   FolderClosed,
+<<<<<<< HEAD
+=======
+  Loader2,
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   Send,
   Sparkles,
 } from "lucide-react";
@@ -20,6 +28,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
+<<<<<<< HEAD
+=======
+import { DocumentViewer } from "@/components/document-viewer";
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 import { cn } from "@/lib/utils";
 import type { Document } from "@/lib/types";
 
@@ -37,15 +49,36 @@ function formatBytes(n: number) {
 }
 
 function fileTone(d: Document) {
+<<<<<<< HEAD
   const name = (d.fileName ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
     return { icon: "text-red-500", soft: "bg-red-50" };
   if (name.endsWith(".doc") || name.endsWith(".docx") || d.mimeType?.includes("word"))
+=======
+  const name = (d.title ?? "").toLowerCase();
+  if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
+    return { icon: "text-red-500", soft: "bg-red-50" };
+  if (
+    name.endsWith(".doc") ||
+    name.endsWith(".docx") ||
+    d.mimeType?.includes("word")
+  )
+>>>>>>> origin/Ai-Study-fix-folder-refactor
     return { icon: "text-blue-500", soft: "bg-blue-50" };
   return { icon: "text-primary", soft: "bg-muted" };
 }
 
+<<<<<<< HEAD
 export function AIChat({ folderId, docId }: { folderId: number; docId?: number }) {
+=======
+export function AIChat({
+  folderId,
+  docId,
+}: {
+  folderId: string;
+  docId?: number;
+}) {
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
   const doc = useDocument(docId ?? 0);
@@ -68,7 +101,14 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
   }, [docId]);
 
   useEffect(() => {
+<<<<<<< HEAD
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
+=======
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+>>>>>>> origin/Ai-Study-fix-folder-refactor
   }, [messages, ask.isPending]);
 
   useEffect(() => {
@@ -144,14 +184,25 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 )}
               >
                 <Link
+<<<<<<< HEAD
                   to={`/aichat?folderId=${folderId}&docId=${d.id}`}
+=======
+                  to="/ai"
+                  search={{ folderId, docId: d.id }}
+>>>>>>> origin/Ai-Study-fix-folder-refactor
                   className="flex items-center gap-2 min-w-0 flex-1"
                 >
                   <FileText className={cn("h-4 w-4 shrink-0", tone.icon)} />
                   <span
                     className={cn(
                       "truncate text-sm",
+<<<<<<< HEAD
                       active ? "font-medium text-foreground" : "text-foreground/90",
+=======
+                      active
+                        ? "font-medium text-foreground"
+                        : "text-foreground/90",
+>>>>>>> origin/Ai-Study-fix-folder-refactor
                     )}
                   >
                     {d.title}
@@ -168,7 +219,13 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
             );
           })}
           {!folderDocs.isLoading && docs.length === 0 && (
+<<<<<<< HEAD
             <div className="text-xs text-muted-foreground px-2">Chưa có tài liệu</div>
+=======
+            <div className="text-xs text-muted-foreground px-2">
+              Chưa có tài liệu
+            </div>
+>>>>>>> origin/Ai-Study-fix-folder-refactor
           )}
         </div>
 
@@ -184,14 +241,21 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
       <section className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
         <div className="px-4 pt-3 border-b border-border">
           <div className="flex items-center gap-6 overflow-x-auto">
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/Ai-Study-fix-folder-refactor
             <button
               onClick={() => setActiveTab("content")}
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "content"
                   ? "border-primary text-primary"
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/Ai-Study-fix-folder-refactor
               )}
             >
               Original Content
@@ -203,7 +267,11 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "summary"
                   ? "border-primary text-primary"
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/Ai-Study-fix-folder-refactor
               )}
             >
               AI Summary
@@ -215,7 +283,11 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "flashcards"
                   ? "border-primary text-primary"
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/Ai-Study-fix-folder-refactor
               )}
             >
               AI Flashcards
@@ -227,11 +299,16 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "quizzes"
                   ? "border-primary text-primary"
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/Ai-Study-fix-folder-refactor
               )}
             >
               AI Quizzes
             </button>
+<<<<<<< HEAD
 
           </div>
         </div>
@@ -243,6 +320,19 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
             className={cn(
               "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
               !docId ? "bg-gradient-brand text-white" : "bg-muted text-foreground hover:bg-accent",
+=======
+          </div>
+        </div>
+        {/* Pill row */}
+        <div className="flex gap-2 px-4 py-2.5 border-b border-border overflow-x-auto items-center">
+          <button
+            onClick={() => navigate({ to: "/ai", search: { folderId } })}
+            className={cn(
+              "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
+              !docId
+                ? "bg-gradient-brand text-white"
+                : "bg-muted text-foreground hover:bg-accent",
+>>>>>>> origin/Ai-Study-fix-folder-refactor
             )}
           >
             All
@@ -250,7 +340,12 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
           {docs.map((d) => (
             <Link
               key={d.id}
+<<<<<<< HEAD
               to={`/aichat?folderId=${folderId}&docId=${d.id}`}
+=======
+              to="/ai"
+              search={{ folderId, docId: d.id }}
+>>>>>>> origin/Ai-Study-fix-folder-refactor
               className={cn(
                 "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
                 d.id === docId
@@ -258,7 +353,11 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
                   : "bg-brand-soft text-primary hover:bg-accent",
               )}
             >
+<<<<<<< HEAD
               {d.fileName ?? d.title}
+=======
+              {d.title}
+>>>>>>> origin/Ai-Study-fix-folder-refactor
             </Link>
           ))}
           {docs.length > 3 && (
@@ -267,6 +366,7 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
             </span>
           )}
         </div>
+<<<<<<< HEAD
 
 
 
@@ -418,18 +518,88 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
             </div>
           </div>
         )}
+=======
+        {activeTab === "content" && (
+          <div className="flex-1 overflow-y-auto">
+            {docId && doc.data?.status === "ready" ? (
+              <DocumentViewer document={doc.data} />
+            ) : doc.data?.status === "processing" ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="flex flex-col items-center gap-2 p-8">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  <p className="text-sm text-muted-foreground">Đang xử lý tài liệu...</p>
+                </div>
+              </div>
+            ) : doc.data?.status === "failed" ? (
+              <div className="flex items-center justify-center h-full p-8">
+                <p className="text-red-500 text-center">Tài liệu đã xảy ra lỗi khi xử lý</p>
+              </div>
+            ) : docId && !doc.data ? (
+              <div className="flex items-center justify-center h-full p-8">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 p-5">
+                {folderDocs.isLoading &&
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <Skeleton key={i} className="h-40 rounded-xl" />
+                  ))}
+                {docs.map((d) => {
+                  const active = d.id === docId;
+                  const tone = fileTone(d);
+                  return (
+                    <div
+                      key={d.id}
+                      className={cn(
+                        "group relative flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
+                        active && "border-primary ring-2 ring-primary/20 shadow-soft",
+                      )}
+                    >
+                      <Link
+                        to="/ai"
+                        search={{ folderId, docId: d.id }}
+                        className="flex flex-col items-center w-full"
+                      >
+                        <div className="flex-1 flex items-center justify-center w-full py-4">
+                          <div className={cn("h-16 w-16 rounded-xl flex items-center justify-center", tone.soft)}>
+                            <FileText className={cn("h-8 w-8", tone.icon)} />
+                          </div>
+                        </div>
+                        <div className="text-xs font-medium text-primary truncate w-full">
+                          {d.title}
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+                {!folderDocs.isLoading && docs.length === 0 && (
+                  <div className="col-span-full text-sm text-muted-foreground text-center py-10">
+                    Chưa có tài liệu trong thư mục này.
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}{" "}
+>>>>>>> origin/Ai-Study-fix-folder-refactor
         {activeTab === "summary" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Summary */}
           </div>
         )}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/Ai-Study-fix-folder-refactor
         {activeTab === "flashcards" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Flashcards */}
           </div>
         )}
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/Ai-Study-fix-folder-refactor
         {activeTab === "quizzes" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Quizzes */}
@@ -441,7 +611,11 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
       <aside className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
         <div className="px-4 py-3.5 border-b border-border text-center">
           <div className="text-sm font-semibold font-display truncate">
+<<<<<<< HEAD
             {doc.data?.fileName ?? doc.data?.title ?? "Chưa chọn tài liệu"}
+=======
+            {doc.data?.title ?? "Chưa chọn tài liệu"}
+>>>>>>> origin/Ai-Study-fix-folder-refactor
           </div>
         </div>
 
@@ -451,7 +625,13 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
               <div className="h-14 w-14 rounded-2xl bg-gradient-soft flex items-center justify-center mb-3">
                 <Sparkles className="h-7 w-7 text-primary" />
               </div>
+<<<<<<< HEAD
               <div className="text-base font-semibold font-display">Trò chuyện với AI</div>
+=======
+              <div className="text-base font-semibold font-display">
+                Trò chuyện với AI
+              </div>
+>>>>>>> origin/Ai-Study-fix-folder-refactor
               <div className="text-sm text-muted-foreground mt-1 max-w-sm">
                 {docId
                   ? "Hỏi AI để tóm tắt, giải thích hoặc kiểm tra kiến thức từ tài liệu này."

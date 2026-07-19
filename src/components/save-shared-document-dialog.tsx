@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
+<<<<<<< HEAD
 import { useCreateFolder, useFolders, useSaveSharedDocument } from "@/lib/queries";
+=======
+import {
+  useCreateFolder,
+  useFolders,
+  useSaveSharedDocument,
+} from "@/lib/queries";
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,7 +69,11 @@ export function SaveSharedDocumentDialog({
       return;
     }
 
+<<<<<<< HEAD
     let targetFolderId: number | null = null;
+=======
+    let targetFolderId: string | null = null;
+>>>>>>> origin/Ai-Study-fix-folder-refactor
 
     try {
       if (folderId === NEW_FOLDER_VALUE) {
@@ -69,10 +81,19 @@ export function SaveSharedDocumentDialog({
           toast.error("Vui lòng nhập tên thư mục mới");
           return;
         }
+<<<<<<< HEAD
         const created = await createFolder.mutateAsync({ name: newFolderName.trim() });
         targetFolderId = created.id;
       } else if (folderId) {
         targetFolderId = Number(folderId);
+=======
+        const created = await createFolder.mutateAsync({
+          name: newFolderName.trim(),
+        });
+        targetFolderId = created.id;
+      } else if (folderId) {
+        targetFolderId = folderId;
+>>>>>>> origin/Ai-Study-fix-folder-refactor
       } else {
         toast.error("Vui lòng chọn thư mục lưu trữ");
         return;
@@ -98,7 +119,13 @@ export function SaveSharedDocumentDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Lưu tài liệu</DialogTitle>
+<<<<<<< HEAD
           <DialogDescription>Lưu tài liệu được chia sẻ vào thư mục của bạn.</DialogDescription>
+=======
+          <DialogDescription>
+            Lưu tài liệu được chia sẻ vào thư mục của bạn.
+          </DialogDescription>
+>>>>>>> origin/Ai-Study-fix-folder-refactor
         </DialogHeader>
 
         <div className="space-y-4">
