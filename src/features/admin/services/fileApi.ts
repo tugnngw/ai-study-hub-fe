@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TODO(backend): api<T>("/api/admin/files...","/api/admin/trash...")
 =======
 import { api } from "@/lib/api";
@@ -7,10 +8,14 @@ import { api } from "@/lib/api";
 =======
 import { api } from "@/lib/api";
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+import { api } from "@/lib/api";
+>>>>>>> origin/Flashcards-fix
 import type {
   ReportedFileItem, ReportDecision, DeletedFileItem, DeletedAccountItem, TrashItemType,
 } from "../types/admin.types";
 export const adminFileApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   getReportedFiles: (): Promise<ReportedFileItem[]> => Promise.resolve([]),
@@ -22,6 +27,8 @@ export const adminFileApi = {
 =======
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   getReportedFiles: () => api<ReportedFileItem[]>("/api/admin/files/reported"),
   handleReportDecision: (id: number, decision: ReportDecision) =>
     api<boolean>(`/api/admin/files/${id}/decision`, { method: "POST", body: { decision } }),
@@ -32,7 +39,10 @@ export const adminFileApi = {
   restoreItem: (id: number, type: TrashItemType) =>
     api<boolean>(`/api/admin/trash/${type}/${id}/restore`, { method: "POST" }),
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 };

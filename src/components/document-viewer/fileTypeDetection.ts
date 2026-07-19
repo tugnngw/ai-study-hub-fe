@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
 =======
 export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
@@ -24,6 +25,9 @@ export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported"
 =======
 export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
+>>>>>>> origin/Flashcards-fix
 
 interface MimeTypeMap {
   [key: string]: SupportedFileType;
@@ -35,17 +39,21 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   // PDF
   "application/pdf": "pdf",
   "application/x-pdf": "pdf",
 
   // DOCX
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -65,10 +73,13 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
     "docx",
   "application/msword": "docx",
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -80,6 +91,8 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   // TXT
   "text/plain": "txt",
   "text/x-plain": "txt",
@@ -112,6 +125,7 @@ const EXTENSION_MAP: MimeTypeMap = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -135,6 +149,8 @@ const EXTENSION_MAP: MimeTypeMap = {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 };
 
 /**
@@ -210,6 +226,7 @@ export function getTypeLabel(type: SupportedFileType): string {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     image: "Image",
 >>>>>>> origin/AI-Study-fix
@@ -223,6 +240,8 @@ export function getTypeLabel(type: SupportedFileType): string {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     unsupported: "Unsupported File",
   };
   return labels[type];

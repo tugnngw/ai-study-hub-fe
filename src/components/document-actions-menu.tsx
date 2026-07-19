@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -37,6 +38,11 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/update/feature/AI/Quiz
 import { Flag, FolderOpen, MoreVertical, Share2, Trash2 } from "lucide-react";
+=======
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff } from "lucide-react";
+>>>>>>> origin/Flashcards-fix
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -44,6 +50,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+<<<<<<< HEAD
 import { useDeleteDocument } from "@/lib/queries";
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -66,6 +73,10 @@ import { ShareDocumentDialog } from "@/components/share-document-dialog";
 =======
 import { ShareDocumentDialog } from "@/components/share-document-dialog";
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+import { useDeleteDocument, useDownloadDocument } from "@/lib/queries";
+import { usePinnedDocuments } from "@/lib/preferences";
+>>>>>>> origin/Flashcards-fix
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 
@@ -76,6 +87,7 @@ export function DocumentActionsMenu({
   className,
   iconClassName,
 }: {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -112,14 +124,25 @@ export function DocumentActionsMenu({
   documentId: number;
   folderId: string;
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  documentId: number;
+  folderId: string;
+>>>>>>> origin/Flashcards-fix
   title: string;
   className?: string;
   iconClassName?: string;
 }) {
   const navigate = useNavigate();
   const del = useDeleteDocument();
+<<<<<<< HEAD
 
   const [shareOpen, setShareOpen] = useState(false);
+=======
+  const download = useDownloadDocument();
+  const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
+  const pinned = isPinned(documentId);
+
+>>>>>>> origin/Flashcards-fix
   const [reportOpen, setReportOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -133,6 +156,18 @@ export function DocumentActionsMenu({
     }
   };
 
+<<<<<<< HEAD
+=======
+  const handleDownload = async () => {
+    try {
+      const res = await download.mutateAsync(documentId);
+      window.open(res.url, "_blank");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Tải xuống thất bại");
+    }
+  };
+
+>>>>>>> origin/Flashcards-fix
   return (
     <>
       <DropdownMenu>
@@ -158,6 +193,7 @@ export function DocumentActionsMenu({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             onClick={() => navigate(`/aichat?folderId=${folderId}&docId=${documentId}`)}
 =======
 =======
@@ -172,12 +208,15 @@ export function DocumentActionsMenu({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             onClick={() =>
               navigate({
                 to: "/ai",
                 search: { folderId, docId: documentId },
               })
             }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -202,6 +241,13 @@ export function DocumentActionsMenu({
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setShareOpen(true)}>
             <Share2 className="h-3.5 w-3.5 mr-2" /> Chia sẻ
+=======
+          >
+            <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleDownload} disabled={download.isPending}>
+            <Download className="h-3.5 w-3.5 mr-2" /> Tải xuống
+>>>>>>> origin/Flashcards-fix
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setReportOpen(true)}>
             <Flag className="h-3.5 w-3.5 mr-2" /> Báo cáo
@@ -212,6 +258,7 @@ export function DocumentActionsMenu({
           >
             <Trash2 className="h-3.5 w-3.5 mr-2" /> Xóa
           </DropdownMenuItem>
+<<<<<<< HEAD
         </DropdownMenuContent>
       </DropdownMenu>
 
@@ -266,6 +313,24 @@ export function DocumentActionsMenu({
 =======
 >>>>>>> origin/update/feature/AI/Quiz
       />
+=======
+          <DropdownMenuItem
+            onClick={() => {
+              togglePin(documentId);
+              toast.success(pinned ? "Đã bỏ ghim tài liệu" : "Đã ghim tài liệu");
+            }}
+          >
+            {pinned ? (
+              <PinOff className="h-3.5 w-3.5 mr-2" />
+            ) : (
+              <Pin className="h-3.5 w-3.5 mr-2" />
+            )}
+            {pinned ? "Bỏ ghim" : "Ghim"}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+>>>>>>> origin/Flashcards-fix
       <ReportDocumentDialog
         open={reportOpen}
         onOpenChange={setReportOpen}

@@ -4,12 +4,15 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 // Renders DOCX files using mammoth.js (converts to clean HTML)
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
@@ -17,6 +20,7 @@ import { Loader2, RotateCw, Download, ExternalLink } from "lucide-react";
 import * as mammoth from "mammoth";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -39,6 +43,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 import { cn } from "@/lib/utils";
 import {
   isCloudinaryUrl,
@@ -69,6 +75,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Process Cloudinary URL if needed
 =======
   // Process URL on mount and when URL changes
@@ -85,6 +92,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
   // Process Cloudinary URL if needed
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  // Process Cloudinary URL if needed
+>>>>>>> origin/Flashcards-fix
   useEffect(() => {
     let isMounted = true;
     let currentBlobUrl: string | null = null;
@@ -114,6 +124,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     } else {
       setProcessedUrl(null);
       setLoading(false);
@@ -136,6 +147,11 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       setProcessedUrl(null);
       setLoading(false);
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    } else {
+      setProcessedUrl(null);
+      setLoading(false);
+>>>>>>> origin/Flashcards-fix
     }
 
     return () => {
@@ -154,18 +170,22 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     let isMounted = true;
 
     try {
       setLoading(true);
       setError(null);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -188,6 +208,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
       const targetUrl = (isCloudinary && processedUrl) ? processedUrl : url;
 
       const response = await fetch(targetUrl, {
@@ -207,12 +229,15 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 
       if (!isMounted) return;
 
@@ -248,6 +273,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -269,6 +295,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
       console.error("DOCX render error:", e);
       const errorMsg = e instanceof Error ? e.message : "Unknown error";
 
@@ -291,16 +319,20 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 
     return () => {
       isMounted = false;
     };
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -314,6 +346,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   }, [url, isCloudinary, processedUrl]);
 
   useEffect(() => {
@@ -329,12 +363,15 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   // Toolbar
   const Toolbar = (
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
@@ -346,6 +383,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -373,10 +411,13 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={url} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -402,6 +443,10 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
             <ExternalLink className="h-4 w-4 mr-1" />
             Mở tab mới
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+            <ExternalLink className="h-4 w-4 mr-1" />
+            Mở tab mới
+>>>>>>> origin/Flashcards-fix
           </a>
         </Button>
       </div>
@@ -414,6 +459,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
@@ -430,6 +476,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+>>>>>>> origin/Flashcards-fix
       {Toolbar}
 
       {/* Loading State */}
@@ -461,6 +510,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
 =======
             className="docx-viewer prose prose-sm max-w-none dark:prose-invert"
@@ -477,6 +527,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
             className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+            className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
+>>>>>>> origin/Flashcards-fix
             style={{
               fontSize: "14px",
               lineHeight: "1.6",

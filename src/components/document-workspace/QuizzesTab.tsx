@@ -1,5 +1,6 @@
 // src/components/document-workspace/QuizzesTab.tsx
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useState, useMemo } from "react";
 import { Sparkles, RotateCw, Check, X } from "lucide-react";
 import { toast } from "sonner";
@@ -53,6 +54,8 @@ export function QuizzesTab({ title }: { title: string }) {
   const reset = () => { setAnswers({}); setSubmitted(false); };
 
 =======
+=======
+>>>>>>> origin/Flashcards-fix
 // Tab AI Quizzes (trong session AIChat): màn TÙY CHỌN khởi tạo -> màn LÀM BÀI.
 import { useState, useMemo, useEffect } from "react";
 import { Sparkles, RotateCw, Check, X, FileText, Files, Loader2, Settings2 } from "lucide-react";
@@ -200,7 +203,10 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
   }
 
   // ── MÀN LÀM BÀI ──
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -210,6 +216,7 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
           </h2>
           <p className="text-xs text-muted-foreground mt-1">
 <<<<<<< HEAD
+<<<<<<< HEAD
             Câu hỏi trắc nghiệm từ "{title}"
           </p>
         </div>
@@ -218,16 +225,22 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
             Điểm: <span className="text-gradient-brand">{score} / {quizzes.length}</span>
           </div>
 =======
+=======
+>>>>>>> origin/Flashcards-fix
             {scope === "all" ? `Toàn bộ thư mục` : `Từ "${title}"`} · {quizzes.length} câu
           </p>
         </div>
         {submitted && (
           <div className="text-sm font-semibold">Điểm: <span className="text-gradient-brand">{score} / {quizzes.length}</span></div>
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
         )}
       </div>
 
       <div className="space-y-4">
+<<<<<<< HEAD
 <<<<<<< HEAD
         {quizzes.map((quiz, qi) => (
           <div key={qi} className="rounded-lg border border-border p-4">
@@ -271,6 +284,8 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
         {submitted ? (
           <Button variant="outline" onClick={reset}>
 =======
+=======
+>>>>>>> origin/Flashcards-fix
         {quizzes.map((quiz, qi) => {
           const multi = quiz.type === "multiple_answer";
           return (
@@ -315,11 +330,15 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
         <Button variant="ghost" onClick={() => setPhase("setup")}>← Tùy chọn</Button>
         {submitted ? (
           <Button variant="outline" onClick={() => { setAnswers({}); setSubmitted(false); }}>
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             <RotateCw className="h-4 w-4 mr-2" /> Làm lại
           </Button>
         ) : (
           <Button onClick={() => {
+<<<<<<< HEAD
 <<<<<<< HEAD
             if (Object.keys(answers).length < quizzes.length) {
               toast.error("Vui lòng trả lời tất cả câu hỏi");
@@ -334,6 +353,11 @@ export function QuizzesTab({ folderId, docId, title }: { folderId: string; docId
             setSubmitted(true);
           }}>Nộp bài</Button>
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+            if (Object.keys(answers).length < quizzes.length) { toast.error("Vui lòng trả lời tất cả câu hỏi"); return; }
+            setSubmitted(true);
+          }}>Nộp bài</Button>
+>>>>>>> origin/Flashcards-fix
         )}
       </div>
     </div>

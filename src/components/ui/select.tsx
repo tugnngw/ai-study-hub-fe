@@ -45,6 +45,7 @@ const SelectScrollUpButton = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("flex cursor-default items-center justify-center py-1", className)}
 =======
 =======
@@ -59,10 +60,13 @@ const SelectScrollUpButton = React.forwardRef<
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className,
     )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -82,6 +86,8 @@ const SelectScrollUpButton = React.forwardRef<
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     {...props}
   >
     <ChevronUp className="h-4 w-4" />
@@ -102,6 +108,7 @@ const SelectScrollDownButton = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("flex cursor-default items-center justify-center py-1", className)}
 =======
 =======
@@ -116,10 +123,13 @@ const SelectScrollDownButton = React.forwardRef<
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className,
     )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -139,11 +149,14 @@ const SelectScrollDownButton = React.forwardRef<
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     {...props}
   >
     <ChevronDown className="h-4 w-4" />
   </SelectPrimitive.ScrollDownButton>
 ));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -180,6 +193,10 @@ SelectScrollDownButton.displayName =
 SelectScrollDownButton.displayName =
   SelectPrimitive.ScrollDownButton.displayName;
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+SelectScrollDownButton.displayName =
+  SelectPrimitive.ScrollDownButton.displayName;
+>>>>>>> origin/Flashcards-fix
 
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,

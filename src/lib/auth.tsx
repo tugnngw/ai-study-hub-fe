@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // auth.tsx — AuthContext. Gọi thẳng BE thật (không còn mock).
 // =============================================================
@@ -30,11 +31,15 @@
 =======
 // src/lib/auth.tsx
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+// src/lib/auth.tsx
+>>>>>>> origin/Flashcards-fix
 import {
   createContext,
   useContext,
   useState,
   useEffect,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -61,12 +66,16 @@ import {
 =======
   useCallback,
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  useCallback,
+>>>>>>> origin/Flashcards-fix
   type ReactNode,
 } from "react";
 import type { User, RegisterRequest } from "./types";
 import { authApi, accountApi } from "./realApi";
 import { tokenStore } from "./api";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -105,6 +114,8 @@ interface AuthContextValue {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
@@ -116,6 +127,7 @@ interface AuthContextValue {
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -143,6 +155,8 @@ interface AuthContextValue {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -151,6 +165,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -281,6 +296,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   // --- Initial Auth Check ---
   // Effect này chạy một lần khi component mount để kiểm tra token và load user
   useEffect(() => {
@@ -492,6 +509,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -512,6 +530,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
   };
@@ -522,6 +542,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resetPassword = async (email: string, password: string) => {
     await authApi.resetPassword(email, password);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -541,6 +562,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   };
 
   return (
@@ -548,6 +571,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         isLoading,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -575,6 +599,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
         // isAuthenticated: !!user && !!tokenStore.get(), // Xác thực khi có user VÀ có access token
         isAuthenticated: !!user, // Chỉ cần user tồn tại là coi như đã xác thực, vì user chỉ set khi có token hợp lệ
         login,
@@ -584,6 +610,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         requestPasswordReset,
         verifyResetOtp,
         resetPassword,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -607,6 +634,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
       }}
     >
       {children}
@@ -620,6 +649,7 @@ export function useAuth() {
   return ctx;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -642,4 +672,6 @@ export function useAuth() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 export type { RegisterRequest };

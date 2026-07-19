@@ -9,6 +9,7 @@ import { useAuth } from "@/lib/auth";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { tokenStore } from "@/lib/api"; // Import tokenStore
 =======
 >>>>>>> origin/test/share-document-cloudinary
@@ -23,6 +24,9 @@ import { tokenStore } from "@/lib/api"; // Import tokenStore
 =======
 import { tokenStore } from "@/lib/api"; // Import tokenStore
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+import { tokenStore } from "@/lib/api"; // Import tokenStore
+>>>>>>> origin/Flashcards-fix
 
 export const Route = createFileRoute("/oauth-success")({
   component: OAuthSuccessPage,
@@ -35,12 +39,15 @@ function OAuthSuccessPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   const { refresh } = useAuth(); // useAuth hook để gọi hàm refresh
   const hasRunRef = useRef(false); // Track if effect has already run
 
@@ -80,6 +87,7 @@ function OAuthSuccessPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -109,10 +117,13 @@ function OAuthSuccessPage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
         navigate({ to: "/auth/login", replace: true });
         return;
       }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -124,6 +135,8 @@ function OAuthSuccessPage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
       // Lưu tokens và user ID vào localStorage
       tokenStore.set(accessToken);           // Lưu access_token
       tokenStore.setRefresh(refreshToken);   // Lưu refresh_token
@@ -144,6 +157,7 @@ function OAuthSuccessPage() {
       // Sau khi xử lý thành công, điều hướng đến trang dashboard
       navigate({
         to: "/dashboard", // Thay '/dashboard' bằng route thực tế của bạn
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -175,11 +189,14 @@ function OAuthSuccessPage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
         replace: true,
       });
     };
 
     handleOAuth();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -203,6 +220,9 @@ function OAuthSuccessPage() {
 =======
   }, []); // ⚠️ Empty dependency array - only run once on mount
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  }, []); // ⚠️ Empty dependency array - only run once on mount
+>>>>>>> origin/Flashcards-fix
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

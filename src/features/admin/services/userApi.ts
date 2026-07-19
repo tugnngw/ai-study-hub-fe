@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TODO(backend): api<T>("/api/admin/users...")
 import type { AdminUserItem } from "../types/admin.types";
 export const adminUserApi = {
@@ -9,6 +10,8 @@ export const adminUserApi = {
 =======
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 import { api } from "@/lib/api";
 import type { AdminUserItem } from "../types/admin.types";
 export const adminUserApi = {
@@ -16,7 +19,10 @@ export const adminUserApi = {
   toggleStatus: (id: number) => api<boolean>(`/api/admin/users/${id}/toggle-status`, { method: "POST" }),
   deleteUser: (id: number) => api<boolean>(`/api/admin/users/${id}`, { method: "DELETE" }),
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 };

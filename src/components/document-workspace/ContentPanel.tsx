@@ -3,7 +3,11 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
+<<<<<<< HEAD
 import { Download, Trash2, RotateCw, FileText, Loader2, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Search, Hand, MousePointer2 } from "lucide-react";
+=======
+import { Download, Trash2, RotateCw, FileText, Loader2, ZoomIn, ZoomOut, Maximize2, Minus, Plus, Search, Hand, MousePointer2, Sparkles } from "lucide-react";
+>>>>>>> origin/Flashcards-fix
 import { toast } from "sonner";
 import { useDocument, useDocumentsByFolder, useDeleteDocument, useDownloadDocument } from "@/lib/queries";
 import { DocumentViewer } from "@/components/document-viewer";
@@ -139,6 +143,14 @@ export function ContentPanel({ folderId, docId }: ContentPanelProps) {
 
         {/* Download/Delete */}
         {docId && <>
+<<<<<<< HEAD
+=======
+          {tab === "original" && (
+            <button onClick={() => setTab("flashcards")} className="flex items-center gap-1.5 px-2.5 py-1.5 bg-gradient-brand text-white text-xs font-medium rounded-lg hover:opacity-90 transition-opacity" title="Chuyển đến Flashcards">
+              <Sparkles className="h-3.5 w-3.5" /> Flashcards
+            </button>
+          )}
+>>>>>>> origin/Flashcards-fix
           <button onClick={handleDownload} className="p-1.5 hover:bg-accent rounded-lg" title="Tải xuống"><Download className="h-3.5 w-3.5" /></button>
           <button onClick={handleDelete} className="p-1.5 hover:bg-accent rounded-lg text-destructive" title="Xoá"><Trash2 className="h-3.5 w-3.5" /></button>
         </>}
@@ -189,7 +201,20 @@ export function ContentPanel({ folderId, docId }: ContentPanelProps) {
   function renderContent() {
     switch (tab) {
       case "original":
+<<<<<<< HEAD
         if (isValidDoc) return <DocumentViewer document={doc.data} />;
+=======
+        if (isValidDoc) return (
+          <div className="space-y-4">
+            <DocumentViewer document={doc.data} />
+            <div className="flex justify-center">
+              <Button size="sm" onClick={() => setTab("flashcards")} className="bg-gradient-brand text-white">
+                <Sparkles className="h-3.5 w-3.5 mr-1.5" /> Xem Flashcards của tài liệu này
+              </Button>
+            </div>
+          </div>
+        );
+>>>>>>> origin/Flashcards-fix
         if (doc.isLoading) return <div className="flex items-center justify-center h-64"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
         if (!docId) return (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -214,7 +239,11 @@ export function ContentPanel({ folderId, docId }: ContentPanelProps) {
           </div>
         );
       case "summary": return <SummaryTab title={doc.data?.title ?? ""} description={doc.data?.description ?? ""} />;
+<<<<<<< HEAD
       case "flashcards": return <FlashcardsTab title={doc.data?.title ?? ""} />;
+=======
+      case "flashcards": return <FlashcardsTab documentId={docId ?? 0} title={doc.data?.title ?? ""} />;
+>>>>>>> origin/Flashcards-fix
       case "quizzes": return <QuizzesTab title={doc.data?.title ?? ""} />;
       case "notes": return <NotesTab />;
       default: return <div className="text-sm text-muted-foreground text-center mt-16">Chọn một tài liệu để xem nội dung.</div>;

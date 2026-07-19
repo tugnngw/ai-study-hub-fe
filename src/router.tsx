@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 // Layouts
@@ -134,6 +135,11 @@ import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+import { QueryClient } from "@tanstack/react-query";
+import { createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+>>>>>>> origin/Flashcards-fix
 export const getRouter = () => {
   const queryClient = new QueryClient();
 
@@ -146,6 +152,7 @@ export const getRouter = () => {
 
   return router;
 };
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -165,3 +172,5 @@ export const getRouter = () => {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix

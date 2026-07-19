@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Admin types
 =======
 // Admin types barrel
@@ -11,4 +12,7 @@
 =======
 // Admin types barrel
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+// Admin types barrel
+>>>>>>> origin/Flashcards-fix
 export * from "./admin.types";

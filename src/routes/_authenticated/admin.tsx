@@ -21,6 +21,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: SettingsPage,
 });
 
+<<<<<<< HEAD
 const MOCK_SESSIONS = [
   {
     id: "1",
@@ -45,13 +46,23 @@ const MOCK_SESSIONS = [
   },
 ];
 
+=======
+>>>>>>> origin/Flashcards-fix
 function SettingsPage() {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [twoFA, setTwoFA] = useState(false);
   const [twoFAOpen, setTwoFAOpen] = useState(false);
   const [pwdOpen, setPwdOpen] = useState(false);
+<<<<<<< HEAD
   const [sessions, setSessions] = useState(MOCK_SESSIONS);
+=======
+  // TODO(backend): chưa có API trả về danh sách phiên đăng nhập thật.
+  // Để trống thay vì hiển thị dữ liệu giả cho tới khi BE cung cấp endpoint.
+  const [sessions, setSessions] = useState<
+    { id: string; device: string; location: string; lastActive: string; current: boolean }[]
+  >([]);
+>>>>>>> origin/Flashcards-fix
 
   const [pwd, setPwd] = useState({ current: "", next: "", confirm: "" });
 
@@ -147,7 +158,16 @@ function SettingsPage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
+<<<<<<< HEAD
           {sessions.map((s) => (
+=======
+          {sessions.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              Chưa có dữ liệu phiên đăng nhập.
+            </p>
+          ) : (
+            sessions.map((s) => (
+>>>>>>> origin/Flashcards-fix
             <div
               key={s.id}
               className="flex items-center justify-between p-3 rounded-md border border-border"
@@ -185,7 +205,12 @@ function SettingsPage() {
                 </Button>
               )}
             </div>
+<<<<<<< HEAD
           ))}
+=======
+            ))
+          )}
+>>>>>>> origin/Flashcards-fix
         </CardContent>
       </Card>
 

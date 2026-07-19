@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AlertTriangle } from "lucide-react";
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -21,6 +22,8 @@ import { AlertTriangle } from "lucide-react";
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 import { toast } from "sonner";
 import { useReportDocument } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -58,6 +61,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   documentId: number;
 =======
   documentId: string;
@@ -77,6 +81,9 @@ export function ReportDocumentDialog({
 =======
   documentId: number;
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  documentId: number;
+>>>>>>> origin/Flashcards-fix
   documentTitle: string;
 }) {
   const report = useReportDocument();
@@ -103,6 +110,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       await report.mutateAsync({ id: documentId, reason, description: description.trim() || undefined });
 =======
 =======
@@ -117,11 +125,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
       await report.mutateAsync({
         id: documentId,
         reason,
         description: description.trim() || undefined,
       });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -141,6 +152,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
@@ -152,6 +165,7 @@ export function ReportDocumentDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -182,6 +196,9 @@ export function ReportDocumentDialog({
 =======
           <DialogTitle className="truncate">
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+          <DialogTitle className="truncate">
+>>>>>>> origin/Flashcards-fix
             Báo cáo "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
@@ -192,6 +209,7 @@ export function ReportDocumentDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Lý do báo cáo</Label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -213,11 +231,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             <RadioGroup
               value={reason}
               onValueChange={setReason}
               className="space-y-2"
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -237,6 +258,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
               {REPORT_REASONS.map((r) => (
                 <label
                   key={r.value}
@@ -271,6 +294,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button variant="destructive" onClick={submit} disabled={report.isPending}>
 =======
 =======
@@ -285,11 +309,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
           <Button
             variant="destructive"
             onClick={submit}
             disabled={report.isPending}
           >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -309,6 +336,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>

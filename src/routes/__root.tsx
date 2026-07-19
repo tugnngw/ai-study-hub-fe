@@ -13,6 +13,10 @@ import appCss from "../styles.css?url";
 import { reportClientError } from "../lib/error-reporting";
 import { AuthProvider } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
+<<<<<<< HEAD
+=======
+import { ThemeProvider, themeInitScript } from "@/lib/theme";
+>>>>>>> origin/Flashcards-fix
 
 function NotFoundComponent() {
   return (
@@ -124,9 +128,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
+<<<<<<< HEAD
     <html lang="en">
       <head>
         <HeadContent />
+=======
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+>>>>>>> origin/Flashcards-fix
       </head>
       <body>
         {children}
@@ -143,10 +154,19 @@ function RootComponent() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
+<<<<<<< HEAD
         <AuthProvider>
           <Outlet />
           <Toaster richColors position="top-right" />
         </AuthProvider>
+=======
+        <ThemeProvider>
+          <AuthProvider>
+            <Outlet />
+            <Toaster richColors position="top-right" />
+          </AuthProvider>
+        </ThemeProvider>
+>>>>>>> origin/Flashcards-fix
       </QueryClientProvider>
     </ErrorBoundary>
   );

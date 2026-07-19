@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Download, ExternalLink, File } from "lucide-react";
 =======
 import { Download, ExternalLink, File, FileText } from "lucide-react";
@@ -21,6 +22,9 @@ import { Download, ExternalLink, File } from "lucide-react";
 =======
 import { Download, ExternalLink, File } from "lucide-react";
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+import { Download, ExternalLink, File } from "lucide-react";
+>>>>>>> origin/Flashcards-fix
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -42,12 +46,15 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   // Toolbar
   const Toolbar = (
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
@@ -59,6 +66,7 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
           <a href={fileUrl} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -86,10 +94,13 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -115,6 +126,10 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
             <ExternalLink className="h-4 w-4 mr-1" />
             Mở tab mới
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+            <ExternalLink className="h-4 w-4 mr-1" />
+            Mở tab mới
+>>>>>>> origin/Flashcards-fix
           </a>
         </Button>
       </div>
@@ -127,6 +142,7 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
@@ -143,6 +159,9 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
 =======
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+>>>>>>> origin/Flashcards-fix
       {Toolbar}
 
       <div className="flex-1 flex flex-col items-center justify-center p-8">

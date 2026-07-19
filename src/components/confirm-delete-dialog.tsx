@@ -36,6 +36,7 @@ export function ConfirmDeleteDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             {description ?? "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
 =======
             {description ??
@@ -65,12 +66,17 @@ export function ConfirmDeleteDialog({
             {description ??
               "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+            {description ??
+              "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
+>>>>>>> origin/Flashcards-fix
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Hủy
           </Button>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -92,11 +98,14 @@ export function ConfirmDeleteDialog({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
           <Button
             variant="destructive"
             onClick={onConfirm}
             disabled={isPending}
           >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -116,6 +125,8 @@ export function ConfirmDeleteDialog({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             {isPending ? "Đang xóa..." : "Xóa"}
           </Button>
         </DialogFooter>

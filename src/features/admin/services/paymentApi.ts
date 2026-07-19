@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/features/admin/services/paymentApi.ts
 // Service Payment/Premium (phía user).
 //
@@ -77,6 +78,8 @@ export const paymentApi = {
 =======
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 // Service Payment/Premium (user). Nội dung gói/bank/methods để cứng ở đây cho
 // dễ chỉnh; lịch sử giao dịch lấy qua api() từ backend.
 import { api } from "@/lib/api";
@@ -98,9 +101,12 @@ const BANK_INFO = { bankName: "ACB Bank", bankShort: "ACB", accountName: "NGO TH
 export const paymentApi = {
   getTransactions: () => api<TransactionItem[]>("/api/payment/transactions"),
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   getPlanOptions: (): Promise<PlanOption[]> => Promise.resolve([...PLAN_OPTIONS]),
   getTopUpMethods: (): Promise<TopUpMethod[]> => Promise.resolve([...TOP_UP_METHODS]),
   getBankInfo: () => Promise.resolve({ ...BANK_INFO }),

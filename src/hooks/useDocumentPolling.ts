@@ -9,17 +9,21 @@ import { docKeys } from '@/lib/queries';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 export function useDocumentPolling(documentId: number, status: string) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
     if (status !== 'processing' || !documentId || documentId <= 0) return;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -46,6 +50,8 @@ export function useDocumentPolling(documentId: string, status: string) {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 
     console.log('[Polling] Starting polling for document:', documentId);
 

@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 
 import {
@@ -32,10 +33,17 @@ import { cn } from "@/lib/utils";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Bot, Share2, Cloud, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
+=======
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Sparkles, Bot, Share2, Cloud, Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useForceLightTheme } from "@/lib/theme";
+>>>>>>> origin/Flashcards-fix
 
 export const Route = createFileRoute("/")({
   component: WelcomePage,
 });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -55,6 +63,8 @@ export const Route = createFileRoute("/")({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 
 const features = [
   {
@@ -70,6 +80,7 @@ const features = [
   {
     icon: Cloud,
     title: "Lưu trữ Cloud",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -106,6 +117,10 @@ const features = [
     description:
       "Lưu trữ tài liệu an toàn trên cloud với dung lượng không giới hạn",
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    description:
+      "Lưu trữ tài liệu an toàn trên cloud với dung lượng không giới hạn",
+>>>>>>> origin/Flashcards-fix
   },
   {
     icon: Upload,
@@ -114,6 +129,7 @@ const features = [
   },
 ];
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -140,10 +156,18 @@ export function WelcomePage() {
 =======
 >>>>>>> origin/update/feature/AI/Quiz
 function WelcomePage() {
+=======
+function WelcomePage() {
+  // Trang chủ luôn hiển thị ở chế độ sáng, bất kể người dùng đã từng bật
+  // dark mode ở nơi khác.
+  useForceLightTheme();
+
+>>>>>>> origin/Flashcards-fix
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
       <header className="border-b border-border/60 sticky top-0 z-30 bg-background/80 backdrop-blur-xl">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -163,11 +187,14 @@ function WelcomePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="h-9 w-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-brand">
               <Cloud className="h-4.5 w-4.5 text-white" strokeWidth={2.5} />
             </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -200,6 +227,8 @@ function WelcomePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             <span className="font-display font-bold text-base">
               AI STUDY HUB
             </span>
@@ -220,6 +249,7 @@ function WelcomePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -233,6 +263,8 @@ function WelcomePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
           </div>
         </div>
       </header>
@@ -247,6 +279,7 @@ function WelcomePage() {
           <h1 className="mt-6 font-display text-4xl sm:text-5xl font-bold tracking-tight text-foreground">
             Quản lý tài liệu học tập
             <br />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -272,6 +305,8 @@ function WelcomePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             <span className="text-gradient-brand bg-clip-text text-transparent">
               cùng AI
             </span>
@@ -279,6 +314,7 @@ function WelcomePage() {
           <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
             Tải lên, tổ chức và trò chuyện với tài liệu học tập của bạn. Nhận
             câu trả lời tức thì được hỗ trợ bởi công nghệ AI tiên tiến.
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -298,6 +334,8 @@ function WelcomePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
           </p>
         </section>
 
@@ -320,6 +358,7 @@ function WelcomePage() {
                 <div className="h-10 w-10 rounded-lg bg-gradient-brand flex items-center justify-center shadow-brand mb-4">
                   <f.icon className="h-5 w-5 text-white" />
                 </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -363,6 +402,11 @@ function WelcomePage() {
                   {f.title}
                 </h3>
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+                <h3 className="font-display font-semibold text-sm text-foreground">
+                  {f.title}
+                </h3>
+>>>>>>> origin/Flashcards-fix
                 <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
                   {f.description}
                 </p>
@@ -381,6 +425,7 @@ function WelcomePage() {
               Tham gia cùng hàng nghìn sinh viên đang sử dụng AI Study Hub
             </p>
             <div className="mt-6">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -407,6 +452,8 @@ function WelcomePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
               <Button
                 size="lg"
                 variant="secondary"
@@ -415,6 +462,7 @@ function WelcomePage() {
               >
                 <Link to="/auth/register">Bắt đầu miễn phí</Link>
               </Button>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -434,6 +482,8 @@ function WelcomePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             </div>
           </div>
         </section>
@@ -449,6 +499,7 @@ function WelcomePage() {
             <span className="font-display font-bold text-sm">AI Study Hub</span>
           </div>
           <p className="mt-3 text-xs text-background/60 max-w-sm">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -485,6 +536,10 @@ function WelcomePage() {
             Hệ thống quản lý tài liệu được hỗ trợ bởi AI dành cho sinh viên và
             giảng viên.
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+            Hệ thống quản lý tài liệu được hỗ trợ bởi AI dành cho sinh viên và
+            giảng viên.
+>>>>>>> origin/Flashcards-fix
           </p>
         </div>
       </footer>

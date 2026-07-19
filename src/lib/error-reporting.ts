@@ -6,6 +6,7 @@ type ErrorReportOptions = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   mechanism?: "manual" | "onerror" | "unhandledrejection" | "react_error_boundary";
 =======
 =======
@@ -20,11 +21,14 @@ type ErrorReportOptions = {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   mechanism?:
     | "manual"
     | "onerror"
     | "unhandledrejection"
     | "react_error_boundary";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -44,6 +48,8 @@ type ErrorReportOptions = {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   handled?: boolean;
   severity?: "error" | "warning" | "info";
 };
@@ -69,6 +75,7 @@ declare global {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function reportClientError(error: unknown, context: Record<string, unknown> = {}) {
 =======
 =======
@@ -83,10 +90,13 @@ export function reportClientError(error: unknown, context: Record<string, unknow
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 export function reportClientError(
   error: unknown,
   context: Record<string, unknown> = {},
 ) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -106,6 +116,8 @@ export function reportClientError(
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   if (typeof window === "undefined") return;
   window.__errorReportingEvents?.captureException?.(
     error,

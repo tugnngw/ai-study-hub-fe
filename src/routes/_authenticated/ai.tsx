@@ -10,6 +10,7 @@ const searchSchema = z.object({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   docId: z.coerce.number().optional(),
 =======
   docId: z.string().optional(),
@@ -29,6 +30,9 @@ const searchSchema = z.object({
 =======
   docId: z.coerce.number().optional(),
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  docId: z.coerce.number().optional(),
+>>>>>>> origin/Flashcards-fix
 });
 
 export const Route = createFileRoute("/_authenticated/ai")({

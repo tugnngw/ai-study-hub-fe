@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // queries.ts — TanStack Query hooks
 // =============================================================
@@ -33,6 +34,9 @@
 =======
 // src/lib/queries.ts
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+// src/lib/queries.ts
+>>>>>>> origin/Flashcards-fix
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   accountApi,
@@ -42,6 +46,7 @@ import {
   folderApi,
   quizApi,
   ragApi,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -75,12 +80,15 @@ import type {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   shareApi,
 } from "./realApi";
 import { tokenStore } from "./api";
 import type {
   Document,
   Folder,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -98,11 +106,14 @@ import type {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   SharedDocument,
   UploadDocumentRequest,
   UpdateDocumentRequest,
   CreateFolderRequest,
   UpdateFolderRequest,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -145,6 +156,10 @@ import type {
   AskRequest,
   ReportDocumentRequest,
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  AskRequest,
+  ReportDocumentRequest,
+>>>>>>> origin/Flashcards-fix
 } from "./types";
 
 // ================================================================
@@ -189,6 +204,7 @@ export function useCurrentUser() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   });
 }
 
@@ -220,10 +236,14 @@ export function useChangePassword() {
 =======
     retry: false,
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    retry: false,
+>>>>>>> origin/Flashcards-fix
   });
 }
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -324,6 +344,8 @@ export function useCreateSubject() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 // FOLDER
 // ================================================================
 
@@ -343,6 +365,7 @@ export function useFolder(id: string) {
   return useQuery({
     queryKey: folderKeys.detail(id),
     queryFn: () => folderApi.getById(id),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -372,6 +395,9 @@ export function useFolder(id: string) {
 =======
     enabled: !!id && id > 0,
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    enabled: !!id && id > 0,
+>>>>>>> origin/Flashcards-fix
   });
 }
 
@@ -416,6 +442,7 @@ export const docKeys = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   detail: (id: number) => ["documents", id] as const,
 =======
   detail: (id: string) => ["documents", "detail", id] as const,
@@ -435,6 +462,9 @@ export const docKeys = {
 =======
   detail: (id: number) => ["documents", id] as const,
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  detail: (id: number) => ["documents", id] as const,
+>>>>>>> origin/Flashcards-fix
   trash: ["documents", "trash"] as const,
 };
 
@@ -453,6 +483,7 @@ export function useDocumentsByFolder(folderId: string) {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -515,6 +546,10 @@ export function useDocument(id: number) {
 export function useDocument(id: number) {
   const enabled = !!id;
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+export function useDocument(id: number) {
+  const enabled = !!id;
+>>>>>>> origin/Flashcards-fix
   console.log('[TRACE-4] useDocument id:', id, 'enabled:', enabled);
   return useQuery({
     queryKey: docKeys.detail(id),
@@ -554,6 +589,7 @@ export function useUploadDocument() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -567,6 +603,8 @@ export function useUploadDocument() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     },
   });
 }
@@ -574,6 +612,7 @@ export function useUploadDocument() {
 export function useUpdateDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -599,6 +638,9 @@ export function useUpdateDocument() {
 =======
     mutationFn: ({ id, ...body }: { id: number } & UpdateDocumentRequest) =>
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    mutationFn: ({ id, ...body }: { id: number } & UpdateDocumentRequest) =>
+>>>>>>> origin/Flashcards-fix
       documentApi.update(id, body),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -610,6 +652,7 @@ export function useUpdateDocument() {
 export function useDeleteDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -649,11 +692,16 @@ export function useDeleteDocument() {
     mutationFn: (id: number) => documentApi.delete(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    mutationFn: (id: number) => documentApi.delete(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
+>>>>>>> origin/Flashcards-fix
   });
 }
 
 export function useDownloadDocument() {
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -670,10 +718,13 @@ export function useDownloadDocument() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     mutationFn: (id: number) => documentApi.getDownloadUrl(id),
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -722,6 +773,11 @@ export function useDownloadDocument() {
 // TRASH
 // ================================================================
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+// ================================================================
+// TRASH
+// ================================================================
+>>>>>>> origin/Flashcards-fix
 
 export function useTrash() {
   return useQuery({
@@ -730,6 +786,7 @@ export function useTrash() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -752,10 +809,13 @@ export function useRestoreDocument() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 export function useRestoreFromTrash() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (id: number) => documentApi.restoreFromTrash(id),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -778,6 +838,8 @@ export function useRestoreFromTrash() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -785,6 +847,7 @@ export function useRestoreFromTrash() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -808,6 +871,8 @@ export function usePermanentDeleteDocument() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 export function useEmptyTrash() {
   const qc = useQueryClient();
   return useMutation({
@@ -815,6 +880,7 @@ export function useEmptyTrash() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
     },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -840,6 +906,8 @@ export function useEmptyTrash() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   });
 }
 
@@ -849,6 +917,7 @@ export function useEmptyTrash() {
 
 export const sharedKeys = {
   all: ["shared"] as const,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -882,6 +951,10 @@ export const sharedKeys = {
   owned: ["shared-owned"] as const,
   info: (docId: number) => ["share-info", docId] as const,
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  owned: ["shared-owned"] as const,
+  info: (docId: number) => ["share-info", docId] as const,
+>>>>>>> origin/Flashcards-fix
 };
 
 export function useSharedDocuments() {
@@ -891,6 +964,7 @@ export function useSharedDocuments() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -938,11 +1012,14 @@ export function useShareDocument() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 export function useOwnedShares() {
   return useQuery({
     queryKey: sharedKeys.owned,
     queryFn: () => shareApi.listOwned(),
     enabled: !!tokenStore.get(), // Only run if authenticated
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -964,6 +1041,8 @@ export function useOwnedShares() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   });
 }
 
@@ -975,12 +1054,15 @@ export function useShareFolder() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     mutationFn: (request: { folderId: string; username?: string; email?: string }) =>
       shareApi.shareFolder({
         folderId: request.folderId,
@@ -991,6 +1073,7 @@ export function useShareFolder() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: sharedKeys.all });
       qc.invalidateQueries({ queryKey: sharedKeys.owned });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1015,10 +1098,13 @@ export function useShareFolder() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     },
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1049,11 +1135,17 @@ export function useDeleteSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+export function useDeleteSharedDocument() {
+  const qc = useQueryClient();
+  return useMutation({
+>>>>>>> origin/Flashcards-fix
     mutationFn: (shareId: number) => shareApi.removeShare(shareId),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: sharedKeys.all });
       qc.invalidateQueries({ queryKey: sharedKeys.owned });
     },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1092,6 +1184,8 @@ export function useDeleteSharedDocument() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   });
 }
 
@@ -1103,6 +1197,7 @@ export function useSaveSharedDocument() {
       folderId: string;
       title: string;
       description?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1122,6 +1217,8 @@ export function useSaveSharedDocument() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     }) => {
       // Placeholder: BE doesn't have a "save shared doc" endpoint yet.
       // For now, just simulate success.
@@ -1131,6 +1228,7 @@ export function useSaveSharedDocument() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.all });
     },
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1159,6 +1257,8 @@ export function useSaveSharedDocument() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   });
 }
 
@@ -1168,6 +1268,19 @@ export function useReportDocument() {
   });
 }
 
+<<<<<<< HEAD
+=======
+export function useReportFolder() {
+  return useMutation({
+    mutationFn: (input: { folderId: string; reason: string; description?: string }) => {
+      // Placeholder: BE doesn't have a folder-level report endpoint yet.
+      console.log("useReportFolder called:", input);
+      return Promise.resolve({});
+    },
+  });
+}
+
+>>>>>>> origin/Flashcards-fix
 // ================================================================
 // RAG
 // ================================================================
@@ -1180,6 +1293,7 @@ export function useAskRag() {
 
 export function useUploadRag() {
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1205,12 +1319,16 @@ export function useUploadRag() {
 =======
     mutationFn: (input: { file: File; documentId: number; chunk?: boolean }) =>
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    mutationFn: (input: { file: File; documentId: number; chunk?: boolean }) =>
+>>>>>>> origin/Flashcards-fix
       input.chunk
         ? ragApi.uploadAndChunk(input.file, input.documentId)
         : ragApi.upload(input.file, input.documentId),
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1243,6 +1361,10 @@ export function useUploadRag() {
 // ================================================================
 // QUIZ
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+// ================================================================
+// QUIZ
+>>>>>>> origin/Flashcards-fix
 // ================================================================
 
 export const quizKeys = {
@@ -1250,6 +1372,7 @@ export const quizKeys = {
 };
 
 export function useQuizByDocument(documentId: number) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1288,6 +1411,8 @@ export function useQuizByDocument(documentId: string) {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   return useQuery({
     queryKey: quizKeys.byDocument(documentId),
     queryFn: () => quizApi.listByDocument(documentId),
@@ -1298,6 +1423,7 @@ export function useQuizByDocument(documentId: string) {
 export function useGenerateQuiz() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1323,6 +1449,9 @@ export function useGenerateQuiz() {
 =======
     mutationFn: (input: { documentId: number; questionCount?: number }) =>
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    mutationFn: (input: { documentId: number; questionCount?: number }) =>
+>>>>>>> origin/Flashcards-fix
       quizApi.generate(input.documentId, input.questionCount),
     onSuccess: (_d, v) =>
       qc.invalidateQueries({ queryKey: quizKeys.byDocument(v.documentId) }),
@@ -1330,6 +1459,7 @@ export function useGenerateQuiz() {
 }
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1356,6 +1486,9 @@ export function useGenerateQuiz() {
 =======
 // FLASHCARD
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+// FLASHCARD
+>>>>>>> origin/Flashcards-fix
 // ================================================================
 
 export const flashcardKeys = {
@@ -1363,6 +1496,7 @@ export const flashcardKeys = {
 };
 
 export function useFlashcardsByDocument(documentId: number) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1388,6 +1522,8 @@ export function useFlashcardsByDocument(documentId: string) {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   return useQuery({
     queryKey: flashcardKeys.byDocument(documentId),
     queryFn: () => flashcardApi.listByDocument(documentId),
@@ -1398,6 +1534,7 @@ export function useFlashcardsByDocument(documentId: string) {
 export function useGenerateFlashcards() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1423,11 +1560,15 @@ export function useGenerateFlashcards() {
 =======
     mutationFn: (documentId: number) => flashcardApi.generate(documentId),
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    mutationFn: (documentId: number) => flashcardApi.generate(documentId),
+>>>>>>> origin/Flashcards-fix
     onSuccess: (_d, documentId) =>
       qc.invalidateQueries({ queryKey: flashcardKeys.byDocument(documentId) }),
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1460,3 +1601,19 @@ export type { Document, Folder, SharedDocument };
 =======
 export type { Document, Folder, SharedDocument };
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+export function useUpdateFlashcardProgress() {
+  return useMutation({
+    mutationFn: ({
+      flashcardId,
+      status,
+    }: {
+      flashcardId: number;
+      status: "new" | "learning" | "mastered";
+      documentId?: number;
+    }) => flashcardApi.updateProgress(flashcardId, status),
+  });
+}
+
+export type { Document, Folder, SharedDocument };
+>>>>>>> origin/Flashcards-fix

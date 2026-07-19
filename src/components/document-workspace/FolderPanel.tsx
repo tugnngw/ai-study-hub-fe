@@ -3,8 +3,14 @@
 
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
+<<<<<<< HEAD
 import { ChevronLeft, FileText, Plus, Loader2, FolderKanban } from "lucide-react";
 import { useFolder, useDocumentsByFolder, useUploadDocument } from "@/lib/queries";
+=======
+import { ChevronLeft, FileText, Plus, Loader2, FolderKanban, Pin } from "lucide-react";
+import { useFolder, useDocumentsByFolder, useUploadDocument } from "@/lib/queries";
+import { usePinnedDocuments } from "@/lib/preferences";
+>>>>>>> origin/Flashcards-fix
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
@@ -21,7 +27,14 @@ export function FolderPanel({ folderId, docId }: FolderPanelProps) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
   const upload = useUploadDocument();
+<<<<<<< HEAD
   const files = folderDocs.data ?? [];
+=======
+  const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
+  const files = [...(folderDocs.data ?? [])].sort(
+    (a, b) => Number(isPinned(b.id)) - Number(isPinned(a.id)),
+  );
+>>>>>>> origin/Flashcards-fix
   const size = files.reduce((s, d) => s + (d.fileSize || 0), 0);
   const total = 15 * 1024 * 1024 * 1024;
   const pct = Math.min(100, (size / total) * 100);
@@ -127,6 +140,7 @@ export function FolderPanel({ folderId, docId }: FolderPanelProps) {
         {folderDocs.isLoading && Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-9 rounded-lg mx-1" />)}
         {files.map((d) => {
           const active = d.id === docId;
+<<<<<<< HEAD
           return (
             <Link
               key={d.id}
@@ -148,6 +162,53 @@ export function FolderPanel({ folderId, docId }: FolderPanelProps) {
                 </div>
               </div>
             </Link>
+=======
+          const pinned = isPinned(d.id);
+          return (
+            <div key={d.id} className="relative group/item">
+              <Link
+                to="/folders/$id"
+                params={{ id: String(folderId) }}
+                search={{ docId: d.id }}
+                className={cn(
+                  "flex items-center gap-3 text-sm px-2.5 py-2 rounded-lg transition-colors",
+                  active
+                    ? "bg-gradient-brand text-white font-medium shadow-soft"
+                    : pinned
+                      ? "bg-amber-50 dark:bg-amber-400/10 hover:bg-accent text-foreground/90"
+                      : "hover:bg-accent text-foreground/90",
+                )}
+              >
+                {pinned ? (
+                  <Pin className={cn("h-4 w-4 shrink-0", !active && "fill-amber-400 text-amber-500")} />
+                ) : (
+                  <FileText className="h-4 w-4 shrink-0" />
+                )}
+                <div className="flex-1 min-w-0 pr-6">
+                  <div className="truncate">{d.title}</div>
+                  <div className={cn("text-[10px] truncate", active ? "text-white/70" : "text-muted-foreground/70")}>
+                    {d.fileSize ? fmt(d.fileSize) : "—"}
+                  </div>
+                </div>
+              </Link>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  togglePin(d.id);
+                }}
+                title={pinned ? "Bỏ ghim" : "Ghim tài liệu"}
+                className={cn(
+                  "absolute right-1.5 top-1/2 -translate-y-1/2 h-6 w-6 rounded-md flex items-center justify-center transition-opacity",
+                  pinned ? "opacity-100" : "opacity-0 group-hover/item:opacity-100",
+                  active ? "hover:bg-white/20 text-white" : "hover:bg-accent text-muted-foreground",
+                )}
+              >
+                <Pin className={cn("h-3.5 w-3.5", pinned && !active && "fill-amber-400 text-amber-500")} />
+              </button>
+            </div>
+>>>>>>> origin/Flashcards-fix
           );
         })}
         {!folderDocs.isLoading && files.length === 0 && (

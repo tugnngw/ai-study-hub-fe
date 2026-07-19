@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 
 =======
@@ -31,11 +32,18 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { QuizzesTab } from "@/components/document-workspace/QuizzesTab";
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+import { QuizzesTab } from "@/components/document-workspace/QuizzesTab";
+import { FlashcardsTab } from "@/components/document-workspace/FlashcardsTab";
+>>>>>>> origin/Flashcards-fix
 import {
   ChevronLeft,
   ChevronRight,
   FileText,
   FolderClosed,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -79,6 +87,12 @@ import {
   Send,
   Sparkles,
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+  Loader2,
+  Pin,
+  Send,
+  Sparkles,
+>>>>>>> origin/Flashcards-fix
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -86,6 +100,7 @@ import {
   useDocument,
   useDocumentsByFolder,
   useFolder,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -141,10 +156,18 @@ import { Textarea } from "@/components/ui/textarea";
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+} from "@/lib/queries";
+import { usePinnedDocuments } from "@/lib/preferences";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+>>>>>>> origin/Flashcards-fix
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
 import { DocumentViewer } from "@/components/document-viewer";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/lib/types";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -160,6 +183,8 @@ import remarkGfm from "remark-gfm";
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 
 interface ChatMsg {
   role: "user" | "assistant";
@@ -175,6 +200,7 @@ function formatBytes(n: number) {
 }
 
 function fileTone(d: Document) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -202,11 +228,17 @@ function fileTone(d: Document) {
   const name = (d.title ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
     return { icon: "text-red-500", soft: "bg-red-50" };
+=======
+  const name = (d.title ?? "").toLowerCase();
+  if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
+    return { icon: "text-red-500 dark:text-red-400", soft: "bg-red-50 dark:bg-red-400/10" };
+>>>>>>> origin/Flashcards-fix
   if (
     name.endsWith(".doc") ||
     name.endsWith(".docx") ||
     d.mimeType?.includes("word")
   )
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -251,11 +283,18 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    return { icon: "text-blue-500 dark:text-blue-400", soft: "bg-blue-50 dark:bg-blue-400/10" };
+  return { icon: "text-primary", soft: "bg-muted" };
+}
+
+>>>>>>> origin/Flashcards-fix
 export function AIChat({
   folderId,
   docId,
 }: {
   folderId: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -290,6 +329,8 @@ export function AIChat({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   docId?: number;
 }) {
   const folder = useFolder(folderId);
@@ -297,16 +338,20 @@ export function AIChat({
   const doc = useDocument(docId ?? 0);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   const ask = useAskRag();
   const navigate = useNavigate();
 
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -324,11 +369,14 @@ export function AIChat({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   const [activeTab, setActiveTab] = useState<
     "content" | "summary" | "flashcards" | "quizzes"
   >("content");
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -352,6 +400,13 @@ export function AIChat({
 >>>>>>> origin/update/feature/AI/Quiz
 
   const docs = folderDocs.data ?? [];
+=======
+
+  const { isMarked: isPinned } = usePinnedDocuments();
+  const docs = [...(folderDocs.data ?? [])].sort(
+    (a, b) => Number(isPinned(b.id)) - Number(isPinned(a.id)),
+  );
+>>>>>>> origin/Flashcards-fix
   const totalSize = docs.reduce((s, d) => s + (d.fileSize ?? 0), 0);
 
   useEffect(() => {
@@ -359,6 +414,7 @@ export function AIChat({
   }, [docId]);
 
   useEffect(() => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -380,10 +436,13 @@ export function AIChat({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -403,6 +462,8 @@ export function AIChat({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
   }, [messages, ask.isPending]);
 
   useEffect(() => {
@@ -411,6 +472,7 @@ export function AIChat({
 
   const submitChat = async () => {
     if (!input.trim()) return;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -443,12 +505,17 @@ export function AIChat({
     if (!docId) {
       toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    if (!docId) {
+      toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
+>>>>>>> origin/Flashcards-fix
       return;
     }
     const q = input.trim();
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -474,6 +541,9 @@ export function AIChat({
 =======
       const res = await ask.mutateAsync({ id: docId, question: q });
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+      const res = await ask.mutateAsync({ id: docId, question: q });
+>>>>>>> origin/Flashcards-fix
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Đã xảy ra lỗi");
@@ -484,6 +554,7 @@ export function AIChat({
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
       {/* Column 1: folder + file list */}
       <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
@@ -492,6 +563,11 @@ export function AIChat({
       {/* Column 1: folder + file list */}
       <aside className="hidden lg:flex flex-col h-full bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    <div className="grid grid-cols-1 lg:grid-cols-[260px_minmax(0,1fr)_360px] gap-4 h-[calc(100vh-9rem)] w-full">
+      {/* Column 1: folder + file list */}
+      <aside className="hidden lg:flex flex-col h-full bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
+>>>>>>> origin/Flashcards-fix
         <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-2">
           THƯ MỤC ĐANG DÙNG
         </div>
@@ -521,6 +597,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -543,6 +620,8 @@ export function AIChat({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
         <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mt-5 mb-2">
           TÀI LIỆU ĐANG CÓ
         </div>
@@ -560,11 +639,16 @@ export function AIChat({
                 className={cn(
                   "group flex items-center gap-2 rounded-lg pl-2 pr-1 py-2 transition-colors",
                   active
+<<<<<<< HEAD
                     ? "bg-red-50 border-l-2 border-red-400"
+=======
+                    ? "bg-primary/10 dark:bg-primary/15 border-l-2 border-primary"
+>>>>>>> origin/Flashcards-fix
                     : "hover:bg-accent border-l-2 border-transparent",
                 )}
               >
                 <Link
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -601,12 +685,17 @@ export function AIChat({
                   to="/ai"
                   search={{ folderId, docId: d.id }}
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+                  to="/ai"
+                  search={{ folderId, docId: d.id }}
+>>>>>>> origin/Flashcards-fix
                   className="flex items-center gap-2 min-w-0 flex-1"
                 >
                   <FileText className={cn("h-4 w-4 shrink-0", tone.icon)} />
                   <span
                     className={cn(
                       "truncate text-sm",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -650,10 +739,21 @@ export function AIChat({
                         ? "font-medium text-foreground"
                         : "text-foreground/90",
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+                      active
+                        ? "font-medium text-foreground"
+                        : "text-foreground/90",
+>>>>>>> origin/Flashcards-fix
                     )}
                   >
                     {d.title}
                   </span>
+<<<<<<< HEAD
+=======
+                  {isPinned(d.id) && (
+                    <Pin className="h-3 w-3 shrink-0 fill-amber-400 text-amber-500" />
+                  )}
+>>>>>>> origin/Flashcards-fix
                 </Link>
                 <DocumentActionsMenu
                   documentId={d.id}
@@ -666,6 +766,7 @@ export function AIChat({
             );
           })}
           {!folderDocs.isLoading && docs.length === 0 && (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -709,6 +810,11 @@ export function AIChat({
               Chưa có tài liệu
             </div>
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+            <div className="text-xs text-muted-foreground px-2">
+              Chưa có tài liệu
+            </div>
+>>>>>>> origin/Flashcards-fix
           )}
         </div>
 
@@ -720,6 +826,7 @@ export function AIChat({
         </Link>
       </aside>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
       {/* Column 2: original content */}
       <section className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
@@ -745,18 +852,24 @@ export function AIChat({
 =======
 >>>>>>> origin/update/feature/share
 =======
+=======
+>>>>>>> origin/Flashcards-fix
 
       {/* Column 2: original content */}
       <section className="h-full bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
         <div className="px-4 pt-3 border-b border-border">
           <div className="flex items-center gap-6 overflow-x-auto">
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             <button
               onClick={() => setActiveTab("content")}
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "content"
                   ? "border-primary text-primary"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -786,6 +899,9 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/Flashcards-fix
               )}
             >
               Original Content
@@ -804,6 +920,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -826,6 +943,9 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/Flashcards-fix
               )}
             >
               AI Summary
@@ -844,6 +964,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -866,6 +987,9 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/Flashcards-fix
               )}
             >
               AI Flashcards
@@ -884,6 +1008,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -906,10 +1031,14 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/Flashcards-fix
               )}
             >
               AI Quizzes
             </button>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -941,6 +1070,8 @@ export function AIChat({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
           </div>
         </div>
         {/* Pill row */}
@@ -952,6 +1083,7 @@ export function AIChat({
               !docId
                 ? "bg-gradient-brand text-white"
                 : "bg-muted text-foreground hover:bg-accent",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -971,6 +1103,8 @@ export function AIChat({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             )}
           >
             All
@@ -978,6 +1112,7 @@ export function AIChat({
           {docs.map((d) => (
             <Link
               key={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1014,6 +1149,10 @@ export function AIChat({
               to="/ai"
               search={{ folderId, docId: d.id }}
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+              to="/ai"
+              search={{ folderId, docId: d.id }}
+>>>>>>> origin/Flashcards-fix
               className={cn(
                 "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
                 d.id === docId
@@ -1021,6 +1160,7 @@ export function AIChat({
                   : "bg-brand-soft text-primary hover:bg-accent",
               )}
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1050,6 +1190,9 @@ export function AIChat({
 =======
               {d.title}
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+              {d.title}
+>>>>>>> origin/Flashcards-fix
             </Link>
           ))}
           {docs.length > 3 && (
@@ -1058,6 +1201,7 @@ export function AIChat({
             </span>
           )}
         </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1250,6 +1394,11 @@ export function AIChat({
           <div className="flex-1 overflow-y-auto">
             {docId && doc.data?.status === "ready" ? (
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+        {activeTab === "content" && (
+          <div className="flex-1 overflow-y-auto">
+            {docId && doc.data?.status === "ready" ? (
+>>>>>>> origin/Flashcards-fix
               <DocumentViewer document={doc.data} />
             ) : doc.data?.status === "processing" ? (
               <div className="flex items-center justify-center h-full">
@@ -1309,6 +1458,7 @@ export function AIChat({
             )}
           </div>
         )}{" "}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1388,10 +1538,38 @@ export function AIChat({
           <div className="flex-1 overflow-y-auto p-6">
             <QuizzesTab folderId={folderId} docId={docId} title={doc.data?.title ?? "tài liệu"} />
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+        {activeTab === "summary" && (
+          <div className="flex-1 overflow-y-auto p-6">
+            {!docId ? (
+              <div className="text-sm text-muted-foreground text-center mt-16">
+                Chọn một tài liệu để xem tóm tắt AI.
+              </div>
+            ) : doc.data?.summary ? (
+              <div className="prose prose-sm max-w-none whitespace-pre-wrap text-sm leading-relaxed">
+                {doc.data.summary}
+              </div>
+            ) : (
+              <div className="text-sm text-muted-foreground text-center mt-16">
+                Tài liệu này chưa có tóm tắt AI.
+              </div>
+            )}
+          </div>
+        )}
+        {activeTab === "flashcards" && (
+          <div className="flex-1 overflow-y-auto p-6">
+            <FlashcardsTab documentId={docId ?? 0} title={doc.data?.title ?? "tài liệu"} />
+          </div>
+        )}
+        {activeTab === "quizzes" && (
+          <div className="flex-1 overflow-y-auto p-6">
+            <QuizzesTab folderId={folderId} docId={docId} title={doc.data?.title ?? "tài liệu"} />
+>>>>>>> origin/Flashcards-fix
           </div>
         )}
       </section>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
       {/* Column 3: chat */}
       <aside className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
@@ -1421,17 +1599,23 @@ export function AIChat({
             {doc.data?.title ?? "Chưa chọn tài liệu"}
 >>>>>>> origin/update/feature/share
 =======
+=======
+>>>>>>> origin/Flashcards-fix
 
       {/* Column 3: chat */}
       <aside className="h-full bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
         <div className="px-4 py-3.5 border-b border-border text-center">
           <div className="text-sm font-semibold font-display truncate">
             {doc.data?.title ?? "Chưa chọn tài liệu"}
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
           </div>
         </div>
 
         <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1482,11 +1666,14 @@ export function AIChat({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center px-4 py-8">
               <div className="h-14 w-14 rounded-2xl bg-gradient-soft flex items-center justify-center mb-3">
                 <Sparkles className="h-7 w-7 text-primary" />
               </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1530,6 +1717,11 @@ export function AIChat({
                 Trò chuyện với AI
               </div>
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+              <div className="text-base font-semibold font-display">
+                Trò chuyện với AI
+              </div>
+>>>>>>> origin/Flashcards-fix
               <div className="text-sm text-muted-foreground mt-1 max-w-sm">
                 {docId
                   ? "Hỏi AI để tóm tắt, giải thích hoặc kiểm tra kiến thức từ tài liệu này."
@@ -1546,12 +1738,15 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
                   "text-sm rounded-2xl px-4 py-2.5 max-w-[85%] leading-relaxed whitespace-pre-wrap",
                   m.role === "user"
                     ? "bg-gradient-brand text-white ml-auto rounded-br-md shadow-soft"
@@ -1559,6 +1754,7 @@ export function AIChat({
                 )}
               >
                 {m.content}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1610,6 +1806,8 @@ export function AIChat({
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
               </div>
             ))
           )}
@@ -1647,6 +1845,7 @@ export function AIChat({
           </Button>
         </form>
       </aside>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1754,3 +1953,8 @@ function UploadDialog({
   );
 }
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+    </div>
+  );
+}
+>>>>>>> origin/Flashcards-fix

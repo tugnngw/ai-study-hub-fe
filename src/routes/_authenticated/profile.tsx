@@ -6,16 +6,20 @@ import { toast } from "sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 import { FileText, FolderKanban, Share2, Pencil, Save, X } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -36,6 +40,8 @@ import { Card, CardContent } from "@/components/ui/card";
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDocuments, useFolders, useSharedDocuments } from "@/lib/queries";
@@ -61,6 +67,7 @@ function ProfilePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       address: "TP.HCM, Việt Nam",
       birthday: "XX/XX/XXXX",
@@ -77,6 +84,8 @@ function ProfilePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     }),
     [user],
   );
@@ -102,12 +111,15 @@ function ProfilePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
     {
       label: "Tài liệu",
       value: docs.data?.length ?? 0,
@@ -190,6 +202,7 @@ function ProfilePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -252,6 +265,8 @@ function ProfilePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
                 <Input
                   value={form.fullName}
                   onChange={(e) => update("fullName", e.target.value)}
@@ -263,12 +278,15 @@ function ProfilePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
               <div className="space-y-2">
                 <Label>Tên đăng nhập</Label>
                 <Input
@@ -279,6 +297,7 @@ function ProfilePage() {
               </div>
               <div className="space-y-2">
                 <Label>Email</Label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -296,6 +315,8 @@ function ProfilePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
                 <Input
                   type="email"
                   value={form.email}
@@ -308,12 +329,15 @@ function ProfilePage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
             </div>
           </CardContent>
         </Card>
@@ -332,6 +356,7 @@ function ProfilePage() {
     </div>
   );
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -412,3 +437,5 @@ function ProfilePage() {
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix

@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TODO(backend): api<T>("/api/admin/approvals...")
 import type { ApprovalItem } from "../types/admin.types";
 export const approvalApi = {
@@ -9,6 +10,8 @@ export const approvalApi = {
 =======
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 import { api } from "@/lib/api";
 import type { ApprovalItem } from "../types/admin.types";
 export const approvalApi = {
@@ -16,7 +19,10 @@ export const approvalApi = {
   approve: (id: number) => api<boolean>(`/api/admin/approvals/${id}/approve`, { method: "POST" }),
   reject: (id: number) => api<boolean>(`/api/admin/approvals/${id}/reject`, { method: "POST" }),
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/share
 =======
 >>>>>>> origin/update/feature/AI/Quiz
+=======
+>>>>>>> origin/Flashcards-fix
 };
