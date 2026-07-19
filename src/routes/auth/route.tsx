@@ -1,12 +1,16 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth")({
   component: AuthLayout,
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -22,6 +26,8 @@ export const Route = createFileRoute("/auth")({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 });
 
 function AuthLayout() {
@@ -37,6 +43,7 @@ function AuthLayout() {
     </div>
   );
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -72,3 +79,5 @@ function AuthNotFoundComponent() {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share

@@ -3,6 +3,7 @@ import { useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
 =======
 import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-react";
@@ -13,6 +14,9 @@ import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-rea
 =======
 import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
 >>>>>>> origin/admin-added
+=======
+import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
+>>>>>>> origin/update/feature/share
 import { toast } from "sonner";
 import {
   useCreateFolder,
@@ -20,6 +24,7 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   useDocuments,
 >>>>>>> origin/test/share-document-cloudinary
@@ -28,6 +33,8 @@ import {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   useFolders,
   useUpdateFolder,
 } from "@/lib/queries";
@@ -65,6 +72,7 @@ function FoldersPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const { data: allDocs } = useDocuments();
 >>>>>>> origin/test/share-document-cloudinary
@@ -73,11 +81,14 @@ function FoldersPage() {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Folder | null>(null);
   const [deleting, setDeleting] = useState<Folder | null>(null);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -98,6 +109,8 @@ function FoldersPage() {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   const filtered = (data ?? []).filter((f) =>
     f.name.toLowerCase().includes(query.toLowerCase()),
   );
@@ -162,6 +175,7 @@ function FoldersPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -175,6 +189,8 @@ function FoldersPage() {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
                       <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
                         {f.aiSummary || "No summary"}
                       </div>

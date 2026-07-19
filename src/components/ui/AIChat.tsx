@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 
 =======
@@ -20,12 +21,16 @@ import { Link, useNavigate } from "@tanstack/react-router";
 =======
 import { Link, useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/admin-added
+=======
+import { Link, useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/update/feature/share
 import { useEffect, useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
   FileText,
   FolderClosed,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -57,6 +62,11 @@ import {
   Send,
   Sparkles,
 >>>>>>> origin/admin-added
+=======
+  Loader2,
+  Send,
+  Sparkles,
+>>>>>>> origin/update/feature/share
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -64,6 +74,7 @@ import {
   useDocument,
   useDocumentsByFolder,
   useFolder,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -75,10 +86,13 @@ import {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -107,10 +121,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
 import { DocumentViewer } from "@/components/document-viewer";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/lib/types";
+<<<<<<< HEAD
 <<<<<<< HEAD
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -120,6 +137,8 @@ import remarkGfm from "remark-gfm";
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 
 interface ChatMsg {
   role: "user" | "assistant";
@@ -140,6 +159,7 @@ function fileTone(d: Document) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   const name = (d.fileName ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
     return { icon: "text-red-500", soft: "bg-red-50" };
@@ -153,6 +173,8 @@ function fileTone(d: Document) {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   const name = (d.title ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
     return { icon: "text-red-500", soft: "bg-red-50" };
@@ -161,6 +183,7 @@ function fileTone(d: Document) {
     name.endsWith(".docx") ||
     d.mimeType?.includes("word")
   )
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -174,10 +197,13 @@ function fileTone(d: Document) {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     return { icon: "text-blue-500", soft: "bg-blue-50" };
   return { icon: "text-primary", soft: "bg-muted" };
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -193,11 +219,14 @@ export function AIChat({ folderId, docId }: { folderId: number; docId?: number }
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 export function AIChat({
   folderId,
   docId,
 }: {
   folderId: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -226,12 +255,17 @@ export function AIChat({
 =======
 >>>>>>> origin/uichange
 =======
+=======
+>>>>>>> origin/update/feature/share
   docId?: number;
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
   const doc = useDocument(docId ?? 0);
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   const ask = useAskRag();
   const navigate = useNavigate();
 
@@ -240,6 +274,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const [uploadOpen, setUploadOpen] = useState(false);
 >>>>>>> origin/test/share-document-cloudinary
@@ -248,6 +283,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   const [activeTab, setActiveTab] = useState<
     "content" | "summary" | "flashcards" | "quizzes"
   >("content");
@@ -256,6 +293,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const [chatZoom, setChatZoom] = useState(1);
   const zoomOut = () => setChatZoom((z) => Math.max(0.8, +(z - 0.1).toFixed(2)));
@@ -268,6 +306,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 
   const docs = folderDocs.data ?? [];
   const totalSize = docs.reduce((s, d) => s + (d.fileSize ?? 0), 0);
@@ -277,6 +317,7 @@ export function AIChat({
   }, [docId]);
 
   useEffect(() => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -292,10 +333,13 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -309,6 +353,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   }, [messages, ask.isPending]);
 
   useEffect(() => {
@@ -317,6 +363,7 @@ export function AIChat({
 
   const submitChat = async () => {
     if (!input.trim()) return;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -339,12 +386,17 @@ export function AIChat({
     if (!docId) {
       toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
 >>>>>>> origin/admin-added
+=======
+    if (!docId) {
+      toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
+>>>>>>> origin/update/feature/share
       return;
     }
     const q = input.trim();
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -362,6 +414,9 @@ export function AIChat({
 =======
       const res = await ask.mutateAsync({ id: docId, question: q });
 >>>>>>> origin/admin-added
+=======
+      const res = await ask.mutateAsync({ id: docId, question: q });
+>>>>>>> origin/update/feature/share
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Đã xảy ra lỗi");
@@ -401,6 +456,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -419,6 +475,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
         <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mt-5 mb-2">
           TÀI LIỆU ĐANG CÓ
         </div>
@@ -446,6 +504,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   to={`/aichat?folderId=${folderId}&docId=${d.id}`}
 =======
                   to="/ai"
@@ -467,12 +526,17 @@ export function AIChat({
                   to="/ai"
                   search={{ folderId, docId: d.id }}
 >>>>>>> origin/admin-added
+=======
+                  to="/ai"
+                  search={{ folderId, docId: d.id }}
+>>>>>>> origin/update/feature/share
                   className="flex items-center gap-2 min-w-0 flex-1"
                 >
                   <FileText className={cn("h-4 w-4 shrink-0", tone.icon)} />
                   <span
                     className={cn(
                       "truncate text-sm",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -504,6 +568,11 @@ export function AIChat({
                         ? "font-medium text-foreground"
                         : "text-foreground/90",
 >>>>>>> origin/admin-added
+=======
+                      active
+                        ? "font-medium text-foreground"
+                        : "text-foreground/90",
+>>>>>>> origin/update/feature/share
                     )}
                   >
                     {d.title}
@@ -520,6 +589,7 @@ export function AIChat({
             );
           })}
           {!folderDocs.isLoading && docs.length === 0 && (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -551,6 +621,11 @@ export function AIChat({
               Chưa có tài liệu
             </div>
 >>>>>>> origin/admin-added
+=======
+            <div className="text-xs text-muted-foreground px-2">
+              Chưa có tài liệu
+            </div>
+>>>>>>> origin/update/feature/share
           )}
         </div>
 
@@ -571,6 +646,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -582,12 +658,15 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
             <button
               onClick={() => setActiveTab("content")}
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "content"
                   ? "border-primary text-primary"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -609,6 +688,9 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/admin-added
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/update/feature/share
               )}
             >
               Original Content
@@ -625,6 +707,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -641,6 +724,9 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/admin-added
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/update/feature/share
               )}
             >
               AI Summary
@@ -657,6 +743,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -673,6 +760,9 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/admin-added
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/update/feature/share
               )}
             >
               AI Flashcards
@@ -689,6 +779,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -705,10 +796,14 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/admin-added
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/update/feature/share
               )}
             >
               AI Quizzes
             </button>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -734,6 +829,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
           </div>
         </div>
         {/* Pill row */}
@@ -749,6 +846,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -758,6 +856,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
             )}
           >
             All
@@ -765,6 +865,7 @@ export function AIChat({
           {docs.map((d) => (
             <Link
               key={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -791,6 +892,10 @@ export function AIChat({
               to="/ai"
               search={{ folderId, docId: d.id }}
 >>>>>>> origin/admin-added
+=======
+              to="/ai"
+              search={{ folderId, docId: d.id }}
+>>>>>>> origin/update/feature/share
               className={cn(
                 "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
                 d.id === docId
@@ -798,6 +903,7 @@ export function AIChat({
                   : "bg-brand-soft text-primary hover:bg-accent",
               )}
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -819,6 +925,9 @@ export function AIChat({
 =======
               {d.title}
 >>>>>>> origin/admin-added
+=======
+              {d.title}
+>>>>>>> origin/update/feature/share
             </Link>
           ))}
           {docs.length > 3 && (
@@ -827,6 +936,7 @@ export function AIChat({
             </span>
           )}
         </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1007,6 +1117,11 @@ export function AIChat({
           <div className="flex-1 overflow-y-auto">
             {docId && doc.data?.status === "ready" ? (
 >>>>>>> origin/admin-added
+=======
+        {activeTab === "content" && (
+          <div className="flex-1 overflow-y-auto">
+            {docId && doc.data?.status === "ready" ? (
+>>>>>>> origin/update/feature/share
               <DocumentViewer document={doc.data} />
             ) : doc.data?.status === "processing" ? (
               <div className="flex items-center justify-center h-full">
@@ -1070,6 +1185,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -1079,6 +1195,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
         {activeTab === "summary" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Summary */}
@@ -1089,6 +1207,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -1100,6 +1219,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
         {activeTab === "flashcards" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Flashcards */}
@@ -1110,6 +1231,7 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -1121,6 +1243,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
         {activeTab === "quizzes" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Quizzes */}
@@ -1130,6 +1254,7 @@ export function AIChat({
 
       {/* Column 3: chat */}
       <aside className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1149,10 +1274,16 @@ export function AIChat({
           <div className="text-sm font-semibold font-display truncate">
             {doc.data?.title ?? "Chưa chọn tài liệu"}
 >>>>>>> origin/admin-added
+=======
+        <div className="px-4 py-3.5 border-b border-border text-center">
+          <div className="text-sm font-semibold font-display truncate">
+            {doc.data?.title ?? "Chưa chọn tài liệu"}
+>>>>>>> origin/update/feature/share
           </div>
         </div>
 
         <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -1197,11 +1328,14 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center px-4 py-8">
               <div className="h-14 w-14 rounded-2xl bg-gradient-soft flex items-center justify-center mb-3">
                 <Sparkles className="h-7 w-7 text-primary" />
               </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1233,6 +1367,11 @@ export function AIChat({
                 Trò chuyện với AI
               </div>
 >>>>>>> origin/admin-added
+=======
+              <div className="text-base font-semibold font-display">
+                Trò chuyện với AI
+              </div>
+>>>>>>> origin/update/feature/share
               <div className="text-sm text-muted-foreground mt-1 max-w-sm">
                 {docId
                   ? "Hỏi AI để tóm tắt, giải thích hoặc kiểm tra kiến thức từ tài liệu này."
@@ -1247,8 +1386,11 @@ export function AIChat({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
                   "text-sm rounded-2xl px-4 py-2.5 max-w-[85%] leading-relaxed whitespace-pre-wrap",
                   m.role === "user"
                     ? "bg-gradient-brand text-white ml-auto rounded-br-md shadow-soft"
@@ -1256,6 +1398,7 @@ export function AIChat({
                 )}
               >
                 {m.content}
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -1301,6 +1444,8 @@ export function AIChat({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
               </div>
             ))
           )}
@@ -1338,6 +1483,7 @@ export function AIChat({
           </Button>
         </form>
       </aside>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1433,3 +1579,8 @@ function UploadDialog({
   );
 }
 >>>>>>> origin/admin-added
+=======
+    </div>
+  );
+}
+>>>>>>> origin/update/feature/share

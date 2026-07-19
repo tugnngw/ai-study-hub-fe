@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+<<<<<<< HEAD
 import { FileText, Users } from "lucide-react";
 import { useSharedDocuments } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
@@ -113,3 +114,10 @@ function SharedPage() {
     </div>
   );
 }
+=======
+import { SharePage } from "@/features/shares";
+
+export const Route = createFileRoute("/_authenticated/shared")({
+  component: SharePage,
+});
+>>>>>>> origin/update/feature/share

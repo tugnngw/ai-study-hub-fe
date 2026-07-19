@@ -58,6 +58,7 @@ DialogContent.displayName = DialogPrimitive.Content.displayName;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("flex flex-col space-y-1.5 text-center sm:text-left", className)} {...props} />
 );
@@ -75,6 +76,8 @@ const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 const DialogHeader = ({
   className,
   ...props
@@ -102,6 +105,7 @@ const DialogFooter = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -111,6 +115,8 @@ const DialogFooter = ({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     {...props}
   />
 );
@@ -127,6 +133,7 @@ const DialogTitle = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("text-lg font-semibold leading-none tracking-tight", className)}
 =======
 =======
@@ -137,10 +144,13 @@ const DialogTitle = React.forwardRef<
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     className={cn(
       "text-lg font-semibold leading-none tracking-tight",
       className,
     )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -154,6 +164,8 @@ const DialogTitle = React.forwardRef<
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     {...props}
   />
 ));

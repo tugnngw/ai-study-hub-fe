@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { tokenStore } from "@/lib/api"; // Import tokenStore
 =======
 >>>>>>> origin/test/share-document-cloudinary
@@ -15,6 +16,9 @@ import { tokenStore } from "@/lib/api"; // Import tokenStore
 =======
 import { tokenStore } from "@/lib/api"; // Import tokenStore
 >>>>>>> origin/admin-added
+=======
+import { tokenStore } from "@/lib/api"; // Import tokenStore
+>>>>>>> origin/update/feature/share
 
 export const Route = createFileRoute("/oauth-success")({
   component: OAuthSuccessPage,
@@ -25,8 +29,11 @@ function OAuthSuccessPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   const { refresh } = useAuth(); // useAuth hook để gọi hàm refresh
   const hasRunRef = useRef(false); // Track if effect has already run
 
@@ -64,6 +71,7 @@ function OAuthSuccessPage() {
         console.error(`Missing: ${!accessToken ? "accessToken " : ""}${!refreshToken ? "refreshToken " : ""}${!userId ? "userId" : ""}`);
         // Nếu thiếu, chuyển hướng về trang login
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -89,6 +97,8 @@ function OAuthSuccessPage() {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
         navigate({ to: "/auth/login", replace: true });
         return;
       }
@@ -96,8 +106,11 @@ function OAuthSuccessPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
       // Lưu tokens và user ID vào localStorage
       tokenStore.set(accessToken);           // Lưu access_token
       tokenStore.setRefresh(refreshToken);   // Lưu refresh_token
@@ -118,6 +131,7 @@ function OAuthSuccessPage() {
       // Sau khi xử lý thành công, điều hướng đến trang dashboard
       navigate({
         to: "/dashboard", // Thay '/dashboard' bằng route thực tế của bạn
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -143,11 +157,14 @@ function OAuthSuccessPage() {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
         replace: true,
       });
     };
 
     handleOAuth();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -163,6 +180,9 @@ function OAuthSuccessPage() {
 =======
   }, []); // ⚠️ Empty dependency array - only run once on mount
 >>>>>>> origin/admin-added
+=======
+  }, []); // ⚠️ Empty dependency array - only run once on mount
+>>>>>>> origin/update/feature/share
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

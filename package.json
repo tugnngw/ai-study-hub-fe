@@ -11,6 +11,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "preview": "vite preview",
     "lint": "eslint ."
   },
@@ -83,6 +84,15 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
 >>>>>>> origin/admin-added
+=======
+    "build:dev": "vite build --mode development",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+>>>>>>> origin/update/feature/share
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-aspect-ratio": "^1.1.8",
@@ -120,12 +130,16 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     "cookie-es": "^1.0.0",
     "date-fns": "^4.1.0",
     "docx-preview": "^0.3.7",
     "embla-carousel-react": "^8.6.0",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     "framer-motion": "^12.41.0",
@@ -134,10 +148,14 @@
 =======
     "framer-motion": "^12.41.0",
 >>>>>>> origin/admin-added
+=======
+    "framer-motion": "^12.41.0",
+>>>>>>> origin/update/feature/share
     "input-otp": "^1.4.2",
     "lucide-react": "^0.575.0",
     "mammoth": "^1.12.0",
     "pdfjs-dist": "^4.8.69",
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -154,6 +172,8 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     "react": "^19.2.0",
     "react-day-picker": "^9.14.0",
     "react-dom": "^19.2.0",
@@ -162,14 +182,18 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     "react-icons": "^5.6.0",
     "react-pdf": "^9.0.0",
     "react-resizable-panels": "^4.11.2",
     "recharts": "^2.15.4",
     "seroval": "^1.5.4",
     "seroval-plugins": "^1.0.4",
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -193,10 +217,13 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.1",
     "tw-animate-css": "^1.3.4",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -222,6 +249,10 @@
     "vaul": "^1.1.2",
     "vite-tsconfig-paths": "^6.1.1",
 >>>>>>> origin/admin-added
+=======
+    "vaul": "^1.1.2",
+    "vite-tsconfig-paths": "^6.1.1",
+>>>>>>> origin/update/feature/share
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -236,6 +267,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
@@ -248,6 +280,8 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -255,6 +289,7 @@
     "globals": "^15.15.0",
     "nitro": "3.0.260603-beta",
     "prettier": "^3.7.3",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -268,6 +303,8 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^8.0.16"

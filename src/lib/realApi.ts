@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // realApi.ts — Real API calls, 1-1 mapping với BE endpoints
 // =============================================================
@@ -37,11 +38,17 @@ import { tokenStore } from "./api";
 import { api } from "./api";
 import { tokenStore } from "./api";
 >>>>>>> origin/admin-added
+=======
+// src/lib/realApi.ts
+import { api } from "./api";
+import { tokenStore } from "./api";
+>>>>>>> origin/update/feature/share
 import type {
   User,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -61,6 +68,8 @@ import type {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   Folder,
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -68,6 +77,7 @@ import type {
   UploadDocumentRequest,
   UpdateDocumentRequest,
   DownloadUrlResponse,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -95,12 +105,17 @@ import type {
   ShareResponse,
   ShareRequest,
 >>>>>>> origin/admin-added
+=======
+  ShareResponse,
+  ShareRequest,
+>>>>>>> origin/update/feature/share
   AskRequest,
   AskResponse,
   ReportDocumentRequest,
   Quiz,
   Flashcard,
   FlashcardProgress,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -125,12 +140,16 @@ import { tokenStore } from "./api";
 =======
 } from "./types";
 >>>>>>> origin/admin-added
+=======
+} from "./types";
+>>>>>>> origin/update/feature/share
 
 // ================================================================
 // AUTH  →  /api/auth
 // ================================================================
 
 export const authApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -168,6 +187,8 @@ export const authApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   register: (data: RegisterRequest) =>
     api<void>("/api/auth/register", { method: "POST", body: data }),
 
@@ -179,6 +200,7 @@ export const authApi = {
     });
     
     // api() already unwraps ApiResponse<T> → res is the AuthResponse object
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -198,6 +220,11 @@ export const authApi = {
     if (token) {
       tokenStore.set(token);
 >>>>>>> origin/admin-added
+=======
+    const token = res?.accessToken ?? res?.token;
+    if (token) {
+      tokenStore.set(token);
+>>>>>>> origin/update/feature/share
     }
     
     if (res?.refreshToken) tokenStore.setRefresh(res.refreshToken);
@@ -229,6 +256,7 @@ export const authApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -238,6 +266,8 @@ export const authApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 };
 
 // ================================================================
@@ -245,6 +275,7 @@ export const authApi = {
 // ================================================================
 
 export const accountApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -331,6 +362,9 @@ export const subjectApi = {
 =======
   me: () => api<User>("/api/account/me"),
 >>>>>>> origin/admin-added
+=======
+  me: () => api<User>("/api/account/me"),
+>>>>>>> origin/update/feature/share
 };
 
 // ================================================================
@@ -338,6 +372,7 @@ export const subjectApi = {
 // ================================================================
 
 export const folderApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -369,6 +404,8 @@ export const folderApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   list: () => api<Folder[]>("/api/folder/getall"),
   getById: (id: string) => api<Folder>(`/api/folder/getbyid/${id}`),
   create: (body: CreateFolderRequest) =>
@@ -377,6 +414,7 @@ export const folderApi = {
     api<Folder>(`/api/folder/update/${id}`, { method: "PUT", body }),
   delete: (id: string) =>
     api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -390,6 +428,8 @@ export const folderApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 };
 
 // ================================================================
@@ -397,6 +437,7 @@ export const folderApi = {
 // ================================================================
 
 export const documentApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -501,10 +542,13 @@ export const shareApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   list: () => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
   getById: (id: number) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -520,6 +564,8 @@ export const shareApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     console.log('[TRACE-6] documentApi.getById called with id:', id);
     return api<Document>(`/api/documents/${id}`);
   },
@@ -550,12 +596,15 @@ export const shareApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   update: (id: number, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
@@ -563,6 +612,7 @@ export const shareApi = {
     api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
   getDownloadUrl: (id: number) =>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -581,10 +631,13 @@ export const shareApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   // Trash (soft-deleted docs)
   listTrash: () => api<Document[]>("/api/documents/trash"),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -595,10 +648,13 @@ export const shareApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   restoreFromTrash: (id: number) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
   emptyTrash: (id: number) =>
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -615,6 +671,8 @@ export const shareApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 };
 
 // ================================================================
@@ -622,6 +680,7 @@ export const shareApi = {
 // ================================================================
 
 export const ragApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -639,10 +698,13 @@ export const ragApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   upload: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -674,10 +736,16 @@ export const ragApi = {
   },
 
 >>>>>>> origin/admin-added
+=======
+    return api<void>("/api/rag/upload", { method: "POST", formData: fd });
+  },
+
+>>>>>>> origin/update/feature/share
   uploadAndChunk: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -719,6 +787,8 @@ export const quizApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
   },
 
@@ -727,6 +797,7 @@ export const quizApi = {
       method: "POST",
       body: { id: input.id, question: input.question },
     }),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -763,6 +834,8 @@ export const quizApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 };
 
 // ================================================================
@@ -773,8 +846,11 @@ export const shareApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   // List shares where current user is the owner
   listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
 
@@ -790,6 +866,7 @@ export const shareApi = {
     api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
 
   // Report a document
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -833,6 +910,8 @@ export const shareApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   report: (body: ReportDocumentRequest) =>
     api<void>(`/api/documents/${body.id}/report`, {
       method: "POST",
@@ -849,17 +928,21 @@ export const quizApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   listByDocument: (documentId: number) =>
     api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
 
   generate: (documentId: number, questionCount = 10) =>
     api<Quiz>("/api/quiz/generate", {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -877,12 +960,15 @@ export const quizApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
       method: "POST",
       body: { documentId, questionCount },
     }),
 };
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -908,10 +994,13 @@ export const flashcardApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 // FLASHCARD  →  /api/flashcard
 // ================================================================
 
 export const flashcardApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -922,11 +1011,14 @@ export const flashcardApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   listByDocument: (documentId: number) =>
     api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
 
   generate: (documentId: number) =>
     api<Flashcard[]>("/api/flashcard/generate", {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -944,10 +1036,13 @@ export const flashcardApi = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
       method: "POST",
       body: { documentId },
     }),
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -976,6 +1071,10 @@ export const flashcardApi = {
   updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
     api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
 >>>>>>> origin/admin-added
+=======
+  updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
+    api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
+>>>>>>> origin/update/feature/share
       method: "PUT",
       body: { status },
     }),

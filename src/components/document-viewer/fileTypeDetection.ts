@@ -6,6 +6,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
 =======
 export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
@@ -16,6 +17,9 @@ export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
 =======
 export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
 >>>>>>> origin/admin-added
+=======
+export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
+>>>>>>> origin/update/feature/share
 
 interface MimeTypeMap {
   [key: string]: SupportedFileType;
@@ -25,13 +29,17 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   // PDF
   "application/pdf": "pdf",
   "application/x-pdf": "pdf",
 
   // DOCX
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   "application/pdf": "pdf",
@@ -45,6 +53,8 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
     "docx",
   "application/msword": "docx",
@@ -52,8 +62,11 @@ const MIME_TYPE_MAP: MimeTypeMap = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   // TXT
   "text/plain": "txt",
   "text/x-plain": "txt",
@@ -84,6 +97,7 @@ const EXTENSION_MAP: MimeTypeMap = {
   webp: "image",
   svg: "image",
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -103,6 +117,8 @@ const EXTENSION_MAP: MimeTypeMap = {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 };
 
 /**
@@ -176,6 +192,7 @@ export function getTypeLabel(type: SupportedFileType): string {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     image: "Image",
 >>>>>>> origin/AI-Study-fix
@@ -185,6 +202,8 @@ export function getTypeLabel(type: SupportedFileType): string {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     unsupported: "Unsupported File",
   };
   return labels[type];

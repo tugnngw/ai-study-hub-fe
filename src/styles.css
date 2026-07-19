@@ -62,7 +62,10 @@
   --color-violet: var(--violet);
   --color-violet-soft: var(--violet-soft);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/update/feature/share
 
   /* ── Admin feature palette ──────────────────────────
    * Used by the admin dashboard UI (features/admin).
@@ -96,7 +99,10 @@
   --color-warning: var(--admin-warning);
   --color-warning-bg: var(--admin-warning-bg);
   --color-warning-line: var(--admin-warning-line);
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 }
 
 :root {
@@ -150,6 +156,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   --gradient-brand: linear-gradient(135deg, oklch(0.55 0.23 275), oklch(0.6 0.24 305));
   --gradient-soft: linear-gradient(135deg, oklch(0.97 0.03 285), oklch(0.97 0.035 305));
   --gradient-page: radial-gradient(at 0% 0%, oklch(0.96 0.04 285) 0%, transparent 50%),
@@ -165,6 +172,8 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   --gradient-brand: linear-gradient(
     135deg,
     oklch(0.55 0.23 275),
@@ -185,6 +194,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -194,6 +204,8 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   --shadow-brand: 0 8px 30px -8px oklch(0.5 0.22 275 / 0.45);
 
   --sidebar: oklch(0.985 0.008 285);
@@ -205,7 +217,10 @@
   --sidebar-border: oklch(0.92 0.015 285);
   --sidebar-ring: oklch(0.5 0.22 275);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/update/feature/share
 
   /* ── Admin feature palette (light) ── */
   --admin-ink: #15131F;
@@ -235,7 +250,10 @@
   --admin-warning: #D97706;
   --admin-warning-bg: #FFF6E7;
   --admin-warning-line: #FBE3B8;
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 }
 
 .dark {
@@ -268,6 +286,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   --gradient-brand: linear-gradient(135deg, oklch(0.6 0.22 275), oklch(0.65 0.22 310));
   --gradient-soft: linear-gradient(135deg, oklch(0.24 0.05 275), oklch(0.24 0.06 310));
   --gradient-page: radial-gradient(at 0% 0%, oklch(0.24 0.06 275) 0%, transparent 50%),
@@ -281,6 +300,8 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   --gradient-brand: linear-gradient(
     135deg,
     oklch(0.6 0.22 275),
@@ -298,6 +319,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -307,6 +329,8 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   --shadow-soft: 0 8px 24px -8px oklch(0 0 0 / 0.4);
   --shadow-brand: 0 8px 30px -8px oklch(0.7 0.2 280 / 0.5);
   --sidebar: oklch(0.19 0.04 275);
@@ -318,7 +342,10 @@
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.7 0.2 280);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/update/feature/share
 
   /* ── Admin feature palette (dark) ── */
   --admin-ink: #F5F3FB;
@@ -348,7 +375,10 @@
   --admin-warning: #FBBF24;
   --admin-warning-bg: #2A2110;
   --admin-warning-line: #43361C;
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 }
 
 @layer base {
@@ -356,6 +386,7 @@
     border-color: var(--color-border);
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -382,6 +413,10 @@
   html,
   body {
 >>>>>>> origin/admin-added
+=======
+  html,
+  body {
+>>>>>>> origin/update/feature/share
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
@@ -400,6 +435,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   h1, h2, h3, h4, h5, h6, .font-display {
 =======
 =======
@@ -410,6 +446,8 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   h1,
   h2,
   h3,
@@ -417,6 +455,7 @@
   h5,
   h6,
   .font-display {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -430,6 +469,8 @@
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }

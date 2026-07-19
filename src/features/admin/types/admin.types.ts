@@ -1,5 +1,6 @@
 // src/features/admin/types/admin.types.ts
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Admin related types
 
 // Placeholder for admin types. Example:
@@ -8,6 +9,8 @@ export interface AdminStats {
   activeUsers: number;
   storageQuotaUsed: number;
 =======
+=======
+>>>>>>> origin/update/feature/share
 // Admin feature domain types
 
 // ── Dashboard ──────────────────────────────────────────
@@ -145,5 +148,8 @@ export interface TopUpMethod {
   description: string;
   instant?: boolean;
   recommended?: boolean;
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 }

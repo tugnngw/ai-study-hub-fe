@@ -12,6 +12,7 @@ function DocumentDetail() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   console.log('[TRACE-1] Route param id:', id, 'type:', typeof id);
 <<<<<<< HEAD
   const docId = Number(id);
@@ -29,11 +30,16 @@ function DocumentDetail() {
   const doc = useDocument(docId);
 >>>>>>> origin/uichange
 =======
+=======
+>>>>>>> origin/update/feature/share
   console.log('[TRACE-1] Route param id:', id, 'type:', typeof id);
   const docId = Number(id);
   console.log('[TRACE-2] Converted docId:', docId, 'isNaN:', isNaN(docId));
   const doc = useDocument(docId);
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 
   if (doc.isLoading) {
     return <Skeleton className="h-[calc(100vh-8rem)] w-full" />;
@@ -43,6 +49,7 @@ function DocumentDetail() {
       <div className="text-sm text-muted-foreground">Document not found.</div>
     );
   }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -60,4 +67,7 @@ function DocumentDetail() {
 =======
   return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
 >>>>>>> origin/admin-added
+=======
+  return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
+>>>>>>> origin/update/feature/share
 }

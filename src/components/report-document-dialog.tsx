@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AlertTriangle } from "lucide-react";
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -15,6 +16,8 @@ import { AlertTriangle } from "lucide-react";
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 import { toast } from "sonner";
 import { useReportDocument } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -50,6 +53,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   documentId: number;
 =======
   documentId: string;
@@ -63,6 +67,9 @@ export function ReportDocumentDialog({
 =======
   documentId: number;
 >>>>>>> origin/admin-added
+=======
+  documentId: number;
+>>>>>>> origin/update/feature/share
   documentTitle: string;
 }) {
   const report = useReportDocument();
@@ -87,6 +94,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       await report.mutateAsync({ id: documentId, reason, description: description.trim() || undefined });
 =======
 =======
@@ -97,11 +105,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
       await report.mutateAsync({
         id: documentId,
         reason,
         description: description.trim() || undefined,
       });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -115,6 +126,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
@@ -126,6 +139,7 @@ export function ReportDocumentDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -148,6 +162,9 @@ export function ReportDocumentDialog({
 =======
           <DialogTitle className="truncate">
 >>>>>>> origin/admin-added
+=======
+          <DialogTitle className="truncate">
+>>>>>>> origin/update/feature/share
             Báo cáo "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
@@ -163,6 +180,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <RadioGroup value={reason} onValueChange={setReason} className="space-y-2">
 =======
 =======
@@ -173,11 +191,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
             <RadioGroup
               value={reason}
               onValueChange={setReason}
               className="space-y-2"
             >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -191,6 +212,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
               {REPORT_REASONS.map((r) => (
                 <label
                   key={r.value}
@@ -223,6 +246,7 @@ export function ReportDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button variant="destructive" onClick={submit} disabled={report.isPending}>
 =======
 =======
@@ -233,11 +257,14 @@ export function ReportDocumentDialog({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
           <Button
             variant="destructive"
             onClick={submit}
             disabled={report.isPending}
           >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -251,6 +278,8 @@ export function ReportDocumentDialog({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
             {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>

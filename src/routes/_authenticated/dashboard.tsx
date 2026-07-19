@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createFileRoute, Link } from "@tanstack/react-router";
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -6,6 +7,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 >>>>>>> origin/admin-added
+=======
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+>>>>>>> origin/update/feature/share
 import {
   FolderKanban,
   FileText,
@@ -19,6 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -41,11 +47,14 @@ import { UploadDocumentDialog } from "@/components/upload-document-dialog";
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
 });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -95,6 +104,8 @@ const SEMESTERS = Array.from({ length: 9 }, (_, i) => i + 1);
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 function Dashboard() {
   const folders = useFolders();
   const docs = useDocuments();
@@ -102,7 +113,10 @@ function Dashboard() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/update/feature/share
   const navigate = useNavigate();
 
   // Nếu là admin (backend trả role ADMIN) thì điều hướng thẳng vào khu
@@ -111,7 +125,10 @@ function Dashboard() {
   useEffect(() => {
     if (isAdmin) navigate({ to: "/admin_panel", replace: true });
   }, [isAdmin, navigate]);
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 
   const recent = (docs.data ?? [])
     .slice()
@@ -287,6 +304,7 @@ function Dashboard() {
     </div>
   );
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 =======
@@ -495,3 +513,5 @@ function Dashboard() {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share

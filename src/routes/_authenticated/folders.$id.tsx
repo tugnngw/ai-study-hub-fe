@@ -7,6 +7,7 @@ const searchSchema = z.object({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   docId: z.coerce.number().optional(),
 =======
   docId: z.string().optional(),
@@ -20,6 +21,9 @@ const searchSchema = z.object({
 =======
   docId: z.coerce.number().optional(),
 >>>>>>> origin/admin-added
+=======
+  docId: z.coerce.number().optional(),
+>>>>>>> origin/update/feature/share
 });
 
 export const Route = createFileRoute("/_authenticated/folders/$id")({

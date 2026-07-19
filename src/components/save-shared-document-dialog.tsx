@@ -6,6 +6,7 @@ import { toast } from "sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useCreateFolder, useFolders, useSaveSharedDocument } from "@/lib/queries";
 =======
 =======
@@ -16,11 +17,14 @@ import { useCreateFolder, useFolders, useSaveSharedDocument } from "@/lib/querie
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 import {
   useCreateFolder,
   useFolders,
   useSaveSharedDocument,
 } from "@/lib/queries";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -34,6 +38,8 @@ import {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -98,6 +104,7 @@ export function SaveSharedDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     let targetFolderId: number | null = null;
 =======
     let targetFolderId: string | null = null;
@@ -114,6 +121,9 @@ export function SaveSharedDocumentDialog({
 =======
     let targetFolderId: string | null = null;
 >>>>>>> origin/admin-added
+=======
+    let targetFolderId: string | null = null;
+>>>>>>> origin/update/feature/share
 
     try {
       if (folderId === NEW_FOLDER_VALUE) {
@@ -121,6 +131,7 @@ export function SaveSharedDocumentDialog({
           toast.error("Vui lòng nhập tên thư mục mới");
           return;
         }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -139,12 +150,15 @@ export function SaveSharedDocumentDialog({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
         const created = await createFolder.mutateAsync({
           name: newFolderName.trim(),
         });
         targetFolderId = created.id;
       } else if (folderId) {
         targetFolderId = folderId;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -158,6 +172,8 @@ export function SaveSharedDocumentDialog({
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
       } else {
         toast.error("Vui lòng chọn thư mục lưu trữ");
         return;
@@ -183,6 +199,7 @@ export function SaveSharedDocumentDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Lưu tài liệu</DialogTitle>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -214,6 +231,11 @@ export function SaveSharedDocumentDialog({
             Lưu tài liệu được chia sẻ vào thư mục của bạn.
           </DialogDescription>
 >>>>>>> origin/admin-added
+=======
+          <DialogDescription>
+            Lưu tài liệu được chia sẻ vào thư mục của bạn.
+          </DialogDescription>
+>>>>>>> origin/update/feature/share
         </DialogHeader>
 
         <div className="space-y-4">

@@ -3,6 +3,7 @@ node_modules
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 .claude
 =======
@@ -24,3 +25,7 @@ dist
 
 .claude
 >>>>>>> origin/admin-added
+=======
+
+.claude
+>>>>>>> origin/update/feature/share

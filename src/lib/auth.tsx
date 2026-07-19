@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // auth.tsx — AuthContext. Gọi thẳng BE thật (không còn mock).
 // =============================================================
@@ -22,11 +23,15 @@
 =======
 // src/lib/auth.tsx
 >>>>>>> origin/admin-added
+=======
+// src/lib/auth.tsx
+>>>>>>> origin/update/feature/share
 import {
   createContext,
   useContext,
   useState,
   useEffect,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -45,12 +50,16 @@ import {
 =======
   useCallback,
 >>>>>>> origin/admin-added
+=======
+  useCallback,
+>>>>>>> origin/update/feature/share
   type ReactNode,
 } from "react";
 import type { User, RegisterRequest } from "./types";
 import { authApi, accountApi } from "./realApi";
 import { tokenStore } from "./api";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -83,6 +92,8 @@ interface AuthContextValue {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
@@ -94,6 +105,7 @@ interface AuthContextValue {
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -115,6 +127,8 @@ interface AuthContextValue {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -123,6 +137,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -247,6 +262,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   // --- Initial Auth Check ---
   // Effect này chạy một lần khi component mount để kiểm tra token và load user
   useEffect(() => {
@@ -456,6 +473,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []); // Empty deps: refresh function không thay đổi
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -472,6 +490,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
   };
@@ -486,6 +506,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -495,6 +516,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
   };
 
   return (
@@ -502,6 +525,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         isLoading,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -523,6 +547,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/AI-Study-fix
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
         // isAuthenticated: !!user && !!tokenStore.get(), // Xác thực khi có user VÀ có access token
         isAuthenticated: !!user, // Chỉ cần user tồn tại là coi như đã xác thực, vì user chỉ set khi có token hợp lệ
         login,
@@ -532,6 +558,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         requestPasswordReset,
         verifyResetOtp,
         resetPassword,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -549,6 +576,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
       }}
     >
       {children}
@@ -567,6 +596,7 @@ export function useAuth() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Re-export type để các component không cần import lại
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -578,4 +608,6 @@ export function useAuth() {
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
+=======
+>>>>>>> origin/update/feature/share
 export type { RegisterRequest };
