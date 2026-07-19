@@ -2,12 +2,15 @@
 <project version="4">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   <component name="KubernetesApiProvider"><![CDATA[{}]]></component>
 >>>>>>> origin/test/share-document-cloudinary
 =======
   <component name="KubernetesApiProvider"><![CDATA[{}]]></component>
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
   <component name="ProjectRootManager" version="2" project-jdk-name="26" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

@@ -69,6 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // --- Periodically refresh token (every 10 min) ---
   useEffect(() => {
+<<<<<<< HEAD
     const interval = setInterval(async () => {
       if (!tokenStore.get() || !tokenStore.getRefresh()) {
         setUser(null);
@@ -89,6 +90,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
       }
     }, 10 * 60 * 1000); // 10 minutes
+=======
+    const interval = setInterval(
+      async () => {
+        if (!tokenStore.get() || !tokenStore.getRefresh()) {
+          setUser(null);
+          clearInterval(this);
+          return;
+        }
+        try {
+          const res = await authApi.refresh();
+          if (res?.accessToken && res.refreshToken) {
+            tokenStore.set(res.accessToken);
+            tokenStore.setRefresh(res.refreshToken);
+          } else {
+            tokenStore.clear();
+            setUser(null);
+          }
+        } catch (err: any) {
+          tokenStore.clear();
+          setUser(null);
+        }
+      },
+      10 * 60 * 1000,
+    ); // 10 minutes
+>>>>>>> origin/Flashcars
 
     return () => clearInterval(interval);
   }, []);
@@ -143,11 +169,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await authApi.logout();
     } catch (error: any) {
+<<<<<<< HEAD
       console.error("Logout API call failed, but clearing local tokens anyway:", error);
     }
     tokenStore.clear();
     setUser(null);
     if (typeof window !== 'undefined') {
+=======
+      console.error(
+        "Logout API call failed, but clearing local tokens anyway:",
+        error,
+      );
+    }
+    tokenStore.clear();
+    setUser(null);
+    if (typeof window !== "undefined") {
+>>>>>>> origin/Flashcars
       window.location.href = "/auth/login";
     }
   };
@@ -167,7 +204,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const u = await accountApi.me();
           setUser(u);
         } catch (userFetchError) {
+<<<<<<< HEAD
           console.error("Failed to fetch user info after token refresh:", userFetchError);
+=======
+          console.error(
+            "Failed to fetch user info after token refresh:",
+            userFetchError,
+          );
+>>>>>>> origin/Flashcars
         }
       } else {
         throw new Error("Refresh failed: Backend response invalid.");

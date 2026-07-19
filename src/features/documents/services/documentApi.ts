@@ -15,8 +15,13 @@ export const documentApi = {
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
 
+<<<<<<< HEAD
   getById: (id: number) => {
     console.log('[TRACE-6] documentApi.getById called with id:', id);
+=======
+  getById: (id: string) => {
+    console.log("[TRACE-6] documentApi.getById called with id:", id);
+>>>>>>> origin/Flashcars
     return api<Document>(`/api/documents/${id}`);
   },
 
@@ -39,6 +44,7 @@ export const documentApi = {
     });
   },
 
+<<<<<<< HEAD
   update: (id: number, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
@@ -46,13 +52,29 @@ export const documentApi = {
     api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
   getDownloadUrl: (id: number) =>
+=======
+  update: (id: string, body: UpdateDocumentRequest) =>
+    api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
+
+  delete: (id: string) =>
+    api<void>(`/api/documents/${id}`, { method: "DELETE" }),
+
+  getDownloadUrl: (id: string) =>
+>>>>>>> origin/Flashcars
     api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   listTrash: () => api<Document[]>("/api/documents/trash"),
 
+<<<<<<< HEAD
   restoreFromTrash: (id: number) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
 
   emptyTrash: (id: number) =>
+=======
+  restoreFromTrash: (id: string) =>
+    api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
+
+  emptyTrash: (id: string) =>
+>>>>>>> origin/Flashcars
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
 };

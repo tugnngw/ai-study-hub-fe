@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TODO(backend): api<T>("/api/admin/premium...")
 import type { PremiumRequestItem, PremiumStats, PremiumDecision } from "../types/admin.types";
 const empty: PremiumStats = { totalPremiumUsers:0,totalPremiumTrend:0,pendingRequests:0,pendingRequestsTrend:0,revenueThisMonth:0,revenueTrend:0,expiredSubscriptions:0,expiredTrend:0 };
@@ -33,4 +34,20 @@ export const premiumApi = {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+import { api } from "@/lib/api";
+import type {
+  PremiumRequestItem,
+  PremiumStats,
+  PremiumDecision,
+} from "../types/admin.types";
+export const premiumApi = {
+  getStats: () => api<PremiumStats>("/api/admin/premium/stats"),
+  getRequests: () => api<PremiumRequestItem[]>("/api/admin/premium/requests"),
+  decide: (id: string, decision: PremiumDecision) =>
+    api<boolean>(`/api/admin/premium/requests/${id}/decision`, {
+      method: "POST",
+      body: { decision },
+    }),
+>>>>>>> origin/Flashcars
 };

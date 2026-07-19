@@ -7,6 +7,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Enhanced PDF viewer with drag-to-pan, smooth zoom, scroll-based navigation
 =======
 >>>>>>> origin/AI-Study-fix
@@ -47,10 +48,15 @@ import * as pdfjsLib from "pdfjs-dist";
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+
+import React, { useState, useEffect, useRef, useCallback } from "react";
+>>>>>>> origin/Flashcars
 import {
   Loader2,
   Download,
   ExternalLink,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -106,6 +112,8 @@ import {
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
   RotateCw,
   ZoomIn,
   ZoomOut,
@@ -115,6 +123,7 @@ import {
   Hand,
   MousePointer2,
   FileText,
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
@@ -129,11 +138,14 @@ import {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -188,10 +200,16 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `/pdfjs/pdf.worker.mjs`;
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+import { API_BASE } from "@/lib/api";
+import { tokenStore } from "@/lib/api";
+
+>>>>>>> origin/Flashcars
 interface PdfViewerProps {
   url: string;
   fileName?: string;
   className?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -370,6 +388,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
   documentId?: string; // UUID
 }
 
@@ -438,6 +458,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                   headers: { Authorization: `Bearer ${token}` },
                 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
@@ -451,6 +472,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
             );
 
             if (downloadResp.ok) {
@@ -462,6 +485,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
               console.log("[PdfViewer] Download OK:", downloadResp.status, ct);
 
@@ -480,10 +504,15 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+              console.log("[PdfViewer] Download OK:", downloadResp.status, ct);
+
+>>>>>>> origin/Flashcars
               if (ct.includes("json")) {
                 const data = await downloadResp.json();
                 const signedUrl = data?.url || data?.data?.url || data?.signedUrl;
                 if (signedUrl) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -599,6 +628,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
                   console.log("[PdfViewer] Fetching signed URL...");
                   const pdfResp = await fetch(signedUrl, {
                     headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -669,6 +700,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
           setError(e instanceof Error ? e.message : "Không thể tải PDF");
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
@@ -687,11 +719,14 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
         if (!cancelled) setError(e.message || "Không thể tải PDF");
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -995,6 +1030,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
     if (documentId) {
       loadPdf();
     } else {
@@ -1144,6 +1181,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
     if (!isPanMode || scale <= 1) return;
     setIsDragging(true);
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
@@ -1157,6 +1195,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     setDragStart({ x: e.clientX, y: e.clientY });
     if (containerRef.current) {
       setScrollStart({ left: containerRef.current.scrollLeft, top: containerRef.current.scrollTop });
@@ -1171,6 +1211,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (!dragging || !containerRef.current) return;
 =======
     if (!isDragging || !containerRef.current) return;
@@ -1193,12 +1234,16 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
     if (!dragging || !containerRef.current) return;
 >>>>>>> origin/admin-added-fix
+=======
+    if (!isDragging || !containerRef.current) return;
+>>>>>>> origin/Flashcars
     const dx = e.clientX - dragStart.x;
     const dy = e.clientY - dragStart.y;
     containerRef.current.scrollLeft = scrollStart.left - dx;
     containerRef.current.scrollTop = scrollStart.top - dy;
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1663,6 +1708,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
   const handleMouseUp = () => setIsDragging(false);
   const handleMouseLeave = () => setIsDragging(false);
 
@@ -1794,6 +1841,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 
   // Main PDF display
   return (
+<<<<<<< HEAD
       <Card className={cn("flex flex-col min-h-0", className)}>
         {Toolbar}
         <div
@@ -1852,3 +1900,33 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+      <Card className={cn("flex flex-col min-h-0", className)} style={{ minHeight: "400px" }}>
+        {Toolbar}
+        <div className="flex-1 relative">
+          {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-background/50">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              </div>
+          )}
+          {error && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-8">
+                <p className="text-red-500 mb-4">{error}</p>
+              </div>
+          )}
+          {pdfDoc ? (
+              <canvas
+                  ref={canvasRef}
+                  className="w-full h-full border border-border/50 shadow-lg rounded-lg bg-white"
+                  style={{ display: "block" }}
+              />
+          ) : !loading && !error ? (
+              <div className="h-full flex items-center justify-center">
+                <p className="text-muted-foreground">Đang chuẩn bị...</p>
+              </div>
+          ) : null}
+        </div>
+      </Card>
+  );
+};
+>>>>>>> origin/Flashcars

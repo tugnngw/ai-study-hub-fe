@@ -7,6 +7,7 @@ import { useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
 =======
 import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-react";
@@ -29,10 +30,15 @@ import { FolderKanban, Plus, Search, Star } from "lucide-react";
 =======
 import { FolderKanban, Plus, Search, Star } from "lucide-react";
 >>>>>>> origin/admin-added-fix
+=======
+import { useMutation } from "@tanstack/react-query";
+import { FolderKanban, Plus, Search, Trash2, Pencil, Star, MoreVertical, Share2 } from "lucide-react";
+>>>>>>> origin/Flashcars
 import { toast } from "sonner";
 import {
   useCreateFolder,
   useDeleteFolder,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -67,11 +73,20 @@ import { useStarredFolders } from "@/lib/preferences";
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  useFolders,
+  useUpdateFolder,
+} from "@/lib/queries";
+import { shareApi } from "@/lib/realApi";
+import type { ShareRequest } from "@/lib/types";
+import { useStarredFolders } from "@/lib/preferences";
+>>>>>>> origin/Flashcars
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -82,6 +97,15 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 >>>>>>> origin/admin-added-fix
+=======
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+>>>>>>> origin/Flashcars
 import {
   Dialog,
   DialogContent,
@@ -102,6 +126,7 @@ import {
 } from "@/components/ui/alert-dialog";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import type { Folder } from "@/lib/types";
 =======
 =======
@@ -114,6 +139,10 @@ import { cn } from "@/lib/utils";
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+import type { Folder } from "@/lib/types";
+import { cn } from "@/lib/utils";
+>>>>>>> origin/Flashcars
 
 export const Route = createFileRoute("/_authenticated/folders")({
   component: FoldersPage,
@@ -121,6 +150,7 @@ export const Route = createFileRoute("/_authenticated/folders")({
 
 function FoldersPage() {
   const { data, isLoading } = useFolders();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -144,10 +174,13 @@ function FoldersPage() {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Folder | null>(null);
   const [deleting, setDeleting] = useState<Folder | null>(null);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -185,15 +218,21 @@ function FoldersPage() {
 >>>>>>> origin/admin-added-fix
   const [sharing, setSharing] = useState<Folder | null>(null);
   const [reporting, setReporting] = useState<Folder | null>(null);
+=======
+  const [sharing, setSharing] = useState<Folder | null>(null);
+>>>>>>> origin/Flashcars
   const { isMarked: isStarred, toggle: toggleStar } = useStarredFolders();
 
   const filtered = (data ?? [])
     .filter((f) => f.name.toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => Number(isStarred(b.id)) - Number(isStarred(a.id)));
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 
   return (
     <div className="space-y-6">
@@ -244,17 +283,21 @@ function FoldersPage() {
               key={f.id}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               className="group hover:border-primary/40 transition-colors"
             >
 =======
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
               className={cn(
                 "group hover:border-primary/40 transition-colors relative",
                 isStarred(f.id) && "border-amber-400/60 bg-amber-50/40 dark:bg-amber-400/5",
               )}
             >
               {isStarred(f.id) && (
+<<<<<<< HEAD
                 <Star className="h-3.5 w-3.5 absolute top-3 right-10 fill-amber-400 text-amber-400" />
               )}
               <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -275,6 +318,10 @@ function FoldersPage() {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+                <Star className="h-3.5 w-3.5 absolute top-3 right-3 fill-amber-400 text-amber-400" />
+              )}
+>>>>>>> origin/Flashcars
               <CardContent className="p-5">
                 <Link to="/ai" search={{ folderId: f.id }} className="block">
                   <div className="flex items-start gap-3">
@@ -282,6 +329,7 @@ function FoldersPage() {
                       <FolderKanban className="h-5 w-5 text-primary" />
                     </div>
                     <div className="flex-1 min-w-0">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                       <div className="font-medium truncate">{f.name}</div>
@@ -313,12 +361,16 @@ function FoldersPage() {
 =======
                       <div className="font-medium truncate pr-9">{f.name}</div>
 >>>>>>> origin/admin-added-fix
+=======
+                      <div className="font-medium truncate pr-5">{f.name}</div>
+>>>>>>> origin/Flashcars
                       <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
                         {f.aiSummary || "No summary"}
                       </div>
                     </div>
                   </div>
                 </Link>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                 <div className="flex justify-end gap-1 mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -344,12 +396,54 @@ function FoldersPage() {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+                 <div className="flex justify-end mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                   <DropdownMenu>
+                     <DropdownMenuTrigger asChild>
+                       <Button size="sm" variant="ghost">
+                         <MoreVertical className="h-3.5 w-3.5" />
+                       </Button>
+                     </DropdownMenuTrigger>
+                     <DropdownMenuContent align="end">
+                       <DropdownMenuItem onClick={() => setSharing(f)}>
+                         <Share2 className="h-3.5 w-3.5 mr-2" />
+                         Share
+                       </DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => toggleStar(f.id)}>
+                         <Star
+                           className={cn(
+                             "h-3.5 w-3.5 mr-2",
+                             isStarred(f.id) && "fill-amber-400 text-amber-400",
+                           )}
+                         />
+                         Star
+                       </DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => {
+                         setEditing(f);
+                         setOpen(true);
+                       }}>
+                         <Pencil className="h-3.5 w-3.5 mr-2" />
+                         Edit
+                       </DropdownMenuItem>
+                       <DropdownMenuSeparator />
+                       <DropdownMenuItem 
+                         onClick={() => setDeleting(f)}
+                         className="text-destructive focus:text-destructive"
+                       >
+                         <Trash2 className="h-3.5 w-3.5 mr-2" />
+                         Delete
+                       </DropdownMenuItem>
+                     </DropdownMenuContent>
+                   </DropdownMenu>
+                 </div>
+>>>>>>> origin/Flashcars
               </CardContent>
             </Card>
           ))}
         </div>
       )}
 
+<<<<<<< HEAD
       <FolderFormDialog open={open} onOpenChange={setOpen} folder={editing} />
       <DeleteFolderDialog folder={deleting} onClose={() => setDeleting(null)} />
 <<<<<<< HEAD
@@ -369,6 +463,12 @@ function FoldersPage() {
 =======
 >>>>>>> origin/admin-added-fix
     </div>
+=======
+       <FolderFormDialog open={open} onOpenChange={setOpen} folder={editing} />
+       <DeleteFolderDialog folder={deleting} onClose={() => setDeleting(null)} />
+       <ShareFolderDialog folder={sharing} onClose={() => setSharing(null)} />
+     </div>
+>>>>>>> origin/Flashcars
   );
 }
 
@@ -450,6 +550,7 @@ function FolderFormDialog({
   );
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -567,6 +668,8 @@ function ReportFolderDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 function DeleteFolderDialog({
   folder,
   onClose,
@@ -611,3 +714,104 @@ function DeleteFolderDialog({
     </AlertDialog>
   );
 }
+<<<<<<< HEAD
+=======
+
+function ShareFolderDialog({
+  folder,
+  onClose,
+}: {
+  folder: Folder | null;
+  onClose: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const shareMutation = useMutation({
+    mutationFn: (data: ShareRequest) => shareApi.shareFolder(data),
+    onSuccess: () => {
+      toast.success("Folder shared successfully");
+      onClose();
+      setEmail("");
+      setUsername("");
+    },
+    onError: (error) => {
+      toast.error(error instanceof Error ? error.message : "Failed to share folder");
+    },
+  });
+
+  const handleShare = async () => {
+    if (!folder) return;
+    
+    if (!email.trim() && !username.trim()) {
+      toast.error("Please enter email or username");
+      return;
+    }
+
+    const request: ShareRequest = {
+      folderId: folder.id,
+      visibility: "private",
+    };
+
+    if (email.trim()) {
+      request.email = email.trim();
+    }
+    if (username.trim()) {
+      request.username = username.trim();
+    }
+
+    await shareMutation.mutateAsync(request);
+  };
+
+  return (
+    <Dialog
+      open={!!folder}
+      onOpenChange={(v) => {
+        if (!v) onClose();
+      }}
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Share folder</DialogTitle>
+          <DialogDescription>
+            Share &ldquo;{folder?.name}&rdquo; with another user
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="user@example.com"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="username">Username</Label>
+            <Input
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="username"
+            />
+          </div>
+          <div className="text-xs text-muted-foreground">
+            Enter either email or username of the user you want to share with.
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button
+            onClick={handleShare}
+            disabled={shareMutation.isPending}
+          >
+            Share
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+>>>>>>> origin/Flashcars

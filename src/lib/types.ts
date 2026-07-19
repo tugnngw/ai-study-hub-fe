@@ -7,6 +7,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // types.ts — Data models aligned with DB schema & BE API
 // =============================================================
@@ -80,11 +81,15 @@ export interface RegisterRequest {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+// src/lib/types.ts
+>>>>>>> origin/Flashcars
 export interface LoginRequest {
   username: string;
   password: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -446,10 +451,68 @@ export interface Document {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+export interface AuthResponse {
+  userId: string;
+  username: string;
+  email: string;
+  fullName: string;
+  role: string;
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+}
+
+export interface RefreshResponse {
+  accessToken: string;
+  refreshToken?: string;
+}
+
+export interface RegisterRequest {
+  username: string;
+  email: string;
+  password: string;
+  fullName: string;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  fullName: string;
+  role: string;
+  status: string;
+  authProvider: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Folder {
+  id: string;
+  name: string;
+  description?: string;
+  aiSummary?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateFolderRequest {
+  name: string;
+  description?: string;
+}
+
+export interface UpdateFolderRequest {
+  name?: string;
+  description?: string;
+}
+
+export interface Document {
+>>>>>>> origin/Flashcars
   id: string;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
@@ -471,6 +534,12 @@ export interface Document {
   description?: string | null;
   summary?: string | null;
   status: DocumentStatus;
+=======
+  title: string;
+  description?: string | null;
+  summary?: string | null;
+  status: "processing" | "ready" | "failed" | "deleted";
+>>>>>>> origin/Flashcars
   cloudinaryUrl?: string | null;
   publicId?: string | null;
   mimeType?: string | null;
@@ -479,6 +548,7 @@ export interface Document {
   totalPages?: number | null;
   createdAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -533,10 +603,16 @@ export interface Document {
 }
 
 >>>>>>> origin/admin-added-fix
+=======
+  updatedAt?: string;
+}
+
+>>>>>>> origin/Flashcars
 export interface UploadDocumentRequest {
   file: File;
   title: string;
   description?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -568,10 +644,13 @@ export interface UploadDocumentRequest {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   folderId?: string;
   subjectId?: number;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -597,12 +676,15 @@ export interface UploadDocumentRequest {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 export interface UpdateDocumentRequest {
   title?: string;
   description?: string;
   folderId?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -747,11 +829,44 @@ export interface ShareResponse {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+export interface DownloadUrlResponse {
+  url: string;
+  expiresAt: string;
+}
+
+export interface ShareRequest {
+  folderId: string;
+  username?: string;
+  email?: string;
+  visibility: "private" | "public";
+}
+
+export interface ShareResponse {
+  id: string;
+  folderId: string | null;
+  documentId: string | null;
+  ownerId: string;
+  ownerUsername: string;
+  ownerEmail: string;
+  sharedAccountId: string | null;
+  sharedUsername: string | null;
+  sharedEmail: string | null;
+  visibility: string;
+  shareToken: string;
+  shareLink: string;
+  createdAt: string;
+  recipients: ShareRecipient[];
+  documentTitle: string | null;
+  folderName: string | null;
+  fileCount: number | null;
+>>>>>>> origin/Flashcars
 }
 
 export interface ShareRecipient {
   accountId: string;
   email: string;
+<<<<<<< HEAD
   fullName?: string;
 }
 
@@ -875,11 +990,20 @@ export interface AskRequest {
 =======
   id: number;
 >>>>>>> origin/admin-added-fix
+=======
+  username: string;
+  fullName: string;
+}
+
+export interface AskRequest {
+  documentId: string;
+>>>>>>> origin/Flashcars
   question: string;
 }
 
 export interface AskResponse {
   answer: string;
+<<<<<<< HEAD
   referencedChunks?: ReferencedChunk[];
 }
 
@@ -1124,10 +1248,37 @@ export interface Flashcard {
   frontContent: string;
   backContent: string;
   generatedByAi: boolean;
+=======
+  sources?: unknown[];
+}
+
+export interface ReportDocumentRequest {
+  id: string;
+  reason: string;
+  description?: string;
+}
+
+export interface Quiz {
+  id: string;
+  documentId: string;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation?: string;
+  createdAt: string;
+}
+
+export interface Flashcard {
+  id: string;
+  documentId: string;
+  front: string;
+  back: string;
+>>>>>>> origin/Flashcars
   createdAt: string;
 }
 
 export interface FlashcardProgress {
+<<<<<<< HEAD
   flashcardId: number;
   status: "new" | "learning" | "mastered";
   reviewCount: number;
@@ -1284,3 +1435,10 @@ export interface RagChatResponse {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  id: string;
+  flashcardId: string;
+  status: "new" | "learning" | "mastered";
+  lastReviewed: string;
+}
+>>>>>>> origin/Flashcars

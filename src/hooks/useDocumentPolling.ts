@@ -1,4 +1,5 @@
 // src/hooks/useDocumentPolling.ts
+<<<<<<< HEAD
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { docKeys } from '@/lib/queries';
@@ -36,10 +37,17 @@ export function useDocumentPolling(documentId: number, status: string) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { docKeys } from "@/lib/queries";
+
+>>>>>>> origin/Flashcars
 export function useDocumentPolling(documentId: string, status: string) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
+<<<<<<< HEAD
     if (status !== 'processing' || !documentId) return;
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -63,14 +71,30 @@ export function useDocumentPolling(documentId: string, status: string) {
 
     const interval = setInterval(() => {
       console.log('[Polling] Refetching document:', documentId);
+=======
+    if (status !== "processing" || !documentId) return;
+
+    console.log("[Polling] Starting polling for document:", documentId);
+
+    const interval = setInterval(() => {
+      console.log("[Polling] Refetching document:", documentId);
+>>>>>>> origin/Flashcars
       queryClient.invalidateQueries({
         queryKey: docKeys.detail(documentId),
       });
     }, 3000);
 
     return () => {
+<<<<<<< HEAD
       console.log('[Polling] Stopping polling for document:', documentId);
       clearInterval(interval);
     };
   }, [documentId, status, queryClient]);
 }
+=======
+      console.log("[Polling] Stopping polling for document:", documentId);
+      clearInterval(interval);
+    };
+  }, [documentId, status, queryClient]);
+}
+>>>>>>> origin/Flashcars

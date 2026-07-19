@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Admin feature - handles system administration tasks
 export * from './hooks';
 export * from './services';
@@ -34,3 +35,19 @@ export * from "./types";
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+// src/features/admin/index.ts
+// Admin feature — system administration (dashboard, users, documents, approvals, trash)
+
+// Components
+export * from "./components";
+
+// Hooks
+export * from "./hooks";
+
+// Services
+export * from "./services";
+
+// Types
+export * from "./types";
+>>>>>>> origin/Flashcars

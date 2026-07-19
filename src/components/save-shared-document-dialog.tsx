@@ -10,6 +10,7 @@ import { toast } from "sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useCreateFolder, useFolders, useSaveSharedDocument } from "@/lib/queries";
 =======
 =======
@@ -28,11 +29,14 @@ import { useCreateFolder, useFolders, useSaveSharedDocument } from "@/lib/querie
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 import {
   useCreateFolder,
   useFolders,
   useSaveSharedDocument,
 } from "@/lib/queries";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -58,6 +62,8 @@ import {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -89,7 +95,11 @@ export function SaveSharedDocumentDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
+<<<<<<< HEAD
   sharedId: number;
+=======
+  sharedId: string;
+>>>>>>> origin/Flashcars
   defaultTitle: string;
   defaultDescription?: string;
 }) {
@@ -117,6 +127,7 @@ export function SaveSharedDocumentDialog({
       return;
     }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -154,6 +165,9 @@ export function SaveSharedDocumentDialog({
 =======
     let targetFolderId: string | null = null;
 >>>>>>> origin/admin-added-fix
+=======
+    let targetFolderId: string | null = null;
+>>>>>>> origin/Flashcars
 
     try {
       if (folderId === NEW_FOLDER_VALUE) {
@@ -161,6 +175,7 @@ export function SaveSharedDocumentDialog({
           toast.error("Vui lòng nhập tên thư mục mới");
           return;
         }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -191,12 +206,15 @@ export function SaveSharedDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
         const created = await createFolder.mutateAsync({
           name: newFolderName.trim(),
         });
         targetFolderId = created.id;
       } else if (folderId) {
         targetFolderId = folderId;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -222,6 +240,8 @@ export function SaveSharedDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
       } else {
         toast.error("Vui lòng chọn thư mục lưu trữ");
         return;
@@ -247,6 +267,7 @@ export function SaveSharedDocumentDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Lưu tài liệu</DialogTitle>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -302,6 +323,11 @@ export function SaveSharedDocumentDialog({
             Lưu tài liệu được chia sẻ vào thư mục của bạn.
           </DialogDescription>
 >>>>>>> origin/admin-added-fix
+=======
+          <DialogDescription>
+            Lưu tài liệu được chia sẻ vào thư mục của bạn.
+          </DialogDescription>
+>>>>>>> origin/Flashcars
         </DialogHeader>
 
         <div className="space-y-4">

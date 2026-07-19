@@ -33,6 +33,7 @@ function LoginPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
 
+<<<<<<< HEAD
     const onSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       const parsed = schema.safeParse(form);
@@ -57,6 +58,31 @@ function LoginPage() {
       }
     };
 
+=======
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const parsed = schema.safeParse(form);
+    if (!parsed.success) {
+      const errs: Record<string, string> = {};
+      parsed.error.issues.forEach((i) => (errs[String(i.path[0])] = i.message));
+      setErrors(errs);
+      return;
+    }
+    setErrors({});
+    setLoading(true);
+    try {
+      await login(form.username, form.password);
+      toast.success("Chào mừng trở lại!");
+      // Navigate after token saved
+      await navigate({ to: "/dashboard", replace: true });
+    } catch (err) {
+      console.error("❌ Login error:", err);
+      toast.error(err instanceof Error ? err.message : "Đăng nhập thất bại");
+    } finally {
+      setLoading(false);
+    }
+  };
+>>>>>>> origin/Flashcars
 
   const onSocialLogin = (provider: string) => {
     window.location.href = `${import.meta.env.VITE_API_BASE}/oauth2/authorization/google`;

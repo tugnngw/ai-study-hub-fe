@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/features/admin/services/paymentApi.ts
 // Service Payment/Premium (phía user).
 //
@@ -15,11 +16,27 @@
 import type { TransactionItem, PlanOption, TopUpMethod } from "../types/admin.types";
 
 // ─────────── NỘI DUNG GÓI (sửa ở đây) ───────────
+=======
+// Service Payment/Premium (user). Nội dung gói/bank/methods để cứng ở đây cho
+// dễ chỉnh; lịch sử giao dịch lấy qua api() từ backend.
+import { api } from "@/lib/api";
+import type {
+  TransactionItem,
+  PlanOption,
+  TopUpMethod,
+} from "../types/admin.types";
+
+// ⚙️ CHỈNH GÓI PLUS / PRO Ở ĐÂY
+>>>>>>> origin/Flashcars
 const PLAN_OPTIONS: PlanOption[] = [
   {
     id: "PLUS",
     name: "Premium Plus",
+<<<<<<< HEAD
     price: 99_000, // VND / tháng
+=======
+    price: 99_000,
+>>>>>>> origin/Flashcars
     tagline: "Phù hợp cho cá nhân học tập nghiêm túc",
     features: [
       "Lưu trữ 50 GB",
@@ -31,7 +48,11 @@ const PLAN_OPTIONS: PlanOption[] = [
   {
     id: "PRO",
     name: "Premium Pro",
+<<<<<<< HEAD
     price: 199_000, // VND / tháng
+=======
+    price: 199_000,
+>>>>>>> origin/Flashcars
     tagline: "Toàn bộ tính năng, dành cho người dùng chuyên sâu",
     features: [
       "Lưu trữ 200 GB",
@@ -40,17 +61,28 @@ const PLAN_OPTIONS: PlanOption[] = [
       "Hỗ trợ 24/7",
       "Chia sẻ nhóm",
     ],
+<<<<<<< HEAD
     highlighted: true, // gói được đánh dấu "Phổ biến"
   },
 ];
 
 // ─────────── PHƯƠNG THỨC NẠP TIỀN (sửa ở đây) ───────────
+=======
+    highlighted: true,
+  },
+];
+>>>>>>> origin/Flashcars
 const TOP_UP_METHODS: TopUpMethod[] = [
   {
     id: "bank",
     category: "CHUYỂN KHOẢN",
     title: "Nạp qua ngân hàng ACB",
+<<<<<<< HEAD
     description: "Chuyển khoản với nội dung — hệ thống tự động cộng tiền ngay sau 1 phút.",
+=======
+    description:
+      "Chuyển khoản với nội dung — hệ thống tự động cộng tiền ngay sau 1 phút.",
+>>>>>>> origin/Flashcars
     instant: true,
     recommended: true,
   },
@@ -58,12 +90,20 @@ const TOP_UP_METHODS: TopUpMethod[] = [
     id: "card",
     category: "THẺ ĐIỆN THOẠI",
     title: "Nạp thẻ cào",
+<<<<<<< HEAD
     description: "Hỗ trợ Viettel, Vinaphone, Mobifone, Zing, Garena với chiết khấu hấp dẫn – tự động cộng số dư.",
     instant: true,
   },
 ];
 
 // ─────────── THÔNG TIN CHUYỂN KHOẢN (sửa ở đây) ───────────
+=======
+    description:
+      "Hỗ trợ Viettel, Vinaphone, Mobifone, Zing, Garena – tự động cộng số dư.",
+    instant: true,
+  },
+];
+>>>>>>> origin/Flashcars
 const BANK_INFO = {
   bankName: "ACB Bank",
   bankShort: "ACB",
@@ -73,6 +113,7 @@ const BANK_INFO = {
 };
 
 export const paymentApi = {
+<<<<<<< HEAD
   // Lịch sử giao dịch — để rỗng, lấy từ backend khi sẵn sàng.
   getTransactions: (): Promise<TransactionItem[]> => Promise.resolve([]),
 
@@ -115,5 +156,12 @@ export const paymentApi = {
 >>>>>>> origin/admin-added-fix
   getPlanOptions: (): Promise<PlanOption[]> => Promise.resolve([...PLAN_OPTIONS]),
   getTopUpMethods: (): Promise<TopUpMethod[]> => Promise.resolve([...TOP_UP_METHODS]),
+=======
+  getTransactions: () => api<TransactionItem[]>("/api/payment/transactions"),
+  getPlanOptions: (): Promise<PlanOption[]> =>
+    Promise.resolve([...PLAN_OPTIONS]),
+  getTopUpMethods: (): Promise<TopUpMethod[]> =>
+    Promise.resolve([...TOP_UP_METHODS]),
+>>>>>>> origin/Flashcars
   getBankInfo: () => Promise.resolve({ ...BANK_INFO }),
 };

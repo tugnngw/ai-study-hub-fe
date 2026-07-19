@@ -16,6 +16,7 @@ import { Route as AuthRouteRouteImport } from './routes/auth/route'
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
@@ -28,11 +29,14 @@ import { Route as AuthIndexRouteImport } from './routes/auth/index'
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 import { Route as Admin_panelRouteRouteImport } from './routes/admin_panel/route'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
 import { Route as Admin_panelIndexRouteImport } from './routes/admin_panel/index'
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -46,10 +50,13 @@ import { Route as Admin_panelIndexRouteImport } from './routes/admin_panel/index
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -95,6 +102,20 @@ import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated
 =======
 >>>>>>> origin/admin-added-fix
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+=======
+import { Route as Admin_panelUsersRouteImport } from './routes/admin_panel/users'
+import { Route as Admin_panelTrashRouteImport } from './routes/admin_panel/trash'
+import { Route as Admin_panelReport_historyRouteImport } from './routes/admin_panel/report_history'
+import { Route as Admin_panelProfileRouteImport } from './routes/admin_panel/profile'
+import { Route as Admin_panelPremiumRouteImport } from './routes/admin_panel/premium'
+import { Route as Admin_panelFilesRouteImport } from './routes/admin_panel/files'
+import { Route as Admin_panelApprovalsRouteImport } from './routes/admin_panel/approvals'
+import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
+import { Route as AuthenticatedTransactionsRouteImport } from './routes/_authenticated/transactions'
+import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedPremiumRouteImport } from './routes/_authenticated/premium'
+>>>>>>> origin/Flashcars
 import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated/folders'
 import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -119,6 +140,7 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -128,11 +150,14 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 const Admin_panelRouteRoute = Admin_panelRouteRouteImport.update({
   id: '/admin_panel',
   path: '/admin_panel',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -146,6 +171,8 @@ const Admin_panelRouteRoute = Admin_panelRouteRouteImport.update({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -165,6 +192,7 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -174,11 +202,14 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 const Admin_panelIndexRoute = Admin_panelIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => Admin_panelRouteRoute,
 } as any)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -192,6 +223,8 @@ const Admin_panelIndexRoute = Admin_panelIndexRouteImport.update({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -217,6 +250,7 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -226,6 +260,8 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 const Admin_panelUsersRoute = Admin_panelUsersRouteImport.update({
   id: '/users',
   path: '/users',
@@ -236,11 +272,28 @@ const Admin_panelTrashRoute = Admin_panelTrashRouteImport.update({
   path: '/trash',
   getParentRoute: () => Admin_panelRouteRoute,
 } as any)
+<<<<<<< HEAD
+=======
+const Admin_panelReport_historyRoute =
+  Admin_panelReport_historyRouteImport.update({
+    id: '/report_history',
+    path: '/report_history',
+    getParentRoute: () => Admin_panelRouteRoute,
+  } as any)
+>>>>>>> origin/Flashcars
 const Admin_panelProfileRoute = Admin_panelProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
   getParentRoute: () => Admin_panelRouteRoute,
 } as any)
+<<<<<<< HEAD
+=======
+const Admin_panelPremiumRoute = Admin_panelPremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+>>>>>>> origin/Flashcars
 const Admin_panelFilesRoute = Admin_panelFilesRouteImport.update({
   id: '/files',
   path: '/files',
@@ -255,6 +308,7 @@ const Admin_panelApprovalsRoute = Admin_panelApprovalsRouteImport.update({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -264,16 +318,28 @@ const Admin_panelApprovalsRoute = Admin_panelApprovalsRouteImport.update({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 const AuthenticatedTrashRoute = AuthenticatedTrashRouteImport.update({
   id: '/trash',
   path: '/trash',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+<<<<<<< HEAD
+=======
+const AuthenticatedTransactionsRoute =
+  AuthenticatedTransactionsRouteImport.update({
+    id: '/transactions',
+    path: '/transactions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+>>>>>>> origin/Flashcars
 const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
   id: '/shared',
   path: '/shared',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -303,11 +369,21 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+<<<<<<< HEAD
+=======
+const AuthenticatedPremiumRoute = AuthenticatedPremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+>>>>>>> origin/Flashcars
 const AuthenticatedFoldersRoute = AuthenticatedFoldersRouteImport.update({
   id: '/folders',
   path: '/folders',
@@ -357,6 +433,7 @@ export interface FileRoutesByFullPath {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/admin-added
@@ -372,6 +449,9 @@ export interface FileRoutesByFullPath {
 =======
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/admin-added-fix
+=======
+  '/admin_panel': typeof Admin_panelRouteRouteWithChildren
+>>>>>>> origin/Flashcars
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -380,6 +460,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
+<<<<<<< HEAD
   '/profile': typeof AuthenticatedProfileRoute
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -425,10 +506,25 @@ export interface FileRoutesByFullPath {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  '/premium': typeof AuthenticatedPremiumRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/shared': typeof AuthenticatedSharedRoute
+  '/transactions': typeof AuthenticatedTransactionsRoute
+  '/trash': typeof AuthenticatedTrashRoute
+  '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
+  '/admin_panel/files': typeof Admin_panelFilesRoute
+  '/admin_panel/premium': typeof Admin_panelPremiumRoute
+  '/admin_panel/profile': typeof Admin_panelProfileRoute
+  '/admin_panel/report_history': typeof Admin_panelReport_historyRoute
+  '/admin_panel/trash': typeof Admin_panelTrashRoute
+  '/admin_panel/users': typeof Admin_panelUsersRoute
+>>>>>>> origin/Flashcars
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -449,6 +545,9 @@ export interface FileRoutesByFullPath {
 =======
   '/admin_panel/': typeof Admin_panelIndexRoute
 >>>>>>> origin/admin-added-fix
+=======
+  '/admin_panel/': typeof Admin_panelIndexRoute
+>>>>>>> origin/Flashcars
   '/auth/': typeof AuthIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
@@ -462,6 +561,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
+<<<<<<< HEAD
   '/profile': typeof AuthenticatedProfileRoute
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -507,10 +607,25 @@ export interface FileRoutesByTo {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  '/premium': typeof AuthenticatedPremiumRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/shared': typeof AuthenticatedSharedRoute
+  '/transactions': typeof AuthenticatedTransactionsRoute
+  '/trash': typeof AuthenticatedTrashRoute
+  '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
+  '/admin_panel/files': typeof Admin_panelFilesRoute
+  '/admin_panel/premium': typeof Admin_panelPremiumRoute
+  '/admin_panel/profile': typeof Admin_panelProfileRoute
+  '/admin_panel/report_history': typeof Admin_panelReport_historyRoute
+  '/admin_panel/trash': typeof Admin_panelTrashRoute
+  '/admin_panel/users': typeof Admin_panelUsersRoute
+>>>>>>> origin/Flashcars
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -531,6 +646,9 @@ export interface FileRoutesByTo {
 =======
   '/admin_panel': typeof Admin_panelIndexRoute
 >>>>>>> origin/admin-added-fix
+=======
+  '/admin_panel': typeof Admin_panelIndexRoute
+>>>>>>> origin/Flashcars
   '/auth': typeof AuthIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
@@ -544,6 +662,7 @@ export interface FileRoutesById {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/admin-added
@@ -559,6 +678,9 @@ export interface FileRoutesById {
 =======
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/admin-added-fix
+=======
+  '/admin_panel': typeof Admin_panelRouteRouteWithChildren
+>>>>>>> origin/Flashcars
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -567,6 +689,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/_authenticated/folders': typeof AuthenticatedFoldersRouteWithChildren
+<<<<<<< HEAD
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -612,10 +735,25 @@ export interface FileRoutesById {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  '/_authenticated/premium': typeof AuthenticatedPremiumRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/shared': typeof AuthenticatedSharedRoute
+  '/_authenticated/transactions': typeof AuthenticatedTransactionsRoute
+  '/_authenticated/trash': typeof AuthenticatedTrashRoute
+  '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
+  '/admin_panel/files': typeof Admin_panelFilesRoute
+  '/admin_panel/premium': typeof Admin_panelPremiumRoute
+  '/admin_panel/profile': typeof Admin_panelProfileRoute
+  '/admin_panel/report_history': typeof Admin_panelReport_historyRoute
+  '/admin_panel/trash': typeof Admin_panelTrashRoute
+  '/admin_panel/users': typeof Admin_panelUsersRoute
+>>>>>>> origin/Flashcars
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -636,6 +774,9 @@ export interface FileRoutesById {
 =======
   '/admin_panel/': typeof Admin_panelIndexRoute
 >>>>>>> origin/admin-added-fix
+=======
+  '/admin_panel/': typeof Admin_panelIndexRoute
+>>>>>>> origin/Flashcars
   '/auth/': typeof AuthIndexRoute
   '/_authenticated/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/_authenticated/folders/$id': typeof AuthenticatedFoldersIdRoute
@@ -649,6 +790,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/admin_panel'
 >>>>>>> origin/admin-added
@@ -664,6 +806,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel'
 >>>>>>> origin/admin-added-fix
+=======
+    | '/admin_panel'
+>>>>>>> origin/Flashcars
     | '/auth'
     | '/oauth-success'
     | '/admin'
@@ -672,6 +817,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documents'
     | '/folders'
+<<<<<<< HEAD
     | '/profile'
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -717,10 +863,25 @@ export interface FileRouteTypes {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+    | '/premium'
+    | '/profile'
+    | '/shared'
+    | '/transactions'
+    | '/trash'
+    | '/admin_panel/approvals'
+    | '/admin_panel/files'
+    | '/admin_panel/premium'
+    | '/admin_panel/profile'
+    | '/admin_panel/report_history'
+    | '/admin_panel/trash'
+    | '/admin_panel/users'
+>>>>>>> origin/Flashcars
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -741,6 +902,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel/'
 >>>>>>> origin/admin-added-fix
+=======
+    | '/admin_panel/'
+>>>>>>> origin/Flashcars
     | '/auth/'
     | '/documents/$id'
     | '/folders/$id'
@@ -754,6 +918,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/documents'
     | '/folders'
+<<<<<<< HEAD
     | '/profile'
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -799,10 +964,25 @@ export interface FileRouteTypes {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+    | '/premium'
+    | '/profile'
+    | '/shared'
+    | '/transactions'
+    | '/trash'
+    | '/admin_panel/approvals'
+    | '/admin_panel/files'
+    | '/admin_panel/premium'
+    | '/admin_panel/profile'
+    | '/admin_panel/report_history'
+    | '/admin_panel/trash'
+    | '/admin_panel/users'
+>>>>>>> origin/Flashcars
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -823,6 +1003,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel'
 >>>>>>> origin/admin-added-fix
+=======
+    | '/admin_panel'
+>>>>>>> origin/Flashcars
     | '/auth'
     | '/documents/$id'
     | '/folders/$id'
@@ -835,6 +1018,7 @@ export interface FileRouteTypes {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/admin_panel'
 >>>>>>> origin/admin-added
@@ -850,6 +1034,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel'
 >>>>>>> origin/admin-added-fix
+=======
+    | '/admin_panel'
+>>>>>>> origin/Flashcars
     | '/auth'
     | '/oauth-success'
     | '/_authenticated/admin'
@@ -858,6 +1045,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/documents'
     | '/_authenticated/folders'
+<<<<<<< HEAD
     | '/_authenticated/profile'
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -903,10 +1091,25 @@ export interface FileRouteTypes {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+    | '/_authenticated/premium'
+    | '/_authenticated/profile'
+    | '/_authenticated/shared'
+    | '/_authenticated/transactions'
+    | '/_authenticated/trash'
+    | '/admin_panel/approvals'
+    | '/admin_panel/files'
+    | '/admin_panel/premium'
+    | '/admin_panel/profile'
+    | '/admin_panel/report_history'
+    | '/admin_panel/trash'
+    | '/admin_panel/users'
+>>>>>>> origin/Flashcars
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -927,6 +1130,9 @@ export interface FileRouteTypes {
 =======
     | '/admin_panel/'
 >>>>>>> origin/admin-added-fix
+=======
+    | '/admin_panel/'
+>>>>>>> origin/Flashcars
     | '/auth/'
     | '/_authenticated/documents/$id'
     | '/_authenticated/folders/$id'
@@ -940,6 +1146,7 @@ export interface RootRouteChildren {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   Admin_panelRouteRoute: typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/admin-added
@@ -955,6 +1162,9 @@ export interface RootRouteChildren {
 =======
   Admin_panelRouteRoute: typeof Admin_panelRouteRouteWithChildren
 >>>>>>> origin/admin-added-fix
+=======
+  Admin_panelRouteRoute: typeof Admin_panelRouteRouteWithChildren
+>>>>>>> origin/Flashcars
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   OauthSuccessRoute: typeof OauthSuccessRoute
 }
@@ -980,6 +1190,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -989,6 +1200,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     '/admin_panel': {
       id: '/admin_panel'
       path: '/admin_panel'
@@ -996,6 +1209,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Admin_panelRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1009,6 +1223,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -1035,6 +1251,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -1044,6 +1261,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     '/admin_panel/': {
       id: '/admin_panel/'
       path: '/'
@@ -1051,6 +1270,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Admin_panelIndexRouteImport
       parentRoute: typeof Admin_panelRouteRoute
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1064,6 +1284,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     '/auth/reset-password': {
       id: '/auth/reset-password'
       path: '/reset-password'
@@ -1097,6 +1319,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
@@ -1106,6 +1329,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     '/admin_panel/users': {
       id: '/admin_panel/users'
       path: '/users'
@@ -1120,6 +1345,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Admin_panelTrashRouteImport
       parentRoute: typeof Admin_panelRouteRoute
     }
+<<<<<<< HEAD
+=======
+    '/admin_panel/report_history': {
+      id: '/admin_panel/report_history'
+      path: '/report_history'
+      fullPath: '/admin_panel/report_history'
+      preLoaderRoute: typeof Admin_panelReport_historyRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+>>>>>>> origin/Flashcars
     '/admin_panel/profile': {
       id: '/admin_panel/profile'
       path: '/profile'
@@ -1127,6 +1362,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Admin_panelProfileRouteImport
       parentRoute: typeof Admin_panelRouteRoute
     }
+<<<<<<< HEAD
+=======
+    '/admin_panel/premium': {
+      id: '/admin_panel/premium'
+      path: '/premium'
+      fullPath: '/admin_panel/premium'
+      preLoaderRoute: typeof Admin_panelPremiumRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+>>>>>>> origin/Flashcars
     '/admin_panel/files': {
       id: '/admin_panel/files'
       path: '/files'
@@ -1145,6 +1390,7 @@ declare module '@tanstack/react-router' {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
@@ -1154,6 +1400,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     '/_authenticated/trash': {
       id: '/_authenticated/trash'
       path: '/trash'
@@ -1161,6 +1409,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTrashRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+<<<<<<< HEAD
+=======
+    '/_authenticated/transactions': {
+      id: '/_authenticated/transactions'
+      path: '/transactions'
+      fullPath: '/transactions'
+      preLoaderRoute: typeof AuthenticatedTransactionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+>>>>>>> origin/Flashcars
     '/_authenticated/shared': {
       id: '/_authenticated/shared'
       path: '/shared'
@@ -1168,6 +1426,7 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSharedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1199,6 +1458,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -1206,6 +1467,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+<<<<<<< HEAD
+=======
+    '/_authenticated/premium': {
+      id: '/_authenticated/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof AuthenticatedPremiumRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+>>>>>>> origin/Flashcars
     '/_authenticated/folders': {
       id: '/_authenticated/folders'
       path: '/folders'
@@ -1297,6 +1568,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRouteWithChildren
   AuthenticatedFoldersRoute: typeof AuthenticatedFoldersRouteWithChildren
+<<<<<<< HEAD
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1322,6 +1594,12 @@ interface AuthenticatedRouteRouteChildren {
 =======
 >>>>>>> origin/admin-added-fix
   AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
+=======
+  AuthenticatedPremiumRoute: typeof AuthenticatedPremiumRoute
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
+  AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRoute
+>>>>>>> origin/Flashcars
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
 }
 
@@ -1332,6 +1610,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDocumentsRoute: AuthenticatedDocumentsRouteWithChildren,
   AuthenticatedFoldersRoute: AuthenticatedFoldersRouteWithChildren,
+<<<<<<< HEAD
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1357,12 +1636,19 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 =======
 >>>>>>> origin/admin-added-fix
   AuthenticatedSharedRoute: AuthenticatedSharedRoute,
+=======
+  AuthenticatedPremiumRoute: AuthenticatedPremiumRoute,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedSharedRoute: AuthenticatedSharedRoute,
+  AuthenticatedTransactionsRoute: AuthenticatedTransactionsRoute,
+>>>>>>> origin/Flashcars
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1381,6 +1667,14 @@ interface Admin_panelRouteRouteChildren {
   Admin_panelApprovalsRoute: typeof Admin_panelApprovalsRoute
   Admin_panelFilesRoute: typeof Admin_panelFilesRoute
   Admin_panelProfileRoute: typeof Admin_panelProfileRoute
+=======
+interface Admin_panelRouteRouteChildren {
+  Admin_panelApprovalsRoute: typeof Admin_panelApprovalsRoute
+  Admin_panelFilesRoute: typeof Admin_panelFilesRoute
+  Admin_panelPremiumRoute: typeof Admin_panelPremiumRoute
+  Admin_panelProfileRoute: typeof Admin_panelProfileRoute
+  Admin_panelReport_historyRoute: typeof Admin_panelReport_historyRoute
+>>>>>>> origin/Flashcars
   Admin_panelTrashRoute: typeof Admin_panelTrashRoute
   Admin_panelUsersRoute: typeof Admin_panelUsersRoute
   Admin_panelIndexRoute: typeof Admin_panelIndexRoute
@@ -1389,7 +1683,13 @@ interface Admin_panelRouteRouteChildren {
 const Admin_panelRouteRouteChildren: Admin_panelRouteRouteChildren = {
   Admin_panelApprovalsRoute: Admin_panelApprovalsRoute,
   Admin_panelFilesRoute: Admin_panelFilesRoute,
+<<<<<<< HEAD
   Admin_panelProfileRoute: Admin_panelProfileRoute,
+=======
+  Admin_panelPremiumRoute: Admin_panelPremiumRoute,
+  Admin_panelProfileRoute: Admin_panelProfileRoute,
+  Admin_panelReport_historyRoute: Admin_panelReport_historyRoute,
+>>>>>>> origin/Flashcars
   Admin_panelTrashRoute: Admin_panelTrashRoute,
   Admin_panelUsersRoute: Admin_panelUsersRoute,
   Admin_panelIndexRoute: Admin_panelIndexRoute,
@@ -1398,6 +1698,7 @@ const Admin_panelRouteRouteChildren: Admin_panelRouteRouteChildren = {
 const Admin_panelRouteRouteWithChildren =
   Admin_panelRouteRoute._addFileChildren(Admin_panelRouteRouteChildren)
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1411,6 +1712,8 @@ const Admin_panelRouteRouteWithChildren =
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 interface AuthRouteRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
@@ -1439,6 +1742,7 @@ const rootRouteChildren: RootRouteChildren = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   Admin_panelRouteRoute: Admin_panelRouteRouteWithChildren,
 >>>>>>> origin/admin-added
@@ -1454,6 +1758,9 @@ const rootRouteChildren: RootRouteChildren = {
 =======
   Admin_panelRouteRoute: Admin_panelRouteRouteWithChildren,
 >>>>>>> origin/admin-added-fix
+=======
+  Admin_panelRouteRoute: Admin_panelRouteRouteWithChildren,
+>>>>>>> origin/Flashcars
   AuthRouteRoute: AuthRouteRouteWithChildren,
   OauthSuccessRoute: OauthSuccessRoute,
 }
@@ -1461,6 +1768,7 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1488,6 +1796,10 @@ import type { startInstance } from './D:/OneDrive/Documents/GitHub/ai-study-hub-
 import type { getRouter } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/router.tsx'
 import type { startInstance } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/start.ts'
 >>>>>>> origin/admin-added-fix
+=======
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+>>>>>>> origin/Flashcars
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true

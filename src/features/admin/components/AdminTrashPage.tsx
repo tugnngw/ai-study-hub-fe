@@ -3,14 +3,32 @@ import React, { useState } from "react";
 import { toast } from "sonner";
 import { FileText, RotateCcw, Trash2, Info } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+<<<<<<< HEAD
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+=======
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+>>>>>>> origin/Flashcars
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import {
+<<<<<<< HEAD
   useDeletedFiles, useDeletedAccounts, usePermanentDelete, useRestoreItem,
+=======
+  useDeletedFiles,
+  useDeletedAccounts,
+  usePermanentDelete,
+  useRestoreItem,
+>>>>>>> origin/Flashcars
 } from "../hooks";
 import type { TrashItemType, TrashAction } from "../types/admin.types";
 
@@ -21,7 +39,11 @@ function CountdownBadge({ days }: { days: number }) {
       className={cn(
         days <= 5
           ? "bg-destructive/10 text-destructive"
+<<<<<<< HEAD
           : "bg-amber-500/10 text-amber-600"
+=======
+          : "bg-amber-500/10 text-amber-600",
+>>>>>>> origin/Flashcars
       )}
     >
       {days} ngày
@@ -39,15 +61,35 @@ export const AdminTrashPage: React.FC = () => {
   const handleAction = (id: number, type: TrashItemType, act: TrashAction) => {
     if (act === "delete") {
       if (!window.confirm("Xóa vĩnh viễn mục này?")) return;
+<<<<<<< HEAD
       permanentDelete.mutate({ id, type }, { onSuccess: () => toast.success("Đã xóa vĩnh viễn") });
     } else {
       restoreItem.mutate({ id, type }, { onSuccess: () => toast.success("Đã khôi phục") });
+=======
+      permanentDelete.mutate(
+        { id, type },
+        { onSuccess: () => toast.success("Đã xóa vĩnh viễn") },
+      );
+    } else {
+      restoreItem.mutate(
+        { id, type },
+        { onSuccess: () => toast.success("Đã khôi phục") },
+      );
+>>>>>>> origin/Flashcars
     }
   };
 
   const ActionButtons = ({ id, type }: { id: number; type: TrashItemType }) => (
     <div className="flex justify-end gap-2">
+<<<<<<< HEAD
       <Button variant="outline" size="sm" onClick={() => handleAction(id, type, "restore")}>
+=======
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => handleAction(id, type, "restore")}
+      >
+>>>>>>> origin/Flashcars
         <RotateCcw /> Khôi phục
       </Button>
       <Button
@@ -64,14 +106,30 @@ export const AdminTrashPage: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
+<<<<<<< HEAD
         <h1 className="text-2xl font-bold tracking-tight font-display">Thùng rác</h1>
         <p className="text-muted-foreground mt-1 text-sm">Khôi phục hoặc xóa vĩnh viễn các mục đã xóa</p>
+=======
+        <h1 className="text-2xl font-bold tracking-tight font-display">
+          Thùng rác
+        </h1>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Khôi phục hoặc xóa vĩnh viễn các mục đã xóa
+        </p>
+>>>>>>> origin/Flashcars
       </div>
 
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
           <CardTitle className="text-base">Thùng rác</CardTitle>
+<<<<<<< HEAD
           <Tabs value={subTab} onValueChange={(v) => setSubTab(v as TrashItemType)}>
+=======
+          <Tabs
+            value={subTab}
+            onValueChange={(v) => setSubTab(v as TrashItemType)}
+          >
+>>>>>>> origin/Flashcars
             <TabsList>
               <TabsTrigger value="file">File</TabsTrigger>
               <TabsTrigger value="account">Tài khoản</TabsTrigger>
@@ -93,7 +151,14 @@ export const AdminTrashPage: React.FC = () => {
                 <TableBody>
                   {delFiles.length === 0 ? (
                     <TableRow>
+<<<<<<< HEAD
                       <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+=======
+                      <TableCell
+                        colSpan={4}
+                        className="h-24 text-center text-muted-foreground"
+                      >
+>>>>>>> origin/Flashcars
                         Thùng rác trống
                       </TableCell>
                     </TableRow>
@@ -105,12 +170,29 @@ export const AdminTrashPage: React.FC = () => {
                             <div className="h-9 w-9 rounded-lg bg-muted text-muted-foreground flex items-center justify-center shrink-0">
                               <FileText className="h-4 w-4" />
                             </div>
+<<<<<<< HEAD
                             <span className="font-medium truncate">{f.name}</span>
                           </div>
                         </TableCell>
                         <TableCell className="text-muted-foreground">{f.deletedDate}</TableCell>
                         <TableCell><CountdownBadge days={f.remainingDays} /></TableCell>
                         <TableCell className="text-right"><ActionButtons id={f.id} type="file" /></TableCell>
+=======
+                            <span className="font-medium truncate">
+                              {f.name}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {f.deletedDate}
+                        </TableCell>
+                        <TableCell>
+                          <CountdownBadge days={f.remainingDays} />
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <ActionButtons id={f.id} type="file" />
+                        </TableCell>
+>>>>>>> origin/Flashcars
                       </TableRow>
                     ))
                   )}
@@ -131,7 +213,14 @@ export const AdminTrashPage: React.FC = () => {
                 <TableBody>
                   {delAccs.length === 0 ? (
                     <TableRow>
+<<<<<<< HEAD
                       <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+=======
+                      <TableCell
+                        colSpan={4}
+                        className="h-24 text-center text-muted-foreground"
+                      >
+>>>>>>> origin/Flashcars
                         Thùng rác trống
                       </TableCell>
                     </TableRow>
@@ -141,6 +230,7 @@ export const AdminTrashPage: React.FC = () => {
                         <TableCell>
                           <div className="flex items-center gap-3 min-w-0">
                             <Avatar className="h-9 w-9">
+<<<<<<< HEAD
                               <AvatarFallback className="bg-muted text-sm">{a.name.charAt(0)}</AvatarFallback>
                             </Avatar>
                             <span className="font-medium truncate">{a.name}</span>
@@ -149,6 +239,26 @@ export const AdminTrashPage: React.FC = () => {
                         <TableCell className="text-muted-foreground">{a.email}</TableCell>
                         <TableCell><CountdownBadge days={a.remainingDays} /></TableCell>
                         <TableCell className="text-right"><ActionButtons id={a.id} type="account" /></TableCell>
+=======
+                              <AvatarFallback className="bg-muted text-sm">
+                                {a.name.charAt(0)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <span className="font-medium truncate">
+                              {a.name}
+                            </span>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {a.email}
+                        </TableCell>
+                        <TableCell>
+                          <CountdownBadge days={a.remainingDays} />
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <ActionButtons id={a.id} type="account" />
+                        </TableCell>
+>>>>>>> origin/Flashcars
                       </TableRow>
                     ))
                   )}

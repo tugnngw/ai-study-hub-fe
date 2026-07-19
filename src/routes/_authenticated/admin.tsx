@@ -23,6 +23,9 @@ export const Route = createFileRoute("/_authenticated/admin")({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/Flashcars
 const MOCK_SESSIONS = [
   {
     id: "1",
@@ -47,16 +50,20 @@ const MOCK_SESSIONS = [
   },
 ];
 
+<<<<<<< HEAD
 =======
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 function SettingsPage() {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const [twoFA, setTwoFA] = useState(false);
   const [twoFAOpen, setTwoFAOpen] = useState(false);
   const [pwdOpen, setPwdOpen] = useState(false);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   const [sessions, setSessions] = useState(MOCK_SESSIONS);
@@ -72,6 +79,9 @@ function SettingsPage() {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  const [sessions, setSessions] = useState(MOCK_SESSIONS);
+>>>>>>> origin/Flashcars
 
   const [pwd, setPwd] = useState({ current: "", next: "", confirm: "" });
 
@@ -169,6 +179,7 @@ function SettingsPage() {
         <CardContent className="space-y-2">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           {sessions.map((s) => (
 =======
 =======
@@ -183,6 +194,9 @@ function SettingsPage() {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+          {sessions.map((s) => (
+>>>>>>> origin/Flashcars
             <div
               key={s.id}
               className="flex items-center justify-between p-3 rounded-md border border-border"
@@ -222,6 +236,7 @@ function SettingsPage() {
             </div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           ))}
 =======
             ))
@@ -231,6 +246,9 @@ function SettingsPage() {
             ))
           )}
 >>>>>>> origin/admin-added-fix
+=======
+          ))}
+>>>>>>> origin/Flashcars
         </CardContent>
       </Card>
 

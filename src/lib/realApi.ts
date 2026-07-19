@@ -7,6 +7,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // realApi.ts — Real API calls, 1-1 mapping với BE endpoints
 // =============================================================
@@ -97,6 +98,17 @@ import type {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+// src/lib/realApi.ts
+import { api } from "./api";
+import { tokenStore } from "./api";
+import type {
+  User,
+  LoginRequest,
+  AuthResponse,
+  RefreshResponse,
+  RegisterRequest,
+>>>>>>> origin/Flashcars
   Folder,
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -104,6 +116,7 @@ import type {
   UploadDocumentRequest,
   UpdateDocumentRequest,
   DownloadUrlResponse,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -151,12 +164,17 @@ import type {
   ShareResponse,
   ShareRequest,
 >>>>>>> origin/admin-added-fix
+=======
+  ShareResponse,
+  ShareRequest,
+>>>>>>> origin/Flashcars
   AskRequest,
   AskResponse,
   ReportDocumentRequest,
   Quiz,
   Flashcard,
   FlashcardProgress,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -200,12 +218,17 @@ import type { QuizItem } from "@/features/quiz/types/quiz.types";
 } from "./types";
 import type { QuizItem } from "@/features/quiz/types/quiz.types";
 >>>>>>> origin/admin-added-fix
+=======
+} from "./types";
+import type { QuizItem } from "@/features/quiz/types/quiz.types";
+>>>>>>> origin/Flashcars
 
 // ================================================================
 // AUTH  →  /api/auth
 // ================================================================
 
 export const authApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -320,12 +343,43 @@ export const authApi = {
       method: "POST",
       body: { refreshToken: tokenStore.getRefresh() },
     }),
+=======
+  register: (data: RegisterRequest): Promise<AuthResponse> =>
+      api<AuthResponse>("/api/auth/register", { method: "POST", body: data }),
+
+  login: async (data: LoginRequest): Promise<AuthResponse> => {
+    const res = await api<AuthResponse>("/api/auth/login", {
+      method: "POST",
+      body: data,
+    });
+
+    const token = res?.accessToken;
+    const refreshToken = res?.refreshToken;
+
+    if (token) {
+      tokenStore.set(token);
+    }
+
+    if (refreshToken) {
+      tokenStore.setRefresh(refreshToken);
+    }
+
+    return res;
+  },
+
+  refresh: (): Promise<RefreshResponse> =>
+      api<RefreshResponse>("/api/auth/refresh", {
+        method: "POST",
+        body: { refreshToken: tokenStore.getRefresh() },
+      }),
+>>>>>>> origin/Flashcars
 
   logout: async (): Promise<void> => {
     await api("/api/auth/logout", { method: "POST" }).catch(() => {});
     tokenStore.clear();
   },
 
+<<<<<<< HEAD
   // Password reset flow
   requestPasswordReset: (email: string) =>
     api<void>("/api/auth/request-reset", { method: "POST", body: { email } }),
@@ -361,6 +415,17 @@ export const authApi = {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  requestPasswordReset: (email: string): Promise<void> =>
+      api<void>("/api/auth/request-reset", { method: "POST", body: { email } }),
+  verifyResetOtp: (email: string, otp: string): Promise<void> =>
+      api<void>("/api/auth/verify-otp", { method: "POST", body: { email, otp } }),
+  resetPassword: (email: string, newPassword: string): Promise<void> =>
+      api<void>("/api/auth/reset-password", {
+        method: "POST",
+        body: { email, password: newPassword },
+      }),
+>>>>>>> origin/Flashcars
 };
 
 // ================================================================
@@ -368,6 +433,7 @@ export const authApi = {
 // ================================================================
 
 export const accountApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -470,6 +536,9 @@ export const subjectApi = {
 =======
   me: () => api<User>("/api/account/me"),
 >>>>>>> origin/admin-added-fix
+=======
+  me: (): Promise<User> => api<User>("/api/account/me"),
+>>>>>>> origin/Flashcars
 };
 
 // ================================================================
@@ -477,6 +546,7 @@ export const subjectApi = {
 // ================================================================
 
 export const folderApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -553,6 +623,17 @@ export const folderApi = {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  list: (): Promise<Folder[]> => api<Folder[]>("/api/folder/getall"),
+  getById: (id: string): Promise<Folder> =>
+      api<Folder>(`/api/folder/getbyid/${id}`),
+  create: (body: CreateFolderRequest): Promise<Folder> =>
+      api<Folder>("/api/folder/create", { method: "POST", body }),
+  update: (id: string, body: UpdateFolderRequest): Promise<Folder> =>
+      api<Folder>(`/api/folder/update/${id}`, { method: "PUT", body }),
+  delete: (id: string): Promise<void> =>
+      api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
+>>>>>>> origin/Flashcars
 };
 
 // ================================================================
@@ -560,6 +641,7 @@ export const folderApi = {
 // ================================================================
 
 export const documentApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -714,6 +796,17 @@ export const shareApi = {
   upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
     const fd = new FormData();
     fd.append("files", input.file); // <-- file -> files
+=======
+  list: (): Promise<Document[]> => api<Document[]>("/api/documents"),
+  listByFolder: (folderId: string): Promise<Document[]> =>
+      api<Document[]>(`/api/documents/folder/${folderId}`),
+  getById: (id: string): Promise<Document> =>
+      api<Document>(`/api/documents/${id}`),
+
+  upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
+    const fd = new FormData();
+    fd.append("files", input.file);
+>>>>>>> origin/Flashcars
     fd.append("title", input.title);
     if (input.description) {
       fd.append("description", input.description);
@@ -724,6 +817,7 @@ export const shareApi = {
     if (input.subjectId) {
       fd.append("subjectId", String(input.subjectId));
     }
+<<<<<<< HEAD
     return api<Document[]>(
       "/api/documents",
       {
@@ -850,6 +944,29 @@ export const shareApi = {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+    return api<Document[]>("/api/documents", {
+      method: "POST",
+      formData: fd,
+    });
+  },
+
+  update: (id: string, body: UpdateDocumentRequest): Promise<Document> =>
+      api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
+
+  delete: (id: string): Promise<void> =>
+      api<void>(`/api/documents/${id}`, { method: "DELETE" }),
+
+  getDownloadUrl: (id: string): Promise<DownloadUrlResponse> =>
+      api<DownloadUrlResponse>(`/api/documents/${id}/download`),
+
+  listTrash: (): Promise<Document[]> =>
+      api<Document[]>("/api/documents/trash"),
+  restoreFromTrash: (id: string): Promise<void> =>
+      api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
+  emptyTrash: (id: string): Promise<void> =>
+      api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+>>>>>>> origin/Flashcars
 };
 
 // ================================================================
@@ -857,6 +974,7 @@ export const shareApi = {
 // ================================================================
 
 export const ragApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1002,10 +1120,30 @@ export const quizApi = {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  processDocument: (documentId: string): Promise<void> =>
+      api<void>(`/api/v1/rag/process/${documentId}`, { method: "POST" }),
+
+  getDocumentStatus: (documentId: string): Promise<{ documentId: string; status: string }> =>
+      api<{ documentId: string; status: string }>(`/api/v1/rag/status/${documentId}`),
+
+  upload: (file: File, documentId: string): Promise<void> => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("documentId", documentId);
+    return api<void>("/api/rag/upload", { method: "POST", formData: fd });
+  },
+
+  uploadAndChunk: (file: File, documentId: string): Promise<void> => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("documentId", documentId);
+>>>>>>> origin/Flashcars
     return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
   },
 
   ask: (input: AskRequest): Promise<AskResponse> =>
+<<<<<<< HEAD
     api<AskResponse>("/api/rag/ask", {
       method: "POST",
       body: { id: input.id, question: input.question },
@@ -1157,6 +1295,37 @@ export const shareApi = {
       method: "POST",
       body: { reason: body.reason, description: body.description },
     }),
+=======
+      api<AskResponse>("/api/rag/ask", {
+        method: "POST",
+        body: { id: input.id, question: input.question },
+      }),
+};
+
+// ================================================================
+// SHARE  →  /api/shares
+// ================================================================
+
+export const shareApi = {
+  listOwned: (): Promise<ShareResponse[]> =>
+      api<ShareResponse[]>("/api/shares/owner"),
+  listSharedWithMe: (): Promise<ShareResponse[]> =>
+      api<ShareResponse[]>("/api/shares/shared-with-me"),
+  shareFolder: (request: ShareRequest): Promise<ShareResponse> =>
+      api<ShareResponse>("/api/shares", { method: "POST", body: request }),
+  removeShare: (shareId: string): Promise<void> =>
+      api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
+  saveToMyFolder: (shareId: string, folderId: string, title: string, description?: string): Promise<ShareResponse> =>
+      api<ShareResponse>(`/api/shares/${shareId}/save`, {
+        method: "POST",
+        body: { folderId, title, description },
+      }),
+  report: (body: ReportDocumentRequest): Promise<void> =>
+      api<void>(`/api/reports`, {
+        method: "POST",
+        body: { documentId: body.id, reason: body.reason, description: body.description },
+      }),
+>>>>>>> origin/Flashcars
 };
 
 // ================================================================
@@ -1164,6 +1333,7 @@ export const shareApi = {
 // ================================================================
 
 export const quizApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1272,10 +1442,28 @@ export const flashcardApi = {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+  listByDocument: (documentId: string): Promise<Quiz[]> =>
+      api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
+  generate: (documentId: string, questionCount = 10): Promise<Quiz> =>
+      api<Quiz>("/api/quiz/generate", {
+        method: "POST",
+        body: { documentId, questionCount },
+      }),
+  generateAdvanced: (body: {
+    scope: "all" | string;
+    types: string[];
+    questionCount: number;
+  }): Promise<QuizItem[]> => api<QuizItem[]>("/api/quiz/generate", { method: "POST", body }),
+};
+
+// ================================================================
+>>>>>>> origin/Flashcars
 // FLASHCARD  →  /api/flashcard
 // ================================================================
 
 export const flashcardApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1388,3 +1576,18 @@ export const flashcardApi = {
       body: { status },
     }),
 };
+=======
+  listByDocument: (documentId: string): Promise<Flashcard[]> =>
+      api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
+  generate: (documentId: string): Promise<Flashcard[]> =>
+      api<Flashcard[]>("/api/flashcard/generate", {
+        method: "POST",
+        body: { documentId },
+      }),
+  updateProgress: (flashcardId: string, status: FlashcardProgress["status"]): Promise<FlashcardProgress> =>
+      api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
+        method: "PUT",
+        body: { status },
+      }),
+};
+>>>>>>> origin/Flashcars

@@ -11,6 +11,7 @@ import { useAuth } from "@/lib/auth";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { tokenStore } from "@/lib/api"; // Import tokenStore
 =======
 >>>>>>> origin/test/share-document-cloudinary
@@ -31,6 +32,8 @@ import { tokenStore } from "@/lib/api"; // Import tokenStore
 =======
 import { tokenStore } from "@/lib/api"; // Import tokenStore
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 
 export const Route = createFileRoute("/oauth-success")({
   component: OAuthSuccessPage,
@@ -38,6 +41,7 @@ export const Route = createFileRoute("/oauth-success")({
 
 function OAuthSuccessPage() {
   const navigate = useNavigate();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -99,6 +103,8 @@ function OAuthSuccessPage() {
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
   const { refresh } = useAuth();
   const processed = useRef(false);
 
@@ -116,6 +122,7 @@ function OAuthSuccessPage() {
       if (!token) {
         console.log("📱 OAuthSuccessPage: NO TOKEN, redirecting to /auth/login");
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
@@ -129,10 +136,13 @@ function OAuthSuccessPage() {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
         navigate({ to: "/auth/login", replace: true });
         return;
       }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -178,6 +188,8 @@ function OAuthSuccessPage() {
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
       console.log("📱 OAuthSuccessPage: SAVING token to localStorage");
       localStorage.setItem("auth_token", token);
 
@@ -194,6 +206,7 @@ function OAuthSuccessPage() {
       navigate({
         to: "/dashboard",
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
@@ -207,11 +220,14 @@ function OAuthSuccessPage() {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
         replace: true,
       });
     };
 
     handleOAuth();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -251,5 +267,17 @@ function OAuthSuccessPage() {
         <p className="text-sm text-muted-foreground">Đang xử lý đăng nhập...</p>
       </div>
     </div>
+=======
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary" />
+          <p className="text-sm text-muted-foreground">Đang xử lý đăng nhập...</p>
+        </div>
+      </div>
+>>>>>>> origin/Flashcars
   );
 }

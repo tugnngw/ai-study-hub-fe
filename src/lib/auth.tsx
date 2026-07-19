@@ -7,6 +7,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // auth.tsx — AuthContext. Gọi thẳng BE thật (không còn mock).
 // =============================================================
@@ -38,11 +39,15 @@
 =======
 // src/lib/auth.tsx
 >>>>>>> origin/admin-added-fix
+=======
+// src/lib/auth.tsx
+>>>>>>> origin/Flashcars
 import {
   createContext,
   useContext,
   useState,
   useEffect,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -104,10 +109,20 @@ const authSource = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+  useCallback,
+  type ReactNode,
+} from "react";
+import type { User, RegisterRequest, AuthResponse } from "./types";
+import { authApi, accountApi } from "./realApi";
+import { tokenStore } from "./api";
+
+>>>>>>> origin/Flashcars
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   login: (username: string, password: string) => Promise<User>;
@@ -150,6 +165,8 @@ interface AuthContextValue {
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
   login: (username: string, password: string) => Promise<void>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
@@ -157,6 +174,7 @@ interface AuthContextValue {
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
@@ -171,6 +189,8 @@ interface AuthContextValue {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -179,6 +199,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -323,12 +344,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const refreshToken = tokenStore.getRefresh(); // Lấy cả refresh token
 
       // Nếu không có cả hai token, user chưa đăng nhập
+=======
+  // --- Initial Auth Check ---
+  useEffect(() => {
+    const initializeAuth = async () => {
+      const accessToken = tokenStore.get();
+      const refreshToken = tokenStore.getRefresh();
+
+>>>>>>> origin/Flashcars
       if (!accessToken || !refreshToken) {
         setIsLoading(false);
         setUser(null);
         return;
       }
 
+<<<<<<< HEAD
       // Khi có token, thử fetch user info bằng access token hiện tại
       try {
         const u = await accountApi.me(); // Fetch user info
@@ -349,6 +379,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         } else {
           // Nếu lỗi khác không liên quan đến token hết hạn
           console.error("Error initializing auth:", err);
+=======
+      try {
+        const u = await accountApi.me();
+        setUser(u);
+      } catch (err: any) {
+        if (err?.status === 401 || err?.status === 403) {
+          try {
+            await refresh();
+            const u = await accountApi.me();
+            setUser(u);
+          } catch {
+            tokenStore.clear();
+            setUser(null);
+          }
+        } else {
+>>>>>>> origin/Flashcars
           setUser(null);
         }
       } finally {
@@ -357,6 +403,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     initializeAuth();
+<<<<<<< HEAD
   }, []); // Dependency array rỗng để chỉ chạy một lần khi mount
 
   // --- Periodically refresh token (every 10 min) ---
@@ -409,28 +456,83 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       tokenStore.setRefresh(res.refreshToken); // Lưu refresh token
 
       // Giả định User type từ res (cần định nghĩa hoặc lấy từ Resopnse type)
+=======
+  }, []);
+
+  // --- Periodically refresh token (every 10 min) ---
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (!tokenStore.get() || !tokenStore.getRefresh()) {
+        setUser(null);
+        clearInterval(interval);
+        return;
+      }
+      try {
+        const res = await authApi.refresh();
+        if (res?.accessToken && res.refreshToken) {
+          tokenStore.set(res.accessToken);
+          tokenStore.setRefresh(res.refreshToken);
+        } else {
+          tokenStore.clear();
+          setUser(null);
+        }
+      } catch {
+        tokenStore.clear();
+        setUser(null);
+      }
+    }, 10 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // --- Authentication Functions ---
+  const login = async (username: string, password: string) => {
+    // Clear old tokens
+    tokenStore.clear();
+
+    const res: AuthResponse = await authApi.login({ username, password });
+
+    const accessToken = res?.accessToken;
+    const refreshToken = res?.refreshToken;
+
+    if (accessToken && refreshToken) {
+      // Lưu token
+      tokenStore.set(accessToken);
+      tokenStore.setRefresh(refreshToken);
+
+>>>>>>> origin/Flashcars
       const userObj: User = {
         id: res.userId,
         username: res.username,
         email: res.email,
         fullName: res.fullName,
         role: res.role,
+<<<<<<< HEAD
         // Fallback defaults nếu backend không trả về đủ thông tin
+=======
+>>>>>>> origin/Flashcars
         status: "ACTIVE",
         authProvider: "LOCAL",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
       setUser(userObj);
+<<<<<<< HEAD
       console.log('Login successful. Tokens stored.');
+=======
+>>>>>>> origin/Flashcars
     } else {
       throw new Error("Login failed: Missing tokens from backend.");
     }
   };
 
   const register = async (data: RegisterRequest) => {
+<<<<<<< HEAD
     // Backend register trả về AuthResponse, cần lấy token từ đó
     const res = await authApi.register(data);
+=======
+    const res: AuthResponse = await authApi.register(data);
+>>>>>>> origin/Flashcars
     if (res?.accessToken && res.refreshToken) {
       tokenStore.set(res.accessToken);
       tokenStore.setRefresh(res.refreshToken);
@@ -446,13 +548,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         updatedAt: new Date().toISOString(),
       };
       setUser(userObj);
+<<<<<<< HEAD
       console.log('Registration successful. Tokens stored.');
+=======
+>>>>>>> origin/Flashcars
     } else {
       throw new Error("Registration failed: Missing tokens from backend.");
     }
   };
 
   const logout = async () => {
+<<<<<<< HEAD
     // Gọi logout API của backend để clear session/token trên server nếu cần
     try {
       await authApi.logout(); // Gọi API logout của backend
@@ -474,10 +580,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // IMPORTANT: Sử dụng window.location.href để hard reload, tránh state ghost
     if (typeof window !== 'undefined') {
       // Hard reload khi logout để reset all state
+=======
+    try {
+      await authApi.logout();
+    } catch {
+      // Ignore logout API error
+    }
+
+    tokenStore.clear();
+    setUser(null);
+
+    if (typeof window !== "undefined") {
+>>>>>>> origin/Flashcars
       window.location.href = "/auth/login";
     }
   };
 
+<<<<<<< HEAD
   // Hàm refresh này chủ yếu được gọi bởi setInterval hoặc khi có lỗi 401/403
   // Nó sẽ làm mới access token và refresh token nếu có thể
   // Wrap với useCallback để tránh dependency thay đổi trong oauth-success
@@ -485,10 +604,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const refreshToken = tokenStore.getRefresh();
     if (!refreshToken) {
       console.warn("No refresh token available. Cannot refresh access token.");
+=======
+  const refresh = useCallback(async () => {
+    const refreshToken = tokenStore.getRefresh();
+    if (!refreshToken) {
+>>>>>>> origin/Flashcars
       throw new Error("No refresh token available.");
     }
 
     try {
+<<<<<<< HEAD
       // Gọi API refresh token của backend
       // Backend sẽ trả về AuthResponse chứa accessToken và refreshToken mới
       const res = await authApi.refresh(); // authApi.refresh() sẽ sử dụng tokenStore.getRefresh() nội bộ
@@ -552,6 +677,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+      const res = await authApi.refresh();
+      if (res?.accessToken && res.refreshToken) {
+        tokenStore.set(res.accessToken);
+        tokenStore.setRefresh(res.refreshToken);
+
+        try {
+          const u = await accountApi.me();
+          setUser(u);
+        } catch {
+          // User fetch failed, but token is refreshed
+        }
+      } else {
+        throw new Error("Refresh failed: Backend response invalid.");
+      }
+    } catch (error) {
+      tokenStore.clear();
+      setUser(null);
+      throw error;
+    }
+  }, []);
+
+>>>>>>> origin/Flashcars
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
   };
@@ -562,6 +710,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resetPassword = async (email: string, password: string) => {
     await authApi.resetPassword(email, password);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -669,6 +818,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </AuthContext.Provider>
+=======
+  };
+
+  return (
+      <AuthContext.Provider
+          value={{
+            user,
+            isLoading,
+            isAuthenticated: !!user,
+            login,
+            register,
+            logout,
+            refresh,
+            requestPasswordReset,
+            verifyResetOtp,
+            resetPassword,
+          }}
+      >
+        {children}
+      </AuthContext.Provider>
+>>>>>>> origin/Flashcars
   );
 }
 
@@ -678,6 +848,7 @@ export function useAuth() {
   return ctx;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -707,3 +878,6 @@ export function useAuth() {
 =======
 >>>>>>> origin/admin-added-fix
 export type { RegisterRequest };
+=======
+export type { RegisterRequest };
+>>>>>>> origin/Flashcars

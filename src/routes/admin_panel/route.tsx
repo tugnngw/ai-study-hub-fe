@@ -31,5 +31,13 @@ function AdminLayoutRoute() {
     );
   }
   if (!isAuthenticated || !isAdmin) return null;
+<<<<<<< HEAD
   return <AdminShell><Outlet /></AdminShell>;
+=======
+  return (
+    <AdminShell>
+      <Outlet />
+    </AdminShell>
+  );
+>>>>>>> origin/Flashcars
 }

@@ -18,7 +18,11 @@ export function SharedDocumentActionsMenu({
   className,
   iconClassName,
 }: {
+<<<<<<< HEAD
   sharedId: number;
+=======
+  sharedId: string;
+>>>>>>> origin/Flashcars
   title: string;
   description?: string;
   className?: string;

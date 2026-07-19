@@ -10,6 +10,7 @@ import { toast } from "sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useShareDocument, useShareInfo } from "@/lib/queries";
 =======
 import { useShareFolder, useOwnedShares } from "@/lib/queries";
@@ -38,6 +39,9 @@ import { useShareFolder, useOwnedShares } from "@/lib/queries";
 =======
 import { useShareFolder, useOwnedShares } from "@/lib/queries";
 >>>>>>> origin/admin-added-fix
+=======
+import { useShareFolder, useOwnedShares } from "@/lib/queries";
+>>>>>>> origin/Flashcars
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -58,6 +62,7 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import type { ShareRecipient } from "@/lib/types";
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -85,10 +90,14 @@ import type { ShareRecipient } from "@/lib/types";
 =======
 import type { ShareRecipient } from "@/lib/types";
 >>>>>>> origin/admin-added-fix
+=======
+import type { ShareRecipient } from "@/lib/types";
+>>>>>>> origin/Flashcars
 
 export function ShareDocumentDialog({
   open,
   onOpenChange,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -146,6 +155,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   documentTitle,
   folderId,
 }: {
@@ -162,6 +173,7 @@ export function ShareDocumentDialog({
   useEffect(() => {
     if (!open) {
       setEmailOrUsername("");
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -185,10 +197,13 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
       setCopied(false);
     }
   }, [open]);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -230,6 +245,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   const link = `http://localhost:5174/shared/${folderId}`;
 
   const handleInvite = async () => {
@@ -244,6 +261,7 @@ export function ShareDocumentDialog({
         username: isEmail ? undefined : value,
       });
       setEmailOrUsername("");
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -267,6 +285,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
       toast.success(`Đã mời ${value}`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Mời thất bại");
@@ -297,6 +317,7 @@ export function ShareDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <DialogTitle className="truncate">Chia sẻ "{documentTitle}"</DialogTitle>
           <DialogDescription>Mời người khác xem hoặc sao chép liên kết chia sẻ.</DialogDescription>
 =======
@@ -316,12 +337,15 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
           <DialogTitle className="truncate">
             Chia sẻ "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
             Mời người khác xem hoặc sao chép liên kết chia sẻ.
           </DialogDescription>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -347,6 +371,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
         </DialogHeader>
 
         <div className="space-y-4">
@@ -354,6 +380,7 @@ export function ShareDocumentDialog({
             <Label>Mời người dùng</Label>
             <div className="flex gap-2">
               <Input
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -386,10 +413,13 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
                 type="text"
                 placeholder="email@example.com hoặc username"
                 value={emailOrUsername}
                 onChange={(e) => setEmailOrUsername(e.target.value)}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -413,6 +443,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
@@ -420,6 +452,7 @@ export function ShareDocumentDialog({
                   }
                 }}
               />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -443,10 +476,13 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
               <Button
                 onClick={handleInvite}
                 disabled={share.isPending || !emailOrUsername.trim()}
               >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -477,6 +513,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
                 {share.isPending ? "Đang mời..." : "Mời"}
               </Button>
             </div>
@@ -485,6 +523,7 @@ export function ShareDocumentDialog({
           <div className="space-y-2">
             <div className="flex items-center gap-1.5 text-sm font-medium">
               <Users className="h-4 w-4 text-muted-foreground" />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -547,11 +586,17 @@ export function ShareDocumentDialog({
             </div>
             {!shares || shares.length === 0 ? (
 >>>>>>> origin/admin-added-fix
+=======
+              Đã chia sẻ ({isLoading ? "..." : (shares?.length ?? 0)})
+            </div>
+            {!shares || shares.length === 0 ? (
+>>>>>>> origin/Flashcars
               <p className="text-sm text-muted-foreground">
                 Chưa chia sẻ với ai.
               </p>
             ) : (
               <ul className="space-y-1 max-h-32 overflow-y-auto">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -569,12 +614,15 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
                 {shares.map((s) => (
                   <li
                     key={s.id}
                     className="text-sm rounded-md bg-muted/50 px-2.5 py-1.5 truncate"
                   >
                     {s.sharedUsername ?? s.sharedEmail ?? "Unknown"}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -607,6 +655,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
                   </li>
                 ))}
               </ul>
@@ -617,6 +667,7 @@ export function ShareDocumentDialog({
             <Label>Liên kết chia sẻ</Label>
             <div className="flex gap-2">
               <Input value={link} readOnly className="text-muted-foreground" />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -645,6 +696,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
               <Button
                 variant="outline"
                 size="icon"
@@ -656,6 +709,7 @@ export function ShareDocumentDialog({
                 ) : (
                   <Copy className="h-4 w-4" />
                 )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -681,6 +735,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
               </Button>
             </div>
           </div>

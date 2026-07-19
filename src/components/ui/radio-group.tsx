@@ -17,6 +17,7 @@ const RadioGroup = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   return <RadioGroupPrimitive.Root className={cn("grid gap-2", className)} {...props} ref={ref} />;
 =======
 =======
@@ -35,6 +36,8 @@ const RadioGroup = React.forwardRef<
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   return (
     <RadioGroupPrimitive.Root
       className={cn("grid gap-2", className)}
@@ -42,6 +45,7 @@ const RadioGroup = React.forwardRef<
       ref={ref}
     />
   );
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -67,6 +71,8 @@ const RadioGroup = React.forwardRef<
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 });
 RadioGroup.displayName = RadioGroupPrimitive.Root.displayName;
 

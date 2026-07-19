@@ -16,7 +16,14 @@ const labels: Record<PlanId, string> = {
   PRO: "Pro",
 };
 
+<<<<<<< HEAD
 export const PlanBadge: React.FC<{ plan: PlanId; className?: string }> = ({ plan, className }) => (
+=======
+export const PlanBadge: React.FC<{ plan: PlanId; className?: string }> = ({
+  plan,
+  className,
+}) => (
+>>>>>>> origin/Flashcars
   <Badge variant="secondary" className={cn(styles[plan], className)}>
     {labels[plan]}
   </Badge>

@@ -3,7 +3,11 @@
 
 export interface Flashcard {
   id: number;
+<<<<<<< HEAD
   documentId: number;
+=======
+  documentId: string;
+>>>>>>> origin/Flashcars
   question: string;
   answer: string;
   createdAt: string;

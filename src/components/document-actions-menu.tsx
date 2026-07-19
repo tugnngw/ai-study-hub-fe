@@ -7,6 +7,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -49,6 +50,11 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff } from "lucide-react";
 >>>>>>> origin/admin-added-fix
+=======
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff } from "lucide-react";
+>>>>>>> origin/Flashcars
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -56,6 +62,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 import { useDeleteDocument } from "@/lib/queries";
@@ -88,6 +95,10 @@ import { usePinnedDocuments } from "@/lib/preferences";
 import { useDeleteDocument, useDownloadDocument } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 >>>>>>> origin/admin-added-fix
+=======
+import { useDeleteDocument, useDownloadDocument } from "@/lib/queries";
+import { usePinnedDocuments } from "@/lib/preferences";
+>>>>>>> origin/Flashcars
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 
@@ -98,6 +109,7 @@ export function DocumentActionsMenu({
   className,
   iconClassName,
 }: {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -144,6 +156,10 @@ export function DocumentActionsMenu({
   documentId: number;
   folderId: string;
 >>>>>>> origin/admin-added-fix
+=======
+  documentId: string;
+  folderId: string;
+>>>>>>> origin/Flashcars
   title: string;
   className?: string;
   iconClassName?: string;
@@ -152,19 +168,25 @@ export function DocumentActionsMenu({
   const del = useDeleteDocument();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   const [shareOpen, setShareOpen] = useState(false);
 =======
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   const download = useDownloadDocument();
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
   const pinned = isPinned(documentId);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   const [reportOpen, setReportOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
@@ -180,9 +202,12 @@ export function DocumentActionsMenu({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   const handleDownload = async () => {
     try {
       const res = await download.mutateAsync(documentId);
@@ -193,9 +218,12 @@ export function DocumentActionsMenu({
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   return (
     <>
       <DropdownMenu>
@@ -223,6 +251,7 @@ export function DocumentActionsMenu({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             onClick={() => navigate(`/aichat?folderId=${folderId}&docId=${documentId}`)}
 =======
 =======
@@ -241,12 +270,15 @@ export function DocumentActionsMenu({
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
             onClick={() =>
               navigate({
                 to: "/ai",
                 search: { folderId, docId: documentId },
               })
             }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -276,15 +308,20 @@ export function DocumentActionsMenu({
 =======
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>
           <DropdownMenuItem onClick={handleDownload} disabled={download.isPending}>
             <Download className="h-3.5 w-3.5 mr-2" /> Tải xuống
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setReportOpen(true)}>
             <Flag className="h-3.5 w-3.5 mr-2" /> Báo cáo
@@ -295,6 +332,7 @@ export function DocumentActionsMenu({
           >
             <Trash2 className="h-3.5 w-3.5 mr-2" /> Xóa
           </DropdownMenuItem>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         </DropdownMenuContent>
@@ -354,6 +392,8 @@ export function DocumentActionsMenu({
 =======
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
           <DropdownMenuItem
             onClick={() => {
               togglePin(documentId);
@@ -371,9 +411,12 @@ export function DocumentActionsMenu({
       </DropdownMenu>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
       <ReportDocumentDialog
         open={reportOpen}
         onOpenChange={setReportOpen}

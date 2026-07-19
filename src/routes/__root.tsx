@@ -15,12 +15,16 @@ import { AuthProvider } from "@/lib/auth";
 import { Toaster } from "@/components/ui/sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { ThemeProvider, themeInitScript } from "@/lib/theme";
 >>>>>>> origin/Flashcards-fix
 =======
 import { ThemeProvider, themeInitScript } from "@/lib/theme";
 >>>>>>> origin/admin-added-fix
+=======
+import { ThemeProvider, themeInitScript } from "@/lib/theme";
+>>>>>>> origin/Flashcars
 
 function NotFoundComponent() {
   return (
@@ -134,20 +138,26 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <html lang="en">
       <head>
         <HeadContent />
 =======
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
       </head>
       <body>
         {children}
@@ -166,6 +176,7 @@ function RootComponent() {
       <QueryClientProvider client={queryClient}>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <AuthProvider>
           <Outlet />
           <Toaster richColors position="top-right" />
@@ -173,6 +184,8 @@ function RootComponent() {
 =======
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
         <ThemeProvider>
           <AuthProvider>
             <Outlet />
@@ -180,9 +193,12 @@ function RootComponent() {
           </AuthProvider>
         </ThemeProvider>
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
       </QueryClientProvider>
     </ErrorBoundary>
   );

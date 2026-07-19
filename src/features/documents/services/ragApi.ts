@@ -5,6 +5,7 @@ import { api } from "@/lib/api";
 import type { AskRequest, AskResponse } from "@/lib/types";
 
 export const ragApi = {
+<<<<<<< HEAD
   upload: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
@@ -16,6 +17,33 @@ export const ragApi = {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+=======
+  processDocument: (documentId: string) =>
+    api<void>(`/api/v1/rag/process/${documentId}`, { method: "POST" }),
+
+  getDocumentStatus: (documentId: string) =>
+    api<{ documentId: string; status: string }>(
+      `/api/v1/rag/status/${documentId}`,
+    ),
+
+  chat: (body: { documentId: string; question: string }) =>
+    api<{ answer: string; sources: unknown[] }>(`/api/v1/rag/chat`, {
+      method: "POST",
+      body,
+    }),
+
+  upload: (file: File, documentId: string) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("documentId", documentId);
+    return api<void>("/api/rag/upload", { method: "POST", formData: fd });
+  },
+
+  uploadAndChunk: (file: File, documentId: string) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("documentId", documentId);
+>>>>>>> origin/Flashcars
     return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
   },
 

@@ -1,7 +1,14 @@
 // src/features/shares/components/RowMenu.tsx
 import { MoreHorizontal } from "lucide-react";
 import {
+<<<<<<< HEAD
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+=======
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+>>>>>>> origin/Flashcars
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
@@ -25,9 +32,19 @@ export function RowMenu({ items }: { items: MenuAction[] }) {
           <DropdownMenuItem
             key={it.label}
             onClick={it.onClick}
+<<<<<<< HEAD
             className={cn("cursor-pointer", it.danger && "text-destructive focus:text-destructive")}
           >
             {it.icon}<span className="ml-2">{it.label}</span>
+=======
+            className={cn(
+              "cursor-pointer",
+              it.danger && "text-destructive focus:text-destructive",
+            )}
+          >
+            {it.icon}
+            <span className="ml-2">{it.label}</span>
+>>>>>>> origin/Flashcars
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

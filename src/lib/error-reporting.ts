@@ -8,6 +8,7 @@ type ErrorReportOptions = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   mechanism?: "manual" | "onerror" | "unhandledrejection" | "react_error_boundary";
 =======
 =======
@@ -26,11 +27,14 @@ type ErrorReportOptions = {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   mechanism?:
     | "manual"
     | "onerror"
     | "unhandledrejection"
     | "react_error_boundary";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -56,6 +60,8 @@ type ErrorReportOptions = {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   handled?: boolean;
   severity?: "error" | "warning" | "info";
 };
@@ -83,6 +89,7 @@ declare global {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function reportClientError(error: unknown, context: Record<string, unknown> = {}) {
 =======
 =======
@@ -101,10 +108,13 @@ export function reportClientError(error: unknown, context: Record<string, unknow
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 export function reportClientError(
   error: unknown,
   context: Record<string, unknown> = {},
 ) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -130,6 +140,8 @@ export function reportClientError(
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   if (typeof window === "undefined") return;
   window.__errorReportingEvents?.captureException?.(
     error,

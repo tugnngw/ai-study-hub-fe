@@ -58,8 +58,19 @@ function useIdSet(store: ReturnType<typeof createIdSetStore>) {
     store.getSnapshot,
     () => new Set<string>(),
   );
+<<<<<<< HEAD
   const isMarked = useCallback((id: string | number) => ids.has(String(id)), [ids]);
   const toggle = useCallback((id: string | number) => store.toggle(String(id)), []);
+=======
+  const isMarked = useCallback(
+    (id: string | number) => ids.has(String(id)),
+    [ids],
+  );
+  const toggle = useCallback(
+    (id: string | number) => store.toggle(String(id)),
+    [],
+  );
+>>>>>>> origin/Flashcars
   return { ids, isMarked, toggle };
 }
 

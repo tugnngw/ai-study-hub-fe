@@ -3,6 +3,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Admin types
 =======
 // Admin types barrel
@@ -19,4 +20,7 @@
 =======
 // Admin types barrel
 >>>>>>> origin/admin-added-fix
+=======
+// Admin types barrel
+>>>>>>> origin/Flashcars
 export * from "./admin.types";

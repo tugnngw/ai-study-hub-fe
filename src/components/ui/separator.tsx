@@ -15,6 +15,7 @@ const Separator = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => (
   <SeparatorPrimitive.Root
     ref={ref}
@@ -45,6 +46,8 @@ const Separator = React.forwardRef<
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 >(
   (
     { className, orientation = "horizontal", decorative = true, ...props },
@@ -71,6 +74,7 @@ const Separator = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -88,6 +92,8 @@ const Separator = React.forwardRef<
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
 Separator.displayName = SeparatorPrimitive.Root.displayName;
 
 export { Separator };

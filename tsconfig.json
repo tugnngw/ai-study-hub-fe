@@ -8,6 +8,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts", "eslint.config.js"],
 =======
 =======
@@ -26,12 +27,15 @@
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "vite.config.ts",
     "eslint.config.js"
   ],
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -57,6 +61,8 @@
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
@@ -72,6 +78,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     "esModuleInterop": true,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -99,6 +106,9 @@
 =======
     "esModuleInterop": true,
 >>>>>>> origin/admin-added-fix
+=======
+    "esModuleInterop": true,
+>>>>>>> origin/Flashcars
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
@@ -122,6 +132,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "baseUrl": ".",
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -143,6 +154,8 @@
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
     "paths": {
       "@/*": ["./src/*"]
     }

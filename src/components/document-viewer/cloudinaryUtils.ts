@@ -1,5 +1,6 @@
 /**
  * Cloudinary URL utilities
+<<<<<<< HEAD
  *
  * Issue: Cloudinary PDF URLs are blocked by CORS when using fetch() or react-pdf.
  * Solution: Use iframe for Cloudinary PDFs (browser native PDF viewer, no CORS issues).
@@ -7,6 +8,8 @@
  *
  * For other file types (TXT, DOCX), we'll fetch content directly if it's not Cloudinary.
  * If it IS Cloudinary and not PDF, we'll need to decide if iframe works or if we need to fetch.
+=======
+>>>>>>> origin/Flashcars
  */
 
 const CLOUDINARY_HOSTS = [
@@ -14,6 +17,7 @@ const CLOUDINARY_HOSTS = [
   'res.cloudinary.com',
 ];
 
+<<<<<<< HEAD
 /**
  * Check if a URL is a Cloudinary URL
  */
@@ -22,6 +26,10 @@ export function isCloudinaryUrl(url: string | null | undefined): boolean {
     return false;
   }
 
+=======
+export function isCloudinaryUrl(url: string | null | undefined): boolean {
+  if (!url || typeof url !== 'string' || url.trim() === '') return false;
+>>>>>>> origin/Flashcars
   try {
     const urlObj = new URL(url);
     return CLOUDINARY_HOSTS.some(host => urlObj.hostname.includes(host));
@@ -31,6 +39,7 @@ export function isCloudinaryUrl(url: string | null | undefined): boolean {
 }
 
 /**
+<<<<<<< HEAD
  * Transform Cloudinary URL to ensure it works with iframe or direct fetch
  *
  * For PDFs hosted on Cloudinary under 'image/upload', we need to change to 'raw/upload'
@@ -105,10 +114,46 @@ export async function fetchCloudinaryFile(
       signal: controller.signal,
       mode: 'cors', // Explicitly request CORS
       credentials: 'omit', // Don't send credentials for Cloudinary
+=======
+ * Fetch file content from Cloudinary URL.
+ * Sửa lỗi bằng cách thêm `fl_attachment=false` vào query string nếu cần.
+ */
+export async function fetchCloudinaryFile(
+    url: string | null | undefined,
+    options?: { timeout?: number }
+): Promise<Blob | null> {
+  if (!url || typeof url !== 'string' || url.trim() === '') return null;
+
+  const timeout = options?.timeout || 30000;
+  let targetUrl = url;
+
+  // Thêm fl_attachment=false đúng cách (dùng URL object)
+  if (isCloudinaryUrl(url)) {
+    try {
+      const urlObj = new URL(url);
+      urlObj.searchParams.set('fl_attachment', 'false');
+      targetUrl = urlObj.toString();
+    } catch {
+      // Fallback nếu lỗi parse URL
+    }
+  }
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    const response = await fetch(targetUrl, {
+      method: 'GET',
+      headers: { 'Accept': '*/*' },
+      signal: controller.signal,
+      mode: 'cors',
+      credentials: 'omit',
+>>>>>>> origin/Flashcars
     });
 
     clearTimeout(timeoutId);
 
+<<<<<<< HEAD
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
@@ -159,4 +204,13 @@ export function cleanupBlobUrl(objectUrl: string | null | undefined) {
       console.error('[CloudinaryUtils] Error cleaning up blob URL:', error);
     }
   }
+=======
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+
+    return await response.blob();
+  } catch (error) {
+    console.error('[CloudinaryUtils] Error fetching file:', error);
+    return null;
+  }
+>>>>>>> origin/Flashcars
 }

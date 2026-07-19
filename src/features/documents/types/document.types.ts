@@ -4,7 +4,11 @@
 export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
 export interface Document {
+<<<<<<< HEAD
   id: number;
+=======
+  id: string;
+>>>>>>> origin/Flashcars
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;

@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
@@ -21,11 +22,14 @@ export const Route = createFileRoute("/auth")({
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
 import { createFileRoute, Outlet, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/auth")({
   component: AuthLayout,
   notFoundComponent: AuthNotFoundComponent,
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
@@ -59,6 +63,11 @@ function AuthLayout() {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+});
+
+function AuthLayout() {
+>>>>>>> origin/Flashcars
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
       <div className="absolute inset-0 -z-10 opacity-40">
@@ -78,9 +87,12 @@ function AuthLayout() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/Flashcars
 
 function AuthNotFoundComponent() {
   return (
@@ -105,6 +117,7 @@ function AuthNotFoundComponent() {
   );
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
@@ -118,3 +131,5 @@ function AuthNotFoundComponent() {
 >>>>>>> origin/Flashcards-fix
 =======
 >>>>>>> origin/admin-added-fix
+=======
+>>>>>>> origin/Flashcars
