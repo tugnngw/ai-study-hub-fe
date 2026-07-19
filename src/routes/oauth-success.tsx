@@ -6,11 +6,15 @@ import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { tokenStore } from "@/lib/api"; // Import tokenStore
 =======
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+import { tokenStore } from "@/lib/api"; // Import tokenStore
+>>>>>>> origin/admin-added
 
 export const Route = createFileRoute("/oauth-success")({
   component: OAuthSuccessPage,
@@ -20,6 +24,9 @@ function OAuthSuccessPage() {
   const navigate = useNavigate();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
   const { refresh } = useAuth(); // useAuth hook để gọi hàm refresh
   const hasRunRef = useRef(false); // Track if effect has already run
 
@@ -56,6 +63,7 @@ function OAuthSuccessPage() {
         console.error("OAuth failed: Missing access token, refresh token, or user ID in URL.");
         console.error(`Missing: ${!accessToken ? "accessToken " : ""}${!refreshToken ? "refreshToken " : ""}${!userId ? "userId" : ""}`);
         // Nếu thiếu, chuyển hướng về trang login
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -79,12 +87,17 @@ function OAuthSuccessPage() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
         navigate({ to: "/auth/login", replace: true });
         return;
       }
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
       // Lưu tokens và user ID vào localStorage
       tokenStore.set(accessToken);           // Lưu access_token
       tokenStore.setRefresh(refreshToken);   // Lưu refresh_token
@@ -105,6 +118,7 @@ function OAuthSuccessPage() {
       // Sau khi xử lý thành công, điều hướng đến trang dashboard
       navigate({
         to: "/dashboard", // Thay '/dashboard' bằng route thực tế của bạn
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -127,11 +141,14 @@ function OAuthSuccessPage() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
         replace: true,
       });
     };
 
     handleOAuth();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   }, []); // ⚠️ Empty dependency array - only run once on mount
@@ -143,6 +160,9 @@ function OAuthSuccessPage() {
    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 >>>>>>> origin/uichange
+=======
+  }, []); // ⚠️ Empty dependency array - only run once on mount
+>>>>>>> origin/admin-added
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

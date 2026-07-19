@@ -61,6 +61,42 @@
   --color-brand-soft: var(--brand-soft);
   --color-violet: var(--violet);
   --color-violet-soft: var(--violet-soft);
+<<<<<<< HEAD
+=======
+
+  /* ── Admin feature palette ──────────────────────────
+   * Used by the admin dashboard UI (features/admin).
+   * Scoped names (brand-50..900, ink, surface, line, status)
+   * so admin screens read with their own violet/indigo system.
+   */
+  --color-ink: var(--admin-ink);
+  --color-ink-soft: var(--admin-ink-soft);
+  --color-ink-faint: var(--admin-ink-faint);
+  --color-surface: var(--admin-surface);
+  --color-surface-alt: var(--admin-surface-alt);
+  --color-line: var(--admin-line);
+
+  --color-brand-50: var(--admin-brand-50);
+  --color-brand-100: var(--admin-brand-100);
+  --color-brand-200: var(--admin-brand-200);
+  --color-brand-300: var(--admin-brand-300);
+  --color-brand-400: var(--admin-brand-400);
+  --color-brand-500: var(--admin-brand-500);
+  --color-brand-600: var(--admin-brand-600);
+  --color-brand-700: var(--admin-brand-700);
+  --color-brand-800: var(--admin-brand-800);
+  --color-brand-900: var(--admin-brand-900);
+
+  --color-success: var(--admin-success);
+  --color-success-bg: var(--admin-success-bg);
+  --color-success-line: var(--admin-success-line);
+  --color-danger: var(--admin-danger);
+  --color-danger-bg: var(--admin-danger-bg);
+  --color-danger-line: var(--admin-danger-line);
+  --color-warning: var(--admin-warning);
+  --color-warning-bg: var(--admin-warning-bg);
+  --color-warning-line: var(--admin-warning-line);
+>>>>>>> origin/admin-added
 }
 
 :root {
@@ -113,6 +149,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   --gradient-brand: linear-gradient(135deg, oklch(0.55 0.23 275), oklch(0.6 0.24 305));
   --gradient-soft: linear-gradient(135deg, oklch(0.97 0.03 285), oklch(0.97 0.035 305));
   --gradient-page: radial-gradient(at 0% 0%, oklch(0.96 0.04 285) 0%, transparent 50%),
@@ -126,6 +163,8 @@
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   --gradient-brand: linear-gradient(
     135deg,
     oklch(0.55 0.23 275),
@@ -145,6 +184,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -152,6 +192,8 @@
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   --shadow-brand: 0 8px 30px -8px oklch(0.5 0.22 275 / 0.45);
 
   --sidebar: oklch(0.985 0.008 285);
@@ -162,6 +204,38 @@
   --sidebar-accent-foreground: oklch(0.28 0.1 275);
   --sidebar-border: oklch(0.92 0.015 285);
   --sidebar-ring: oklch(0.5 0.22 275);
+<<<<<<< HEAD
+=======
+
+  /* ── Admin feature palette (light) ── */
+  --admin-ink: #15131F;
+  --admin-ink-soft: #6B6877;
+  --admin-ink-faint: #9D9AAC;
+  --admin-surface: #F7F6FB;
+  --admin-surface-alt: #F0EEFA;
+  --admin-line: #E7E4F1;
+
+  --admin-brand-50: #F4F0FF;
+  --admin-brand-100: #E7DEFF;
+  --admin-brand-200: #CDB9FF;
+  --admin-brand-300: #AC8CFF;
+  --admin-brand-400: #8E62FF;
+  --admin-brand-500: #7C3AED;
+  --admin-brand-600: #6423D6;
+  --admin-brand-700: #4E19AE;
+  --admin-brand-800: #321377;
+  --admin-brand-900: #1C0E45;
+
+  --admin-success: #16A34A;
+  --admin-success-bg: #EAFBF1;
+  --admin-success-line: #BCEFD1;
+  --admin-danger: #E11D48;
+  --admin-danger-bg: #FDEEF1;
+  --admin-danger-line: #F8C9D4;
+  --admin-warning: #D97706;
+  --admin-warning-bg: #FFF6E7;
+  --admin-warning-line: #FBE3B8;
+>>>>>>> origin/admin-added
 }
 
 .dark {
@@ -193,6 +267,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   --gradient-brand: linear-gradient(135deg, oklch(0.6 0.22 275), oklch(0.65 0.22 310));
   --gradient-soft: linear-gradient(135deg, oklch(0.24 0.05 275), oklch(0.24 0.06 310));
   --gradient-page: radial-gradient(at 0% 0%, oklch(0.24 0.06 275) 0%, transparent 50%),
@@ -204,6 +279,8 @@
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   --gradient-brand: linear-gradient(
     135deg,
     oklch(0.6 0.22 275),
@@ -220,6 +297,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -227,6 +305,8 @@
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   --shadow-soft: 0 8px 24px -8px oklch(0 0 0 / 0.4);
   --shadow-brand: 0 8px 30px -8px oklch(0.7 0.2 280 / 0.5);
   --sidebar: oklch(0.19 0.04 275);
@@ -237,6 +317,38 @@
   --sidebar-accent-foreground: oklch(0.97 0.01 285);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.7 0.2 280);
+<<<<<<< HEAD
+=======
+
+  /* ── Admin feature palette (dark) ── */
+  --admin-ink: #F5F3FB;
+  --admin-ink-soft: #A6A2B5;
+  --admin-ink-faint: #6F6B7E;
+  --admin-surface: #16131F;
+  --admin-surface-alt: #211B30;
+  --admin-line: #2C2640;
+
+  --admin-brand-50: #211B30;
+  --admin-brand-100: #2C2440;
+  --admin-brand-200: #3A2E5C;
+  --admin-brand-300: #5A45A0;
+  --admin-brand-400: #7C5BE0;
+  --admin-brand-500: #8E62FF;
+  --admin-brand-600: #A084FF;
+  --admin-brand-700: #C3AEFF;
+  --admin-brand-800: #DCCEFF;
+  --admin-brand-900: #0E0A1C;
+
+  --admin-success: #34D17F;
+  --admin-success-bg: #12281C;
+  --admin-success-line: #1F3D2C;
+  --admin-danger: #FB7185;
+  --admin-danger-bg: #2A141B;
+  --admin-danger-line: #43222C;
+  --admin-warning: #FBBF24;
+  --admin-warning-bg: #2A2110;
+  --admin-warning-line: #43361C;
+>>>>>>> origin/admin-added
 }
 
 @layer base {
@@ -244,6 +356,7 @@
     border-color: var(--color-border);
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -265,6 +378,10 @@
   html,
   body {
 >>>>>>> origin/uichange
+=======
+  html,
+  body {
+>>>>>>> origin/admin-added
     font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv11";
     -webkit-font-smoothing: antialiased;
@@ -282,6 +399,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   h1, h2, h3, h4, h5, h6, .font-display {
 =======
 =======
@@ -290,6 +408,8 @@
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   h1,
   h2,
   h3,
@@ -300,6 +420,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -307,6 +428,8 @@
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     font-family: var(--font-display);
     letter-spacing: -0.02em;
   }

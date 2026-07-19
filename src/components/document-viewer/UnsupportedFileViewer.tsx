@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Download, ExternalLink, File } from "lucide-react";
 =======
 import { Download, ExternalLink, File, FileText } from "lucide-react";
@@ -9,6 +10,9 @@ import { Download, ExternalLink, File, FileText } from "lucide-react";
 =======
 import { Download, ExternalLink, File, FileText } from "lucide-react";
 >>>>>>> origin/uichange
+=======
+import { Download, ExternalLink, File } from "lucide-react";
+>>>>>>> origin/admin-added
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -27,6 +31,9 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
 }) => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
   // Toolbar
   const Toolbar = (
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
@@ -38,6 +45,7 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
           <a href={fileUrl} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -56,10 +64,13 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             <ExternalLink className="h-4 w-4 mr-1" />
@@ -70,6 +81,10 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
 =======
             <ExternalLink className="h-3.5 w-3.5 mr-1" /> Mở mới
 >>>>>>> origin/uichange
+=======
+            <ExternalLink className="h-4 w-4 mr-1" />
+            Mở tab mới
+>>>>>>> origin/admin-added
           </a>
         </Button>
       </div>
@@ -79,6 +94,7 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
   return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
@@ -86,6 +102,9 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
 >>>>>>> origin/uichange
+=======
+    <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+>>>>>>> origin/admin-added
       {Toolbar}
 
       <div className="flex-1 flex flex-col items-center justify-center p-8">

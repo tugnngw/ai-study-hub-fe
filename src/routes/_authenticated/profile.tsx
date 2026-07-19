@@ -3,10 +3,14 @@ import { useMemo, useState } from "react";
 import { toast } from "sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
 import { FileText, FolderKanban, Share2, Pencil, Save, X } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -18,6 +22,8 @@ import { Card, CardContent } from "@/components/ui/card";
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useDocuments, useFolders, useSharedDocuments } from "@/lib/queries";
@@ -40,6 +46,7 @@ function ProfilePage() {
       email: user?.email ?? "",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       address: "TP.HCM, Việt Nam",
       birthday: "XX/XX/XXXX",
@@ -50,6 +57,8 @@ function ProfilePage() {
       birthday: "XX/XX/XXXX",
       course: "K19",
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     }),
     [user],
   );
@@ -72,6 +81,9 @@ function ProfilePage() {
   const stats = [
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
     {
       label: "Tài liệu",
       value: docs.data?.length ?? 0,
@@ -151,6 +163,7 @@ function ProfilePage() {
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Họ và tên</Label>
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -207,6 +220,8 @@ function ProfilePage() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                 <Input
                   value={form.fullName}
                   onChange={(e) => update("fullName", e.target.value)}
@@ -215,6 +230,9 @@ function ProfilePage() {
               </div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
               <div className="space-y-2">
                 <Label>Tên đăng nhập</Label>
                 <Input
@@ -225,6 +243,7 @@ function ProfilePage() {
               </div>
               <div className="space-y-2">
                 <Label>Email</Label>
+<<<<<<< HEAD
 =======
               <div className="space-y-1.5">
                 <Label className="text-muted-foreground">Email</Label>
@@ -233,6 +252,8 @@ function ProfilePage() {
               <div className="space-y-1.5">
                 <Label className="text-muted-foreground">Email</Label>
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                 <Input
                   type="email"
                   value={form.email}
@@ -242,6 +263,9 @@ function ProfilePage() {
               </div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
             </div>
           </CardContent>
         </Card>
@@ -260,6 +284,7 @@ function ProfilePage() {
     </div>
   );
 }
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -331,3 +356,5 @@ function ProfilePage() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added

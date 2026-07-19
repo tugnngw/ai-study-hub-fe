@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
 =======
 import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-react";
@@ -9,10 +10,14 @@ import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-rea
 =======
 import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-react";
 >>>>>>> origin/uichange
+=======
+import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
+>>>>>>> origin/admin-added
 import { toast } from "sonner";
 import {
   useCreateFolder,
   useDeleteFolder,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -21,6 +26,8 @@ import {
 =======
   useDocuments,
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   useFolders,
   useUpdateFolder,
 } from "@/lib/queries";
@@ -57,17 +64,21 @@ function FoldersPage() {
   const { data, isLoading } = useFolders();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const { data: allDocs } = useDocuments();
 >>>>>>> origin/test/share-document-cloudinary
 =======
   const { data: allDocs } = useDocuments();
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Folder | null>(null);
   const [deleting, setDeleting] = useState<Folder | null>(null);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -85,6 +96,8 @@ function FoldersPage() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const filtered = (data ?? []).filter((f) =>
     f.name.toLowerCase().includes(query.toLowerCase()),
   );
@@ -148,6 +161,7 @@ function FoldersPage() {
                       <div className="font-medium truncate">{f.name}</div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -159,6 +173,8 @@ function FoldersPage() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                       <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
                         {f.aiSummary || "No summary"}
                       </div>

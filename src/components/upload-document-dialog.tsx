@@ -3,6 +3,7 @@ import { toast } from "sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useFolders, useUploadDocument } from "@/lib/queries";
 =======
 import { useFolders, useUploadDocument, useProcessRagPipeline } from "@/lib/queries";
@@ -15,6 +16,9 @@ import { useFolders, useUploadDocument } from "@/lib/queries";
 import { CheckCircle2, Loader2, X, XCircle, FileText } from "lucide-react";
 import { useFolders, useUploadDocument } from "@/lib/queries";
 >>>>>>> origin/uichange
+=======
+import { useFolders, useUploadDocument } from "@/lib/queries";
+>>>>>>> origin/admin-added
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,6 +39,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -60,6 +65,8 @@ function formatBytes(n: number) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 export function UploadDocumentDialog({
   open,
   onOpenChange,
@@ -74,6 +81,7 @@ export function UploadDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   const processRag = useProcessRagPipeline();
 >>>>>>> origin/AI-Study-fix
@@ -84,12 +92,16 @@ export function UploadDocumentDialog({
 =======
   const [files, setFiles] = useState<File[]>([]);
 >>>>>>> origin/uichange
+=======
+  const [file, setFile] = useState<File | null>(null);
+>>>>>>> origin/admin-added
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [folderId, setFolderId] = useState<string>(
     defaultFolderId ? String(defaultFolderId) : "",
   );
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -103,11 +115,14 @@ export function UploadDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   useEffect(() => {
     if (open && defaultFolderId) setFolderId(String(defaultFolderId));
   }, [open, defaultFolderId]);
 
   const reset = () => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     setFile(null);
@@ -117,6 +132,9 @@ export function UploadDocumentDialog({
 =======
     setFiles([]);
 >>>>>>> origin/uichange
+=======
+    setFile(null);
+>>>>>>> origin/admin-added
     setTitle("");
     setDescription("");
     setFolderId(defaultFolderId ? String(defaultFolderId) : "");
@@ -125,10 +143,14 @@ export function UploadDocumentDialog({
   const submit = async () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
     if (!file) return toast.error("Chọn một file");
     if (!title.trim()) return toast.error("Nhập tiêu đề");
     if (!folderId) return toast.error("Chọn thư mục");
     try {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       const doc = await upload.mutateAsync({
@@ -143,6 +165,8 @@ export function UploadDocumentDialog({
         toast.success("Đã tải lên tài liệu");
       }
 =======
+=======
+>>>>>>> origin/admin-added
       await upload.mutateAsync({
         file,
         folderId,
@@ -151,6 +175,7 @@ export function UploadDocumentDialog({
         description,
       });
       toast.success("Đã tải lên tài liệu");
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
       const docs = await upload.mutateAsync({
@@ -175,6 +200,8 @@ export function UploadDocumentDialog({
         toast.success("Đã tải lên tài liệu");
       }
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
       onOpenChange(false);
       reset();
     } catch (e) {
@@ -195,6 +222,7 @@ export function UploadDocumentDialog({
           <DialogTitle>Tải lên tài liệu</DialogTitle>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <DialogDescription>Thêm tệp mới vào không gian làm việc của bạn.</DialogDescription>
 =======
           <DialogDescription>
@@ -206,24 +234,35 @@ export function UploadDocumentDialog({
             Thêm tệp mới vào không gian làm việc của bạn.
           </DialogDescription>
 >>>>>>> origin/AI-Study-fix
+=======
+          <DialogDescription>
+            Thêm tệp mới vào không gian làm việc của bạn.
+          </DialogDescription>
+>>>>>>> origin/admin-added
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>File</Label>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
             <Input
               type="file"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
             />
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
           </div>
           <div className="space-y-2">
             <Label>Tiêu đề</Label>
@@ -237,18 +276,24 @@ export function UploadDocumentDialog({
             <Label>Mô tả (tuỳ chọn)</Label>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
           </div>
           <div className="space-y-2">
             <Label>Thư mục</Label>
@@ -271,16 +316,22 @@ export function UploadDocumentDialog({
             Huỷ
           </Button>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button onClick={submit} disabled={upload.isPending}>
             {upload.isPending ? "Đang tải lên…" : "Tải lên"}
 =======
           <Button onClick={submit} disabled={upload.isPending || processRag.isPending}>
             {upload.isPending || processRag.isPending ? "Đang xử lý…" : "Tải lên"}
 >>>>>>> origin/AI-Study-fix
+=======
+          <Button onClick={submit} disabled={upload.isPending}>
+            {upload.isPending ? "Đang tải lên…" : "Tải lên"}
+>>>>>>> origin/admin-added
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -503,5 +554,7 @@ export function UploadDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   );
 }

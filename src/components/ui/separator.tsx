@@ -10,6 +10,7 @@ const Separator = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >(({ className, orientation = "horizontal", decorative = true, ...props }, ref) => (
   <SeparatorPrimitive.Root
     ref={ref}
@@ -30,6 +31,8 @@ const Separator = React.forwardRef<
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 >(
   (
     { className, orientation = "horizontal", decorative = true, ...props },
@@ -51,6 +54,7 @@ const Separator = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -58,6 +62,8 @@ const Separator = React.forwardRef<
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 Separator.displayName = SeparatorPrimitive.Root.displayName;
 
 export { Separator };

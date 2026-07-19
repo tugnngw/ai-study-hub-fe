@@ -11,6 +11,7 @@ function DocumentDetail() {
   const { id } = Route.useParams();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   console.log('[TRACE-1] Route param id:', id, 'type:', typeof id);
 <<<<<<< HEAD
   const docId = Number(id);
@@ -27,6 +28,12 @@ function DocumentDetail() {
   const docId = id;
   const doc = useDocument(docId);
 >>>>>>> origin/uichange
+=======
+  console.log('[TRACE-1] Route param id:', id, 'type:', typeof id);
+  const docId = Number(id);
+  console.log('[TRACE-2] Converted docId:', docId, 'isNaN:', isNaN(docId));
+  const doc = useDocument(docId);
+>>>>>>> origin/admin-added
 
   if (doc.isLoading) {
     return <Skeleton className="h-[calc(100vh-8rem)] w-full" />;
@@ -36,6 +43,7 @@ function DocumentDetail() {
       <div className="text-sm text-muted-foreground">Document not found.</div>
     );
   }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -49,4 +57,7 @@ function DocumentDetail() {
 =======
   return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
 >>>>>>> origin/uichange
+=======
+  return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
+>>>>>>> origin/admin-added
 }

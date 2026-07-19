@@ -1,6 +1,9 @@
 // src/components/document-viewer/DocxViewer.tsx
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
 // Renders DOCX files using mammoth.js (converts to clean HTML)
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
@@ -8,6 +11,7 @@ import { Loader2, RotateCw, Download, ExternalLink } from "lucide-react";
 import * as mammoth from "mammoth";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -21,6 +25,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 import { cn } from "@/lib/utils";
 import {
   isCloudinaryUrl,
@@ -48,6 +54,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Process Cloudinary URL if needed
 =======
   // Process URL on mount and when URL changes
@@ -55,6 +62,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
   // Process URL on mount and when URL changes
 >>>>>>> origin/uichange
+=======
+  // Process Cloudinary URL if needed
+>>>>>>> origin/admin-added
   useEffect(() => {
     let isMounted = true;
     let currentBlobUrl: string | null = null;
@@ -81,6 +91,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       processUrl();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     } else {
       setProcessedUrl(null);
       setLoading(false);
@@ -88,6 +99,11 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+    } else {
+      setProcessedUrl(null);
+      setLoading(false);
+>>>>>>> origin/admin-added
     }
 
     return () => {
@@ -103,12 +119,16 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
     let isMounted = true;
 
     try {
       setLoading(true);
       setError(null);
 
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -122,6 +142,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       const targetUrl = (isCloudinary && processedUrl) ? processedUrl : url;
 
       const response = await fetch(targetUrl, {
@@ -138,6 +160,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       const arrayBuffer = await response.arrayBuffer();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
 
       if (!isMounted) return;
 
@@ -170,6 +195,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
     } catch (e) {
       if (!isMounted) return;
 
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -185,6 +211,8 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       console.error("DOCX render error:", e);
       const errorMsg = e instanceof Error ? e.message : "Unknown error";
 
@@ -204,14 +232,20 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
 
     return () => {
       isMounted = false;
     };
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   }, [url, isCloudinary, processedUrl]);
 
   useEffect(() => {
@@ -224,6 +258,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
   // Toolbar
   const Toolbar = (
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
@@ -235,6 +272,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -253,10 +291,13 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={url} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             <ExternalLink className="h-4 w-4 mr-1" />
@@ -267,6 +308,10 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
             <ExternalLink className="h-3.5 w-3.5 mr-1" /> Mở mới
 >>>>>>> origin/uichange
+=======
+            <ExternalLink className="h-4 w-4 mr-1" />
+            Mở tab mới
+>>>>>>> origin/admin-added
           </a>
         </Button>
       </div>
@@ -276,6 +321,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
   return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
@@ -283,6 +329,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
 >>>>>>> origin/uichange
+=======
+    <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+>>>>>>> origin/admin-added
       {Toolbar}
 
       {/* Loading State */}
@@ -311,6 +360,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
             ref={containerRef}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
 =======
             className="docx-viewer prose prose-sm max-w-none dark:prose-invert"
@@ -318,6 +368,9 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 =======
             className="docx-viewer prose prose-sm max-w-none dark:prose-invert"
 >>>>>>> origin/uichange
+=======
+            className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
+>>>>>>> origin/admin-added
             style={{
               fontSize: "14px",
               lineHeight: "1.6",

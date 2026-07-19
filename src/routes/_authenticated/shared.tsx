@@ -48,6 +48,9 @@ function SharedPage() {
                 <div className="flex-1 min-w-0">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
                   <div className="font-medium truncate">{d.title}</div>
                   <div className="text-xs text-muted-foreground truncate">
                     {d.description}
@@ -55,6 +58,7 @@ function SharedPage() {
                   <div className="text-xs text-muted-foreground mt-1">
                     Chia sẻ bởi:{" "}
                     <span className="font-medium">{d.sharedBy}</span>
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -73,10 +77,13 @@ function SharedPage() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                   </div>
                 </div>
                 <SharedDocumentActionsMenu
                   sharedId={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -93,6 +100,10 @@ function SharedPage() {
                   title={d.documentTitle || d.title || "Unnamed Document"}
                   description={d.description || undefined}
 >>>>>>> origin/uichange
+=======
+                  title={d.title}
+                  description={d.description ?? undefined}
+>>>>>>> origin/admin-added
                 />
               </CardContent>
             </Card>

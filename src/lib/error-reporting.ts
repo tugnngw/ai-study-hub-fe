@@ -3,6 +3,7 @@ type ErrorReportOptions = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   mechanism?: "manual" | "onerror" | "unhandledrejection" | "react_error_boundary";
 =======
 =======
@@ -11,11 +12,14 @@ type ErrorReportOptions = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   mechanism?:
     | "manual"
     | "onerror"
     | "unhandledrejection"
     | "react_error_boundary";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -26,6 +30,8 @@ type ErrorReportOptions = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   handled?: boolean;
   severity?: "error" | "warning" | "info";
 };
@@ -48,6 +54,7 @@ declare global {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function reportClientError(error: unknown, context: Record<string, unknown> = {}) {
 =======
 =======
@@ -56,10 +63,13 @@ export function reportClientError(error: unknown, context: Record<string, unknow
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 export function reportClientError(
   error: unknown,
   context: Record<string, unknown> = {},
 ) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -70,6 +80,8 @@ export function reportClientError(
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   if (typeof window === "undefined") return;
   window.__errorReportingEvents?.captureException?.(
     error,

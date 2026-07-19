@@ -109,6 +109,7 @@ function DocumentsPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
 =======
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} isPipelineTriggerEnabled />
@@ -119,6 +120,9 @@ function DocumentsPage() {
 =======
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
 >>>>>>> origin/uichange
+=======
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+>>>>>>> origin/admin-added
     </div>
   );
 }
@@ -132,6 +136,7 @@ function DocumentRow({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
 =======
   id: string;
@@ -142,6 +147,9 @@ function DocumentRow({
 =======
   id: number;
 >>>>>>> origin/uichange
+=======
+  id: number;
+>>>>>>> origin/admin-added
   folderId: string;
   title: string;
   description: string;
@@ -228,6 +236,7 @@ function UploadDialog({
           <div className="space-y-2">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Label>Title</Label>
 =======
             <Label>File Name</Label>
@@ -235,6 +244,9 @@ function UploadDialog({
 =======
             <Label>File Name</Label>
 >>>>>>> origin/uichange
+=======
+            <Label>Title</Label>
+>>>>>>> origin/admin-added
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="space-y-2">

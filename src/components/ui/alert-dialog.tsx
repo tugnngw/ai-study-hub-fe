@@ -47,6 +47,7 @@ AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const AlertDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("flex flex-col space-y-2 text-center sm:text-left", className)} {...props} />
 );
@@ -62,6 +63,8 @@ const AlertDialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDiv
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 const AlertDialogHeader = ({
   className,
   ...props
@@ -88,6 +91,7 @@ const AlertDialogFooter = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -95,6 +99,8 @@ const AlertDialogFooter = ({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     {...props}
   />
 );
@@ -126,6 +132,7 @@ const AlertDialogDescription = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 AlertDialogDescription.displayName = AlertDialogPrimitive.Description.displayName;
 =======
 AlertDialogDescription.displayName =
@@ -143,11 +150,16 @@ AlertDialogDescription.displayName =
 AlertDialogDescription.displayName =
   AlertDialogPrimitive.Description.displayName;
 >>>>>>> origin/uichange
+=======
+AlertDialogDescription.displayName =
+  AlertDialogPrimitive.Description.displayName;
+>>>>>>> origin/admin-added
 
 const AlertDialogAction = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Action>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
 >(({ className, ...props }, ref) => (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -160,11 +172,14 @@ const AlertDialogAction = React.forwardRef<
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(buttonVariants(), className)}
     {...props}
   />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -175,6 +190,8 @@ const AlertDialogAction = React.forwardRef<
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 ));
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 
@@ -188,6 +205,7 @@ const AlertDialogCancel = React.forwardRef<
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn(buttonVariants({ variant: "outline" }), "mt-2 sm:mt-0", className)}
 =======
 =======
@@ -196,11 +214,14 @@ const AlertDialogCancel = React.forwardRef<
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     className={cn(
       buttonVariants({ variant: "outline" }),
       "mt-2 sm:mt-0",
       className,
     )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -211,6 +232,8 @@ const AlertDialogCancel = React.forwardRef<
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     {...props}
   />
 ));

@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 
 =======
@@ -16,6 +17,9 @@ import { Link, useNavigate } from "@tanstack/react-router";
 =======
 import { Link, useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/uichange
+=======
+import { Link, useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/admin-added
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
@@ -33,6 +37,7 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   Loader2,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -45,6 +50,9 @@ import {
 =======
   Loader2,
 >>>>>>> origin/uichange
+=======
+  Loader2,
+>>>>>>> origin/admin-added
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -56,6 +64,7 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   useFolder,
   useUploadDocument,
 } from "@/lib/queries";
@@ -66,11 +75,14 @@ import {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   useDownloadDocument,
   useFolder,
   useUploadDocument,
 } from "@/lib/queries";
 import { DocumentViewer } from "@/components/document-viewer";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -81,6 +93,8 @@ import { DocumentViewer } from "@/components/document-viewer";
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -93,6 +107,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -112,12 +127,15 @@ import {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 import { cn } from "@/lib/utils";
 
 type Tab = "original" | "notes" | "summary" | "flashcards" | "quizzes";
 type Highlight = "memo" | "quiz" | "summary" | "idea";
 
 const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -133,6 +151,8 @@ const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   {
     id: "memo",
     label: "Thẻ ghi nhớ",
@@ -156,6 +176,7 @@ const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -163,6 +184,8 @@ const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 ];
 
 interface ChatMsg {
@@ -178,14 +201,19 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   folderId: number;
 =======
   folderId: string;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  folderId: string;
+>>>>>>> origin/admin-added
   docId?: number;
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
+<<<<<<< HEAD
 <<<<<<< HEAD
   const doc = useDocument(docId ?? 0);
   const del = useDeleteDocument();
@@ -216,6 +244,10 @@ export function DocumentWorkspace({
   const isValidDocId = Boolean(docId);
   const doc = useDocument(isValidDocId ? docId : "");
 >>>>>>> origin/uichange
+=======
+  const isValidDocId = typeof docId === 'number' && !isNaN(docId) && docId > 0;
+  const doc = useDocument(isValidDocId ? docId : 0);;
+>>>>>>> origin/admin-added
   console.log("DOC DATA", doc.data);
   console.log('[TRACE-3] DocumentWorkspace: docId received:', docId);
   console.log('[TRACE-3.1] isValidDocId:', isValidDocId);
@@ -226,6 +258,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -233,6 +266,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const navigate = useNavigate();
 
   const [tab, setTab] = useState<Tab>("original");
@@ -247,6 +282,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
 =======
 =======
@@ -255,10 +291,13 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -269,6 +308,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   }, [messages]);
 
   // Note: user clicks files in the grid to open them — no auto-select.
@@ -277,6 +318,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -286,12 +328,15 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const submitChat = async () => {
     if (!input.trim() || !docId) return;
     const q = input.trim();
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -305,12 +350,16 @@ export function DocumentWorkspace({
 =======
       const res = await ask.mutateAsync({ id: docId, question: q });
 >>>>>>> origin/uichange
+=======
+      const res = await ask.mutateAsync({ id: docId, question: q });
+>>>>>>> origin/admin-added
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     }
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -322,6 +371,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const handleDownload = async () => {
     if (!docId) return;
     try {
@@ -335,6 +386,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -342,12 +394,15 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const handleDelete = async () => {
     if (!docId) return;
     if (!confirm("Xoá tài liệu này (chuyển vào Thùng rác)?")) return;
     try {
       await del.mutateAsync(docId);
       toast.success("Đã chuyển vào thùng rác");
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -360,11 +415,14 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       navigate({
         to: "/folders/$id",
         params: { id: String(folderId) },
         search: {},
       });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -375,6 +433,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     }
@@ -383,6 +443,9 @@ export function DocumentWorkspace({
   return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
       {/* Column 1: file list */}
       <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
@@ -399,6 +462,7 @@ export function DocumentWorkspace({
           </div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <div className="text-sm font-semibold font-display">{folder.data?.name ?? "—"}</div>
 =======
           <div className="text-sm font-semibold font-display">
@@ -410,10 +474,16 @@ export function DocumentWorkspace({
             {folder.data?.name ?? "—"}
           </div>
 >>>>>>> origin/AI-Study-fix
+=======
+          <div className="text-sm font-semibold font-display">
+            {folder.data?.name ?? "—"}
+          </div>
+>>>>>>> origin/admin-added
           <div className="text-xs text-muted-foreground mt-0.5">
             {folderDocs.data?.length ?? 0} tài liệu
           </div>
         </div>
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -439,6 +509,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 
         <div className="mt-5 flex-1 min-h-0 flex flex-col">
           <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-2 px-1">
@@ -446,6 +518,7 @@ export function DocumentWorkspace({
           </div>
           <div className="space-y-1 overflow-y-auto flex-1 -mx-1 px-1">
             {folderDocs.isLoading &&
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -471,11 +544,17 @@ export function DocumentWorkspace({
                 <Skeleton key={i} className="h-9 rounded-lg" />
               ))}
 >>>>>>> origin/uichange
+=======
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-9 rounded-lg" />
+              ))}
+>>>>>>> origin/admin-added
             {(folderDocs.data ?? []).map((d) => {
               const active = d.id === docId;
               return (
                 <Link
                   key={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -501,6 +580,11 @@ export function DocumentWorkspace({
                   params={{ id: String(folderId) }}
                   search={{ docId: d.id }}
 >>>>>>> origin/uichange
+=======
+                  to="/folders/$id"
+                  params={{ id: String(folderId) }}
+                  search={{ docId: d.id }}
+>>>>>>> origin/admin-added
                   className={cn(
                     "flex items-center gap-2 text-sm px-2.5 py-2 rounded-lg transition-colors",
                     active
@@ -518,6 +602,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               <div className="text-xs text-muted-foreground px-2">Chưa có tài liệu</div>
 =======
               <div className="text-xs text-muted-foreground px-2">
@@ -529,6 +614,11 @@ export function DocumentWorkspace({
                 Chưa có tài liệu
               </div>
 >>>>>>> origin/AI-Study-fix
+=======
+              <div className="text-xs text-muted-foreground px-2">
+                Chưa có tài liệu
+              </div>
+>>>>>>> origin/admin-added
             )}
           </div>
         </div>
@@ -541,6 +631,7 @@ export function DocumentWorkspace({
         >
           <Upload className="h-3.5 w-3.5 mr-2" /> Tải lên tài liệu
         </Button>
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -554,6 +645,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       </aside>
 
       {/* Column 2: preview */}
@@ -592,6 +685,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 navigate(`/folders/${folderId}`)
 =======
 =======
@@ -600,11 +694,14 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                 navigate({
                   to: "/folders/$id",
                   params: { id: String(folderId) },
                   search: {},
                 })
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -615,6 +712,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
               }
               className={cn(
                 "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
@@ -628,6 +727,7 @@ export function DocumentWorkspace({
             {(folderDocs.data ?? []).map((d) => (
               <Link
                 key={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -653,6 +753,11 @@ export function DocumentWorkspace({
                 params={{ id: String(folderId) }}
                 search={{ docId: d.id }}
 >>>>>>> origin/uichange
+=======
+                to="/folders/$id"
+                params={{ id: String(folderId) }}
+                search={{ docId: d.id }}
+>>>>>>> origin/admin-added
                 className={cn(
                   "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
                   d.id === docId
@@ -666,6 +771,7 @@ export function DocumentWorkspace({
           </div>
         )}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         <div className="flex-1 overflow-y-auto p-6">
@@ -742,6 +848,10 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+        <div className="flex-1 overflow-y-auto p-6">
+          {tab === "original" ? (
+>>>>>>> origin/admin-added
             // 🔥 Kiểm tra kỹ hơn
             docId && doc.data ? (
               // Display original document viewer when a document is selected
@@ -774,6 +884,7 @@ export function DocumentWorkspace({
                         active &&
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                           "border-primary ring-2 ring-primary/20 shadow-soft",
 =======
                         "border-primary ring-2 ring-primary/20 shadow-soft",
@@ -781,6 +892,9 @@ export function DocumentWorkspace({
 =======
                         "border-primary ring-2 ring-primary/20 shadow-soft",
 >>>>>>> origin/uichange
+=======
+                          "border-primary ring-2 ring-primary/20 shadow-soft",
+>>>>>>> origin/admin-added
                       )}
                     >
                       <div className="flex-1 flex items-center justify-center w-full py-4">
@@ -808,6 +922,7 @@ export function DocumentWorkspace({
                   <p className="text-sm text-muted-foreground">Không thể tải tài liệu</p>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   <Button 
                     variant="outline" 
 =======
@@ -818,6 +933,10 @@ export function DocumentWorkspace({
                   <Button
                     variant="outline"
 >>>>>>> origin/uichange
+=======
+                  <Button 
+                    variant="outline" 
+>>>>>>> origin/admin-added
                     size="sm"
                     onClick={() => window.location.reload()}
                   >
@@ -830,6 +949,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -837,6 +957,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           ) : !docId ? (
             <div className="text-sm text-muted-foreground text-center mt-16">
               Chọn một tài liệu để xem nội dung.
@@ -849,6 +971,7 @@ export function DocumentWorkspace({
           ) : tab === "notes" ? (
             <div className="space-y-3">
               <div className="flex flex-wrap gap-1 border border-border rounded-lg px-2 py-1.5 text-xs text-muted-foreground bg-muted/40">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -870,6 +993,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                 <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer font-bold">
                   B
                 </span>
@@ -901,6 +1026,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -908,6 +1034,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
               <Textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -920,6 +1048,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <SummaryTab title={doc.data?.title ?? ""} description={doc.data?.description ?? ""} />
 =======
 =======
@@ -928,10 +1057,13 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
             <SummaryTab
               title={doc.data?.title ?? ""}
               description={doc.data?.description ?? ""}
             />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -942,6 +1074,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           ) : tab === "flashcards" ? (
             <FlashcardsTab title={doc.data?.title ?? ""} />
           ) : (
@@ -953,6 +1087,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
@@ -965,11 +1100,14 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
         {docId && (
           <div className="p-3 border-t border-border flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -989,11 +1127,14 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
               onClick={handleDownload}
               disabled={download.isPending}
             >
               <Download className="h-3.5 w-3.5 mr-2" />{" "}
               {download.isPending ? "Đang tải…" : "Tải xuống"}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1004,6 +1145,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
             </Button>
             <Button
               variant="ghost"
@@ -1113,6 +1256,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -1122,6 +1266,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       <UploadDialog
         open={uploadOpen}
         onOpenChange={setUploadOpen}
@@ -1142,6 +1288,7 @@ function UploadDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   folderId: number;
 =======
   folderId: string;
@@ -1155,6 +1302,9 @@ function UploadDialog({
 =======
   folderId: string;
 >>>>>>> origin/uichange
+=======
+  folderId: string;
+>>>>>>> origin/admin-added
 }) {
   const upload = useUploadDocument();
   const [file, setFile] = useState<File | null>(null);
@@ -1189,6 +1339,7 @@ function UploadDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
 =======
 =======
@@ -1197,10 +1348,13 @@ function UploadDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
             <Input
               type="file"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
             />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1211,6 +1365,8 @@ function UploadDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           </div>
           <div className="space-y-2">
             <Label>Tiêu đề</Label>
@@ -1218,6 +1374,7 @@ function UploadDialog({
           </div>
           <div className="space-y-2">
             <Label>Mô tả</Label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1230,10 +1387,13 @@ function UploadDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1244,6 +1404,8 @@ function UploadDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           </div>
         </div>
         <DialogFooter>
@@ -1264,6 +1426,7 @@ function UploadDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 function SummaryTab({ title, description }: { title: string; description: string }) {
 =======
 =======
@@ -1272,6 +1435,8 @@ function SummaryTab({ title, description }: { title: string; description: string
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 function SummaryTab({
   title,
   description,
@@ -1282,6 +1447,7 @@ function SummaryTab({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -1289,6 +1455,8 @@ function SummaryTab({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const [loading, setLoading] = useState(true);
   const [tick, setTick] = useState(0);
 
@@ -1324,6 +1492,7 @@ function SummaryTab({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Button size="sm" variant="outline" onClick={() => setTick((t) => t + 1)}>
 =======
 =======
@@ -1332,11 +1501,14 @@ function SummaryTab({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
         <Button
           size="sm"
           variant="outline"
           onClick={() => setTick((t) => t + 1)}
         >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1347,6 +1519,8 @@ function SummaryTab({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           <RotateCw className="h-3.5 w-3.5 mr-2" /> Tạo lại
         </Button>
       </div>
@@ -1361,6 +1535,7 @@ function SummaryTab({
       ) : (
         <>
           <div className="rounded-lg border border-primary/20 bg-brand-soft/60 p-4">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1386,6 +1561,11 @@ function SummaryTab({
               Tóm tắt ngắn
             </div>
 >>>>>>> origin/uichange
+=======
+            <div className="text-xs font-semibold text-primary mb-1">
+              Tóm tắt ngắn
+            </div>
+>>>>>>> origin/admin-added
             <p className="text-sm leading-relaxed">
               {description ||
                 `Tài liệu “${title}” tổng hợp các kiến thức cốt lõi và thuật ngữ quan trọng, giúp người đọc nắm chắc lý thuyết và áp dụng vào thực tế.`}
@@ -1418,6 +1598,7 @@ function FlashcardsTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       { front: "Algorithm", back: "Tập hợp các bước cụ thể để giải quyết một bài toán." },
       { front: "Variable", back: "Vùng nhớ có tên, dùng để lưu trữ giá trị có thể thay đổi." },
       { front: "Function", back: "Khối lệnh có thể tái sử dụng, nhận đầu vào và trả về kết quả." },
@@ -1430,6 +1611,8 @@ function FlashcardsTab({ title }: { title: string }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       {
         front: "Algorithm",
         back: "Tập hợp các bước cụ thể để giải quyết một bài toán.",
@@ -1453,6 +1636,7 @@ function FlashcardsTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -1460,6 +1644,8 @@ function FlashcardsTab({ title }: { title: string }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     ],
     [],
   );
@@ -1495,6 +1681,7 @@ function FlashcardsTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div className={cn("font-semibold", flipped ? "text-base leading-relaxed" : "text-2xl")}>
 =======
 =======
@@ -1503,12 +1690,15 @@ function FlashcardsTab({ title }: { title: string }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
         <div
           className={cn(
             "font-semibold",
             flipped ? "text-base leading-relaxed" : "text-2xl",
           )}
         >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1519,6 +1709,8 @@ function FlashcardsTab({ title }: { title: string }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           {flipped ? cards[idx].back : cards[idx].front}
         </div>
         <div className="text-xs text-muted-foreground mt-4">Bấm để lật thẻ</div>
@@ -1562,6 +1754,7 @@ interface Quiz {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const QUIZ_TYPE_OPTIONS = [
   { id: "mcq", label: "Multiple Choice" },
   { id: "fill", label: "Fill in the Blank" },
@@ -1586,6 +1779,10 @@ function QuizzesTab({ title }: { title: string }) {
 function QuizzesTab({ title }: { title: string }) {
   const quizzes: Quiz[] = useMemo(
 >>>>>>> origin/uichange
+=======
+function QuizzesTab({ title }: { title: string }) {
+  const quizzes: Quiz[] = useMemo(
+>>>>>>> origin/admin-added
     () => [
       {
         q: "Thuật ngữ “Algorithm” có nghĩa là gì?",
@@ -1620,6 +1817,7 @@ function QuizzesTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Create-quiz config (per spec: số lượng câu hỏi + loại câu hỏi, trạng thái rỗng "No quizzes found")
   const [numQuestions, setNumQuestions] = useState("25");
   const [types, setTypes] = useState<string[]>(["mcq"]);
@@ -1635,10 +1833,13 @@ function QuizzesTab({ title }: { title: string }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
 
   const score = useMemo(
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1656,12 +1857,16 @@ function QuizzesTab({ title }: { title: string }) {
 =======
     () => quizzes.reduce((s, q, i) => (answers[i] === q.answer ? s + 1 : s), 0),
 >>>>>>> origin/uichange
+=======
+    () => quizzes.reduce((s, q, i) => (answers[i] === q.answer ? s + 1 : s), 0),
+>>>>>>> origin/admin-added
     [answers, quizzes],
   );
 
   const reset = () => {
     setAnswers({});
     setSubmitted(false);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1759,6 +1964,10 @@ function QuizzesTab({ title }: { title: string }) {
   };
 
 >>>>>>> origin/uichange
+=======
+  };
+
+>>>>>>> origin/admin-added
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -1811,6 +2020,7 @@ function QuizzesTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         correct && "bg-emerald-500 text-white border-emerald-500",
                         wrong && "bg-red-500 text-white border-red-500",
                         !submitted && picked && "bg-gradient-brand text-white border-transparent",
@@ -1820,12 +2030,15 @@ function QuizzesTab({ title }: { title: string }) {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
                         correct &&
                           "bg-emerald-500 text-white border-emerald-500",
                         wrong && "bg-red-500 text-white border-red-500",
                         !submitted &&
                           picked &&
                           "bg-gradient-brand text-white border-transparent",
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -1839,6 +2052,8 @@ function QuizzesTab({ title }: { title: string }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                       )}
                     >
                       {correct ? (
@@ -1851,6 +2066,7 @@ function QuizzesTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -1858,6 +2074,8 @@ function QuizzesTab({ title }: { title: string }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                     </span>
                     <span>{opt}</span>
                   </button>
@@ -1894,6 +2112,7 @@ function QuizzesTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -1903,3 +2122,5 @@ function QuizzesTab({ title }: { title: string }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added

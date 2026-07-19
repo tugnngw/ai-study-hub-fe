@@ -5,6 +5,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
 =======
 export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
@@ -12,6 +13,9 @@ export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
 =======
 export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
 >>>>>>> origin/uichange
+=======
+export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
+>>>>>>> origin/admin-added
 
 interface MimeTypeMap {
   [key: string]: SupportedFileType;
@@ -20,11 +24,15 @@ interface MimeTypeMap {
 const MIME_TYPE_MAP: MimeTypeMap = {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
   // PDF
   "application/pdf": "pdf",
   "application/x-pdf": "pdf",
 
   // DOCX
+<<<<<<< HEAD
 =======
   "application/pdf": "pdf",
   "application/x-pdf": "pdf",
@@ -35,12 +43,17 @@ const MIME_TYPE_MAP: MimeTypeMap = {
   "application/x-pdf": "pdf",
 
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
     "docx",
   "application/msword": "docx",
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
   // TXT
   "text/plain": "txt",
   "text/x-plain": "txt",
@@ -70,6 +83,7 @@ const EXTENSION_MAP: MimeTypeMap = {
   gif: "image",
   webp: "image",
   svg: "image",
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -87,6 +101,8 @@ const EXTENSION_MAP: MimeTypeMap = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 };
 
 /**
@@ -159,6 +175,7 @@ export function getTypeLabel(type: SupportedFileType): string {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     image: "Image",
 >>>>>>> origin/AI-Study-fix
@@ -166,6 +183,8 @@ export function getTypeLabel(type: SupportedFileType): string {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     unsupported: "Unsupported File",
   };
   return labels[type];

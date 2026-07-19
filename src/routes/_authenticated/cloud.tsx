@@ -1,11 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
 import { Cloud, Database, HardDrive } from "lucide-react";
 import { useDocuments } from "@/lib/queries";
 // import { mockStorage } from "@/lib/mock-data"; // removed mock storage
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+<<<<<<< HEAD
 =======
 import { useMemo } from "react";
 import { useDocuments, useFolders } from "@/lib/queries";
@@ -14,6 +18,8 @@ import { useDocuments, useFolders } from "@/lib/queries";
 import { useMemo } from "react";
 import { useDocuments, useFolders } from "@/lib/queries";
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 
 export const Route = createFileRoute("/_authenticated/cloud")({
   component: CloudPage,
@@ -21,6 +27,9 @@ export const Route = createFileRoute("/_authenticated/cloud")({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
 function formatBytes(n: number) {
   if (n < 1024) return `${n} B`;
   if (n < 1024 ** 2) return `${(n / 1024).toFixed(2)} KB`;
@@ -92,6 +101,7 @@ function CloudPage() {
             </div>
           </CardContent>
         </Card>
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -276,6 +286,8 @@ function CloudPage() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       </div>
     </div>
   );

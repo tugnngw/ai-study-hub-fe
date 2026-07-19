@@ -6,11 +6,15 @@ import { docKeys } from '@/lib/queries';
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
 export function useDocumentPolling(documentId: number, status: string) {
   const queryClient = useQueryClient();
 
   useEffect(() => {
     if (status !== 'processing' || !documentId || documentId <= 0) return;
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/test/share-document-cloudinary
@@ -28,6 +32,8 @@ export function useDocumentPolling(documentId: string, status: string) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 
     console.log('[Polling] Starting polling for document:', documentId);
 

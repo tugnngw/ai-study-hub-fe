@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import { createFileRoute, Link } from "@tanstack/react-router";
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+>>>>>>> origin/admin-added
 import {
   FolderKanban,
   FileText,
@@ -14,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -33,11 +39,14 @@ import { UploadDocumentDialog } from "@/components/upload-document-dialog";
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
 });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -84,12 +93,25 @@ const SEMESTERS = Array.from({ length: 9 }, (_, i) => i + 1);
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 function Dashboard() {
   const folders = useFolders();
   const docs = useDocuments();
   const { user } = useAuth();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  const navigate = useNavigate();
+
+  // Nếu là admin (backend trả role ADMIN) thì điều hướng thẳng vào khu
+  // quản trị — không cần lối vào riêng.
+  const isAdmin = user?.role === "ADMIN";
+  useEffect(() => {
+    if (isAdmin) navigate({ to: "/admin_panel", replace: true });
+  }, [isAdmin, navigate]);
+>>>>>>> origin/admin-added
 
   const recent = (docs.data ?? [])
     .slice()
@@ -265,6 +287,7 @@ function Dashboard() {
     </div>
   );
 }
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -470,3 +493,5 @@ function Dashboard() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added

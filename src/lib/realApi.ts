@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // realApi.ts — Real API calls, 1-1 mapping với BE endpoints
 // =============================================================
@@ -31,11 +32,17 @@ import { tokenStore } from "./api";
 import { api } from "./api";
 import { tokenStore } from "./api";
 >>>>>>> origin/uichange
+=======
+// src/lib/realApi.ts
+import { api } from "./api";
+import { tokenStore } from "./api";
+>>>>>>> origin/admin-added
 import type {
   User,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -52,6 +59,8 @@ import type {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   Folder,
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -59,6 +68,7 @@ import type {
   UploadDocumentRequest,
   UpdateDocumentRequest,
   DownloadUrlResponse,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -81,12 +91,17 @@ import type {
   ShareResponse,
   ShareRequest,
 >>>>>>> origin/uichange
+=======
+  ShareResponse,
+  ShareRequest,
+>>>>>>> origin/admin-added
   AskRequest,
   AskResponse,
   ReportDocumentRequest,
   Quiz,
   Flashcard,
   FlashcardProgress,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -107,12 +122,16 @@ import { tokenStore } from "./api";
 =======
 } from "./types";
 >>>>>>> origin/uichange
+=======
+} from "./types";
+>>>>>>> origin/admin-added
 
 // ================================================================
 // AUTH  →  /api/auth
 // ================================================================
 
 export const authApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -147,6 +166,8 @@ export const authApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   register: (data: RegisterRequest) =>
     api<void>("/api/auth/register", { method: "POST", body: data }),
 
@@ -160,6 +181,7 @@ export const authApi = {
     // api() already unwraps ApiResponse<T> → res is the AuthResponse object
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     const token = res?.accessToken ?? res?.token;
     if (token) {
       tokenStore.set(token);
@@ -171,6 +193,11 @@ export const authApi = {
     if (res?.accessToken) {
       tokenStore.set(res.accessToken);
 >>>>>>> origin/uichange
+=======
+    const token = res?.accessToken ?? res?.token;
+    if (token) {
+      tokenStore.set(token);
+>>>>>>> origin/admin-added
     }
     
     if (res?.refreshToken) tokenStore.setRefresh(res.refreshToken);
@@ -201,6 +228,7 @@ export const authApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -208,6 +236,8 @@ export const authApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 };
 
 // ================================================================
@@ -215,6 +245,7 @@ export const authApi = {
 // ================================================================
 
 export const accountApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -297,6 +328,9 @@ export const subjectApi = {
   changePassword: (data: { currentPassword: string; newPassword: string }) =>
     api<void>("/api/account/change-password", { method: "POST", body: data }),
 >>>>>>> origin/uichange
+=======
+  me: () => api<User>("/api/account/me"),
+>>>>>>> origin/admin-added
 };
 
 // ================================================================
@@ -304,6 +338,7 @@ export const subjectApi = {
 // ================================================================
 
 export const folderApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -332,6 +367,8 @@ export const folderApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   list: () => api<Folder[]>("/api/folder/getall"),
   getById: (id: string) => api<Folder>(`/api/folder/getbyid/${id}`),
   create: (body: CreateFolderRequest) =>
@@ -343,6 +380,7 @@ export const folderApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -350,6 +388,8 @@ export const folderApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 };
 
 // ================================================================
@@ -357,6 +397,7 @@ export const folderApi = {
 // ================================================================
 
 export const documentApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -458,10 +499,13 @@ export const shareApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   list: () => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
   getById: (id: number) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -474,6 +518,8 @@ export const shareApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     console.log('[TRACE-6] documentApi.getById called with id:', id);
     return api<Document>(`/api/documents/${id}`);
   },
@@ -503,10 +549,13 @@ export const shareApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   update: (id: number, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
@@ -514,6 +563,7 @@ export const shareApi = {
     api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
   getDownloadUrl: (id: number) =>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -529,6 +579,8 @@ export const shareApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   // Trash (soft-deleted docs)
@@ -536,14 +588,18 @@ export const shareApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   restoreFromTrash: (id: number) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
   emptyTrash: (id: number) =>
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -557,6 +613,8 @@ export const shareApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 };
 
 // ================================================================
@@ -564,6 +622,7 @@ export const shareApi = {
 // ================================================================
 
 export const ragApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -578,10 +637,13 @@ export const ragApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   upload: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -607,10 +669,16 @@ export const ragApi = {
   },
 
 >>>>>>> origin/uichange
+=======
+    return api<void>("/api/rag/upload", { method: "POST", formData: fd });
+  },
+
+>>>>>>> origin/admin-added
   uploadAndChunk: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -649,6 +717,8 @@ export const quizApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
   },
 
@@ -657,6 +727,7 @@ export const quizApi = {
       method: "POST",
       body: { id: input.id, question: input.question },
     }),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -690,6 +761,8 @@ export const quizApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 };
 
 // ================================================================
@@ -699,6 +772,9 @@ export const quizApi = {
 export const shareApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
   // List shares where current user is the owner
   listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
 
@@ -714,6 +790,7 @@ export const shareApi = {
     api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
 
   // Report a document
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -754,6 +831,8 @@ export const shareApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   report: (body: ReportDocumentRequest) =>
     api<void>(`/api/documents/${body.id}/report`, {
       method: "POST",
@@ -769,15 +848,19 @@ export const quizApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   listByDocument: (documentId: number) =>
     api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
 
   generate: (documentId: number, questionCount = 10) =>
     api<Quiz>("/api/quiz/generate", {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -792,12 +875,15 @@ export const quizApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       method: "POST",
       body: { documentId, questionCount },
     }),
 };
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -820,6 +906,8 @@ export const flashcardApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 // FLASHCARD  →  /api/flashcard
 // ================================================================
 
@@ -827,15 +915,19 @@ export const flashcardApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   listByDocument: (documentId: number) =>
     api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
 
   generate: (documentId: number) =>
     api<Flashcard[]>("/api/flashcard/generate", {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -850,10 +942,13 @@ export const flashcardApi = {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       method: "POST",
       body: { documentId },
     }),
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -877,6 +972,10 @@ export const flashcardApi = {
   updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
     api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
 >>>>>>> origin/uichange
+=======
+  updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
+    api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
+>>>>>>> origin/admin-added
       method: "PUT",
       body: { status },
     }),

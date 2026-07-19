@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Loader2, Download, ExternalLink, RotateCw } from "lucide-react";
 =======
 import { Loader2, Download, ExternalLink, RotateCw, FileText } from "lucide-react";
@@ -10,6 +11,9 @@ import { Loader2, Download, ExternalLink, RotateCw, FileText } from "lucide-reac
 =======
 import { Loader2, Download, ExternalLink, RotateCw, FileText } from "lucide-react";
 >>>>>>> origin/uichange
+=======
+import { Loader2, Download, ExternalLink, RotateCw } from "lucide-react";
+>>>>>>> origin/admin-added
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -70,6 +74,9 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
   // Toolbar
   const Toolbar = (
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
@@ -81,6 +88,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -99,10 +107,13 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={url} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
             <ExternalLink className="h-4 w-4 mr-1" />
@@ -113,6 +124,10 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 =======
             <ExternalLink className="h-3.5 w-3.5 mr-1" /> Mở mới
 >>>>>>> origin/uichange
+=======
+            <ExternalLink className="h-4 w-4 mr-1" />
+            Mở tab mới
+>>>>>>> origin/admin-added
           </a>
         </Button>
       </div>
@@ -122,6 +137,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
   return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
@@ -129,6 +145,9 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
 >>>>>>> origin/uichange
+=======
+    <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+>>>>>>> origin/admin-added
       {Toolbar}
 
       {/* Loading State */}

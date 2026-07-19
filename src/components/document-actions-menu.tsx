@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -21,6 +22,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/uichange
+=======
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/admin-added
 import { Flag, FolderOpen, MoreVertical, Share2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -32,6 +37,7 @@ import {
 import { useDeleteDocument } from "@/lib/queries";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { ShareDocumentDialog } from "@/components/share-document-dialog";
 =======
 import { ShareDialog } from "@/components/share-dialog";
@@ -39,6 +45,9 @@ import { ShareDialog } from "@/components/share-dialog";
 =======
 import { ShareDialog } from "@/components/share-dialog";
 >>>>>>> origin/uichange
+=======
+import { ShareDocumentDialog } from "@/components/share-document-dialog";
+>>>>>>> origin/admin-added
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 
@@ -49,6 +58,7 @@ export function DocumentActionsMenu({
   className,
   iconClassName,
 }: {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -70,6 +80,10 @@ export function DocumentActionsMenu({
   documentId: string;
   folderId: string;
 >>>>>>> origin/uichange
+=======
+  documentId: number;
+  folderId: string;
+>>>>>>> origin/admin-added
   title: string;
   className?: string;
   iconClassName?: string;
@@ -113,6 +127,7 @@ export function DocumentActionsMenu({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             onClick={() => navigate(`/aichat?folderId=${folderId}&docId=${documentId}`)}
 =======
 =======
@@ -121,12 +136,15 @@ export function DocumentActionsMenu({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
             onClick={() =>
               navigate({
                 to: "/ai",
                 search: { folderId, docId: documentId },
               })
             }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -137,6 +155,8 @@ export function DocumentActionsMenu({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>
@@ -155,6 +175,7 @@ export function DocumentActionsMenu({
         </DropdownMenuContent>
       </DropdownMenu>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       <ShareDocumentDialog
@@ -185,6 +206,13 @@ export function DocumentActionsMenu({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+      <ShareDocumentDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        documentTitle={title}
+        folderId={folderId!}
+>>>>>>> origin/admin-added
       />
       <ReportDocumentDialog
         open={reportOpen}

@@ -2,6 +2,7 @@ node_modules
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 .claude
 =======
@@ -19,3 +20,7 @@ dist
 =======
 .env
 >>>>>>> origin/uichange
+=======
+
+.claude
+>>>>>>> origin/admin-added

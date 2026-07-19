@@ -5,6 +5,7 @@ import { toast } from "sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useShareDocument, useShareInfo } from "@/lib/queries";
 =======
 import { useShareFolder, useOwnedShares } from "@/lib/queries";
@@ -18,6 +19,9 @@ import { useShareDocument, useShareInfo } from "@/lib/queries";
 =======
 import { useShareDocument, useShareInfo } from "@/lib/queries";
 >>>>>>> origin/uichange
+=======
+import { useShareFolder, useOwnedShares } from "@/lib/queries";
+>>>>>>> origin/admin-added
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -33,6 +37,7 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import type { ShareRecipient } from "@/lib/types";
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -45,10 +50,14 @@ import type { ShareRecipient } from "@/lib/types";
 =======
 import type { ShareRecipient } from "@/lib/types";
 >>>>>>> origin/uichange
+=======
+import type { ShareRecipient } from "@/lib/types";
+>>>>>>> origin/admin-added
 
 export function ShareDocumentDialog({
   open,
   onOpenChange,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -91,6 +100,8 @@ export function ShareDocumentDialog({
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
   documentTitle,
   folderId,
 }: {
@@ -108,6 +119,7 @@ export function ShareDocumentDialog({
     if (!open) {
       setEmailOrUsername("");
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -115,10 +127,13 @@ export function ShareDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       setCopied(false);
     }
   }, [open]);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -145,6 +160,8 @@ export function ShareDocumentDialog({
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
   const link = `http://localhost:5174/shared/${folderId}`;
 
   const handleInvite = async () => {
@@ -160,6 +177,7 @@ export function ShareDocumentDialog({
       });
       setEmailOrUsername("");
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -167,6 +185,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       toast.success(`Đã mời ${value}`);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Mời thất bại");
@@ -192,6 +212,7 @@ export function ShareDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <DialogTitle className="truncate">Chia sẻ "{documentTitle}"</DialogTitle>
           <DialogDescription>Mời người khác xem hoặc sao chép liên kết chia sẻ.</DialogDescription>
 =======
@@ -201,12 +222,15 @@ export function ShareDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
           <DialogTitle className="truncate">
             Chia sẻ "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
             Mời người khác xem hoặc sao chép liên kết chia sẻ.
           </DialogDescription>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -217,6 +241,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
         </DialogHeader>
 
         <div className="space-y-4">
@@ -224,6 +250,7 @@ export function ShareDocumentDialog({
             <Label>Mời người dùng</Label>
             <div className="flex gap-2">
               <Input
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -241,10 +268,13 @@ export function ShareDocumentDialog({
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
                 type="text"
                 placeholder="email@example.com hoặc username"
                 value={emailOrUsername}
                 onChange={(e) => setEmailOrUsername(e.target.value)}
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -253,6 +283,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault();
@@ -264,14 +296,18 @@ export function ShareDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               <Button onClick={handleInvite} disabled={share.isPending || !email.trim()}>
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
               <Button
                 onClick={handleInvite}
                 disabled={share.isPending || !emailOrUsername.trim()}
               >
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -287,6 +323,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                 {share.isPending ? "Đang mời..." : "Mời"}
               </Button>
             </div>
@@ -295,6 +333,7 @@ export function ShareDocumentDialog({
           <div className="space-y-2">
             <div className="flex items-center gap-1.5 text-sm font-medium">
               <Users className="h-4 w-4 text-muted-foreground" />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -327,6 +366,11 @@ export function ShareDocumentDialog({
             </div>
             {recipients.length === 0 ? (
 >>>>>>> origin/uichange
+=======
+              Đã chia sẻ ({isLoading ? "..." : (shares?.length ?? 0)})
+            </div>
+            {!shares || shares.length === 0 ? (
+>>>>>>> origin/admin-added
               <p className="text-sm text-muted-foreground">
                 Chưa chia sẻ với ai.
               </p>
@@ -334,12 +378,16 @@ export function ShareDocumentDialog({
               <ul className="space-y-1 max-h-32 overflow-y-auto">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
                 {shares.map((s) => (
                   <li
                     key={s.id}
                     className="text-sm rounded-md bg-muted/50 px-2.5 py-1.5 truncate"
                   >
                     {s.sharedUsername ?? s.sharedEmail ?? "Unknown"}
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -357,6 +405,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
                   </li>
                 ))}
               </ul>
@@ -371,6 +421,7 @@ export function ShareDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               <Button variant="outline" size="icon" onClick={handleCopy} title="Sao chép liên kết">
                 {copied ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
 =======
@@ -380,6 +431,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
               <Button
                 variant="outline"
                 size="icon"
@@ -394,6 +447,7 @@ export function ShareDocumentDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -401,6 +455,8 @@ export function ShareDocumentDialog({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
               </Button>
             </div>
           </div>

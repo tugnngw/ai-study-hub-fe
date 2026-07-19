@@ -11,13 +11,22 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OauthSuccessRouteImport } from './routes/oauth-success'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
+<<<<<<< HEAD
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthIndexRouteImport } from './routes/auth/index'
+=======
+import { Route as Admin_panelRouteRouteImport } from './routes/admin_panel/route'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthIndexRouteImport } from './routes/auth/index'
+import { Route as Admin_panelIndexRouteImport } from './routes/admin_panel/index'
+>>>>>>> origin/admin-added
 import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
+<<<<<<< HEAD
 import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
 import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
 <<<<<<< HEAD
@@ -28,6 +37,15 @@ import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticat
 =======
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 >>>>>>> origin/uichange
+=======
+import { Route as Admin_panelUsersRouteImport } from './routes/admin_panel/users'
+import { Route as Admin_panelTrashRouteImport } from './routes/admin_panel/trash'
+import { Route as Admin_panelProfileRouteImport } from './routes/admin_panel/profile'
+import { Route as Admin_panelFilesRouteImport } from './routes/admin_panel/files'
+import { Route as Admin_panelApprovalsRouteImport } from './routes/admin_panel/approvals'
+import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
+import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
+>>>>>>> origin/admin-added
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated/folders'
 import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
@@ -48,6 +66,14 @@ const AuthRouteRoute = AuthRouteRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+<<<<<<< HEAD
+=======
+const Admin_panelRouteRoute = Admin_panelRouteRouteImport.update({
+  id: '/admin_panel',
+  path: '/admin_panel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+>>>>>>> origin/admin-added
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -62,6 +88,14 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+<<<<<<< HEAD
+=======
+const Admin_panelIndexRoute = Admin_panelIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+>>>>>>> origin/admin-added
 const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -82,6 +116,34 @@ const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+<<<<<<< HEAD
+=======
+const Admin_panelUsersRoute = Admin_panelUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+const Admin_panelTrashRoute = Admin_panelTrashRouteImport.update({
+  id: '/trash',
+  path: '/trash',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+const Admin_panelProfileRoute = Admin_panelProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+const Admin_panelFilesRoute = Admin_panelFilesRouteImport.update({
+  id: '/files',
+  path: '/files',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+const Admin_panelApprovalsRoute = Admin_panelApprovalsRouteImport.update({
+  id: '/approvals',
+  path: '/approvals',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+>>>>>>> origin/admin-added
 const AuthenticatedTrashRoute = AuthenticatedTrashRouteImport.update({
   id: '/trash',
   path: '/trash',
@@ -92,6 +154,7 @@ const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
   path: '/shared',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -106,6 +169,8 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -155,6 +220,10 @@ const AuthenticatedDocumentsIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+<<<<<<< HEAD
+=======
+  '/admin_panel': typeof Admin_panelRouteRouteWithChildren
+>>>>>>> origin/admin-added
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -166,6 +235,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/settings': typeof AuthenticatedSettingsRoute
 >>>>>>> origin/test/share-document-cloudinary
@@ -174,10 +244,23 @@ export interface FileRoutesByFullPath {
 >>>>>>> origin/uichange
   '/shared': typeof AuthenticatedSharedRoute
   '/trash': typeof AuthenticatedTrashRoute
+=======
+  '/shared': typeof AuthenticatedSharedRoute
+  '/trash': typeof AuthenticatedTrashRoute
+  '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
+  '/admin_panel/files': typeof Admin_panelFilesRoute
+  '/admin_panel/profile': typeof Admin_panelProfileRoute
+  '/admin_panel/trash': typeof Admin_panelTrashRoute
+  '/admin_panel/users': typeof Admin_panelUsersRoute
+>>>>>>> origin/admin-added
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+<<<<<<< HEAD
+=======
+  '/admin_panel/': typeof Admin_panelIndexRoute
+>>>>>>> origin/admin-added
   '/auth/': typeof AuthIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
@@ -194,6 +277,7 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/settings': typeof AuthenticatedSettingsRoute
 >>>>>>> origin/test/share-document-cloudinary
@@ -202,10 +286,23 @@ export interface FileRoutesByTo {
 >>>>>>> origin/uichange
   '/shared': typeof AuthenticatedSharedRoute
   '/trash': typeof AuthenticatedTrashRoute
+=======
+  '/shared': typeof AuthenticatedSharedRoute
+  '/trash': typeof AuthenticatedTrashRoute
+  '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
+  '/admin_panel/files': typeof Admin_panelFilesRoute
+  '/admin_panel/profile': typeof Admin_panelProfileRoute
+  '/admin_panel/trash': typeof Admin_panelTrashRoute
+  '/admin_panel/users': typeof Admin_panelUsersRoute
+>>>>>>> origin/admin-added
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+<<<<<<< HEAD
+=======
+  '/admin_panel': typeof Admin_panelIndexRoute
+>>>>>>> origin/admin-added
   '/auth': typeof AuthIndexRoute
   '/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/folders/$id': typeof AuthenticatedFoldersIdRoute
@@ -214,6 +311,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+<<<<<<< HEAD
+=======
+  '/admin_panel': typeof Admin_panelRouteRouteWithChildren
+>>>>>>> origin/admin-added
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -225,6 +326,7 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
 >>>>>>> origin/test/share-document-cloudinary
@@ -233,10 +335,23 @@ export interface FileRoutesById {
 >>>>>>> origin/uichange
   '/_authenticated/shared': typeof AuthenticatedSharedRoute
   '/_authenticated/trash': typeof AuthenticatedTrashRoute
+=======
+  '/_authenticated/shared': typeof AuthenticatedSharedRoute
+  '/_authenticated/trash': typeof AuthenticatedTrashRoute
+  '/admin_panel/approvals': typeof Admin_panelApprovalsRoute
+  '/admin_panel/files': typeof Admin_panelFilesRoute
+  '/admin_panel/profile': typeof Admin_panelProfileRoute
+  '/admin_panel/trash': typeof Admin_panelTrashRoute
+  '/admin_panel/users': typeof Admin_panelUsersRoute
+>>>>>>> origin/admin-added
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/auth/reset-password': typeof AuthResetPasswordRoute
+<<<<<<< HEAD
+=======
+  '/admin_panel/': typeof Admin_panelIndexRoute
+>>>>>>> origin/admin-added
   '/auth/': typeof AuthIndexRoute
   '/_authenticated/documents/$id': typeof AuthenticatedDocumentsIdRoute
   '/_authenticated/folders/$id': typeof AuthenticatedFoldersIdRoute
@@ -245,6 +360,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+<<<<<<< HEAD
+=======
+    | '/admin_panel'
+>>>>>>> origin/admin-added
     | '/auth'
     | '/oauth-success'
     | '/admin'
@@ -256,6 +375,7 @@ export interface FileRouteTypes {
     | '/profile'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/settings'
 >>>>>>> origin/test/share-document-cloudinary
@@ -264,10 +384,23 @@ export interface FileRouteTypes {
 >>>>>>> origin/uichange
     | '/shared'
     | '/trash'
+=======
+    | '/shared'
+    | '/trash'
+    | '/admin_panel/approvals'
+    | '/admin_panel/files'
+    | '/admin_panel/profile'
+    | '/admin_panel/trash'
+    | '/admin_panel/users'
+>>>>>>> origin/admin-added
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+<<<<<<< HEAD
+=======
+    | '/admin_panel/'
+>>>>>>> origin/admin-added
     | '/auth/'
     | '/documents/$id'
     | '/folders/$id'
@@ -284,6 +417,7 @@ export interface FileRouteTypes {
     | '/profile'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/settings'
 >>>>>>> origin/test/share-document-cloudinary
@@ -292,10 +426,23 @@ export interface FileRouteTypes {
 >>>>>>> origin/uichange
     | '/shared'
     | '/trash'
+=======
+    | '/shared'
+    | '/trash'
+    | '/admin_panel/approvals'
+    | '/admin_panel/files'
+    | '/admin_panel/profile'
+    | '/admin_panel/trash'
+    | '/admin_panel/users'
+>>>>>>> origin/admin-added
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+<<<<<<< HEAD
+=======
+    | '/admin_panel'
+>>>>>>> origin/admin-added
     | '/auth'
     | '/documents/$id'
     | '/folders/$id'
@@ -303,6 +450,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+<<<<<<< HEAD
+=======
+    | '/admin_panel'
+>>>>>>> origin/admin-added
     | '/auth'
     | '/oauth-success'
     | '/_authenticated/admin'
@@ -314,6 +465,7 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     | '/_authenticated/settings'
 >>>>>>> origin/test/share-document-cloudinary
@@ -322,10 +474,23 @@ export interface FileRouteTypes {
 >>>>>>> origin/uichange
     | '/_authenticated/shared'
     | '/_authenticated/trash'
+=======
+    | '/_authenticated/shared'
+    | '/_authenticated/trash'
+    | '/admin_panel/approvals'
+    | '/admin_panel/files'
+    | '/admin_panel/profile'
+    | '/admin_panel/trash'
+    | '/admin_panel/users'
+>>>>>>> origin/admin-added
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/register'
     | '/auth/reset-password'
+<<<<<<< HEAD
+=======
+    | '/admin_panel/'
+>>>>>>> origin/admin-added
     | '/auth/'
     | '/_authenticated/documents/$id'
     | '/_authenticated/folders/$id'
@@ -334,6 +499,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+<<<<<<< HEAD
+=======
+  Admin_panelRouteRoute: typeof Admin_panelRouteRouteWithChildren
+>>>>>>> origin/admin-added
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   OauthSuccessRoute: typeof OauthSuccessRoute
 }
@@ -354,6 +523,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+<<<<<<< HEAD
+=======
+    '/admin_panel': {
+      id: '/admin_panel'
+      path: '/admin_panel'
+      fullPath: '/admin_panel'
+      preLoaderRoute: typeof Admin_panelRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+>>>>>>> origin/admin-added
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -375,6 +554,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+<<<<<<< HEAD
+=======
+    '/admin_panel/': {
+      id: '/admin_panel/'
+      path: '/'
+      fullPath: '/admin_panel/'
+      preLoaderRoute: typeof Admin_panelIndexRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+>>>>>>> origin/admin-added
     '/auth/reset-password': {
       id: '/auth/reset-password'
       path: '/reset-password'
@@ -403,6 +592,44 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthForgotPasswordRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+<<<<<<< HEAD
+=======
+    '/admin_panel/users': {
+      id: '/admin_panel/users'
+      path: '/users'
+      fullPath: '/admin_panel/users'
+      preLoaderRoute: typeof Admin_panelUsersRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/trash': {
+      id: '/admin_panel/trash'
+      path: '/trash'
+      fullPath: '/admin_panel/trash'
+      preLoaderRoute: typeof Admin_panelTrashRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/profile': {
+      id: '/admin_panel/profile'
+      path: '/profile'
+      fullPath: '/admin_panel/profile'
+      preLoaderRoute: typeof Admin_panelProfileRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/files': {
+      id: '/admin_panel/files'
+      path: '/files'
+      fullPath: '/admin_panel/files'
+      preLoaderRoute: typeof Admin_panelFilesRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/approvals': {
+      id: '/admin_panel/approvals'
+      path: '/approvals'
+      fullPath: '/admin_panel/approvals'
+      preLoaderRoute: typeof Admin_panelApprovalsRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+>>>>>>> origin/admin-added
     '/_authenticated/trash': {
       id: '/_authenticated/trash'
       path: '/trash'
@@ -419,6 +646,7 @@ declare module '@tanstack/react-router' {
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -433,6 +661,8 @@ declare module '@tanstack/react-router' {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -534,12 +764,15 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
 >>>>>>> origin/test/share-document-cloudinary
 =======
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
 }
@@ -554,12 +787,15 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
 >>>>>>> origin/test/share-document-cloudinary
 =======
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   AuthenticatedSharedRoute: AuthenticatedSharedRoute,
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,
 }
@@ -567,6 +803,30 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+<<<<<<< HEAD
+=======
+interface Admin_panelRouteRouteChildren {
+  Admin_panelApprovalsRoute: typeof Admin_panelApprovalsRoute
+  Admin_panelFilesRoute: typeof Admin_panelFilesRoute
+  Admin_panelProfileRoute: typeof Admin_panelProfileRoute
+  Admin_panelTrashRoute: typeof Admin_panelTrashRoute
+  Admin_panelUsersRoute: typeof Admin_panelUsersRoute
+  Admin_panelIndexRoute: typeof Admin_panelIndexRoute
+}
+
+const Admin_panelRouteRouteChildren: Admin_panelRouteRouteChildren = {
+  Admin_panelApprovalsRoute: Admin_panelApprovalsRoute,
+  Admin_panelFilesRoute: Admin_panelFilesRoute,
+  Admin_panelProfileRoute: Admin_panelProfileRoute,
+  Admin_panelTrashRoute: Admin_panelTrashRoute,
+  Admin_panelUsersRoute: Admin_panelUsersRoute,
+  Admin_panelIndexRoute: Admin_panelIndexRoute,
+}
+
+const Admin_panelRouteRouteWithChildren =
+  Admin_panelRouteRoute._addFileChildren(Admin_panelRouteRouteChildren)
+
+>>>>>>> origin/admin-added
 interface AuthRouteRouteChildren {
   AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
   AuthLoginRoute: typeof AuthLoginRoute
@@ -590,6 +850,10 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+<<<<<<< HEAD
+=======
+  Admin_panelRouteRoute: Admin_panelRouteRouteWithChildren,
+>>>>>>> origin/admin-added
   AuthRouteRoute: AuthRouteRouteWithChildren,
   OauthSuccessRoute: OauthSuccessRoute,
 }
@@ -597,8 +861,13 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
+<<<<<<< HEAD
 import type { getRouter } from './router.tsx'
 import type { startInstance } from './start.ts'
+=======
+import type { getRouter } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/router.tsx'
+import type { startInstance } from './D:/OneDrive/Documents/GitHub/ai-study-hub-fe/src/start.ts'
+>>>>>>> origin/admin-added
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true

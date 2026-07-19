@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // auth.tsx — AuthContext. Gọi thẳng BE thật (không còn mock).
 // =============================================================
@@ -18,11 +19,15 @@
 =======
 // src/lib/auth.tsx
 >>>>>>> origin/uichange
+=======
+// src/lib/auth.tsx
+>>>>>>> origin/admin-added
 import {
   createContext,
   useContext,
   useState,
   useEffect,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -37,12 +42,16 @@ import {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+  useCallback,
+>>>>>>> origin/admin-added
   type ReactNode,
 } from "react";
 import type { User, RegisterRequest } from "./types";
 import { authApi, accountApi } from "./realApi";
 import { tokenStore } from "./api";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -72,6 +81,8 @@ interface AuthContextValue {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
@@ -83,6 +94,7 @@ interface AuthContextValue {
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -101,6 +113,8 @@ interface AuthContextValue {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -109,6 +123,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -230,6 +245,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
   // --- Initial Auth Check ---
   // Effect này chạy một lần khi component mount để kiểm tra token và load user
   useEffect(() => {
@@ -438,6 +455,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []); // Empty deps: refresh function không thay đổi
 
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/uichange
@@ -452,6 +470,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
   };
@@ -465,6 +485,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -472,6 +493,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   };
 
   return (
@@ -479,6 +502,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       value={{
         user,
         isLoading,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -497,6 +521,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/admin-added
         // isAuthenticated: !!user && !!tokenStore.get(), // Xác thực khi có user VÀ có access token
         isAuthenticated: !!user, // Chỉ cần user tồn tại là coi như đã xác thực, vì user chỉ set khi có token hợp lệ
         login,
@@ -506,6 +532,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         requestPasswordReset,
         verifyResetOtp,
         resetPassword,
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -520,6 +547,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         verifyResetOtp,
         resetPassword,
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
       }}
     >
       {children}
@@ -537,6 +566,7 @@ export function useAuth() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Re-export type để các component không cần import lại
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -546,4 +576,6 @@ export function useAuth() {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 export type { RegisterRequest };

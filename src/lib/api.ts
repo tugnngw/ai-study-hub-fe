@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Lightweight API client. JWT stored in localStorage.
 export const API_BASE =
   (import.meta.env.VITE_API_BASE as string | undefined) ?? "http://localhost:8080";
@@ -12,10 +13,13 @@ export const API_BASE =
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 // src/lib/api.ts
 export const API_BASE =
   (import.meta.env.VITE_API_BASE as string | undefined) ??
   "http://localhost:4040";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -26,11 +30,14 @@ export const API_BASE =
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 
 const TOKEN_KEY = "auth_token";
 const REFRESH_KEY = "refresh_token";
 
 export const tokenStore = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -52,6 +59,10 @@ export const tokenStore = {
   get: () =>
     typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY),
 >>>>>>> origin/uichange
+=======
+  get: () =>
+    typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY),
+>>>>>>> origin/admin-added
   set: (t: string) => localStorage.setItem(TOKEN_KEY, t),
   clear: () => {
     localStorage.removeItem(TOKEN_KEY);
@@ -79,6 +90,7 @@ type Options = {
   headers?: Record<string, string>;
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -116,10 +128,13 @@ export async function api<T = unknown>(path: string, opts: Options = {}): Promis
   }
   return data as T;
 =======
+=======
+>>>>>>> origin/admin-added
 // ── Refresh token queue ─────────────────────────────────────
 let refreshPromise: Promise<boolean> | null = null;
 
 export async function attemptRefresh(): Promise<boolean> {
+<<<<<<< HEAD
 =======
 // ── Refresh token queue ─────────────────────────────────────
 let refreshPromise: Promise<boolean> | null = null;
@@ -141,6 +156,8 @@ async function attemptRefresh(): Promise<boolean> {
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
   const refreshToken = tokenStore.getRefresh();
   if (!refreshToken) return false;
 
@@ -177,6 +194,7 @@ export async function api<T = unknown>(
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   const doFetch = async (): Promise<Response> => {
     const token = tokenStore.get();
   console.log('🔑 api request', { path, tokenPresent: !!token });
@@ -194,6 +212,11 @@ export async function api<T = unknown>(
   const doFetch = async (): Promise<Response> => {
     const token = tokenStore.get();
 >>>>>>> origin/uichange
+=======
+  const doFetch = async (): Promise<Response> => {
+    const token = tokenStore.get();
+  console.log('🔑 api request', { path, tokenPresent: !!token });
+>>>>>>> origin/admin-added
     const headers: Record<string, string> = { ...(opts.headers ?? {}) };
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
@@ -250,6 +273,9 @@ export async function api<T = unknown>(
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/admin-added
     // Do NOT clear token on 403 – user may simply lack permission.
     // Token clearing is only for 401 (unauthenticated) after refresh failure.
     // 403 means the request was understood but the user lacks required rights.
@@ -261,6 +287,7 @@ export async function api<T = unknown>(
   // Unwrap ApiResponse<T> { code, message, data } -> T
   const result = (json as any)?.data !== undefined ? (json as any).data : json;
   return result as T;
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
@@ -283,4 +310,6 @@ export async function api<T = unknown>(
 >>>>>>> origin/test/share-document-cloudinary
 =======
 >>>>>>> origin/uichange
+=======
+>>>>>>> origin/admin-added
 }
