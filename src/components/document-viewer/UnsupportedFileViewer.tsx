@@ -1,6 +1,10 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 import { Download, ExternalLink, File } from "lucide-react";
+=======
+import { Download, ExternalLink, File, FileText } from "lucide-react";
+>>>>>>> origin/test/share-document-cloudinary
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -17,6 +21,7 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
   fileUrl,
   className,
 }) => {
+<<<<<<< HEAD
   // Toolbar
   const Toolbar = (
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
@@ -28,12 +33,29 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
           <a href={fileUrl} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
+=======
+  // Toolbar - matches PdfViewer styling
+  const Toolbar = (
+    <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-1.5 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm gap-1 flex-wrap min-h-[42px]">
+      <div className="flex items-center gap-2 min-w-0">
+        <FileText className="h-4 w-4 text-primary shrink-0" />
+        <span className="text-sm font-semibold truncate max-w-[160px]">{fileName}</span>
+      </div>
+      <div className="flex items-center gap-0.5 flex-wrap">
+        <Button variant="ghost" size="sm" asChild>
+          <a href={fileUrl} download target="_blank" rel="noopener noreferrer">
+            <Download className="h-3.5 w-3.5 mr-1" /> Tải
+>>>>>>> origin/test/share-document-cloudinary
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={fileUrl} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
             <ExternalLink className="h-4 w-4 mr-1" />
             Mở tab mới
+=======
+            <ExternalLink className="h-3.5 w-3.5 mr-1" /> Mở mới
+>>>>>>> origin/test/share-document-cloudinary
           </a>
         </Button>
       </div>
@@ -41,7 +63,11 @@ export const UnsupportedFileViewer: React.FC<UnsupportedFileViewerProps> = ({
   );
 
   return (
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+=======
+    <Card className={cn("flex flex-col min-h-0", className)}>
+>>>>>>> origin/test/share-document-cloudinary
       {Toolbar}
 
       <div className="flex-1 flex flex-col items-center justify-center p-8">

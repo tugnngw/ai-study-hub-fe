@@ -25,6 +25,7 @@ const Alert = React.forwardRef<
 >(({ className, variant, ...props }, ref) => (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props} />
 ));
 Alert.displayName = "Alert";
@@ -41,6 +42,8 @@ const AlertTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<H
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   <div
     ref={ref}
     role="alert"
@@ -61,9 +64,12 @@ const AlertTitle = React.forwardRef<
   />
 ));
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 AlertTitle.displayName = "AlertTitle";
 
 const AlertDescription = React.forwardRef<
@@ -72,19 +78,25 @@ const AlertDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   <div ref={ref} className={cn("text-sm [&_p]:leading-relaxed", className)} {...props} />
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   <div
     ref={ref}
     className={cn("text-sm [&_p]:leading-relaxed", className)}
     {...props}
   />
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 ));
 AlertDescription.displayName = "AlertDescription";
 

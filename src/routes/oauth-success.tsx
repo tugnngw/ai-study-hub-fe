@@ -4,7 +4,10 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+<<<<<<< HEAD
 import { tokenStore } from "@/lib/api"; // Import tokenStore
+=======
+>>>>>>> origin/test/share-document-cloudinary
 
 export const Route = createFileRoute("/oauth-success")({
   component: OAuthSuccessPage,
@@ -12,6 +15,7 @@ export const Route = createFileRoute("/oauth-success")({
 
 function OAuthSuccessPage() {
   const navigate = useNavigate();
+<<<<<<< HEAD
   const { refresh } = useAuth(); // useAuth hook để gọi hàm refresh
   const hasRunRef = useRef(false); // Track if effect has already run
 
@@ -48,10 +52,29 @@ function OAuthSuccessPage() {
         console.error("OAuth failed: Missing access token, refresh token, or user ID in URL.");
         console.error(`Missing: ${!accessToken ? "accessToken " : ""}${!refreshToken ? "refreshToken " : ""}${!userId ? "userId" : ""}`);
         // Nếu thiếu, chuyển hướng về trang login
+=======
+  const { refresh } = useAuth();
+  const processed = useRef(false);
+
+  console.log("📱 OAuthSuccessPage MOUNTED");
+
+  useEffect(() => {
+    console.log("📱 OAuthSuccessPage useEffect FIRED");
+    const handleOAuth = async () => {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("access_token");
+      const userId = params.get("user_id");
+
+      console.log("📱 OAuthSuccessPage: token exists?", !!token, "userId exists?", !!userId);
+
+      if (!token) {
+        console.log("📱 OAuthSuccessPage: NO TOKEN, redirecting to /auth/login");
+>>>>>>> origin/test/share-document-cloudinary
         navigate({ to: "/auth/login", replace: true });
         return;
       }
 
+<<<<<<< HEAD
       // Lưu tokens và user ID vào localStorage
       tokenStore.set(accessToken);           // Lưu access_token
       tokenStore.setRefresh(refreshToken);   // Lưu refresh_token
@@ -72,12 +95,34 @@ function OAuthSuccessPage() {
       // Sau khi xử lý thành công, điều hướng đến trang dashboard
       navigate({
         to: "/dashboard", // Thay '/dashboard' bằng route thực tế của bạn
+=======
+      console.log("📱 OAuthSuccessPage: SAVING token to localStorage");
+      localStorage.setItem("auth_token", token);
+
+      if (userId) {
+        console.log("📱 OAuthSuccessPage: SAVING userId to localStorage");
+        localStorage.setItem("user_id", userId);
+      }
+
+      console.log("📱 OAuthSuccessPage: CALLING refresh()");
+      await refresh();
+      console.log("📱 OAuthSuccessPage: refresh() COMPLETED");
+
+      console.log("📱 OAuthSuccessPage: NAVIGATING to /dashboard");
+      navigate({
+        to: "/dashboard",
+>>>>>>> origin/test/share-document-cloudinary
         replace: true,
       });
     };
 
     handleOAuth();
+<<<<<<< HEAD
   }, []); // ⚠️ Empty dependency array - only run once on mount
+=======
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+>>>>>>> origin/test/share-document-cloudinary
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">

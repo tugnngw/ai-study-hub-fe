@@ -11,6 +11,7 @@ const buttonVariants = cva(
       variant: {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
@@ -19,6 +20,8 @@ const buttonVariants = cva(
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
         default:
           "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive:
@@ -28,9 +31,12 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
@@ -51,6 +57,7 @@ const buttonVariants = cva(
 export interface ButtonProps
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
 =======
   extends
@@ -62,6 +69,11 @@ export interface ButtonProps
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
 >>>>>>> origin/AI-Study-fix
+=======
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+>>>>>>> origin/test/share-document-cloudinary
   asChild?: boolean;
 }
 
@@ -71,19 +83,25 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     );
   },
 );

@@ -4,10 +4,14 @@ import { DocumentWorkspace } from "@/components/document-workspace";
 
 const searchSchema = z.object({
 <<<<<<< HEAD
+<<<<<<< HEAD
   docId: z.coerce.number().optional(),
 =======
   docId: z.string().optional(),
 >>>>>>> origin/AI-Study-fix
+=======
+  docId: z.string().optional(),
+>>>>>>> origin/test/share-document-cloudinary
 });
 
 export const Route = createFileRoute("/_authenticated/folders/$id")({

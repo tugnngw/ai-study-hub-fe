@@ -20,6 +20,10 @@ import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
 import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
 import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
+<<<<<<< HEAD
+=======
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+>>>>>>> origin/test/share-document-cloudinary
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated/folders'
 import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
@@ -84,6 +88,14 @@ const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
   path: '/shared',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+<<<<<<< HEAD
+=======
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+>>>>>>> origin/test/share-document-cloudinary
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
@@ -142,6 +154,10 @@ export interface FileRoutesByFullPath {
   '/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
+<<<<<<< HEAD
+=======
+  '/settings': typeof AuthenticatedSettingsRoute
+>>>>>>> origin/test/share-document-cloudinary
   '/shared': typeof AuthenticatedSharedRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -162,6 +178,10 @@ export interface FileRoutesByTo {
   '/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
+<<<<<<< HEAD
+=======
+  '/settings': typeof AuthenticatedSettingsRoute
+>>>>>>> origin/test/share-document-cloudinary
   '/shared': typeof AuthenticatedSharedRoute
   '/trash': typeof AuthenticatedTrashRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -185,6 +205,10 @@ export interface FileRoutesById {
   '/_authenticated/documents': typeof AuthenticatedDocumentsRouteWithChildren
   '/_authenticated/folders': typeof AuthenticatedFoldersRouteWithChildren
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+<<<<<<< HEAD
+=======
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+>>>>>>> origin/test/share-document-cloudinary
   '/_authenticated/shared': typeof AuthenticatedSharedRoute
   '/_authenticated/trash': typeof AuthenticatedTrashRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -208,6 +232,10 @@ export interface FileRouteTypes {
     | '/documents'
     | '/folders'
     | '/profile'
+<<<<<<< HEAD
+=======
+    | '/settings'
+>>>>>>> origin/test/share-document-cloudinary
     | '/shared'
     | '/trash'
     | '/auth/forgot-password'
@@ -228,6 +256,10 @@ export interface FileRouteTypes {
     | '/documents'
     | '/folders'
     | '/profile'
+<<<<<<< HEAD
+=======
+    | '/settings'
+>>>>>>> origin/test/share-document-cloudinary
     | '/shared'
     | '/trash'
     | '/auth/forgot-password'
@@ -250,6 +282,10 @@ export interface FileRouteTypes {
     | '/_authenticated/documents'
     | '/_authenticated/folders'
     | '/_authenticated/profile'
+<<<<<<< HEAD
+=======
+    | '/_authenticated/settings'
+>>>>>>> origin/test/share-document-cloudinary
     | '/_authenticated/shared'
     | '/_authenticated/trash'
     | '/auth/forgot-password'
@@ -347,6 +383,16 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSharedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+<<<<<<< HEAD
+=======
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+>>>>>>> origin/test/share-document-cloudinary
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -446,6 +492,10 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRouteWithChildren
   AuthenticatedFoldersRoute: typeof AuthenticatedFoldersRouteWithChildren
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+<<<<<<< HEAD
+=======
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+>>>>>>> origin/test/share-document-cloudinary
   AuthenticatedSharedRoute: typeof AuthenticatedSharedRoute
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
 }
@@ -458,6 +508,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDocumentsRoute: AuthenticatedDocumentsRouteWithChildren,
   AuthenticatedFoldersRoute: AuthenticatedFoldersRouteWithChildren,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+<<<<<<< HEAD
+=======
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+>>>>>>> origin/test/share-document-cloudinary
   AuthenticatedSharedRoute: AuthenticatedSharedRoute,
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,
 }

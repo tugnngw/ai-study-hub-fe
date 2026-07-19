@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
@@ -58,6 +59,8 @@ export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardContent }
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -138,6 +141,9 @@ export {
   CardContent,
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary

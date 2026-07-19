@@ -1,4 +1,5 @@
 // src/components/document-viewer/DocxViewer.tsx
+<<<<<<< HEAD
 // Renders DOCX files using mammoth.js (converts to clean HTML)
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
@@ -6,6 +7,14 @@ import { Loader2, RotateCw, Download, ExternalLink } from "lucide-react";
 import * as mammoth from "mammoth";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+=======
+
+import React, { useEffect, useRef, useState, useCallback } from "react";
+import { Loader2, RotateCw, Download, ExternalLink, FileText } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+>>>>>>> origin/test/share-document-cloudinary
 import { cn } from "@/lib/utils";
 import {
   isCloudinaryUrl,
@@ -31,7 +40,11 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
   const [processedUrl, setProcessedUrl] = useState<string | null>(null);
   const isCloudinary = isCloudinaryUrl(url);
 
+<<<<<<< HEAD
   // Process Cloudinary URL if needed
+=======
+  // Process URL on mount and when URL changes
+>>>>>>> origin/test/share-document-cloudinary
   useEffect(() => {
     let isMounted = true;
     let currentBlobUrl: string | null = null;
@@ -56,9 +69,12 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 
     if (isCloudinary) {
       processUrl();
+<<<<<<< HEAD
     } else {
       setProcessedUrl(null);
       setLoading(false);
+=======
+>>>>>>> origin/test/share-document-cloudinary
     }
 
     return () => {
@@ -72,12 +88,21 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
   const fetchAndRender = useCallback(async () => {
     if (!containerRef.current) return;
 
+<<<<<<< HEAD
     let isMounted = true;
 
     try {
       setLoading(true);
       setError(null);
 
+=======
+    try {
+      setLoading(true);
+      setError(null);
+      containerRef.current.innerHTML = "";
+
+      // Use processedUrl (blob) for Cloudinary, original URL for others
+>>>>>>> origin/test/share-document-cloudinary
       const targetUrl = (isCloudinary && processedUrl) ? processedUrl : url;
 
       const response = await fetch(targetUrl, {
@@ -92,6 +117,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
       }
 
       const arrayBuffer = await response.arrayBuffer();
+<<<<<<< HEAD
 
       if (!isMounted) return;
 
@@ -124,6 +150,16 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
     } catch (e) {
       if (!isMounted) return;
 
+=======
+      const { renderAsync } = await import("docx-preview");
+
+      await renderAsync(arrayBuffer, containerRef.current, {
+        renderImages: true,
+      });
+
+      setLoading(false);
+    } catch (e) {
+>>>>>>> origin/test/share-document-cloudinary
       console.error("DOCX render error:", e);
       const errorMsg = e instanceof Error ? e.message : "Unknown error";
 
@@ -141,10 +177,13 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
 
       setLoading(false);
     }
+<<<<<<< HEAD
 
     return () => {
       isMounted = false;
     };
+=======
+>>>>>>> origin/test/share-document-cloudinary
   }, [url, isCloudinary, processedUrl]);
 
   useEffect(() => {
@@ -155,6 +194,7 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
     setRetryCount((prev) => prev + 1);
   };
 
+<<<<<<< HEAD
   // Toolbar
   const Toolbar = (
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
@@ -166,12 +206,29 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
+=======
+  // Toolbar - matches PdfViewer styling
+  const Toolbar = (
+    <div className="sticky top-0 z-40 flex items-center justify-between px-4 py-1.5 border-b border-border bg-background/95 backdrop-blur-sm shadow-sm gap-1 flex-wrap min-h-[42px]">
+      <div className="flex items-center gap-2 min-w-0">
+        <FileText className="h-4 w-4 text-primary shrink-0" />
+        <span className="text-sm font-semibold truncate max-w-[160px]">{fileName}</span>
+      </div>
+      <div className="flex items-center gap-0.5 flex-wrap">
+        <Button variant="ghost" size="sm" asChild>
+          <a href={url} download target="_blank" rel="noopener noreferrer">
+            <Download className="h-3.5 w-3.5 mr-1" /> Tải
+>>>>>>> origin/test/share-document-cloudinary
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={url} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
             <ExternalLink className="h-4 w-4 mr-1" />
             Mở tab mới
+=======
+            <ExternalLink className="h-3.5 w-3.5 mr-1" /> Mở mới
+>>>>>>> origin/test/share-document-cloudinary
           </a>
         </Button>
       </div>
@@ -179,7 +236,11 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
   );
 
   return (
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+=======
+    <Card className={cn("flex flex-col min-h-0", className)}>
+>>>>>>> origin/test/share-document-cloudinary
       {Toolbar}
 
       {/* Loading State */}
@@ -206,7 +267,11 @@ export const DocxViewer: React.FC<DocxViewerProps> = ({
         <div className="flex-1 overflow-auto p-6">
           <div
             ref={containerRef}
+<<<<<<< HEAD
             className="prose prose-sm max-w-none dark:prose-invert prose-img:max-w-full prose-img:h-auto"
+=======
+            className="docx-viewer prose prose-sm max-w-none dark:prose-invert"
+>>>>>>> origin/test/share-document-cloudinary
             style={{
               fontSize: "14px",
               lineHeight: "1.6",

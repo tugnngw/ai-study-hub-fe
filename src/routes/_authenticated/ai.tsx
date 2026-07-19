@@ -5,10 +5,14 @@ import { AIChat } from "@/components/ui/AIChat";
 const searchSchema = z.object({
   folderId: z.string(),
 <<<<<<< HEAD
+<<<<<<< HEAD
   docId: z.coerce.number().optional(),
 =======
   docId: z.string().optional(),
 >>>>>>> origin/AI-Study-fix
+=======
+  docId: z.string().optional(),
+>>>>>>> origin/test/share-document-cloudinary
 });
 
 export const Route = createFileRoute("/_authenticated/ai")({

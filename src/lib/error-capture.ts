@@ -11,6 +11,7 @@ function record(error: unknown) {
 if (typeof globalThis.addEventListener === "function") {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   globalThis.addEventListener("error", (event) => record((event as ErrorEvent).error ?? event));
 =======
   globalThis.addEventListener("error", (event) =>
@@ -22,6 +23,11 @@ if (typeof globalThis.addEventListener === "function") {
     record((event as ErrorEvent).error ?? event),
   );
 >>>>>>> origin/AI-Study-fix
+=======
+  globalThis.addEventListener("error", (event) =>
+    record((event as ErrorEvent).error ?? event),
+  );
+>>>>>>> origin/test/share-document-cloudinary
   globalThis.addEventListener("unhandledrejection", (event) =>
     record((event as PromiseRejectionEvent).reason),
   );

@@ -46,6 +46,7 @@ function SharedPage() {
                   <FileText className="h-5 w-5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
+<<<<<<< HEAD
                   <div className="font-medium truncate">{d.title}</div>
                   <div className="text-xs text-muted-foreground truncate">
                     {d.description}
@@ -53,16 +54,34 @@ function SharedPage() {
                   <div className="text-xs text-muted-foreground mt-1">
                     Chia sẻ bởi:{" "}
                     <span className="font-medium">{d.sharedBy}</span>
+=======
+                  <div className="font-medium truncate">
+                    {d.documentTitle || d.title || "Unnamed Document"}
+                  </div>
+                  <div className="text-xs text-muted-foreground truncate">
+                    {d.description || d.folderName || "No description"}
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-1">
+                    Chia sẻ bởi:{" "}
+                    <span className="font-medium">
+                      {d.ownerUsername || d.ownerEmail || "Unknown"}
+                    </span>
+>>>>>>> origin/test/share-document-cloudinary
                   </div>
                 </div>
                 <SharedDocumentActionsMenu
                   sharedId={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
                   title={d.title}
 =======
                   title={d.title ?? ""}
 >>>>>>> origin/AI-Study-fix
                   description={d.description ?? undefined}
+=======
+                  title={d.documentTitle || d.title || "Unnamed Document"}
+                  description={d.description || undefined}
+>>>>>>> origin/test/share-document-cloudinary
                 />
               </CardContent>
             </Card>

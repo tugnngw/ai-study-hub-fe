@@ -9,6 +9,7 @@ export const Route = createFileRoute("/_authenticated/documents/$id")({
 
 function DocumentDetail() {
   const { id } = Route.useParams();
+<<<<<<< HEAD
   console.log('[TRACE-1] Route param id:', id, 'type:', typeof id);
 <<<<<<< HEAD
   const docId = Number(id);
@@ -17,6 +18,10 @@ function DocumentDetail() {
 =======
   const doc = useDocument(id);
 >>>>>>> origin/AI-Study-fix
+=======
+  const docId = id;
+  const doc = useDocument(docId);
+>>>>>>> origin/test/share-document-cloudinary
 
   if (doc.isLoading) {
     return <Skeleton className="h-[calc(100vh-8rem)] w-full" />;
@@ -27,8 +32,12 @@ function DocumentDetail() {
     );
   }
 <<<<<<< HEAD
+<<<<<<< HEAD
   return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
 =======
   return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={id} />;
 >>>>>>> origin/AI-Study-fix
+=======
+  return <DocumentWorkspace folderId={doc.data.folderId || ""} docId={docId} />;
+>>>>>>> origin/test/share-document-cloudinary
 }

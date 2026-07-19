@@ -1,10 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
+<<<<<<< HEAD
 import { FolderKanban, Plus, Search, Trash2, Pencil } from "lucide-react";
+=======
+import { FolderKanban, Plus, Search, Trash2, Pencil, FileText } from "lucide-react";
+>>>>>>> origin/test/share-document-cloudinary
 import { toast } from "sonner";
 import {
   useCreateFolder,
   useDeleteFolder,
+<<<<<<< HEAD
+=======
+  useDocuments,
+>>>>>>> origin/test/share-document-cloudinary
   useFolders,
   useUpdateFolder,
 } from "@/lib/queries";
@@ -39,11 +47,26 @@ export const Route = createFileRoute("/_authenticated/folders")({
 
 function FoldersPage() {
   const { data, isLoading } = useFolders();
+<<<<<<< HEAD
+=======
+  const { data: allDocs } = useDocuments();
+>>>>>>> origin/test/share-document-cloudinary
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Folder | null>(null);
   const [deleting, setDeleting] = useState<Folder | null>(null);
 
+<<<<<<< HEAD
+=======
+  const countByFolder = (allDocs ?? []).reduce<Record<string, number>>(
+    (acc, d) => {
+      if (d.folderId) acc[d.folderId] = (acc[d.folderId] ?? 0) + 1;
+      return acc;
+    },
+    {},
+  );
+
+>>>>>>> origin/test/share-document-cloudinary
   const filtered = (data ?? []).filter((f) =>
     f.name.toLowerCase().includes(query.toLowerCase()),
   );
@@ -105,6 +128,13 @@ function FoldersPage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="font-medium truncate">{f.name}</div>
+<<<<<<< HEAD
+=======
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                        <FileText className="h-3 w-3" />
+                        <span>{countByFolder[f.id] ?? 0} tài liệu</span>
+                      </div>
+>>>>>>> origin/test/share-document-cloudinary
                       <div className="text-xs text-muted-foreground line-clamp-2 mt-1">
                         {f.aiSummary || "No summary"}
                       </div>

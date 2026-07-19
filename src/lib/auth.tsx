@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // auth.tsx — AuthContext. Gọi thẳng BE thật (không còn mock).
 // =============================================================
@@ -10,11 +11,15 @@
 =======
 // src/lib/auth.tsx
 >>>>>>> origin/AI-Study-fix
+=======
+// src/lib/auth.tsx
+>>>>>>> origin/test/share-document-cloudinary
 import {
   createContext,
   useContext,
   useState,
   useEffect,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -23,12 +28,15 @@ import {
 =======
   useCallback,
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   type ReactNode,
 } from "react";
 import type { User, RegisterRequest } from "./types";
 import { authApi, accountApi } from "./realApi";
 import { tokenStore } from "./api";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 // Nguồn auth: luôn là API thật.
@@ -39,10 +47,13 @@ const authSource = {
   me: accountApi.me,
 };
 
+=======
+>>>>>>> origin/test/share-document-cloudinary
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
+<<<<<<< HEAD
   login: (username: string, password: string) => Promise<User>;
   register: (data: RegisterRequest) => Promise<void>;
   logout: () => Promise<void>;
@@ -65,6 +76,15 @@ interface AuthContextValue {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+  login: (username: string, password: string) => Promise<void>;
+  register: (data: RegisterRequest) => Promise<void>;
+  logout: () => Promise<void>;
+  refresh: () => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<void>;
+  verifyResetOtp: (email: string, otp: string) => Promise<void>;
+  resetPassword: (email: string, password: string) => Promise<void>;
+>>>>>>> origin/test/share-document-cloudinary
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -75,13 +95,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Khi app khởi động: nếu đã có token → lấy thông tin user
+=======
+>>>>>>> origin/test/share-document-cloudinary
   useEffect(() => {
     const token = tokenStore.get();
     if (!token) {
       setIsLoading(false);
       return;
     }
+<<<<<<< HEAD
     authSource
       .me()
       .then(setUser)
@@ -102,11 +126,76 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     await authSource.logout();
+=======
+    accountApi
+      .me()
+      .then((u) => {
+        setUser(u);
+      })
+      .catch((err) => {
+        if (err?.status === 401 || err?.status === 403) {
+          tokenStore.clear();
+          setUser(null);
+        } else {
+          setIsLoading(false); // Giữ nguyên user (có thể đã có từ trước) nếu lỗi server
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []); // Empty dependency array - OAuth callback executes only once on mount
+
+  // ── Periodically refresh token (every 10 min) ─────────
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (!tokenStore.get()) return; // No token, skip
+      try {
+        const res = await authApi.refresh();
+        if (res?.accessToken) {
+          tokenStore.set(res.accessToken);
+          if (res.refreshToken) tokenStore.setRefresh(res.refreshToken);
+          // Re-fetch user info silently
+          accountApi.me().then(setUser).catch(() => {});
+        }
+      } catch {
+        // Refresh failed — will be caught by api() interceptor later
+      }
+    }, 10 * 60 * 1000); // 10 minutes
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const login = async (username: string, password: string) => {
+    tokenStore.clear(); // Clear any old token before setting new
+    const res = await authApi.login({ username, password });
+    // Backend returns AuthResponse directly as res (flat structure: userId, username, email, etc.)
+    const userObj: User = {
+      id: res.userId,
+      username: res.username,
+      email: res.email,
+      fullName: res.fullName,
+      role: res.role,
+      status: "ACTIVE", // Fallback defaults
+      authProvider: "LOCAL",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    setUser(userObj);
+  };
+
+  const register = async (data: RegisterRequest) => {
+    await authApi.register(data);
+  };
+
+  const logout = async () => {
+    await authApi.logout();
+>>>>>>> origin/test/share-document-cloudinary
     setUser(null);
   };
 
   const refresh = async () => {
     try {
+<<<<<<< HEAD
       const u = await authSource.me();
       setUser(u);
     } catch {
@@ -323,6 +412,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []); // Empty deps: refresh function không thay đổi
 
+=======
+      const u = await accountApi.me();
+      setUser(u);
+    } catch (err) {
+      setUser(null);
+    }
+  };
+
+>>>>>>> origin/test/share-document-cloudinary
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
   };
@@ -334,9 +432,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const resetPassword = async (email: string, password: string) => {
     await authApi.resetPassword(email, password);
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   };
 
   return (
@@ -346,11 +447,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isLoading,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/test/share-document-cloudinary
         isAuthenticated: !!user,
         login,
         register,
         logout,
         refresh,
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/AI-Study-fix
@@ -367,6 +472,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+        requestPasswordReset,
+        verifyResetOtp,
+        resetPassword,
+>>>>>>> origin/test/share-document-cloudinary
       }}
     >
       {children}
@@ -382,9 +492,12 @@ export function useAuth() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Re-export type để các component không cần import lại
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 export type { RegisterRequest };

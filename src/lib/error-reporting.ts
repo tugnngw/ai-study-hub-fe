@@ -1,19 +1,25 @@
 type ErrorReportOptions = {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   mechanism?: "manual" | "onerror" | "unhandledrejection" | "react_error_boundary";
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   mechanism?:
     | "manual"
     | "onerror"
     | "unhandledrejection"
     | "react_error_boundary";
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   handled?: boolean;
   severity?: "error" | "warning" | "info";
 };
@@ -34,18 +40,24 @@ declare global {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function reportClientError(error: unknown, context: Record<string, unknown> = {}) {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 export function reportClientError(
   error: unknown,
   context: Record<string, unknown> = {},
 ) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   if (typeof window === "undefined") return;
   window.__errorReportingEvents?.captureException?.(
     error,

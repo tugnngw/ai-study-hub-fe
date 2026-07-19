@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
     <div className="relative w-full overflow-auto">
@@ -14,6 +15,8 @@ const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableE
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
@@ -27,9 +30,12 @@ const Table = React.forwardRef<
   </div>
 ));
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 Table.displayName = "Table";
 
 const TableHeader = React.forwardRef<
@@ -46,19 +52,25 @@ const TableBody = React.forwardRef<
 >(({ className, ...props }, ref) => (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props} />
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   <tbody
     ref={ref}
     className={cn("[&_tr:last-child]:border-0", className)}
     {...props}
   />
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 ));
 TableBody.displayName = "TableBody";
 
@@ -70,23 +82,30 @@ const TableFooter = React.forwardRef<
     ref={ref}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     className={cn(
       "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
       className,
     )}
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     {...props}
   />
 ));
 TableFooter.displayName = "TableFooter";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableRowElement>>(
@@ -104,6 +123,8 @@ const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTML
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
@@ -118,9 +139,12 @@ const TableRow = React.forwardRef<
   />
 ));
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 TableRow.displayName = "TableRow";
 
 const TableHead = React.forwardRef<
@@ -159,6 +183,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   <caption ref={ref} className={cn("mt-4 text-sm text-muted-foreground", className)} {...props} />
 ));
 TableCaption.displayName = "TableCaption";
@@ -167,6 +192,8 @@ export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableC
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   <caption
     ref={ref}
     className={cn("mt-4 text-sm text-muted-foreground", className)}
@@ -186,6 +213,9 @@ export {
   TableCaption,
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary

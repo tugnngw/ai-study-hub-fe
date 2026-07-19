@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -11,6 +12,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/AI-Study-fix
+=======
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/test/share-document-cloudinary
 import { Flag, FolderOpen, MoreVertical, Share2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -20,7 +25,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useDeleteDocument } from "@/lib/queries";
+<<<<<<< HEAD
 import { ShareDocumentDialog } from "@/components/share-document-dialog";
+=======
+import { ShareDialog } from "@/components/share-dialog";
+>>>>>>> origin/test/share-document-cloudinary
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 
@@ -32,6 +41,7 @@ export function DocumentActionsMenu({
   iconClassName,
 }: {
 <<<<<<< HEAD
+<<<<<<< HEAD
   documentId: number;
 <<<<<<< HEAD
   folderId: number;
@@ -42,6 +52,10 @@ export function DocumentActionsMenu({
   documentId: string;
   folderId: string;
 >>>>>>> origin/AI-Study-fix
+=======
+  documentId: string;
+  folderId: string;
+>>>>>>> origin/test/share-document-cloudinary
   title: string;
   className?: string;
   iconClassName?: string;
@@ -83,10 +97,13 @@ export function DocumentActionsMenu({
           <DropdownMenuItem
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             onClick={() => navigate(`/aichat?folderId=${folderId}&docId=${documentId}`)}
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
             onClick={() =>
               navigate({
                 to: "/ai",
@@ -94,9 +111,12 @@ export function DocumentActionsMenu({
               })
             }
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>
@@ -115,6 +135,7 @@ export function DocumentActionsMenu({
         </DropdownMenuContent>
       </DropdownMenu>
 
+<<<<<<< HEAD
       <ShareDocumentDialog
         open={shareOpen}
         onOpenChange={setShareOpen}
@@ -130,6 +151,14 @@ export function DocumentActionsMenu({
         documentTitle={title}
         folderId={folderId!}
 >>>>>>> origin/AI-Study-fix
+=======
+      <ShareDialog
+        open={shareOpen}
+        onOpenChange={setShareOpen}
+        targetId={documentId}
+        targetType="document"
+        targetTitle={title}
+>>>>>>> origin/test/share-document-cloudinary
       />
       <ReportDocumentDialog
         open={reportOpen}

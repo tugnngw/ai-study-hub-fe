@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 
 =======
@@ -8,12 +9,16 @@ import { Link, useNavigate } from "@tanstack/react-router";
 =======
 import { Link, useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/AI-Study-fix
+=======
+import { Link, useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/test/share-document-cloudinary
 import { useEffect, useRef, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
   FileText,
   FolderClosed,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -24,6 +29,14 @@ import {
 >>>>>>> origin/AI-Study-fix
   Send,
   Sparkles,
+=======
+  Loader2,
+  Send,
+  Sparkles,
+  Upload,
+  ZoomIn,
+  ZoomOut,
+>>>>>>> origin/test/share-document-cloudinary
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -31,10 +44,15 @@ import {
   useDocument,
   useDocumentsByFolder,
   useFolder,
+<<<<<<< HEAD
+=======
+  useUploadDocument,
+>>>>>>> origin/test/share-document-cloudinary
 } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+<<<<<<< HEAD
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -46,6 +64,23 @@ import { DocumentViewer } from "@/components/document-viewer";
 >>>>>>> origin/AI-Study-fix
 import { cn } from "@/lib/utils";
 import type { Document } from "@/lib/types";
+=======
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { DocumentActionsMenu } from "@/components/document-actions-menu";
+import { DocumentViewer } from "@/components/document-viewer";
+import { cn } from "@/lib/utils";
+import type { Document } from "@/lib/types";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+>>>>>>> origin/test/share-document-cloudinary
 
 interface ChatMsg {
   role: "user" | "assistant";
@@ -63,6 +98,7 @@ function formatBytes(n: number) {
 function fileTone(d: Document) {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   const name = (d.fileName ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
     return { icon: "text-red-500", soft: "bg-red-50" };
@@ -70,6 +106,8 @@ function fileTone(d: Document) {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   const name = (d.title ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
     return { icon: "text-red-500", soft: "bg-red-50" };
@@ -79,24 +117,31 @@ function fileTone(d: Document) {
     d.mimeType?.includes("word")
   )
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     return { icon: "text-blue-500", soft: "bg-blue-50" };
   return { icon: "text-primary", soft: "bg-muted" };
 }
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function AIChat({ folderId, docId }: { folderId: number; docId?: number }) {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 export function AIChat({
   folderId,
   docId,
 }: {
   folderId: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
   docId?: number;
 }) {
@@ -105,22 +150,37 @@ export function AIChat({
   const folderDocs = useDocumentsByFolder(folderId);
   const doc = useDocument(docId ?? 0);
 =======
+=======
+>>>>>>> origin/test/share-document-cloudinary
   docId?: string;
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
   const doc = useDocument(docId ?? "");
+<<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   const ask = useAskRag();
   const navigate = useNavigate();
 
   const [messages, setMessages] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState("");
+<<<<<<< HEAD
+=======
+  const [uploadOpen, setUploadOpen] = useState(false);
+>>>>>>> origin/test/share-document-cloudinary
   const [activeTab, setActiveTab] = useState<
     "content" | "summary" | "flashcards" | "quizzes"
   >("content");
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+<<<<<<< HEAD
+=======
+  const [chatZoom, setChatZoom] = useState(1);
+  const zoomOut = () => setChatZoom((z) => Math.max(0.8, +(z - 0.1).toFixed(2)));
+  const zoomIn = () => setChatZoom((z) => Math.min(1.6, +(z + 0.1).toFixed(2)));
+>>>>>>> origin/test/share-document-cloudinary
 
   const docs = folderDocs.data ?? [];
   const totalSize = docs.reduce((s, d) => s + (d.fileSize ?? 0), 0);
@@ -132,18 +192,24 @@ export function AIChat({
   useEffect(() => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   }, [messages, ask.isPending]);
 
   useEffect(() => {
@@ -153,12 +219,17 @@ export function AIChat({
   const submitChat = async () => {
     if (!input.trim()) return;
 <<<<<<< HEAD
+<<<<<<< HEAD
     if (!docId) {
       toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
 =======
     if (!folderId) {
       toast.info("Chọn thư mục để bắt đầu trò chuyện");
 >>>>>>> origin/AI-Study-fix
+=======
+    if (!docId) {
+      toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
+>>>>>>> origin/test/share-document-cloudinary
       return;
     }
     const q = input.trim();
@@ -166,10 +237,14 @@ export function AIChat({
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
 <<<<<<< HEAD
+<<<<<<< HEAD
       const res = await ask.mutateAsync({ id: docId, question: q });
 =======
        const res = await ask.mutateAsync({ id: folderId, question: q, documentId: docId });
 >>>>>>> origin/AI-Study-fix
+=======
+      const res = await ask.mutateAsync({ id: docId, question: q });
+>>>>>>> origin/test/share-document-cloudinary
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Đã xảy ra lỗi");
@@ -206,6 +281,18 @@ export function AIChat({
           </Link>
         </div>
 
+<<<<<<< HEAD
+=======
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setUploadOpen(true)}
+          className="w-full justify-start gap-2 text-primary font-medium text-sm hover:gap-3 transition-all border-primary/30 hover:border-primary hover:bg-primary/5 mb-3"
+        >
+          <Upload className="h-4 w-4" /> Tải lên tài liệu
+        </Button>
+
+>>>>>>> origin/test/share-document-cloudinary
         <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mt-5 mb-2">
           TÀI LIỆU ĐANG CÓ
         </div>
@@ -230,6 +317,7 @@ export function AIChat({
                 <Link
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   to={`/aichat?folderId=${folderId}&docId=${d.id}`}
 =======
                   to="/ai"
@@ -239,12 +327,17 @@ export function AIChat({
                   to="/ai"
                   search={{ folderId, docId: d.id }}
 >>>>>>> origin/AI-Study-fix
+=======
+                  to="/ai"
+                  search={{ folderId, docId: d.id }}
+>>>>>>> origin/test/share-document-cloudinary
                   className="flex items-center gap-2 min-w-0 flex-1"
                 >
                   <FileText className={cn("h-4 w-4 shrink-0", tone.icon)} />
                   <span
                     className={cn(
                       "truncate text-sm",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                       active ? "font-medium text-foreground" : "text-foreground/90",
@@ -258,6 +351,11 @@ export function AIChat({
                         ? "font-medium text-foreground"
                         : "text-foreground/90",
 >>>>>>> origin/AI-Study-fix
+=======
+                      active
+                        ? "font-medium text-foreground"
+                        : "text-foreground/90",
+>>>>>>> origin/test/share-document-cloudinary
                     )}
                   >
                     {d.title}
@@ -276,6 +374,7 @@ export function AIChat({
           {!folderDocs.isLoading && docs.length === 0 && (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="text-xs text-muted-foreground px-2">Chưa có tài liệu</div>
 =======
             <div className="text-xs text-muted-foreground px-2">
@@ -287,6 +386,11 @@ export function AIChat({
               Chưa có tài liệu
             </div>
 >>>>>>> origin/AI-Study-fix
+=======
+            <div className="text-xs text-muted-foreground px-2">
+              Chưa có tài liệu
+            </div>
+>>>>>>> origin/test/share-document-cloudinary
           )}
         </div>
 
@@ -304,17 +408,21 @@ export function AIChat({
           <div className="flex items-center gap-6 overflow-x-auto">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
             <button
               onClick={() => setActiveTab("content")}
               className={cn(
                 "pb-3 text-sm font-medium border-b-2 whitespace-nowrap",
                 activeTab === "content"
                   ? "border-primary text-primary"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
@@ -324,6 +432,9 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/AI-Study-fix
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/test/share-document-cloudinary
               )}
             >
               Original Content
@@ -337,6 +448,7 @@ export function AIChat({
                   ? "border-primary text-primary"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -344,6 +456,9 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/AI-Study-fix
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/test/share-document-cloudinary
               )}
             >
               AI Summary
@@ -357,6 +472,7 @@ export function AIChat({
                   ? "border-primary text-primary"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -364,6 +480,9 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/AI-Study-fix
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/test/share-document-cloudinary
               )}
             >
               AI Flashcards
@@ -377,6 +496,7 @@ export function AIChat({
                   ? "border-primary text-primary"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
@@ -384,10 +504,14 @@ export function AIChat({
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/AI-Study-fix
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/test/share-document-cloudinary
               )}
             >
               AI Quizzes
             </button>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -404,6 +528,8 @@ export function AIChat({
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
           </div>
         </div>
         {/* Pill row */}
@@ -416,9 +542,12 @@ export function AIChat({
                 ? "bg-gradient-brand text-white"
                 : "bg-muted text-foreground hover:bg-accent",
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
             )}
           >
             All
@@ -426,6 +555,7 @@ export function AIChat({
           {docs.map((d) => (
             <Link
               key={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
               to={`/aichat?folderId=${folderId}&docId=${d.id}`}
@@ -437,6 +567,10 @@ export function AIChat({
               to="/ai"
               search={{ folderId, docId: d.id }}
 >>>>>>> origin/AI-Study-fix
+=======
+              to="/ai"
+              search={{ folderId, docId: d.id }}
+>>>>>>> origin/test/share-document-cloudinary
               className={cn(
                 "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
                 d.id === docId
@@ -446,6 +580,7 @@ export function AIChat({
             >
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
               {d.fileName ?? d.title}
 =======
               {d.title}
@@ -453,6 +588,9 @@ export function AIChat({
 =======
               {d.title}
 >>>>>>> origin/AI-Study-fix
+=======
+              {d.title}
+>>>>>>> origin/test/share-document-cloudinary
             </Link>
           ))}
           {docs.length > 3 && (
@@ -461,6 +599,7 @@ export function AIChat({
             </span>
           )}
         </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -623,6 +762,11 @@ export function AIChat({
           <div className="flex-1 overflow-y-auto">
             {docId && doc.data?.status === "completed" ? (
 >>>>>>> origin/AI-Study-fix
+=======
+        {activeTab === "content" && (
+          <div className="flex-1 overflow-y-auto">
+            {docId && doc.data?.status === "ready" ? (
+>>>>>>> origin/test/share-document-cloudinary
               <DocumentViewer document={doc.data} />
             ) : doc.data?.status === "processing" ? (
               <div className="flex items-center justify-center h-full">
@@ -683,9 +827,12 @@ export function AIChat({
           </div>
         )}{" "}
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
         {activeTab === "summary" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Summary */}
@@ -693,11 +840,14 @@ export function AIChat({
         )}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
         {activeTab === "flashcards" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Flashcards */}
@@ -705,11 +855,14 @@ export function AIChat({
         )}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
         {activeTab === "quizzes" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Quizzes */}
@@ -719,6 +872,7 @@ export function AIChat({
 
       {/* Column 3: chat */}
       <aside className="bg-card border border-border rounded-2xl flex flex-col overflow-hidden shadow-soft">
+<<<<<<< HEAD
         <div className="px-4 py-3.5 border-b border-border text-center">
           <div className="text-sm font-semibold font-display truncate">
 <<<<<<< HEAD
@@ -734,11 +888,48 @@ export function AIChat({
         </div>
 
         <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 space-y-3">
+=======
+        <div className="px-4 py-3 border-b border-border flex items-center gap-2">
+          <div className="text-sm font-semibold font-display truncate flex-1 text-center">
+            {doc.data?.title ?? "Chưa chọn tài liệu"}
+          </div>
+          <div className="flex items-center gap-0.5 shrink-0">
+            <button
+              type="button"
+              onClick={zoomOut}
+              disabled={chatZoom <= 0.8}
+              title="Thu nhỏ"
+              className="h-7 w-7 rounded-md hover:bg-accent flex items-center justify-center text-muted-foreground disabled:opacity-40"
+            >
+              <ZoomOut className="h-4 w-4" />
+            </button>
+            <span className="text-[11px] text-muted-foreground w-9 text-center tabular-nums">
+              {Math.round(chatZoom * 100)}%
+            </span>
+            <button
+              type="button"
+              onClick={zoomIn}
+              disabled={chatZoom >= 1.6}
+              title="Phóng to"
+              className="h-7 w-7 rounded-md hover:bg-accent flex items-center justify-center text-muted-foreground disabled:opacity-40"
+            >
+              <ZoomIn className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <div
+          ref={scrollRef}
+          className="flex-1 overflow-y-auto p-4 space-y-3"
+          style={{ fontSize: `${chatZoom}rem` }}
+        >
+>>>>>>> origin/test/share-document-cloudinary
           {messages.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center px-4 py-8">
               <div className="h-14 w-14 rounded-2xl bg-gradient-soft flex items-center justify-center mb-3">
                 <Sparkles className="h-7 w-7 text-primary" />
               </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
               <div className="text-base font-semibold font-display">Trò chuyện với AI</div>
@@ -752,6 +943,11 @@ export function AIChat({
                 Trò chuyện với AI
               </div>
 >>>>>>> origin/AI-Study-fix
+=======
+              <div className="text-base font-semibold font-display">
+                Trò chuyện với AI
+              </div>
+>>>>>>> origin/test/share-document-cloudinary
               <div className="text-sm text-muted-foreground mt-1 max-w-sm">
                 {docId
                   ? "Hỏi AI để tóm tắt, giải thích hoặc kiểm tra kiến thức từ tài liệu này."
@@ -763,6 +959,7 @@ export function AIChat({
               <div
                 key={i}
                 className={cn(
+<<<<<<< HEAD
                   "text-sm rounded-2xl px-4 py-2.5 max-w-[85%] leading-relaxed whitespace-pre-wrap",
                   m.role === "user"
                     ? "bg-gradient-brand text-white ml-auto rounded-br-md shadow-soft"
@@ -770,6 +967,43 @@ export function AIChat({
                 )}
               >
                 {m.content}
+=======
+                  "text-[1em] rounded-2xl px-4 py-2.5 max-w-[85%] leading-relaxed",
+                  m.role === "user"
+                    ? "bg-gradient-brand text-white ml-auto rounded-br-md shadow-soft whitespace-pre-wrap"
+                    : "bg-muted text-foreground rounded-bl-md prose prose-sm dark:prose-invert prose-p:m-1 prose-pre:m-1 prose-ul:m-1 prose-ol:m-1",
+                )}
+              >
+                {m.role === "user" ? (
+                  m.content
+                ) : (
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code: ({ inline, className, children, ...props }) => (
+                        <code
+                          className={cn(
+                            "rounded px-1.5 py-0.5",
+                            inline
+                              ? "bg-slate-700 text-slate-100"
+                              : "block bg-slate-800 text-slate-100 overflow-x-auto p-2 my-1"
+                          )}
+                          {...props}
+                        >
+                          {children}
+                        </code>
+                      ),
+                      a: ({ children, ...props }) => (
+                        <a className="text-blue-500 hover:underline" {...props}>
+                          {children}
+                        </a>
+                      ),
+                    }}
+                  >
+                    {m.content}
+                  </ReactMarkdown>
+                )}
+>>>>>>> origin/test/share-document-cloudinary
               </div>
             ))
           )}
@@ -807,6 +1041,86 @@ export function AIChat({
           </Button>
         </form>
       </aside>
+<<<<<<< HEAD
     </div>
   );
 }
+=======
+
+      <UploadDialog
+        open={uploadOpen}
+        onOpenChange={setUploadOpen}
+        folderId={folderId}
+      />
+    </div>
+  );
+}
+
+function UploadDialog({
+  open,
+  onOpenChange,
+  folderId,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  folderId: string;
+}) {
+  const upload = useUploadDocument();
+  const [file, setFile] = useState<File | null>(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const submit = async () => {
+    if (!file) return toast.error("Chọn file");
+    if (!title.trim()) return toast.error("Nhập tiêu đề");
+    try {
+      await upload.mutateAsync({ file, folderId, title, description });
+      toast.success("Đã tải lên");
+      onOpenChange(false);
+      setFile(null);
+      setTitle("");
+      setDescription("");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Upload failed");
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Tải lên tài liệu</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>File</Label>
+            <Input
+              type="file"
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Tiêu đề</Label>
+            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label>Mô tả</Label>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={() => onOpenChange(false)}>
+            Huỷ
+          </Button>
+          <Button onClick={submit} disabled={upload.isPending}>
+            {upload.isPending ? "Đang tải…" : "Tải lên"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+>>>>>>> origin/test/share-document-cloudinary

@@ -30,6 +30,7 @@ const Toggle = React.forwardRef<
   React.ElementRef<typeof TogglePrimitive.Root>,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>
 =======
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
@@ -39,6 +40,10 @@ const Toggle = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
     VariantProps<typeof toggleVariants>
 >>>>>>> origin/AI-Study-fix
+=======
+  React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> &
+    VariantProps<typeof toggleVariants>
+>>>>>>> origin/test/share-document-cloudinary
 >(({ className, variant, size, ...props }, ref) => (
   <TogglePrimitive.Root
     ref={ref}

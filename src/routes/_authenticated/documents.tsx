@@ -107,10 +107,14 @@ function DocumentsPage() {
       )}
 
 <<<<<<< HEAD
+<<<<<<< HEAD
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
 =======
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} isPipelineTriggerEnabled />
 >>>>>>> origin/AI-Study-fix
+=======
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+>>>>>>> origin/test/share-document-cloudinary
     </div>
   );
 }
@@ -122,10 +126,14 @@ function DocumentRow({
   description,
 }: {
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
 =======
   id: string;
 >>>>>>> origin/AI-Study-fix
+=======
+  id: number;
+>>>>>>> origin/test/share-document-cloudinary
   folderId: string;
   title: string;
   description: string;
@@ -210,7 +218,11 @@ function UploadDialog({
             />
           </div>
           <div className="space-y-2">
+<<<<<<< HEAD
             <Label>Title</Label>
+=======
+            <Label>File Name</Label>
+>>>>>>> origin/test/share-document-cloudinary
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="space-y-2">

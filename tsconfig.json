@@ -1,10 +1,13 @@
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts", "eslint.config.js"],
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
@@ -12,9 +15,12 @@
     "eslint.config.js"
   ],
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
@@ -23,12 +29,16 @@
     "types": ["vite/client"],
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     "esModuleInterop": true,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
     "esModuleInterop": true,
 >>>>>>> origin/AI-Study-fix
+=======
+    "esModuleInterop": true,
+>>>>>>> origin/test/share-document-cloudinary
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
@@ -45,11 +55,15 @@
     "noUncheckedSideEffectImports": true,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "baseUrl": ".",
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+    "baseUrl": ".",
+>>>>>>> origin/test/share-document-cloudinary
     "paths": {
       "@/*": ["./src/*"]
     }

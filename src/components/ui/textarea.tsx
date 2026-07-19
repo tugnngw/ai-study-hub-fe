@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const Textarea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<"textarea">>(
   ({ className, ...props }, ref) => {
     return (
@@ -21,6 +22,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<"tex
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 const Textarea = React.forwardRef<
   HTMLTextAreaElement,
   React.ComponentProps<"textarea">
@@ -37,9 +40,12 @@ const Textarea = React.forwardRef<
   );
 });
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 Textarea.displayName = "Textarea";
 
 export { Textarea };

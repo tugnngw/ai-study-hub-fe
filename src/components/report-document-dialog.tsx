@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AlertTriangle } from "lucide-react";
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 import { toast } from "sonner";
 import { useReportDocument } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -38,10 +41,14 @@ export function ReportDocumentDialog({
   open: boolean;
   onOpenChange: (v: boolean) => void;
 <<<<<<< HEAD
+<<<<<<< HEAD
   documentId: number;
 =======
   documentId: string;
 >>>>>>> origin/AI-Study-fix
+=======
+  documentId: number;
+>>>>>>> origin/test/share-document-cloudinary
   documentTitle: string;
 }) {
   const report = useReportDocument();
@@ -63,19 +70,25 @@ export function ReportDocumentDialog({
     try {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       await report.mutateAsync({ id: documentId, reason, description: description.trim() || undefined });
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
       await report.mutateAsync({
         id: documentId,
         reason,
         description: description.trim() || undefined,
       });
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
@@ -89,6 +102,7 @@ export function ReportDocumentDialog({
         <DialogHeader>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <DialogTitle className="flex items-center gap-2 truncate">
             <AlertTriangle className="h-5 w-5 text-destructive shrink-0" />
 =======
@@ -97,6 +111,9 @@ export function ReportDocumentDialog({
 =======
           <DialogTitle className="truncate">
 >>>>>>> origin/AI-Study-fix
+=======
+          <DialogTitle className="truncate">
+>>>>>>> origin/test/share-document-cloudinary
             Báo cáo "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
@@ -109,19 +126,25 @@ export function ReportDocumentDialog({
             <Label>Lý do báo cáo</Label>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <RadioGroup value={reason} onValueChange={setReason} className="space-y-2">
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
             <RadioGroup
               value={reason}
               onValueChange={setReason}
               className="space-y-2"
             >
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
               {REPORT_REASONS.map((r) => (
                 <label
                   key={r.value}
@@ -151,19 +174,25 @@ export function ReportDocumentDialog({
           </Button>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button variant="destructive" onClick={submit} disabled={report.isPending}>
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
           <Button
             variant="destructive"
             onClick={submit}
             disabled={report.isPending}
           >
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
             {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>

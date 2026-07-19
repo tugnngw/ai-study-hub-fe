@@ -3,19 +3,25 @@ import { Plus } from "lucide-react";
 import { toast } from "sonner";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useCreateFolder, useFolders, useSaveSharedDocument } from "@/lib/queries";
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 import {
   useCreateFolder,
   useFolders,
   useSaveSharedDocument,
 } from "@/lib/queries";
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -77,6 +83,7 @@ export function SaveSharedDocumentDialog({
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     let targetFolderId: number | null = null;
 =======
     let targetFolderId: string | null = null;
@@ -84,6 +91,9 @@ export function SaveSharedDocumentDialog({
 =======
     let targetFolderId: string | null = null;
 >>>>>>> origin/AI-Study-fix
+=======
+    let targetFolderId: string | null = null;
+>>>>>>> origin/test/share-document-cloudinary
 
     try {
       if (folderId === NEW_FOLDER_VALUE) {
@@ -93,6 +103,7 @@ export function SaveSharedDocumentDialog({
         }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         const created = await createFolder.mutateAsync({ name: newFolderName.trim() });
         targetFolderId = created.id;
       } else if (folderId) {
@@ -100,6 +111,8 @@ export function SaveSharedDocumentDialog({
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
         const created = await createFolder.mutateAsync({
           name: newFolderName.trim(),
         });
@@ -107,9 +120,12 @@ export function SaveSharedDocumentDialog({
       } else if (folderId) {
         targetFolderId = folderId;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
       } else {
         toast.error("Vui lòng chọn thư mục lưu trữ");
         return;
@@ -137,6 +153,7 @@ export function SaveSharedDocumentDialog({
           <DialogTitle>Lưu tài liệu</DialogTitle>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
           <DialogDescription>Lưu tài liệu được chia sẻ vào thư mục của bạn.</DialogDescription>
 =======
           <DialogDescription>
@@ -148,6 +165,11 @@ export function SaveSharedDocumentDialog({
             Lưu tài liệu được chia sẻ vào thư mục của bạn.
           </DialogDescription>
 >>>>>>> origin/AI-Study-fix
+=======
+          <DialogDescription>
+            Lưu tài liệu được chia sẻ vào thư mục của bạn.
+          </DialogDescription>
+>>>>>>> origin/test/share-document-cloudinary
         </DialogHeader>
 
         <div className="space-y-4">

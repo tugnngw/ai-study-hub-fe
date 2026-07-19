@@ -3,22 +3,33 @@
  * Priority: mimeType > URL extension
  */
 
+<<<<<<< HEAD
 export type SupportedFileType = "pdf" | "docx" | "txt" | "image" | "unsupported";
+=======
+export type SupportedFileType = "pdf" | "docx" | "txt" | "unsupported";
+>>>>>>> origin/test/share-document-cloudinary
 
 interface MimeTypeMap {
   [key: string]: SupportedFileType;
 }
 
 const MIME_TYPE_MAP: MimeTypeMap = {
+<<<<<<< HEAD
   // PDF
   "application/pdf": "pdf",
   "application/x-pdf": "pdf",
 
   // DOCX
+=======
+  "application/pdf": "pdf",
+  "application/x-pdf": "pdf",
+
+>>>>>>> origin/test/share-document-cloudinary
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
     "docx",
   "application/msword": "docx",
 
+<<<<<<< HEAD
   // TXT
   "text/plain": "txt",
   "text/x-plain": "txt",
@@ -48,6 +59,18 @@ const EXTENSION_MAP: MimeTypeMap = {
   gif: "image",
   webp: "image",
   svg: "image",
+=======
+  "text/plain": "txt",
+  "text/x-plain": "txt",
+};
+
+const EXTENSION_MAP: MimeTypeMap = {
+  pdf: "pdf",
+  docx: "docx",
+  doc: "docx",
+  txt: "txt",
+  text: "txt",
+>>>>>>> origin/test/share-document-cloudinary
 };
 
 /**
@@ -118,9 +141,12 @@ export function getTypeLabel(type: SupportedFileType): string {
     docx: "Word Document",
     txt: "Text File",
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     image: "Image",
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     unsupported: "Unsupported File",
   };
   return labels[type];

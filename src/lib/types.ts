@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // types.ts — Data models aligned with DB schema & BE API
 // =============================================================
@@ -23,6 +24,8 @@ export interface RegisterRequest {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 // src/lib/types.ts
 // =============================================================
 // 1. AUTH / ACCOUNT
@@ -35,14 +38,18 @@ export interface RegisterRequest {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 export interface LoginRequest {
   username: string;
   password: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 /** Response của login */
@@ -58,6 +65,8 @@ export interface User {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 export interface LoginResponse {
   accessToken: string;
   refreshToken?: string;
@@ -68,9 +77,12 @@ export interface LoginResponse {
 export interface User {
   id: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   username: string;
   email: string;
   fullName: string;
@@ -78,6 +90,7 @@ export interface User {
   role: "USER" | "ADMIN";
   status: "ACTIVE" | "BANNED";
   authProvider: "LOCAL" | "GOOGLE";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   lastLoginAt?: string;   // ISO datetime
@@ -133,6 +146,8 @@ export interface Folder {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   providerId?: string;
   lastLoginAt?: string;
   createdAt: string;
@@ -149,14 +164,18 @@ export interface Folder {
   id: string;
   ownerId: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   name: string;
   aiSummary?: string | null;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   documentCount?: number;  // virtual — FE tính hoặc BE trả về
@@ -171,10 +190,15 @@ export interface Folder {
 }
 
 >>>>>>> origin/AI-Study-fix
+=======
+}
+
+>>>>>>> origin/test/share-document-cloudinary
 export interface CreateFolderRequest {
   name: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 /** PUT /api/folder/update/:id */
@@ -182,10 +206,13 @@ export interface CreateFolderRequest {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 export interface UpdateFolderRequest {
   name: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 // ------------------------------------------------------------------
@@ -203,6 +230,8 @@ export interface Document {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 // =============================================================
 // 3. DOCUMENT
 // =============================================================
@@ -211,17 +240,23 @@ export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
 export interface Document {
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
+=======
+>>>>>>> origin/test/share-document-cloudinary
   id: string;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;
+<<<<<<< HEAD
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   title: string;
   description?: string | null;
   summary?: string | null;
@@ -234,6 +269,7 @@ export interface Document {
   totalPages?: number | null;
   createdAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 
@@ -253,10 +289,15 @@ export interface Document {
 }
 
 >>>>>>> origin/AI-Study-fix
+=======
+}
+
+>>>>>>> origin/test/share-document-cloudinary
 export interface UploadDocumentRequest {
   file: File;
   title: string;
   description?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   folderId?: string;       // UUID
@@ -267,14 +308,19 @@ export interface UploadDocumentRequest {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   folderId?: string;
   subjectId?: number;
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 export interface UpdateDocumentRequest {
   title?: string;
   description?: string;
@@ -283,16 +329,20 @@ export interface UpdateDocumentRequest {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /** GET /api/documents/:id/download */
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 export interface DownloadUrlResponse {
   url: string;
   expiresAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 // ------------------------------------------------------------------
@@ -321,6 +371,8 @@ export interface ShareInfo {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 // =============================================================
 // 4. SHARE
 // =============================================================
@@ -328,6 +380,7 @@ export interface ShareInfo {
 export type Visibility = "private" | "shared" | "public";
 
 export interface ShareRequest {
+<<<<<<< HEAD
   folderId: string;
   email?: string;      // Search by email
   username?: string;   // Search by username
@@ -378,6 +431,41 @@ export interface AskRequest {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+  folder: Folder;
+  owner: User;
+  sharedAccount?: User;
+  visibility: Visibility;
+}
+
+export interface ShareRecipient {
+  accountId: string;
+  email?: string;
+  username?: string;
+  fullName?: string;
+}
+
+export interface ShareResponse {
+  id?: number | string | null;
+  folderId?: string | null;
+  documentId?: string | null;
+  ownerId: string;
+  ownerUsername?: string | null;
+  ownerEmail?: string | null;
+  sharedAccountId?: string | null;
+  sharedUsername?: string | null;
+  sharedEmail?: string | null;
+  visibility: Visibility;
+  shareToken?: string | null;
+  shareLink?: string | null;
+  link?: string | null;
+  createdAt?: string | null;
+  recipients?: ShareRecipient[];
+  documentTitle?: string | null;
+  folderName?: string | null;
+}
+
+>>>>>>> origin/test/share-document-cloudinary
 export interface SharedDocument extends Document {
   sharedBy: string;
   sharedAt: string;
@@ -390,12 +478,16 @@ export interface SharedDocument extends Document {
 
 export interface AskRequest {
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: number;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
   id: string; // folderId
   documentId?: string;
 >>>>>>> origin/AI-Study-fix
+=======
+  id: string;
+>>>>>>> origin/test/share-document-cloudinary
   question: string;
 }
 
@@ -410,6 +502,7 @@ export interface ReferencedChunk {
   similarity?: number;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 // ------------------------------------------------------------------
@@ -433,6 +526,15 @@ export interface Quiz {
   id: number;
   documentId: string;
 >>>>>>> origin/AI-Study-fix
+=======
+// =============================================================
+// 6. QUIZ
+// =============================================================
+
+export interface Quiz {
+  id: string;
+  documentId: number;
+>>>>>>> origin/test/share-document-cloudinary
   title: string;
   generatedByAi: boolean;
   createdAt: string;
@@ -440,7 +542,11 @@ export interface Quiz {
 }
 
 export interface Question {
+<<<<<<< HEAD
   id: number;
+=======
+  id: string;
+>>>>>>> origin/test/share-document-cloudinary
   quizId: number;
   content: string;
   optionA: string;
@@ -451,7 +557,11 @@ export interface Question {
 }
 
 export interface QuizAttempt {
+<<<<<<< HEAD
   id: number;
+=======
+  id: string;
+>>>>>>> origin/test/share-document-cloudinary
   quizId: number;
   accountId: string;
   score?: number;
@@ -461,6 +571,7 @@ export interface QuizAttempt {
   completedAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 // ------------------------------------------------------------------
@@ -484,6 +595,15 @@ export interface Flashcard {
   id: number;
   documentId: string;
 >>>>>>> origin/AI-Study-fix
+=======
+// =============================================================
+// 7. FLASHCARD
+// =============================================================
+
+export interface Flashcard {
+  id: string;
+  documentId: number;
+>>>>>>> origin/test/share-document-cloudinary
   frontContent: string;
   backContent: string;
   generatedByAi: boolean;
@@ -498,6 +618,7 @@ export interface FlashcardProgress {
   nextReviewAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 // ------------------------------------------------------------------
@@ -548,11 +669,14 @@ export interface PagedResponse<T> {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 // =============================================================
 // 8. REPORT
 // =============================================================
 
 export interface ReportDocumentRequest {
+<<<<<<< HEAD
 <<<<<<< HEAD
   id: number;
   reason: string;
@@ -560,10 +684,13 @@ export interface ReportDocumentRequest {
 }
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
+=======
+>>>>>>> origin/test/share-document-cloudinary
   id: string;
   reason: string;
   description?: string;
 }
+<<<<<<< HEAD
 
 // =============================================================
 // 9. RAG REQUESTS
@@ -584,3 +711,5 @@ export interface RagChatResponse {
   referencedDocumentIds: string[];
 }
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary

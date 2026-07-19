@@ -1,6 +1,14 @@
 node_modules
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 .claude
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+node_modules
+/.env.local
+AI
+dist
+.env
+>>>>>>> origin/test/share-document-cloudinary

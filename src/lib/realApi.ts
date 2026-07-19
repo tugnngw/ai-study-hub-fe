@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // realApi.ts — Real API calls, 1-1 mapping với BE endpoints
 // =============================================================
@@ -19,11 +20,17 @@ import { tokenStore } from "./api";
 import { api } from "./api";
 import { tokenStore } from "./api";
 >>>>>>> origin/AI-Study-fix
+=======
+// src/lib/realApi.ts
+import { api } from "./api";
+import { tokenStore } from "./api";
+>>>>>>> origin/test/share-document-cloudinary
 import type {
   User,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   Semester,
@@ -34,6 +41,8 @@ import type {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   Folder,
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -41,6 +50,7 @@ import type {
   UploadDocumentRequest,
   UpdateDocumentRequest,
   DownloadUrlResponse,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   ShareInfo,
@@ -53,12 +63,17 @@ import type {
   ShareResponse,
   ShareRequest,
 >>>>>>> origin/AI-Study-fix
+=======
+  ShareResponse,
+  ShareRequest,
+>>>>>>> origin/test/share-document-cloudinary
   AskRequest,
   AskResponse,
   ReportDocumentRequest,
   Quiz,
   Flashcard,
   FlashcardProgress,
+<<<<<<< HEAD
 <<<<<<< HEAD
 } from "./types";
 <<<<<<< HEAD
@@ -71,12 +86,16 @@ import { tokenStore } from "./api";
   RagChatResponse,
 } from "./types";
 >>>>>>> origin/AI-Study-fix
+=======
+} from "./types";
+>>>>>>> origin/test/share-document-cloudinary
 
 // ================================================================
 // AUTH  →  /api/auth
 // ================================================================
 
 export const authApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /** POST /api/auth/register */
@@ -105,6 +124,8 @@ export const authApi = {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   register: (data: RegisterRequest) =>
     api<void>("/api/auth/register", { method: "POST", body: data }),
 
@@ -116,9 +137,14 @@ export const authApi = {
     });
     
     // api() already unwraps ApiResponse<T> → res is the AuthResponse object
+<<<<<<< HEAD
     const token = res?.accessToken ?? res?.token;
     if (token) {
       tokenStore.set(token);
+=======
+    if (res?.accessToken) {
+      tokenStore.set(res.accessToken);
+>>>>>>> origin/test/share-document-cloudinary
     }
     
     if (res?.refreshToken) tokenStore.setRefresh(res.refreshToken);
@@ -147,9 +173,12 @@ export const authApi = {
       body: { email, password: newPassword },
     }),
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 };
 
 // ================================================================
@@ -157,6 +186,7 @@ export const authApi = {
 // ================================================================
 
 export const accountApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /** GET /api/account/me */
@@ -227,6 +257,11 @@ export const subjectApi = {
 =======
   me: () => api<User>("/api/account/me"),
 >>>>>>> origin/AI-Study-fix
+=======
+  me: () => api<User>("/api/account/me"),
+  changePassword: (data: { currentPassword: string; newPassword: string }) =>
+    api<void>("/api/account/change-password", { method: "POST", body: data }),
+>>>>>>> origin/test/share-document-cloudinary
 };
 
 // ================================================================
@@ -234,6 +269,7 @@ export const subjectApi = {
 // ================================================================
 
 export const folderApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /** GET /api/folder/getall */
@@ -256,6 +292,8 @@ export const folderApi = {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   list: () => api<Folder[]>("/api/folder/getall"),
   getById: (id: string) => api<Folder>(`/api/folder/getbyid/${id}`),
   create: (body: CreateFolderRequest) =>
@@ -265,9 +303,12 @@ export const folderApi = {
   delete: (id: string) =>
     api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 };
 
 // ================================================================
@@ -275,6 +316,7 @@ export const folderApi = {
 // ================================================================
 
 export const documentApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /** GET /api/documents */
@@ -370,16 +412,21 @@ export const shareApi = {
       body: { reason: body.reason, description: body.description },
     }),
 =======
+=======
+>>>>>>> origin/test/share-document-cloudinary
   list: () => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
   getById: (id: number) => {
+<<<<<<< HEAD
 =======
   list: () => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
   getById: (id: string) => {
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     console.log('[TRACE-6] documentApi.getById called with id:', id);
     return api<Document>(`/api/documents/${id}`);
   },
@@ -407,6 +454,9 @@ export const shareApi = {
   },
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/test/share-document-cloudinary
   update: (id: number, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
@@ -414,6 +464,7 @@ export const shareApi = {
     api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
   getDownloadUrl: (id: number) =>
+<<<<<<< HEAD
 =======
   update: (id: string, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
@@ -423,15 +474,21 @@ export const shareApi = {
 
   getDownloadUrl: (id: string) =>
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   // Trash (soft-deleted docs)
   listTrash: () => api<Document[]>("/api/documents/trash"),
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/test/share-document-cloudinary
   restoreFromTrash: (id: number) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
   emptyTrash: (id: number) =>
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
   restoreFromTrash: (id: string) =>
@@ -439,6 +496,8 @@ export const shareApi = {
   emptyTrash: (id: string) =>
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 };
 
 // ================================================================
@@ -448,16 +507,20 @@ export const shareApi = {
 export const ragApi = {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   /**
    * POST /api/rag/upload
    * Upload file RAG — bước 2 sau khi tạo document
    */
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/test/share-document-cloudinary
   upload: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
 <<<<<<< HEAD
     return api<void>("/rag/upload", { method: "POST", formData: fd });
   },
@@ -471,10 +534,16 @@ export const ragApi = {
   },
 
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+    return api<void>("/api/rag/upload", { method: "POST", formData: fd });
+  },
+
+>>>>>>> origin/test/share-document-cloudinary
   uploadAndChunk: (file: File, documentId: number) => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", String(documentId));
+<<<<<<< HEAD
 <<<<<<< HEAD
     return api<void>("/rag/upload/chunk", { method: "POST", formData: fd });
   },
@@ -507,6 +576,8 @@ export const quizApi = {
   generate: (documentId: number, questionCount = 10) =>
     api<Quiz>("/quiz/generate", {
 =======
+=======
+>>>>>>> origin/test/share-document-cloudinary
     return api<void>("/api/rag/upload/chunk", { method: "POST", formData: fd });
   },
 
@@ -515,6 +586,7 @@ export const quizApi = {
       method: "POST",
       body: { id: input.id, question: input.question },
     }),
+<<<<<<< HEAD
 =======
   upload: (file: File, documentId: string) => {
     const fd = new FormData();
@@ -542,6 +614,8 @@ export const quizApi = {
   chatWithFolder: (req: RagChatRequest) =>
     api<RagChatResponse>("/api/v1/rag/chat", { method: "POST", body: req }),
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 };
 
 // ================================================================
@@ -549,6 +623,7 @@ export const quizApi = {
 // ================================================================
 
 export const shareApi = {
+<<<<<<< HEAD
   // List shares where current user is the owner
   listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
 
@@ -564,6 +639,41 @@ export const shareApi = {
     api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
 
   // Report a document
+=======
+  listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
+  listSharedWithMe: () => api<ShareResponse[]>("/api/shares/shared-with-me"),
+  getShareInfo: (id: string, type: "document" | "folder") => {
+    const basePath = type === "document" ? "documents" : "folder";
+    return api<ShareResponse>(`/api/${basePath}/${id}/share-info`);
+  },
+  share: (id: string, type: "document" | "folder", value: string) => {
+    const basePath = type === "document" ? "documents" : "folder";
+    const v = (value ?? "").trim();
+    const isEmail = v.includes("@");
+    const body: Record<string, string> = {
+      [type === "document" ? "documentId" : "folderId"]: id,
+      ...(v ? { [isEmail ? "email" : "username"]: v } : {}),
+    };
+    return api<ShareResponse>(`/api/${basePath}/${id}/share`, {
+      method: "POST",
+      body,
+    });
+  },
+  revoke: (shareId: string) =>
+    api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
+  removeFromShared: (shareId: number | string) =>
+    api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
+  saveToMyFolder: (
+    shareId: number | string,
+    folderId: string,
+    title: string,
+    description?: string,
+  ) =>
+    api<void>(`/api/shares/${shareId}/save`, {
+      method: "POST",
+      body: { folderId, title, description },
+    }),
+>>>>>>> origin/test/share-document-cloudinary
   report: (body: ReportDocumentRequest) =>
     api<void>(`/api/documents/${body.id}/report`, {
       method: "POST",
@@ -577,11 +687,15 @@ export const shareApi = {
 
 export const quizApi = {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/test/share-document-cloudinary
   listByDocument: (documentId: number) =>
     api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
 
   generate: (documentId: number, questionCount = 10) =>
     api<Quiz>("/api/quiz/generate", {
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
   listByDocument: (documentId: string) =>
@@ -590,12 +704,15 @@ export const quizApi = {
   generate: (documentId: string, questionCount = 10) =>
     api<Quiz>("/api/quiz/generate", {
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
       method: "POST",
       body: { documentId, questionCount },
     }),
 };
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 // FLASHCARD  →  (chuẩn bị sẵn — chưa có trong API doc)
@@ -612,16 +729,22 @@ export const flashcardApi = {
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 // FLASHCARD  →  /api/flashcard
 // ================================================================
 
 export const flashcardApi = {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/test/share-document-cloudinary
   listByDocument: (documentId: number) =>
     api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
 
   generate: (documentId: number) =>
     api<Flashcard[]>("/api/flashcard/generate", {
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
   listByDocument: (documentId: string) =>
@@ -630,10 +753,13 @@ export const flashcardApi = {
   generate: (documentId: string) =>
     api<Flashcard[]>("/api/flashcard/generate", {
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
       method: "POST",
       body: { documentId },
     }),
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
   /** PUT /api/flashcard/:id/progress */
@@ -647,6 +773,10 @@ export const flashcardApi = {
   updateProgress: (flashcardId: string, status: FlashcardProgress["status"]) =>
     api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
 >>>>>>> origin/AI-Study-fix
+=======
+  updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
+    api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
+>>>>>>> origin/test/share-document-cloudinary
       method: "PUT",
       body: { status },
     }),

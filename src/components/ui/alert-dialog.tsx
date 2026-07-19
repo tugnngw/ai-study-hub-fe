@@ -45,6 +45,7 @@ AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const AlertDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("flex flex-col space-y-2 text-center sm:text-left", className)} {...props} />
 );
@@ -56,6 +57,8 @@ const AlertDialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDiv
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 const AlertDialogHeader = ({
   className,
   ...props
@@ -80,9 +83,12 @@ const AlertDialogFooter = ({
       className,
     )}
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     {...props}
   />
 );
@@ -112,6 +118,7 @@ const AlertDialogDescription = React.forwardRef<
 ));
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 AlertDialogDescription.displayName = AlertDialogPrimitive.Description.displayName;
 =======
 AlertDialogDescription.displayName =
@@ -121,6 +128,10 @@ AlertDialogDescription.displayName =
 AlertDialogDescription.displayName =
   AlertDialogPrimitive.Description.displayName;
 >>>>>>> origin/AI-Study-fix
+=======
+AlertDialogDescription.displayName =
+  AlertDialogPrimitive.Description.displayName;
+>>>>>>> origin/test/share-document-cloudinary
 
 const AlertDialogAction = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Action>,
@@ -128,19 +139,25 @@ const AlertDialogAction = React.forwardRef<
 >(({ className, ...props }, ref) => (
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   <AlertDialogPrimitive.Action ref={ref} className={cn(buttonVariants(), className)} {...props} />
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(buttonVariants(), className)}
     {...props}
   />
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
 ));
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 
@@ -152,19 +169,25 @@ const AlertDialogCancel = React.forwardRef<
     ref={ref}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn(buttonVariants({ variant: "outline" }), "mt-2 sm:mt-0", className)}
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     className={cn(
       buttonVariants({ variant: "outline" }),
       "mt-2 sm:mt-0",
       className,
     )}
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     {...props}
   />
 ));

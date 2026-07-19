@@ -13,18 +13,24 @@ const Avatar = React.forwardRef<
     ref={ref}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)}
 =======
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     className={cn(
       "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
       className,
     )}
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
+=======
+>>>>>>> origin/test/share-document-cloudinary
     {...props}
   />
 ));
