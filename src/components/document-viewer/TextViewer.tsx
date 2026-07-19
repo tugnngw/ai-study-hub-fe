@@ -5,6 +5,7 @@ import React, { useEffect, useState, useCallback } from "react";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Loader2, Download, ExternalLink, RotateCw } from "lucide-react";
 =======
 import { Loader2, Download, ExternalLink, RotateCw, FileText } from "lucide-react";
@@ -18,6 +19,9 @@ import { Loader2, Download, ExternalLink, RotateCw } from "lucide-react";
 =======
 import { Loader2, Download, ExternalLink, RotateCw } from "lucide-react";
 >>>>>>> origin/update/feature/share
+=======
+import { Loader2, Download, ExternalLink, RotateCw } from "lucide-react";
+>>>>>>> origin/update/feature/AI/Quiz
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -80,10 +84,13 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   // Toolbar
   const Toolbar = (
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0">
@@ -95,6 +102,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải xuống
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -119,10 +127,13 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild>
           <a href={url} target="_blank" rel="noopener noreferrer">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -143,6 +154,10 @@ export const TextViewer: React.FC<TextViewerProps> = ({
             <ExternalLink className="h-4 w-4 mr-1" />
             Mở tab mới
 >>>>>>> origin/update/feature/share
+=======
+            <ExternalLink className="h-4 w-4 mr-1" />
+            Mở tab mới
+>>>>>>> origin/update/feature/AI/Quiz
           </a>
         </Button>
       </div>
@@ -154,6 +169,7 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 =======
     <Card className={cn("flex flex-col min-h-0", className)}>
@@ -167,6 +183,9 @@ export const TextViewer: React.FC<TextViewerProps> = ({
 =======
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
 >>>>>>> origin/update/feature/share
+=======
+    <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
+>>>>>>> origin/update/feature/AI/Quiz
       {Toolbar}
 
       {/* Loading State */}

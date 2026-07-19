@@ -5,6 +5,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   "include": ["src/**/*.ts", "src/**/*.tsx", "vite.config.ts", "eslint.config.js"],
 =======
 =======
@@ -17,12 +18,15 @@
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "vite.config.ts",
     "eslint.config.js"
   ],
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -39,6 +43,8 @@
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   "compilerOptions": {
     "target": "ES2022",
     "jsx": "react-jsx",
@@ -51,6 +57,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     "esModuleInterop": true,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -69,6 +76,9 @@
 =======
     "esModuleInterop": true,
 >>>>>>> origin/update/feature/share
+=======
+    "esModuleInterop": true,
+>>>>>>> origin/update/feature/AI/Quiz
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
@@ -89,6 +99,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "baseUrl": ".",
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -104,6 +115,8 @@
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     "paths": {
       "@/*": ["./src/*"]
     }

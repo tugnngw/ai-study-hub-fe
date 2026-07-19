@@ -22,7 +22,10 @@ export interface ShareRecipient {
   email?: string;
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 
 // ── Trang Chia sẻ (figma) — CHỈ chia sẻ folder ─────────
 // Người liên quan (người chia sẻ / người được chia sẻ)
@@ -52,4 +55,7 @@ export interface SharedByMeItem {
 }
 
 export type ShareSort = "newest" | "oldest";
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz

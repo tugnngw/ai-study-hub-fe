@@ -15,6 +15,7 @@ const buttonVariants = cva(
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
@@ -31,6 +32,8 @@ const buttonVariants = cva(
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
         default:
           "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive:
@@ -39,6 +42,7 @@ const buttonVariants = cva(
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -55,6 +59,8 @@ const buttonVariants = cva(
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
@@ -73,6 +79,7 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -110,6 +117,11 @@ export interface ButtonProps
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
 >>>>>>> origin/update/feature/share
+=======
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+>>>>>>> origin/update/feature/AI/Quiz
   asChild?: boolean;
 }
 
@@ -117,6 +129,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
     return (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -135,11 +148,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -156,6 +172,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     );
   },
 );

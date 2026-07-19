@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn("animate-pulse rounded-md bg-primary/10", className)} {...props} />;
 =======
@@ -19,6 +20,8 @@ function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>)
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 function Skeleton({
   className,
   ...props
@@ -29,6 +32,7 @@ function Skeleton({
       {...props}
     />
   );
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -45,6 +49,8 @@ function Skeleton({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 }
 
 export { Skeleton };

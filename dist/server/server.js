@@ -60,6 +60,7 @@ async function getServerEntry() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	if (!serverEntryPromise) serverEntryPromise = import("./assets/server-BNDGZS_O.js").then((m) => m.default ?? m);
 =======
 	if (!serverEntryPromise) serverEntryPromise = import("./assets/server-CEzqqZSY.js").then((m) => m.default ?? m);
@@ -70,6 +71,9 @@ async function getServerEntry() {
 =======
 	if (!serverEntryPromise) serverEntryPromise = import("./assets/server-BNDGZS_O.js").then((m) => m.default ?? m);
 >>>>>>> origin/update/feature/share
+=======
+	if (!serverEntryPromise) serverEntryPromise = import("./assets/server-BNDGZS_O.js").then((m) => m.default ?? m);
+>>>>>>> origin/update/feature/AI/Quiz
 	return serverEntryPromise;
 }
 async function normalizeCatastrophicSsrResponse(response) {

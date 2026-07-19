@@ -9,6 +9,7 @@ const searchSchema = z.object({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   docId: z.coerce.number().optional(),
 =======
   docId: z.string().optional(),
@@ -25,6 +26,9 @@ const searchSchema = z.object({
 =======
   docId: z.coerce.number().optional(),
 >>>>>>> origin/update/feature/share
+=======
+  docId: z.coerce.number().optional(),
+>>>>>>> origin/update/feature/AI/Quiz
 });
 
 export const Route = createFileRoute("/_authenticated/ai")({

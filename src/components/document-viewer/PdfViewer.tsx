@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Enhanced PDF viewer with drag-to-pan, smooth zoom, scroll-based navigation
 =======
 >>>>>>> origin/AI-Study-fix
@@ -21,14 +22,19 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 =======
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 // Enhanced PDF viewer with drag-to-pan, smooth zoom, scroll-based navigation
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import * as pdfjsLib from "pdfjs-dist";
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 import {
   Loader2,
   Download,
@@ -37,10 +43,13 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   ChevronLeft,
   ChevronRight,
   ZoomIn,
@@ -49,10 +58,13 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   Hand,
   MousePointer2,
   Search,
@@ -60,6 +72,7 @@ import {
   FileText,
   Sun,
   Moon,
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -84,11 +97,14 @@ import {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -117,18 +133,24 @@ import { tokenStore } from "@/lib/api";
 =======
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 import { API_BASE, tokenStore } from "@/lib/api";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = `/pdfjs/pdf.worker.mjs`;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 interface PdfViewerProps {
   url: string;
   fileName?: string;
   className?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -156,6 +178,11 @@ interface PdfViewerProps {
 }
 
 >>>>>>> origin/update/feature/share
+=======
+  documentId?: number;
+}
+
+>>>>>>> origin/update/feature/AI/Quiz
 export const PdfViewer: React.FC<PdfViewerProps> = ({
   url,
   fileName = "document.pdf",
@@ -174,10 +201,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   const [dragging, setDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [scrollStart, setScrollStart] = useState({ left: 0, top: 0 });
@@ -185,6 +215,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   const [showThumbs, setShowThumbs] = useState(false);
 
   // Fetch PDF binary data
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -196,6 +227,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   useEffect(() => {
     let cancelled = false;
 
@@ -206,6 +239,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       // Helper: fetch URL as ArrayBuffer
 >>>>>>> origin/AI-Study-fix
@@ -213,6 +247,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       const fetchBuffer = async (fetchUrl: string, authToken?: string) => {
         const res = await fetch(fetchUrl, {
           headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
@@ -230,6 +266,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         // Try 1: backend download API
 >>>>>>> origin/AI-Study-fix
@@ -237,6 +274,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
         if (documentId) {
           try {
             const downloadResp = await fetch(
@@ -245,6 +284,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` },
               }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -325,10 +365,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
             );
 
             if (downloadResp.ok) {
               const ct = downloadResp.headers.get("content-type") || "";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -345,10 +388,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
               if (ct.includes("json")) {
                 const data = await downloadResp.json();
                 const signedUrl = data?.url || data?.data?.url || data?.signedUrl;
                 if (signedUrl) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -369,6 +415,9 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
                   try { arrayBuffer = await fetchBuffer(signedUrl, token); } catch { throw new Error("signed URL failed"); }
 >>>>>>> origin/update/feature/share
+=======
+                  try { arrayBuffer = await fetchBuffer(signedUrl, token); } catch { throw new Error("signed URL failed"); }
+>>>>>>> origin/update/feature/AI/Quiz
                 } else throw new Error("No URL in response");
               } else {
                 arrayBuffer = await downloadResp.arrayBuffer();
@@ -378,15 +427,19 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           } catch {
             try { arrayBuffer = await fetchBuffer(url); } catch { if (!cancelled) setError("Không thể tải PDF. Mở tab mới để xem."); return; }
           }
         } else {
           try { arrayBuffer = await fetchBuffer(url); } catch { if (!cancelled) setError("Không thể tải PDF."); return; }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -415,12 +468,15 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
         }
 
         if (!cancelled && arrayBuffer) {
           setPdfData(new Uint8Array(arrayBuffer));
         }
       } catch (e: any) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -510,11 +566,15 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
         if (!cancelled) setError(e.message || "Không thể tải PDF");
 >>>>>>> origin/update/feature/share
+=======
+        if (!cancelled) setError(e.message || "Không thể tải PDF");
+>>>>>>> origin/update/feature/AI/Quiz
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -527,12 +587,16 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
     loadPdfData();
 >>>>>>> origin/update/feature/share
+=======
+    loadPdfData();
+>>>>>>> origin/update/feature/AI/Quiz
     return () => { cancelled = true; };
   }, [url, documentId]);
 
   // Load PDF document
   useEffect(() => {
     let cancelled = false;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -549,10 +613,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     const loadDocument = async () => {
       if (!pdfData) return;
       setLoading(true);
       setError(null);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -563,6 +630,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       try {
         const doc = await pdfjsLib.getDocument({ data: pdfData }).promise;
         if (!cancelled) {
@@ -574,6 +643,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         console.error("[PdfViewer] Document load error:", e);
 >>>>>>> origin/AI-Study-fix
@@ -581,6 +651,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
         if (!cancelled) setError(e.message || "Không thể tải PDF");
       } finally {
         if (!cancelled) setLoading(false);
@@ -589,10 +661,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     loadDocument();
     return () => { cancelled = true; };
   }, [pdfData]);
@@ -600,6 +675,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   // Render current page
   const renderPage = useCallback(async () => {
     if (!pdfDoc || !canvasRef.current) return;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -618,6 +694,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
 
@@ -629,10 +707,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       const dpr = window.devicePixelRatio || 1;
       canvas.width = viewport.width * dpr;
       canvas.height = viewport.height * dpr;
@@ -643,6 +724,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvasContext: ctx, viewport }).promise;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -662,6 +744,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     } catch (e: any) {
       console.error("[PdfViewer] Page render error:", e);
     }
@@ -670,10 +754,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   useEffect(() => { renderPage(); }, [renderPage]);
 
   // Fit to container width
@@ -726,6 +813,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!isPanMode) return;
     setDragging(true);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -887,6 +975,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     setDragStart({ x: e.clientX, y: e.clientY });
     if (containerRef.current) {
       setScrollStart({ left: containerRef.current.scrollLeft, top: containerRef.current.scrollTop });
@@ -894,6 +984,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -911,12 +1002,16 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 =======
     if (!dragging || !containerRef.current) return;
 >>>>>>> origin/update/feature/share
+=======
+    if (!dragging || !containerRef.current) return;
+>>>>>>> origin/update/feature/AI/Quiz
     const dx = e.clientX - dragStart.x;
     const dy = e.clientY - dragStart.y;
     containerRef.current.scrollLeft = scrollStart.left - dx;
     containerRef.current.scrollTop = scrollStart.top - dy;
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -951,6 +1046,10 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   const handleMouseUp = () => setDragging(false);
 
 >>>>>>> origin/update/feature/share
+=======
+  const handleMouseUp = () => setDragging(false);
+
+>>>>>>> origin/update/feature/AI/Quiz
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -958,10 +1057,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       if ((e.key === "ArrowLeft" || e.key === "PageUp") && !e.ctrlKey && !e.metaKey) {
         setPageNumber((p) => Math.max(1, p - 1));
       } else if ((e.key === "ArrowRight" || e.key === "PageDown") && !e.ctrlKey && !e.metaKey) {
@@ -970,6 +1072,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         setPageNumber(1);
       } else if (e.key === "End") {
         setPageNumber(numPages);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -982,6 +1085,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -993,10 +1098,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0 flex-wrap gap-1">
       <div className="flex items-center gap-2 min-w-0">
         <span className="text-sm font-semibold truncate max-w-[200px]">{fileName}</span>
@@ -1067,6 +1175,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -1172,6 +1281,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild className="h-8 px-2 text-xs">
@@ -1192,15 +1303,19 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
         <div className="flex-1 flex flex-col items-center justify-center p-8">
           <p className="text-red-500 text-center mb-4 font-medium">{error}</p>
           <Button variant="outline" size="sm" asChild>
             <a href={url} target="_blank" rel="noopener noreferrer">
               <Download className="h-4 w-4 mr-2" /> Tải xuống tệp
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -1215,6 +1330,8 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
             </a>
           </Button>
         </div>
@@ -1225,10 +1342,13 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   return (
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
       {Toolbar}
@@ -1258,6 +1378,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
             </div>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   // Main render
   return (
@@ -1280,12 +1401,15 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           </div>
         )}
       </div>
     </Card>
   );
 };
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -1474,3 +1598,5 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz

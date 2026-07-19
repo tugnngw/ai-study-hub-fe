@@ -2,6 +2,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 // src/routes/auth.register.tsx
 =======
 // src/routes/auth/register.tsx
@@ -15,10 +16,14 @@
 =======
 // src/routes/auth.register.tsx
 >>>>>>> origin/update/feature/share
+=======
+// src/routes/auth.register.tsx
+>>>>>>> origin/update/feature/AI/Quiz
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -32,11 +37,14 @@ import { ArrowLeft } from "lucide-react";
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -47,12 +55,15 @@ import {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -70,6 +81,8 @@ import {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 
 const schema = z
   .object({
@@ -84,6 +97,7 @@ const schema = z
       .trim()
       .min(2, "Vui lòng nhập họ và tên")
       .max(30, "Tối đa 30 ký tự"),
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -105,6 +119,8 @@ const schema = z
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     password: z.string().min(6, "Tối thiểu 6 ký tự"),
     confirmPassword: z.string().min(6, "Tối thiểu 6 ký tự"),
   })
@@ -121,12 +137,15 @@ export const Route = createFileRoute("/auth/register")({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -142,6 +161,7 @@ function RegisterPage() {
   const update =
     (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
       setForm((f) => ({ ...f, [field]: e.target.value }));
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -180,6 +200,8 @@ function RegisterPage() {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -197,6 +219,7 @@ function RegisterPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
       // NOTE: backend hiện chỉ nhận username, fullName, password.
       // Khi backend bổ sung birthday/gender/phone/email thì thêm
@@ -208,6 +231,8 @@ function RegisterPage() {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       await register({
         username: form.username,
         fullName: form.fullName,
@@ -227,12 +252,15 @@ function RegisterPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/uichange
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     <Card className="backdrop-blur-xl bg-card/60 border-border/60 shadow-2xl">
       <CardHeader>
         <CardTitle className="text-2xl font-display">Tạo tài khoản</CardTitle>
@@ -303,6 +331,7 @@ function RegisterPage() {
           <p className="text-sm text-muted-foreground text-center">
             Đã có tài khoản?{" "}
             <Link to="/auth/login" className="text-primary hover:underline">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -484,10 +513,13 @@ function RegisterPage() {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
               Đăng nhập
             </Link>
           </p>
         </form>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -523,10 +555,13 @@ function Field({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       </CardContent>
     </Card>
   );
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> origin/uichange
@@ -534,3 +569,5 @@ function Field({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz

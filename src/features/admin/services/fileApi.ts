@@ -1,12 +1,17 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // TODO(backend): api<T>("/api/admin/files...","/api/admin/trash...")
 =======
 import { api } from "@/lib/api";
 >>>>>>> origin/update/feature/share
+=======
+import { api } from "@/lib/api";
+>>>>>>> origin/update/feature/AI/Quiz
 import type {
   ReportedFileItem, ReportDecision, DeletedFileItem, DeletedAccountItem, TrashItemType,
 } from "../types/admin.types";
 export const adminFileApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   getReportedFiles: (): Promise<ReportedFileItem[]> => Promise.resolve([]),
   handleReportDecision: (_id: number, _d: ReportDecision): Promise<boolean> => Promise.resolve(true),
@@ -15,6 +20,8 @@ export const adminFileApi = {
   permanentDelete: (_id: number, _t: TrashItemType): Promise<boolean> => Promise.resolve(true),
   restoreItem: (_id: number, _t: TrashItemType): Promise<boolean> => Promise.resolve(true),
 =======
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   getReportedFiles: () => api<ReportedFileItem[]>("/api/admin/files/reported"),
   handleReportDecision: (id: number, decision: ReportDecision) =>
     api<boolean>(`/api/admin/files/${id}/decision`, { method: "POST", body: { decision } }),
@@ -24,5 +31,8 @@ export const adminFileApi = {
     api<boolean>(`/api/admin/trash/${type}/${id}`, { method: "DELETE" }),
   restoreItem: (id: number, type: TrashItemType) =>
     api<boolean>(`/api/admin/trash/${type}/${id}/restore`, { method: "POST" }),
+<<<<<<< HEAD
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 };

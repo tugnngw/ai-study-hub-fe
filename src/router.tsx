@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 // Layouts
@@ -128,6 +129,11 @@ import { routeTree } from "./routeTree.gen";
 =======
 
 >>>>>>> origin/update/feature/share
+=======
+import { QueryClient } from "@tanstack/react-query";
+import { createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
+>>>>>>> origin/update/feature/AI/Quiz
 export const getRouter = () => {
   const queryClient = new QueryClient();
 
@@ -145,6 +151,7 @@ export const getRouter = () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -156,3 +163,5 @@ export const getRouter = () => {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz

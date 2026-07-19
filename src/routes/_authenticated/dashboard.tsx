@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createFileRoute, Link } from "@tanstack/react-router";
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -11,6 +12,10 @@ import { useEffect } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 >>>>>>> origin/update/feature/share
+=======
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+>>>>>>> origin/update/feature/AI/Quiz
 import {
   FolderKanban,
   FileText,
@@ -24,6 +29,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -49,11 +55,14 @@ import { UploadDocumentDialog } from "@/components/upload-document-dialog";
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   component: Dashboard,
 });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -106,6 +115,8 @@ const SEMESTERS = Array.from({ length: 9 }, (_, i) => i + 1);
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 function Dashboard() {
   const folders = useFolders();
   const docs = useDocuments();
@@ -114,9 +125,12 @@ function Dashboard() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   const navigate = useNavigate();
 
   // Nếu là admin (backend trả role ADMIN) thì điều hướng thẳng vào khu
@@ -126,9 +140,12 @@ function Dashboard() {
     if (isAdmin) navigate({ to: "/admin_panel", replace: true });
   }, [isAdmin, navigate]);
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 
   const recent = (docs.data ?? [])
     .slice()
@@ -304,6 +321,7 @@ function Dashboard() {
     </div>
   );
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -515,3 +533,5 @@ function Dashboard() {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz

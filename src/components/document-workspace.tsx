@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 
 =======
@@ -24,6 +25,9 @@ import { Link, useNavigate } from "@tanstack/react-router";
 =======
 import { Link, useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/update/feature/share
+=======
+import { Link, useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/update/feature/AI/Quiz
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
@@ -43,6 +47,7 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   Loader2,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -61,6 +66,9 @@ import {
 =======
   Loader2,
 >>>>>>> origin/update/feature/share
+=======
+  Loader2,
+>>>>>>> origin/update/feature/AI/Quiz
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -74,6 +82,7 @@ import {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   useFolder,
   useUploadDocument,
 } from "@/lib/queries";
@@ -88,11 +97,14 @@ import {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   useDownloadDocument,
   useFolder,
   useUploadDocument,
 } from "@/lib/queries";
 import { DocumentViewer } from "@/components/document-viewer";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -109,6 +121,8 @@ import { DocumentViewer } from "@/components/document-viewer";
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -121,6 +135,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -146,12 +161,15 @@ import {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 import { cn } from "@/lib/utils";
 
 type Tab = "original" | "notes" | "summary" | "flashcards" | "quizzes";
 type Highlight = "memo" | "quiz" | "summary" | "idea";
 
 const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -173,6 +191,8 @@ const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   {
     id: "memo",
     label: "Thẻ ghi nhớ",
@@ -198,6 +218,7 @@ const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -209,6 +230,8 @@ const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 ];
 
 interface ChatMsg {
@@ -226,6 +249,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   folderId: number;
 =======
   folderId: string;
@@ -236,10 +260,14 @@ export function DocumentWorkspace({
 =======
   folderId: string;
 >>>>>>> origin/update/feature/share
+=======
+  folderId: string;
+>>>>>>> origin/update/feature/AI/Quiz
   docId?: number;
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -280,6 +308,10 @@ export function DocumentWorkspace({
   const isValidDocId = typeof docId === 'number' && !isNaN(docId) && docId > 0;
   const doc = useDocument(isValidDocId ? docId : 0);;
 >>>>>>> origin/update/feature/share
+=======
+  const isValidDocId = typeof docId === 'number' && !isNaN(docId) && docId > 0;
+  const doc = useDocument(isValidDocId ? docId : 0);;
+>>>>>>> origin/update/feature/AI/Quiz
   console.log("DOC DATA", doc.data);
   console.log('[TRACE-3] DocumentWorkspace: docId received:', docId);
   console.log('[TRACE-3.1] isValidDocId:', isValidDocId);
@@ -287,6 +319,7 @@ export function DocumentWorkspace({
   const del = useDeleteDocument();
   const ask = useAskRag();
   const download = useDownloadDocument();
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -303,6 +336,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   const navigate = useNavigate();
 
   const [tab, setTab] = useState<Tab>("original");
@@ -313,6 +348,7 @@ export function DocumentWorkspace({
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -331,10 +367,13 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -351,6 +390,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   }, [messages]);
 
   // Note: user clicks files in the grid to open them — no auto-select.
@@ -361,6 +402,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -374,12 +416,15 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   const submitChat = async () => {
     if (!input.trim() || !docId) return;
     const q = input.trim();
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -401,12 +446,16 @@ export function DocumentWorkspace({
 =======
       const res = await ask.mutateAsync({ id: docId, question: q });
 >>>>>>> origin/update/feature/share
+=======
+      const res = await ask.mutateAsync({ id: docId, question: q });
+>>>>>>> origin/update/feature/AI/Quiz
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     }
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -424,6 +473,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   const handleDownload = async () => {
     if (!docId) return;
     try {
@@ -434,6 +485,7 @@ export function DocumentWorkspace({
     }
   };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -450,12 +502,15 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   const handleDelete = async () => {
     if (!docId) return;
     if (!confirm("Xoá tài liệu này (chuyển vào Thùng rác)?")) return;
     try {
       await del.mutateAsync(docId);
       toast.success("Đã chuyển vào thùng rác");
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -474,11 +529,14 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       navigate({
         to: "/folders/$id",
         params: { id: String(folderId) },
         search: {},
       });
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -495,6 +553,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     }
@@ -505,10 +565,13 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_340px] gap-4 h-[calc(100vh-9rem)]">
       {/* Column 1: file list */}
       <aside className="hidden lg:flex flex-col bg-card border border-border rounded-2xl p-4 overflow-hidden shadow-soft">
@@ -523,6 +586,7 @@ export function DocumentWorkspace({
           <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-1">
             THƯ MỤC ĐANG DÙNG
           </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -548,10 +612,16 @@ export function DocumentWorkspace({
             {folder.data?.name ?? "—"}
           </div>
 >>>>>>> origin/update/feature/share
+=======
+          <div className="text-sm font-semibold font-display">
+            {folder.data?.name ?? "—"}
+          </div>
+>>>>>>> origin/update/feature/AI/Quiz
           <div className="text-xs text-muted-foreground mt-0.5">
             {folderDocs.data?.length ?? 0} tài liệu
           </div>
         </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -583,6 +653,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 
         <div className="mt-5 flex-1 min-h-0 flex flex-col">
           <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-2 px-1">
@@ -590,6 +662,7 @@ export function DocumentWorkspace({
           </div>
           <div className="space-y-1 overflow-y-auto flex-1 -mx-1 px-1">
             {folderDocs.isLoading &&
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -627,11 +700,17 @@ export function DocumentWorkspace({
                 <Skeleton key={i} className="h-9 rounded-lg" />
               ))}
 >>>>>>> origin/update/feature/share
+=======
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-9 rounded-lg" />
+              ))}
+>>>>>>> origin/update/feature/AI/Quiz
             {(folderDocs.data ?? []).map((d) => {
               const active = d.id === docId;
               return (
                 <Link
                   key={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -669,6 +748,11 @@ export function DocumentWorkspace({
                   params={{ id: String(folderId) }}
                   search={{ docId: d.id }}
 >>>>>>> origin/update/feature/share
+=======
+                  to="/folders/$id"
+                  params={{ id: String(folderId) }}
+                  search={{ docId: d.id }}
+>>>>>>> origin/update/feature/AI/Quiz
                   className={cn(
                     "flex items-center gap-2 text-sm px-2.5 py-2 rounded-lg transition-colors",
                     active
@@ -682,6 +766,7 @@ export function DocumentWorkspace({
               );
             })}
             {!folderDocs.isLoading && (folderDocs.data ?? []).length === 0 && (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -709,6 +794,11 @@ export function DocumentWorkspace({
                 Chưa có tài liệu
               </div>
 >>>>>>> origin/update/feature/share
+=======
+              <div className="text-xs text-muted-foreground px-2">
+                Chưa có tài liệu
+              </div>
+>>>>>>> origin/update/feature/AI/Quiz
             )}
           </div>
         </div>
@@ -721,6 +811,7 @@ export function DocumentWorkspace({
         >
           <Upload className="h-3.5 w-3.5 mr-2" /> Tải lên tài liệu
         </Button>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -740,6 +831,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       </aside>
 
       {/* Column 2: preview */}
@@ -780,6 +873,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 navigate(`/folders/${folderId}`)
 =======
 =======
@@ -792,11 +886,14 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
                 navigate({
                   to: "/folders/$id",
                   params: { id: String(folderId) },
                   search: {},
                 })
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -813,6 +910,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
               }
               className={cn(
                 "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
@@ -826,6 +925,7 @@ export function DocumentWorkspace({
             {(folderDocs.data ?? []).map((d) => (
               <Link
                 key={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -863,6 +963,11 @@ export function DocumentWorkspace({
                 params={{ id: String(folderId) }}
                 search={{ docId: d.id }}
 >>>>>>> origin/update/feature/share
+=======
+                to="/folders/$id"
+                params={{ id: String(folderId) }}
+                search={{ docId: d.id }}
+>>>>>>> origin/update/feature/AI/Quiz
                 className={cn(
                   "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
                   d.id === docId
@@ -876,6 +981,7 @@ export function DocumentWorkspace({
           </div>
         )}
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -962,6 +1068,10 @@ export function DocumentWorkspace({
         <div className="flex-1 overflow-y-auto p-6">
           {tab === "original" ? (
 >>>>>>> origin/update/feature/share
+=======
+        <div className="flex-1 overflow-y-auto p-6">
+          {tab === "original" ? (
+>>>>>>> origin/update/feature/AI/Quiz
             // 🔥 Kiểm tra kỹ hơn
             docId && doc.data ? (
               // Display original document viewer when a document is selected
@@ -996,6 +1106,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                           "border-primary ring-2 ring-primary/20 shadow-soft",
 =======
                         "border-primary ring-2 ring-primary/20 shadow-soft",
@@ -1009,6 +1120,9 @@ export function DocumentWorkspace({
 =======
                           "border-primary ring-2 ring-primary/20 shadow-soft",
 >>>>>>> origin/update/feature/share
+=======
+                          "border-primary ring-2 ring-primary/20 shadow-soft",
+>>>>>>> origin/update/feature/AI/Quiz
                       )}
                     >
                       <div className="flex-1 flex items-center justify-center w-full py-4">
@@ -1038,6 +1152,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                   <Button 
                     variant="outline" 
 =======
@@ -1056,6 +1171,10 @@ export function DocumentWorkspace({
                   <Button 
                     variant="outline" 
 >>>>>>> origin/update/feature/share
+=======
+                  <Button 
+                    variant="outline" 
+>>>>>>> origin/update/feature/AI/Quiz
                     size="sm"
                     onClick={() => window.location.reload()}
                   >
@@ -1065,6 +1184,7 @@ export function DocumentWorkspace({
                 </div>
               </div>
             )
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1081,6 +1201,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           ) : !docId ? (
             <div className="text-sm text-muted-foreground text-center mt-16">
               Chọn một tài liệu để xem nội dung.
@@ -1093,6 +1215,7 @@ export function DocumentWorkspace({
           ) : tab === "notes" ? (
             <div className="space-y-3">
               <div className="flex flex-wrap gap-1 border border-border rounded-lg px-2 py-1.5 text-xs text-muted-foreground bg-muted/40">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1120,6 +1243,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
                 <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer font-bold">
                   B
                 </span>
@@ -1153,6 +1278,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -1164,6 +1290,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
               <Textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -1172,6 +1300,7 @@ export function DocumentWorkspace({
               />
             </div>
           ) : tab === "summary" ? (
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1190,10 +1319,13 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
             <SummaryTab
               title={doc.data?.title ?? ""}
               description={doc.data?.description ?? ""}
             />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1210,6 +1342,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           ) : tab === "flashcards" ? (
             <FlashcardsTab title={doc.data?.title ?? ""} />
           ) : (
@@ -1223,6 +1357,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
@@ -1239,11 +1374,14 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
         {docId && (
           <div className="p-3 border-t border-border flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1269,11 +1407,14 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
               onClick={handleDownload}
               disabled={download.isPending}
             >
               <Download className="h-3.5 w-3.5 mr-2" />{" "}
               {download.isPending ? "Đang tải…" : "Tải xuống"}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1290,6 +1431,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
             </Button>
             <Button
               variant="ghost"
@@ -1401,6 +1544,7 @@ export function DocumentWorkspace({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -1414,6 +1558,8 @@ export function DocumentWorkspace({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       <UploadDialog
         open={uploadOpen}
         onOpenChange={setUploadOpen}
@@ -1430,6 +1576,7 @@ function UploadDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1455,6 +1602,9 @@ function UploadDialog({
 =======
   folderId: string;
 >>>>>>> origin/update/feature/share
+=======
+  folderId: string;
+>>>>>>> origin/update/feature/AI/Quiz
 }) {
   const upload = useUploadDocument();
   const [file, setFile] = useState<File | null>(null);
@@ -1491,6 +1641,7 @@ function UploadDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
 =======
 =======
@@ -1503,10 +1654,13 @@ function UploadDialog({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
             <Input
               type="file"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
             />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1523,6 +1677,8 @@ function UploadDialog({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           </div>
           <div className="space-y-2">
             <Label>Tiêu đề</Label>
@@ -1530,6 +1686,7 @@ function UploadDialog({
           </div>
           <div className="space-y-2">
             <Label>Mô tả</Label>
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1548,10 +1705,13 @@ function UploadDialog({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1568,6 +1728,8 @@ function UploadDialog({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           </div>
         </div>
         <DialogFooter>
@@ -1590,6 +1752,7 @@ function UploadDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 function SummaryTab({ title, description }: { title: string; description: string }) {
 =======
 =======
@@ -1602,6 +1765,8 @@ function SummaryTab({ title, description }: { title: string; description: string
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
 function SummaryTab({
   title,
   description,
@@ -1609,6 +1774,7 @@ function SummaryTab({
   title: string;
   description: string;
 }) {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1625,6 +1791,8 @@ function SummaryTab({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   const [loading, setLoading] = useState(true);
   const [tick, setTick] = useState(0);
 
@@ -1662,6 +1830,7 @@ function SummaryTab({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Button size="sm" variant="outline" onClick={() => setTick((t) => t + 1)}>
 =======
 =======
@@ -1674,11 +1843,14 @@ function SummaryTab({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
         <Button
           size="sm"
           variant="outline"
           onClick={() => setTick((t) => t + 1)}
         >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1695,6 +1867,8 @@ function SummaryTab({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           <RotateCw className="h-3.5 w-3.5 mr-2" /> Tạo lại
         </Button>
       </div>
@@ -1709,6 +1883,7 @@ function SummaryTab({
       ) : (
         <>
           <div className="rounded-lg border border-primary/20 bg-brand-soft/60 p-4">
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1746,6 +1921,11 @@ function SummaryTab({
               Tóm tắt ngắn
             </div>
 >>>>>>> origin/update/feature/share
+=======
+            <div className="text-xs font-semibold text-primary mb-1">
+              Tóm tắt ngắn
+            </div>
+>>>>>>> origin/update/feature/AI/Quiz
             <p className="text-sm leading-relaxed">
               {description ||
                 `Tài liệu “${title}” tổng hợp các kiến thức cốt lõi và thuật ngữ quan trọng, giúp người đọc nắm chắc lý thuyết và áp dụng vào thực tế.`}
@@ -1780,6 +1960,7 @@ function FlashcardsTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       { front: "Algorithm", back: "Tập hợp các bước cụ thể để giải quyết một bài toán." },
       { front: "Variable", back: "Vùng nhớ có tên, dùng để lưu trữ giá trị có thể thay đổi." },
       { front: "Function", back: "Khối lệnh có thể tái sử dụng, nhận đầu vào và trả về kết quả." },
@@ -1796,6 +1977,8 @@ function FlashcardsTab({ title }: { title: string }) {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       {
         front: "Algorithm",
         back: "Tập hợp các bước cụ thể để giải quyết một bài toán.",
@@ -1821,6 +2004,7 @@ function FlashcardsTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
 =======
 >>>>>>> origin/AI-Study-fix
@@ -1832,6 +2016,8 @@ function FlashcardsTab({ title }: { title: string }) {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
     ],
     [],
   );
@@ -1869,6 +2055,7 @@ function FlashcardsTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div className={cn("font-semibold", flipped ? "text-base leading-relaxed" : "text-2xl")}>
 =======
 =======
@@ -1881,12 +2068,15 @@ function FlashcardsTab({ title }: { title: string }) {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
         <div
           className={cn(
             "font-semibold",
             flipped ? "text-base leading-relaxed" : "text-2xl",
           )}
         >
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -1903,6 +2093,8 @@ function FlashcardsTab({ title }: { title: string }) {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           {flipped ? cards[idx].back : cards[idx].front}
         </div>
         <div className="text-xs text-muted-foreground mt-4">Bấm để lật thẻ</div>
@@ -1948,6 +2140,7 @@ interface Quiz {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 const QUIZ_TYPE_OPTIONS = [
   { id: "mcq", label: "Multiple Choice" },
   { id: "fill", label: "Fill in the Blank" },
@@ -1980,6 +2173,10 @@ function QuizzesTab({ title }: { title: string }) {
 function QuizzesTab({ title }: { title: string }) {
   const quizzes: Quiz[] = useMemo(
 >>>>>>> origin/update/feature/share
+=======
+function QuizzesTab({ title }: { title: string }) {
+  const quizzes: Quiz[] = useMemo(
+>>>>>>> origin/update/feature/AI/Quiz
     () => [
       {
         q: "Thuật ngữ “Algorithm” có nghĩa là gì?",
@@ -2016,6 +2213,7 @@ function QuizzesTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Create-quiz config (per spec: số lượng câu hỏi + loại câu hỏi, trạng thái rỗng "No quizzes found")
   const [numQuestions, setNumQuestions] = useState("25");
   const [types, setTypes] = useState<string[]>(["mcq"]);
@@ -2035,10 +2233,13 @@ function QuizzesTab({ title }: { title: string }) {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
 
   const score = useMemo(
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2064,12 +2265,16 @@ function QuizzesTab({ title }: { title: string }) {
 =======
     () => quizzes.reduce((s, q, i) => (answers[i] === q.answer ? s + 1 : s), 0),
 >>>>>>> origin/update/feature/share
+=======
+    () => quizzes.reduce((s, q, i) => (answers[i] === q.answer ? s + 1 : s), 0),
+>>>>>>> origin/update/feature/AI/Quiz
     [answers, quizzes],
   );
 
   const reset = () => {
     setAnswers({});
     setSubmitted(false);
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2177,6 +2382,10 @@ function QuizzesTab({ title }: { title: string }) {
   };
 
 >>>>>>> origin/update/feature/share
+=======
+  };
+
+>>>>>>> origin/update/feature/AI/Quiz
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -2231,6 +2440,7 @@ function QuizzesTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                         correct && "bg-emerald-500 text-white border-emerald-500",
                         wrong && "bg-red-500 text-white border-red-500",
                         !submitted && picked && "bg-gradient-brand text-white border-transparent",
@@ -2244,12 +2454,15 @@ function QuizzesTab({ title }: { title: string }) {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
                         correct &&
                           "bg-emerald-500 text-white border-emerald-500",
                         wrong && "bg-red-500 text-white border-red-500",
                         !submitted &&
                           picked &&
                           "bg-gradient-brand text-white border-transparent",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 =======
@@ -2269,6 +2482,8 @@ function QuizzesTab({ title }: { title: string }) {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
                       )}
                     >
                       {correct ? (
@@ -2278,6 +2493,7 @@ function QuizzesTab({ title }: { title: string }) {
                       ) : (
                         String.fromCharCode(65 + oi)
                       )}
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -2294,6 +2510,8 @@ function QuizzesTab({ title }: { title: string }) {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
                     </span>
                     <span>{opt}</span>
                   </button>
@@ -2332,6 +2550,7 @@ function QuizzesTab({ title }: { title: string }) {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
@@ -2345,3 +2564,5 @@ function QuizzesTab({ title }: { title: string }) {
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz

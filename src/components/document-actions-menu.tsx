@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -31,6 +32,10 @@ import { useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/update/feature/share
+=======
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/update/feature/AI/Quiz
 import { Flag, FolderOpen, MoreVertical, Share2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -40,6 +45,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useDeleteDocument } from "@/lib/queries";
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -57,6 +63,9 @@ import { ShareDocumentDialog } from "@/components/share-document-dialog";
 =======
 import { ShareDocumentDialog } from "@/components/share-document-dialog";
 >>>>>>> origin/update/feature/share
+=======
+import { ShareDocumentDialog } from "@/components/share-document-dialog";
+>>>>>>> origin/update/feature/AI/Quiz
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 
@@ -67,6 +76,7 @@ export function DocumentActionsMenu({
   className,
   iconClassName,
 }: {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -98,6 +108,10 @@ export function DocumentActionsMenu({
   documentId: number;
   folderId: string;
 >>>>>>> origin/update/feature/share
+=======
+  documentId: number;
+  folderId: string;
+>>>>>>> origin/update/feature/AI/Quiz
   title: string;
   className?: string;
   iconClassName?: string;
@@ -143,6 +157,7 @@ export function DocumentActionsMenu({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             onClick={() => navigate(`/aichat?folderId=${folderId}&docId=${documentId}`)}
 =======
 =======
@@ -155,12 +170,15 @@ export function DocumentActionsMenu({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
             onClick={() =>
               navigate({
                 to: "/ai",
                 search: { folderId, docId: documentId },
               })
             }
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -177,6 +195,8 @@ export function DocumentActionsMenu({
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>
@@ -195,6 +215,7 @@ export function DocumentActionsMenu({
         </DropdownMenuContent>
       </DropdownMenu>
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -230,15 +251,20 @@ export function DocumentActionsMenu({
 =======
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       <ShareDocumentDialog
         open={shareOpen}
         onOpenChange={setShareOpen}
         documentTitle={title}
         folderId={folderId!}
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> origin/admin-added
 =======
 >>>>>>> origin/update/feature/share
+=======
+>>>>>>> origin/update/feature/AI/Quiz
       />
       <ReportDocumentDialog
         open={reportOpen}

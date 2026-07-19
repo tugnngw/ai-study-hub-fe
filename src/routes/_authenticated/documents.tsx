@@ -111,6 +111,7 @@ function DocumentsPage() {
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
 =======
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} isPipelineTriggerEnabled />
@@ -127,6 +128,9 @@ function DocumentsPage() {
 =======
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
 >>>>>>> origin/update/feature/share
+=======
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+>>>>>>> origin/update/feature/AI/Quiz
     </div>
   );
 }
@@ -137,6 +141,7 @@ function DocumentRow({
   title,
   description,
 }: {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -158,6 +163,9 @@ function DocumentRow({
 =======
   id: number;
 >>>>>>> origin/update/feature/share
+=======
+  id: number;
+>>>>>>> origin/update/feature/AI/Quiz
   folderId: string;
   title: string;
   description: string;
@@ -246,6 +254,7 @@ function UploadDialog({
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Label>Title</Label>
 =======
             <Label>File Name</Label>
@@ -259,6 +268,9 @@ function UploadDialog({
 =======
             <Label>Title</Label>
 >>>>>>> origin/update/feature/share
+=======
+            <Label>Title</Label>
+>>>>>>> origin/update/feature/AI/Quiz
             <Input value={title} onChange={(e) => setTitle(e.target.value)} />
           </div>
           <div className="space-y-2">
