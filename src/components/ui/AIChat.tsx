@@ -1,9 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 
 =======
 import { Link, useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+import { Link, useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/AI-Study-fix
 import { useEffect, useRef, useState } from "react";
 import {
   ChevronLeft,
@@ -11,9 +15,13 @@ import {
   FileText,
   FolderClosed,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   Loader2,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  Loader2,
+>>>>>>> origin/AI-Study-fix
   Send,
   Sparkles,
 } from "lucide-react";
@@ -29,9 +37,13 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DocumentActionsMenu } from "@/components/document-actions-menu";
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import { DocumentViewer } from "@/components/document-viewer";
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+import { DocumentViewer } from "@/components/document-viewer";
+>>>>>>> origin/AI-Study-fix
 import { cn } from "@/lib/utils";
 import type { Document } from "@/lib/types";
 
@@ -50,11 +62,14 @@ function formatBytes(n: number) {
 
 function fileTone(d: Document) {
 <<<<<<< HEAD
+<<<<<<< HEAD
   const name = (d.fileName ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
     return { icon: "text-red-500", soft: "bg-red-50" };
   if (name.endsWith(".doc") || name.endsWith(".docx") || d.mimeType?.includes("word"))
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   const name = (d.title ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
     return { icon: "text-red-500", soft: "bg-red-50" };
@@ -63,25 +78,39 @@ function fileTone(d: Document) {
     name.endsWith(".docx") ||
     d.mimeType?.includes("word")
   )
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     return { icon: "text-blue-500", soft: "bg-blue-50" };
   return { icon: "text-primary", soft: "bg-muted" };
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function AIChat({ folderId, docId }: { folderId: number; docId?: number }) {
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 export function AIChat({
   folderId,
   docId,
 }: {
   folderId: string;
+<<<<<<< HEAD
   docId?: number;
 }) {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
   const doc = useDocument(docId ?? 0);
+=======
+  docId?: string;
+}) {
+  const folder = useFolder(folderId);
+  const folderDocs = useDocumentsByFolder(folderId);
+  const doc = useDocument(docId ?? "");
+>>>>>>> origin/AI-Study-fix
   const ask = useAskRag();
   const navigate = useNavigate();
 
@@ -102,13 +131,19 @@ export function AIChat({
 
   useEffect(() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   }, [messages, ask.isPending]);
 
   useEffect(() => {
@@ -117,15 +152,24 @@ export function AIChat({
 
   const submitChat = async () => {
     if (!input.trim()) return;
+<<<<<<< HEAD
     if (!docId) {
       toast.info("Chọn một tài liệu để bắt đầu trò chuyện");
+=======
+    if (!folderId) {
+      toast.info("Chọn thư mục để bắt đầu trò chuyện");
+>>>>>>> origin/AI-Study-fix
       return;
     }
     const q = input.trim();
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
+<<<<<<< HEAD
       const res = await ask.mutateAsync({ id: docId, question: q });
+=======
+       const res = await ask.mutateAsync({ id: folderId, question: q, documentId: docId });
+>>>>>>> origin/AI-Study-fix
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Đã xảy ra lỗi");
@@ -185,11 +229,16 @@ export function AIChat({
               >
                 <Link
 <<<<<<< HEAD
+<<<<<<< HEAD
                   to={`/aichat?folderId=${folderId}&docId=${d.id}`}
 =======
                   to="/ai"
                   search={{ folderId, docId: d.id }}
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+                  to="/ai"
+                  search={{ folderId, docId: d.id }}
+>>>>>>> origin/AI-Study-fix
                   className="flex items-center gap-2 min-w-0 flex-1"
                 >
                   <FileText className={cn("h-4 w-4 shrink-0", tone.icon)} />
@@ -197,12 +246,18 @@ export function AIChat({
                     className={cn(
                       "truncate text-sm",
 <<<<<<< HEAD
+<<<<<<< HEAD
                       active ? "font-medium text-foreground" : "text-foreground/90",
 =======
                       active
                         ? "font-medium text-foreground"
                         : "text-foreground/90",
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+                      active
+                        ? "font-medium text-foreground"
+                        : "text-foreground/90",
+>>>>>>> origin/AI-Study-fix
                     )}
                   >
                     {d.title}
@@ -220,12 +275,18 @@ export function AIChat({
           })}
           {!folderDocs.isLoading && docs.length === 0 && (
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="text-xs text-muted-foreground px-2">Chưa có tài liệu</div>
 =======
             <div className="text-xs text-muted-foreground px-2">
               Chưa có tài liệu
             </div>
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+            <div className="text-xs text-muted-foreground px-2">
+              Chưa có tài liệu
+            </div>
+>>>>>>> origin/AI-Study-fix
           )}
         </div>
 
@@ -242,9 +303,12 @@ export function AIChat({
         <div className="px-4 pt-3 border-b border-border">
           <div className="flex items-center gap-6 overflow-x-auto">
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
             <button
               onClick={() => setActiveTab("content")}
               className={cn(
@@ -252,10 +316,14 @@ export function AIChat({
                 activeTab === "content"
                   ? "border-primary text-primary"
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/AI-Study-fix
               )}
             >
               Original Content
@@ -268,10 +336,14 @@ export function AIChat({
                 activeTab === "summary"
                   ? "border-primary text-primary"
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/AI-Study-fix
               )}
             >
               AI Summary
@@ -284,10 +356,14 @@ export function AIChat({
                 activeTab === "flashcards"
                   ? "border-primary text-primary"
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/AI-Study-fix
               )}
             >
               AI Flashcards
@@ -300,14 +376,19 @@ export function AIChat({
                 activeTab === "quizzes"
                   ? "border-primary text-primary"
 <<<<<<< HEAD
+<<<<<<< HEAD
                   : "border-transparent text-muted-foreground hover:text-foreground"
 =======
                   : "border-transparent text-muted-foreground hover:text-foreground",
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+                  : "border-transparent text-muted-foreground hover:text-foreground",
+>>>>>>> origin/AI-Study-fix
               )}
             >
               AI Quizzes
             </button>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
           </div>
@@ -321,6 +402,8 @@ export function AIChat({
               "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
               !docId ? "bg-gradient-brand text-white" : "bg-muted text-foreground hover:bg-accent",
 =======
+=======
+>>>>>>> origin/AI-Study-fix
           </div>
         </div>
         {/* Pill row */}
@@ -332,7 +415,10 @@ export function AIChat({
               !docId
                 ? "bg-gradient-brand text-white"
                 : "bg-muted text-foreground hover:bg-accent",
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
             )}
           >
             All
@@ -341,11 +427,16 @@ export function AIChat({
             <Link
               key={d.id}
 <<<<<<< HEAD
+<<<<<<< HEAD
               to={`/aichat?folderId=${folderId}&docId=${d.id}`}
 =======
               to="/ai"
               search={{ folderId, docId: d.id }}
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+              to="/ai"
+              search={{ folderId, docId: d.id }}
+>>>>>>> origin/AI-Study-fix
               className={cn(
                 "px-3.5 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors shrink-0",
                 d.id === docId
@@ -354,10 +445,14 @@ export function AIChat({
               )}
             >
 <<<<<<< HEAD
+<<<<<<< HEAD
               {d.fileName ?? d.title}
 =======
               {d.title}
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+              {d.title}
+>>>>>>> origin/AI-Study-fix
             </Link>
           ))}
           {docs.length > 3 && (
@@ -366,6 +461,7 @@ export function AIChat({
             </span>
           )}
         </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 
@@ -522,6 +618,11 @@ export function AIChat({
         {activeTab === "content" && (
           <div className="flex-1 overflow-y-auto">
             {docId && doc.data?.status === "ready" ? (
+=======
+        {activeTab === "content" && (
+          <div className="flex-1 overflow-y-auto">
+            {docId && doc.data?.status === "completed" ? (
+>>>>>>> origin/AI-Study-fix
               <DocumentViewer document={doc.data} />
             ) : doc.data?.status === "processing" ? (
               <div className="flex items-center justify-center h-full">
@@ -581,25 +682,34 @@ export function AIChat({
             )}
           </div>
         )}{" "}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
         {activeTab === "summary" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Summary */}
           </div>
         )}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
         {activeTab === "flashcards" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Flashcards */}
           </div>
         )}
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
         {activeTab === "quizzes" && (
           <div className="flex-1 overflow-y-auto p-6">
             {/* Nội dung AI Quizzes */}
@@ -612,10 +722,14 @@ export function AIChat({
         <div className="px-4 py-3.5 border-b border-border text-center">
           <div className="text-sm font-semibold font-display truncate">
 <<<<<<< HEAD
+<<<<<<< HEAD
             {doc.data?.fileName ?? doc.data?.title ?? "Chưa chọn tài liệu"}
 =======
             {doc.data?.title ?? "Chưa chọn tài liệu"}
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+            {doc.data?.title ?? "Chưa chọn tài liệu"}
+>>>>>>> origin/AI-Study-fix
           </div>
         </div>
 
@@ -626,12 +740,18 @@ export function AIChat({
                 <Sparkles className="h-7 w-7 text-primary" />
               </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
               <div className="text-base font-semibold font-display">Trò chuyện với AI</div>
 =======
               <div className="text-base font-semibold font-display">
                 Trò chuyện với AI
               </div>
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+              <div className="text-base font-semibold font-display">
+                Trò chuyện với AI
+              </div>
+>>>>>>> origin/AI-Study-fix
               <div className="text-sm text-muted-foreground mt-1 max-w-sm">
                 {docId
                   ? "Hỏi AI để tóm tắt, giải thích hoặc kiểm tra kiến thức từ tài liệu này."

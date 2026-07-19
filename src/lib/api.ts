@@ -1,24 +1,35 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Lightweight API client. JWT stored in localStorage.
 export const API_BASE =
   (import.meta.env.VITE_API_BASE as string | undefined) ?? "http://localhost:8080";
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 // src/lib/api.ts
 export const API_BASE =
   (import.meta.env.VITE_API_BASE as string | undefined) ??
   "http://localhost:4040";
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 
 const TOKEN_KEY = "auth_token";
 const REFRESH_KEY = "refresh_token";
 
 export const tokenStore = {
 <<<<<<< HEAD
+<<<<<<< HEAD
   get: () => (typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY)),
 =======
   get: () =>
     typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY),
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  get: () =>
+    typeof window === "undefined" ? null : localStorage.getItem(TOKEN_KEY),
+>>>>>>> origin/AI-Study-fix
   set: (t: string) => localStorage.setItem(TOKEN_KEY, t),
   clear: () => {
     localStorage.removeItem(TOKEN_KEY);
@@ -46,6 +57,7 @@ type Options = {
   headers?: Record<string, string>;
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export async function api<T = unknown>(path: string, opts: Options = {}): Promise<T> {
   const token = tokenStore.get();
@@ -84,6 +96,16 @@ export async function api<T = unknown>(path: string, opts: Options = {}): Promis
 let refreshPromise: Promise<boolean> | null = null;
 
 export async function attemptRefresh(): Promise<boolean> {
+=======
+// ── Refresh token queue ─────────────────────────────────────
+let refreshPromise: Promise<boolean> | null = null;
+
+const debugLog = (msg: string) => {
+  console.log(`[API] ${msg}`);
+};
+
+async function attemptRefresh(): Promise<boolean> {
+>>>>>>> origin/AI-Study-fix
   const refreshToken = tokenStore.getRefresh();
   if (!refreshToken) return false;
 
@@ -117,9 +139,16 @@ export async function api<T = unknown>(
   path: string,
   opts: Options = {},
 ): Promise<T> {
+<<<<<<< HEAD
   const doFetch = async (): Promise<Response> => {
     const token = tokenStore.get();
   console.log('🔑 api request', { path, tokenPresent: !!token });
+=======
+  debugLog(`${opts.method || 'GET'} ${path}`);
+  const doFetch = async (): Promise<Response> => {
+    const token = tokenStore.get();
+    console.log('🔑 api request', { path, tokenPresent: !!token });
+>>>>>>> origin/AI-Study-fix
     const headers: Record<string, string> = { ...(opts.headers ?? {}) };
     if (token) headers["Authorization"] = `Bearer ${token}`;
 
@@ -185,5 +214,8 @@ export async function api<T = unknown>(
   // Unwrap ApiResponse<T> { code, message, data } -> T
   const result = (json as any)?.data !== undefined ? (json as any).data : json;
   return result as T;
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 }

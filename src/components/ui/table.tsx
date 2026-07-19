@@ -3,6 +3,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
     <div className="relative w-full overflow-auto">
@@ -11,6 +12,8 @@ const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableE
   ),
 );
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
@@ -23,7 +26,10 @@ const Table = React.forwardRef<
     />
   </div>
 ));
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 Table.displayName = "Table";
 
 const TableHeader = React.forwardRef<
@@ -39,14 +45,20 @@ const TableBody = React.forwardRef<
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
 <<<<<<< HEAD
+<<<<<<< HEAD
   <tbody ref={ref} className={cn("[&_tr:last-child]:border-0", className)} {...props} />
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   <tbody
     ref={ref}
     className={cn("[&_tr:last-child]:border-0", className)}
     {...props}
   />
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 ));
 TableBody.displayName = "TableBody";
 
@@ -57,18 +69,25 @@ const TableFooter = React.forwardRef<
   <tfoot
     ref={ref}
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("border-t bg-muted/50 font-medium [&>tr]:last:border-b-0", className)}
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     className={cn(
       "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
       className,
     )}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     {...props}
   />
 ));
 TableFooter.displayName = "TableFooter";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTMLTableRowElement>>(
   ({ className, ...props }, ref) => (
@@ -83,6 +102,8 @@ const TableRow = React.forwardRef<HTMLTableRowElement, React.HTMLAttributes<HTML
   ),
 );
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
@@ -96,7 +117,10 @@ const TableRow = React.forwardRef<
     {...props}
   />
 ));
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 TableRow.displayName = "TableRow";
 
 const TableHead = React.forwardRef<
@@ -134,12 +158,15 @@ const TableCaption = React.forwardRef<
   React.HTMLAttributes<HTMLTableCaptionElement>
 >(({ className, ...props }, ref) => (
 <<<<<<< HEAD
+<<<<<<< HEAD
   <caption ref={ref} className={cn("mt-4 text-sm text-muted-foreground", className)} {...props} />
 ));
 TableCaption.displayName = "TableCaption";
 
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption };
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   <caption
     ref={ref}
     className={cn("mt-4 text-sm text-muted-foreground", className)}
@@ -158,4 +185,7 @@ export {
   TableCell,
   TableCaption,
 };
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix

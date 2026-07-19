@@ -106,7 +106,11 @@ function DocumentsPage() {
         </div>
       )}
 
+<<<<<<< HEAD
       <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+=======
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} isPipelineTriggerEnabled />
+>>>>>>> origin/AI-Study-fix
     </div>
   );
 }
@@ -117,7 +121,11 @@ function DocumentRow({
   title,
   description,
 }: {
+<<<<<<< HEAD
   id: number;
+=======
+  id: string;
+>>>>>>> origin/AI-Study-fix
   folderId: string;
   title: string;
   description: string;

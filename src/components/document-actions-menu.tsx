@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
@@ -6,6 +7,10 @@ import { useState } from "react";
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/AI-Study-fix
 import { Flag, FolderOpen, MoreVertical, Share2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -26,12 +31,17 @@ export function DocumentActionsMenu({
   className,
   iconClassName,
 }: {
+<<<<<<< HEAD
   documentId: number;
 <<<<<<< HEAD
   folderId: number;
 =======
   folderId: string;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  documentId: string;
+  folderId: string;
+>>>>>>> origin/AI-Study-fix
   title: string;
   className?: string;
   iconClassName?: string;
@@ -72,15 +82,21 @@ export function DocumentActionsMenu({
         <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
           <DropdownMenuItem
 <<<<<<< HEAD
+<<<<<<< HEAD
             onClick={() => navigate(`/aichat?folderId=${folderId}&docId=${documentId}`)}
 =======
+=======
+>>>>>>> origin/AI-Study-fix
             onClick={() =>
               navigate({
                 to: "/ai",
                 search: { folderId, docId: documentId },
               })
             }
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
           >
             <FolderOpen className="h-3.5 w-3.5 mr-2" /> Mở
           </DropdownMenuItem>
@@ -103,12 +119,17 @@ export function DocumentActionsMenu({
         open={shareOpen}
         onOpenChange={setShareOpen}
 <<<<<<< HEAD
+<<<<<<< HEAD
         documentId={documentId}
         documentTitle={title}
 =======
         documentTitle={title}
         folderId={folderId!}
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+        documentTitle={title}
+        folderId={folderId!}
+>>>>>>> origin/AI-Study-fix
       />
       <ReportDocumentDialog
         open={reportOpen}

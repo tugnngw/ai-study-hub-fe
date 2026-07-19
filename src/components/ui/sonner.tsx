@@ -12,14 +12,20 @@ const Toaster = ({ ...props }: ToasterProps) => {
             "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg",
           description: "group-[.toast]:text-muted-foreground",
 <<<<<<< HEAD
+<<<<<<< HEAD
           actionButton: "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton: "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
 =======
+=======
+>>>>>>> origin/AI-Study-fix
           actionButton:
             "group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton:
             "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground",
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
         },
       }}
       {...props}

@@ -38,11 +38,16 @@ const DropdownMenuSubTrigger = React.forwardRef<
   </DropdownMenuPrimitive.SubTrigger>
 ));
 <<<<<<< HEAD
+<<<<<<< HEAD
 DropdownMenuSubTrigger.displayName = DropdownMenuPrimitive.SubTrigger.displayName;
 =======
 DropdownMenuSubTrigger.displayName =
   DropdownMenuPrimitive.SubTrigger.displayName;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+DropdownMenuSubTrigger.displayName =
+  DropdownMenuPrimitive.SubTrigger.displayName;
+>>>>>>> origin/AI-Study-fix
 
 const DropdownMenuSubContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.SubContent>,
@@ -58,11 +63,16 @@ const DropdownMenuSubContent = React.forwardRef<
   />
 ));
 <<<<<<< HEAD
+<<<<<<< HEAD
 DropdownMenuSubContent.displayName = DropdownMenuPrimitive.SubContent.displayName;
 =======
 DropdownMenuSubContent.displayName =
   DropdownMenuPrimitive.SubContent.displayName;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+DropdownMenuSubContent.displayName =
+  DropdownMenuPrimitive.SubContent.displayName;
+>>>>>>> origin/AI-Study-fix
 
 const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
@@ -123,11 +133,16 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   </DropdownMenuPrimitive.CheckboxItem>
 ));
 <<<<<<< HEAD
+<<<<<<< HEAD
 DropdownMenuCheckboxItem.displayName = DropdownMenuPrimitive.CheckboxItem.displayName;
 =======
 DropdownMenuCheckboxItem.displayName =
   DropdownMenuPrimitive.CheckboxItem.displayName;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+DropdownMenuCheckboxItem.displayName =
+  DropdownMenuPrimitive.CheckboxItem.displayName;
+>>>>>>> origin/AI-Study-fix
 
 const DropdownMenuRadioItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.RadioItem>,
@@ -160,14 +175,20 @@ const DropdownMenuLabel = React.forwardRef<
   <DropdownMenuPrimitive.Label
     ref={ref}
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className)}
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     className={cn(
       "px-2 py-1.5 text-sm font-semibold",
       inset && "pl-8",
       className,
     )}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     {...props}
   />
 ));
@@ -186,10 +207,13 @@ const DropdownMenuSeparator = React.forwardRef<
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const DropdownMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
     <span className={cn("ml-auto text-xs tracking-widest opacity-60", className)} {...props} />
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 const DropdownMenuShortcut = ({
   className,
   ...props
@@ -199,7 +223,10 @@ const DropdownMenuShortcut = ({
       className={cn("ml-auto text-xs tracking-widest opacity-60", className)}
       {...props}
     />
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   );
 };
 DropdownMenuShortcut.displayName = "DropdownMenuShortcut";

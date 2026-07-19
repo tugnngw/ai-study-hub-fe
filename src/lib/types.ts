@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // types.ts — Data models aligned with DB schema & BE API
 // =============================================================
@@ -20,6 +21,8 @@ export interface RegisterRequest {
 
 /** POST /api/auth/login */
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 // src/lib/types.ts
 // =============================================================
 // 1. AUTH / ACCOUNT
@@ -31,12 +34,16 @@ export interface RegisterRequest {
   fullName?: string;
 }
 
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 export interface LoginRequest {
   username: string;
   password: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 /** Response của login */
 export interface LoginResponse {
@@ -49,6 +56,8 @@ export interface LoginResponse {
 export interface User {
   id: string;              // UUID
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 export interface LoginResponse {
   accessToken: string;
   refreshToken?: string;
@@ -58,7 +67,10 @@ export interface LoginResponse {
 
 export interface User {
   id: string;
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   username: string;
   email: string;
   fullName: string;
@@ -66,6 +78,7 @@ export interface User {
   role: "USER" | "ADMIN";
   status: "ACTIVE" | "BANNED";
   authProvider: "LOCAL" | "GOOGLE";
+<<<<<<< HEAD
 <<<<<<< HEAD
   lastLoginAt?: string;   // ISO datetime
   createdAt: string;
@@ -118,6 +131,8 @@ export interface Folder {
   id: string;              // UUID
   ownerId: string;         // UUID
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   providerId?: string;
   lastLoginAt?: string;
   createdAt: string;
@@ -133,12 +148,16 @@ export interface Folder {
 export interface Folder {
   id: string;
   ownerId: string;
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   name: string;
   aiSummary?: string | null;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
   documentCount?: number;  // virtual — FE tính hoặc BE trả về
 }
@@ -148,18 +167,26 @@ export interface Folder {
 }
 
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+}
+
+>>>>>>> origin/AI-Study-fix
 export interface CreateFolderRequest {
   name: string;
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /** PUT /api/folder/update/:id */
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 export interface UpdateFolderRequest {
   name: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // ------------------------------------------------------------------
 // 5. DOCUMENT  →  table: document
@@ -174,6 +201,8 @@ export interface Document {
   subjectId?: number | null;
   folderId?: string | null; // UUID
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 // =============================================================
 // 3. DOCUMENT
 // =============================================================
@@ -181,11 +210,18 @@ export interface Document {
 export type DocumentStatus = "processing" | "ready" | "failed" | "deleted";
 
 export interface Document {
+<<<<<<< HEAD
   id: number;
   ownerId: string;
   subjectId?: number | null;
   folderId?: string | null;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  id: string;
+  ownerId: string;
+  subjectId?: number | null;
+  folderId?: string | null;
+>>>>>>> origin/AI-Study-fix
   title: string;
   description?: string | null;
   summary?: string | null;
@@ -198,6 +234,7 @@ export interface Document {
   totalPages?: number | null;
   createdAt: string;
   deletedAt?: string | null;
+<<<<<<< HEAD
 <<<<<<< HEAD
 
   /** @deprecated dùng cloudinaryUrl thay cho fileName */
@@ -212,10 +249,15 @@ export interface Document {
 }
 
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+}
+
+>>>>>>> origin/AI-Study-fix
 export interface UploadDocumentRequest {
   file: File;
   title: string;
   description?: string;
+<<<<<<< HEAD
 <<<<<<< HEAD
   folderId?: string;       // UUID
   subjectId?: number;
@@ -223,11 +265,16 @@ export interface UploadDocumentRequest {
 
 /** PUT /api/documents/:id */
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   folderId?: string;
   subjectId?: number;
 }
 
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 export interface UpdateDocumentRequest {
   title?: string;
   description?: string;
@@ -235,14 +282,18 @@ export interface UpdateDocumentRequest {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 /** GET /api/documents/:id/download */
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 export interface DownloadUrlResponse {
   url: string;
   expiresAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // ------------------------------------------------------------------
 // 6. NOTE (Sổ ghi chú)  →  table: document (mimeType = note hoặc type riêng)
@@ -268,6 +319,8 @@ export interface ShareInfo {
   /** Public link nếu visibility = public */
   link?: string;
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 // =============================================================
 // 4. SHARE
 // =============================================================
@@ -290,7 +343,14 @@ export interface ShareResponse {
   sharedEmail?: string;
   visibility: Visibility;
   createdAt: string;
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  // Temporary addition to prevent TS errors on shared page
+  title?: string;
+  description?: string;
+  sharedBy?: string;
+>>>>>>> origin/AI-Study-fix
 }
 
 export interface ShareRecipient {
@@ -299,6 +359,7 @@ export interface ShareRecipient {
   fullName?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 /** Tài liệu được chia sẻ cho user hiện tại (dùng ở trang Shared) */
 export interface SharedDocument extends Document {
@@ -315,6 +376,8 @@ export interface SharedDocument extends Document {
 export interface AskRequest {
   id: number;             // documentId
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 export interface SharedDocument extends Document {
   sharedBy: string;
   sharedAt: string;
@@ -326,8 +389,13 @@ export interface SharedDocument extends Document {
 // =============================================================
 
 export interface AskRequest {
+<<<<<<< HEAD
   id: number;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  id: string; // folderId
+  documentId?: string;
+>>>>>>> origin/AI-Study-fix
   question: string;
 }
 
@@ -343,6 +411,7 @@ export interface ReferencedChunk {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // ------------------------------------------------------------------
 // 9. QUIZ  →  tables: quiz, question, quiz_attempt, quiz_answer
 // ------------------------------------------------------------------
@@ -355,6 +424,15 @@ export interface ReferencedChunk {
 export interface Quiz {
   id: number;
   documentId: number;
+=======
+// =============================================================
+// 6. QUIZ
+// =============================================================
+
+export interface Quiz {
+  id: number;
+  documentId: string;
+>>>>>>> origin/AI-Study-fix
   title: string;
   generatedByAi: boolean;
   createdAt: string;
@@ -384,6 +462,7 @@ export interface QuizAttempt {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // ------------------------------------------------------------------
 // 10. FLASHCARD  →  tables: flashcard, flashcard_progress
 // ------------------------------------------------------------------
@@ -396,6 +475,15 @@ export interface QuizAttempt {
 export interface Flashcard {
   id: number;
   documentId: number;
+=======
+// =============================================================
+// 7. FLASHCARD
+// =============================================================
+
+export interface Flashcard {
+  id: number;
+  documentId: string;
+>>>>>>> origin/AI-Study-fix
   frontContent: string;
   backContent: string;
   generatedByAi: boolean;
@@ -410,6 +498,7 @@ export interface FlashcardProgress {
   nextReviewAt?: string;
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // ------------------------------------------------------------------
 // 11. REPORT  →  table: report
@@ -457,13 +546,41 @@ export interface PagedResponse<T> {
   size: number;
 }
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 // =============================================================
 // 8. REPORT
 // =============================================================
 
 export interface ReportDocumentRequest {
+<<<<<<< HEAD
   id: number;
   reason: string;
   description?: string;
 }
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  id: string;
+  reason: string;
+  description?: string;
+}
+
+// =============================================================
+// 9. RAG REQUESTS
+// =============================================================
+
+export interface RagProcessRequest {
+  documentId: string;
+}
+
+export interface RagChatRequest {
+  folderId?: string;
+  documentId?: string;
+  question: string;
+}
+
+export interface RagChatResponse {
+  answer: string;
+  referencedDocumentIds: string[];
+}
+>>>>>>> origin/AI-Study-fix

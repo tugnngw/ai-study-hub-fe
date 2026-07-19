@@ -57,7 +57,11 @@ function SharedPage() {
                 </div>
                 <SharedDocumentActionsMenu
                   sharedId={d.id}
+<<<<<<< HEAD
                   title={d.title}
+=======
+                  title={d.title ?? ""}
+>>>>>>> origin/AI-Study-fix
                   description={d.description ?? undefined}
                 />
               </CardContent>

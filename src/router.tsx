@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 // Layouts
@@ -105,6 +106,8 @@ export const router = createBrowserRouter([
   { path: "*", element: <NotFound /> },
 ]);
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
@@ -121,4 +124,7 @@ export const getRouter = () => {
 
   return router;
 };
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix

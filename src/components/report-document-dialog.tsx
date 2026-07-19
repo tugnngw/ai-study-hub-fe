@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { AlertTriangle } from "lucide-react";
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 import { toast } from "sonner";
 import { useReportDocument } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
@@ -34,7 +37,11 @@ export function ReportDocumentDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
+<<<<<<< HEAD
   documentId: number;
+=======
+  documentId: string;
+>>>>>>> origin/AI-Study-fix
   documentTitle: string;
 }) {
   const report = useReportDocument();
@@ -55,14 +62,20 @@ export function ReportDocumentDialog({
     }
     try {
 <<<<<<< HEAD
+<<<<<<< HEAD
       await report.mutateAsync({ id: documentId, reason, description: description.trim() || undefined });
 =======
+=======
+>>>>>>> origin/AI-Study-fix
       await report.mutateAsync({
         id: documentId,
         reason,
         description: description.trim() || undefined,
       });
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
@@ -75,11 +88,15 @@ export function ReportDocumentDialog({
       <DialogContent>
         <DialogHeader>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <DialogTitle className="flex items-center gap-2 truncate">
             <AlertTriangle className="h-5 w-5 text-destructive shrink-0" />
 =======
           <DialogTitle className="truncate">
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+          <DialogTitle className="truncate">
+>>>>>>> origin/AI-Study-fix
             Báo cáo "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
@@ -91,14 +108,20 @@ export function ReportDocumentDialog({
           <div className="space-y-2">
             <Label>Lý do báo cáo</Label>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <RadioGroup value={reason} onValueChange={setReason} className="space-y-2">
 =======
+=======
+>>>>>>> origin/AI-Study-fix
             <RadioGroup
               value={reason}
               onValueChange={setReason}
               className="space-y-2"
             >
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
               {REPORT_REASONS.map((r) => (
                 <label
                   key={r.value}
@@ -127,14 +150,20 @@ export function ReportDocumentDialog({
             Hủy
           </Button>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button variant="destructive" onClick={submit} disabled={report.isPending}>
 =======
+=======
+>>>>>>> origin/AI-Study-fix
           <Button
             variant="destructive"
             onClick={submit}
             disabled={report.isPending}
           >
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
             {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
           </Button>
         </DialogFooter>

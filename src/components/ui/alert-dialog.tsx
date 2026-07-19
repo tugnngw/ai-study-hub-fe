@@ -44,6 +44,7 @@ const AlertDialogContent = React.forwardRef<
 AlertDialogContent.displayName = AlertDialogPrimitive.Content.displayName;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const AlertDialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div className={cn("flex flex-col space-y-2 text-center sm:text-left", className)} {...props} />
 );
@@ -53,6 +54,8 @@ const AlertDialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDiv
   <div
     className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2", className)}
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 const AlertDialogHeader = ({
   className,
   ...props
@@ -76,7 +79,10 @@ const AlertDialogFooter = ({
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
       className,
     )}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     {...props}
   />
 );
@@ -105,25 +111,36 @@ const AlertDialogDescription = React.forwardRef<
   />
 ));
 <<<<<<< HEAD
+<<<<<<< HEAD
 AlertDialogDescription.displayName = AlertDialogPrimitive.Description.displayName;
 =======
 AlertDialogDescription.displayName =
   AlertDialogPrimitive.Description.displayName;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+AlertDialogDescription.displayName =
+  AlertDialogPrimitive.Description.displayName;
+>>>>>>> origin/AI-Study-fix
 
 const AlertDialogAction = React.forwardRef<
   React.ElementRef<typeof AlertDialogPrimitive.Action>,
   React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
 >(({ className, ...props }, ref) => (
 <<<<<<< HEAD
+<<<<<<< HEAD
   <AlertDialogPrimitive.Action ref={ref} className={cn(buttonVariants(), className)} {...props} />
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(buttonVariants(), className)}
     {...props}
   />
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 ));
 AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 
@@ -134,14 +151,20 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn(buttonVariants({ variant: "outline" }), "mt-2 sm:mt-0", className)}
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     className={cn(
       buttonVariants({ variant: "outline" }),
       "mt-2 sm:mt-0",
       className,
     )}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     {...props}
   />
 ));

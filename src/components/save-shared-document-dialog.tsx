@@ -2,14 +2,20 @@ import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { useCreateFolder, useFolders, useSaveSharedDocument } from "@/lib/queries";
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 import {
   useCreateFolder,
   useFolders,
   useSaveSharedDocument,
 } from "@/lib/queries";
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -70,10 +76,14 @@ export function SaveSharedDocumentDialog({
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     let targetFolderId: number | null = null;
 =======
     let targetFolderId: string | null = null;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+    let targetFolderId: string | null = null;
+>>>>>>> origin/AI-Study-fix
 
     try {
       if (folderId === NEW_FOLDER_VALUE) {
@@ -82,18 +92,24 @@ export function SaveSharedDocumentDialog({
           return;
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
         const created = await createFolder.mutateAsync({ name: newFolderName.trim() });
         targetFolderId = created.id;
       } else if (folderId) {
         targetFolderId = Number(folderId);
 =======
+=======
+>>>>>>> origin/AI-Study-fix
         const created = await createFolder.mutateAsync({
           name: newFolderName.trim(),
         });
         targetFolderId = created.id;
       } else if (folderId) {
         targetFolderId = folderId;
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
       } else {
         toast.error("Vui lòng chọn thư mục lưu trữ");
         return;
@@ -120,12 +136,18 @@ export function SaveSharedDocumentDialog({
         <DialogHeader>
           <DialogTitle>Lưu tài liệu</DialogTitle>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <DialogDescription>Lưu tài liệu được chia sẻ vào thư mục của bạn.</DialogDescription>
 =======
           <DialogDescription>
             Lưu tài liệu được chia sẻ vào thư mục của bạn.
           </DialogDescription>
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+          <DialogDescription>
+            Lưu tài liệu được chia sẻ vào thư mục của bạn.
+          </DialogDescription>
+>>>>>>> origin/AI-Study-fix
         </DialogHeader>
 
         <div className="space-y-4">

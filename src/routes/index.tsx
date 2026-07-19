@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link } from "react-router-dom";
 
 import {
@@ -11,6 +12,8 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Bot, Share2, Cloud, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,7 +21,10 @@ import { Button } from "@/components/ui/button";
 export const Route = createFileRoute("/")({
   component: WelcomePage,
 });
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 
 const features = [
   {
@@ -35,11 +41,16 @@ const features = [
     icon: Cloud,
     title: "Lưu trữ Cloud",
 <<<<<<< HEAD
+<<<<<<< HEAD
     description: "Lưu trữ tài liệu an toàn trên cloud với dung lượng không giới hạn",
 =======
     description:
       "Lưu trữ tài liệu an toàn trên cloud với dung lượng không giới hạn",
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+    description:
+      "Lưu trữ tài liệu an toàn trên cloud với dung lượng không giới hạn",
+>>>>>>> origin/AI-Study-fix
   },
   {
     icon: Upload,
@@ -49,23 +60,30 @@ const features = [
 ];
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export function WelcomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
       <header className="border-b border-border/60 sticky top-0 z-50 bg-background">
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 function WelcomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header */}
       <header className="border-b border-border/60 sticky top-0 z-30 bg-background/80 backdrop-blur-xl">
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <div className="h-9 w-9 rounded-xl bg-gradient-brand flex items-center justify-center shadow-brand">
               <Cloud className="h-4.5 w-4.5 text-white" strokeWidth={2.5} />
             </div>
+<<<<<<< HEAD
 <<<<<<< HEAD
             <span className="font-display font-bold text-base">AI STUDY HUB</span>
           </div>
@@ -80,6 +98,8 @@ function WelcomePage() {
               Tạo Tài Khoản
             </Link>
 =======
+=======
+>>>>>>> origin/AI-Study-fix
             <span className="font-display font-bold text-base">
               AI STUDY HUB
             </span>
@@ -94,7 +114,10 @@ function WelcomePage() {
             >
               <Link to="/auth/register">Tạo Tài Khoản</Link>
             </Button>
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
           </div>
         </div>
       </header>
@@ -110,12 +133,15 @@ function WelcomePage() {
             Quản lý tài liệu học tập
             <br />
 <<<<<<< HEAD
+<<<<<<< HEAD
             <span className="text-gradient-brand bg-clip-text text-transparent">cùng AI</span>
           </h1>
           <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
             Tải lên, tổ chức và trò chuyện với tài liệu học tập của bạn. Nhận câu trả lời tức thì
             được hỗ trợ bởi công nghệ AI tiên tiến.
 =======
+=======
+>>>>>>> origin/AI-Study-fix
             <span className="text-gradient-brand bg-clip-text text-transparent">
               cùng AI
             </span>
@@ -123,7 +149,10 @@ function WelcomePage() {
           <p className="mt-4 text-muted-foreground max-w-xl mx-auto">
             Tải lên, tổ chức và trò chuyện với tài liệu học tập của bạn. Nhận
             câu trả lời tức thì được hỗ trợ bởi công nghệ AI tiên tiến.
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
           </p>
         </section>
 
@@ -147,12 +176,18 @@ function WelcomePage() {
                   <f.icon className="h-5 w-5 text-white" />
                 </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <h3 className="font-display font-semibold text-sm text-foreground">{f.title}</h3>
 =======
                 <h3 className="font-display font-semibold text-sm text-foreground">
                   {f.title}
                 </h3>
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+                <h3 className="font-display font-semibold text-sm text-foreground">
+                  {f.title}
+                </h3>
+>>>>>>> origin/AI-Study-fix
                 <p className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
                   {f.description}
                 </p>
@@ -172,6 +207,7 @@ function WelcomePage() {
             </p>
             <div className="mt-6">
 <<<<<<< HEAD
+<<<<<<< HEAD
               <Link
                 to="/auth/register"
                 className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "shadow-lg")}
@@ -179,6 +215,8 @@ function WelcomePage() {
                 Bắt đầu miễn phí
               </Link>
 =======
+=======
+>>>>>>> origin/AI-Study-fix
               <Button
                 size="lg"
                 variant="secondary"
@@ -187,7 +225,10 @@ function WelcomePage() {
               >
                 <Link to="/auth/register">Bắt đầu miễn phí</Link>
               </Button>
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
             </div>
           </div>
         </section>
@@ -204,11 +245,16 @@ function WelcomePage() {
           </div>
           <p className="mt-3 text-xs text-background/60 max-w-sm">
 <<<<<<< HEAD
+<<<<<<< HEAD
             Hệ thống quản lý tài liệu được hỗ trợ bởi AI dành cho sinh viên và giảng viên.
 =======
             Hệ thống quản lý tài liệu được hỗ trợ bởi AI dành cho sinh viên và
             giảng viên.
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+            Hệ thống quản lý tài liệu được hỗ trợ bởi AI dành cho sinh viên và
+            giảng viên.
+>>>>>>> origin/AI-Study-fix
           </p>
         </div>
       </footer>

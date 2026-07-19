@@ -10,12 +10,18 @@ function record(error: unknown) {
 
 if (typeof globalThis.addEventListener === "function") {
 <<<<<<< HEAD
+<<<<<<< HEAD
   globalThis.addEventListener("error", (event) => record((event as ErrorEvent).error ?? event));
 =======
   globalThis.addEventListener("error", (event) =>
     record((event as ErrorEvent).error ?? event),
   );
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  globalThis.addEventListener("error", (event) =>
+    record((event as ErrorEvent).error ?? event),
+  );
+>>>>>>> origin/AI-Study-fix
   globalThis.addEventListener("unhandledrejection", (event) =>
     record((event as PromiseRejectionEvent).reason),
   );

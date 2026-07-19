@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // queries.ts — TanStack Query hooks
 // =============================================================
@@ -9,6 +10,9 @@
 =======
 // src/lib/queries.ts
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+// src/lib/queries.ts
+>>>>>>> origin/AI-Study-fix
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   accountApi,
@@ -18,6 +22,7 @@ import {
   folderApi,
   quizApi,
   ragApi,
+<<<<<<< HEAD
 <<<<<<< HEAD
   semesterApi,
   shareApi,
@@ -29,18 +34,24 @@ import type {
   Semester,
   Subject,
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   shareApi,
 } from "./realApi";
 import { tokenStore } from "./api";
 import type {
   Document,
   Folder,
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   SharedDocument,
   UploadDocumentRequest,
   UpdateDocumentRequest,
   CreateFolderRequest,
   UpdateFolderRequest,
+<<<<<<< HEAD
 <<<<<<< HEAD
   CreateSemesterRequest,
   CreateSubjectRequest,
@@ -48,6 +59,13 @@ import type {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
   AskRequest,
   ReportDocumentRequest,
+=======
+  AskRequest,
+  ReportDocumentRequest,
+  RagProcessRequest,
+  RagChatRequest,
+  RagChatResponse,
+>>>>>>> origin/AI-Study-fix
 } from "./types";
 
 // ================================================================
@@ -85,6 +103,7 @@ export function useCurrentUser() {
     queryKey: ["account", "me"],
     queryFn: () => accountApi.me(),
     staleTime: 5 * 60_000,
+<<<<<<< HEAD
 <<<<<<< HEAD
   });
 }
@@ -184,6 +203,9 @@ export function useCreateSubject() {
 =======
     retry: false,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+    retry: false,
+>>>>>>> origin/AI-Study-fix
   });
 }
 
@@ -208,10 +230,14 @@ export function useFolder(id: string) {
     queryKey: folderKeys.detail(id),
     queryFn: () => folderApi.getById(id),
 <<<<<<< HEAD
+<<<<<<< HEAD
     enabled: !!id,
 =======
     enabled: !!id && id > 0,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+    enabled: typeof id === 'string' && id.trim().length > 0,
+>>>>>>> origin/AI-Study-fix
   });
 }
 
@@ -250,7 +276,11 @@ export function useDeleteFolder() {
 export const docKeys = {
   all: ["documents"] as const,
   byFolder: (folderId: string) => ["documents", "folder", folderId] as const,
+<<<<<<< HEAD
   detail: (id: number) => ["documents", id] as const,
+=======
+  detail: (id: string) => ["documents", "detail", id] as const,
+>>>>>>> origin/AI-Study-fix
   trash: ["documents", "trash"] as const,
 };
 
@@ -269,6 +299,7 @@ export function useDocumentsByFolder(folderId: string) {
   });
 }
 
+<<<<<<< HEAD
 export function useDocument(id: number) {
 <<<<<<< HEAD
   return useQuery({
@@ -301,6 +332,10 @@ export function useUploadDocument() {
       if (v.folderId) qc.invalidateQueries({ queryKey: docKeys.byFolder(v.folderId) });
 =======
   const enabled = !!id;
+=======
+export function useDocument(id: string) {
+  const enabled = typeof id === 'string' && id.trim().length > 0;
+>>>>>>> origin/AI-Study-fix
   console.log('[TRACE-4] useDocument id:', id, 'enabled:', enabled);
   return useQuery({
     queryKey: docKeys.detail(id),
@@ -334,7 +369,10 @@ export function useUploadDocument() {
       qc.invalidateQueries({ queryKey: docKeys.all });
       if (v.folderId)
         qc.invalidateQueries({ queryKey: docKeys.byFolder(v.folderId) });
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     },
   });
 }
@@ -342,7 +380,11 @@ export function useUploadDocument() {
 export function useUpdateDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
     mutationFn: ({ id, ...body }: { id: number } & UpdateDocumentRequest) =>
+=======
+    mutationFn: ({ id, ...body }: { id: string } & UpdateDocumentRequest) =>
+>>>>>>> origin/AI-Study-fix
       documentApi.update(id, body),
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -354,6 +396,7 @@ export function useUpdateDocument() {
 export function useDeleteDocument() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
     mutationFn: (id: number) => documentApi.delete(id),
 <<<<<<< HEAD
     onSuccess: () => {
@@ -363,11 +406,16 @@ export function useDeleteDocument() {
 =======
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+    mutationFn: (id: string) => documentApi.delete(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
+>>>>>>> origin/AI-Study-fix
   });
 }
 
 export function useDownloadDocument() {
   return useMutation({
+<<<<<<< HEAD
     mutationFn: (id: number) => documentApi.getDownloadUrl(id),
   });
 }
@@ -381,6 +429,15 @@ export function useDownloadDocument() {
 // TRASH
 // ================================================================
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+    mutationFn: (id: string) => documentApi.getDownloadUrl(id),
+  });
+}
+
+// ================================================================
+// TRASH
+// ================================================================
+>>>>>>> origin/AI-Study-fix
 
 export function useTrash() {
   return useQuery({
@@ -389,6 +446,7 @@ export function useTrash() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export function useRestoreDocument() {
   const qc = useQueryClient();
@@ -400,6 +458,12 @@ export function useRestoreFromTrash() {
   return useMutation({
     mutationFn: (id: number) => documentApi.restoreFromTrash(id),
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+export function useRestoreFromTrash() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => documentApi.restoreFromTrash(id),
+>>>>>>> origin/AI-Study-fix
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.trash });
       qc.invalidateQueries({ queryKey: docKeys.all });
@@ -407,6 +471,7 @@ export function useRestoreFromTrash() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export function usePermanentDeleteDocument() {
   const qc = useQueryClient();
@@ -422,6 +487,15 @@ export function useEmptyTrash() {
       qc.invalidateQueries({ queryKey: docKeys.trash });
     },
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+export function useEmptyTrash() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => documentApi.emptyTrash(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: docKeys.trash });
+    },
+>>>>>>> origin/AI-Study-fix
   });
 }
 
@@ -432,10 +506,15 @@ export function useEmptyTrash() {
 export const sharedKeys = {
   all: ["shared"] as const,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   owned: ["shared-owned"] as const,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
   info: (docId: number) => ["share-info", docId] as const,
+=======
+  owned: ["shared-owned"] as const,
+  info: (docId: string) => ["share-info", docId] as const,
+>>>>>>> origin/AI-Study-fix
 };
 
 export function useSharedDocuments() {
@@ -445,6 +524,7 @@ export function useSharedDocuments() {
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 export function useShareInfo(documentId: number, enabled = true) {
   return useQuery({
@@ -462,6 +542,8 @@ export function useShareDocument() {
     onSuccess: (_d, v) => {
       qc.invalidateQueries({ queryKey: sharedKeys.info(v.id) });
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 export function useOwnedShares() {
   return useQuery({
     queryKey: sharedKeys.owned,
@@ -483,7 +565,10 @@ export function useShareFolder() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: sharedKeys.all });
       qc.invalidateQueries({ queryKey: sharedKeys.owned });
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     },
   });
 }
@@ -492,15 +577,21 @@ export function useDeleteSharedDocument() {
   const qc = useQueryClient();
   return useMutation({
 <<<<<<< HEAD
+<<<<<<< HEAD
     mutationFn: (shareId: number) => shareApi.removeFromShared(shareId),
     onSuccess: () => qc.invalidateQueries({ queryKey: sharedKeys.all }),
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     mutationFn: (shareId: number) => shareApi.removeShare(shareId),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: sharedKeys.all });
       qc.invalidateQueries({ queryKey: sharedKeys.owned });
     },
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   });
 }
 
@@ -513,10 +604,13 @@ export function useSaveSharedDocument() {
       title: string;
       description?: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
     }) =>
       shareApi.saveToMyFolder(input.sharedId, input.folderId, input.title, input.description),
     onSuccess: () => qc.invalidateQueries({ queryKey: docKeys.all }),
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     }) => {
       // Placeholder: BE doesn't have a "save shared doc" endpoint yet.
       // For now, just simulate success.
@@ -526,7 +620,10 @@ export function useSaveSharedDocument() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: docKeys.all });
     },
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   });
 }
 
@@ -548,13 +645,18 @@ export function useAskRag() {
 
 export function useUploadRag() {
   return useMutation({
+<<<<<<< HEAD
     mutationFn: (input: { file: File; documentId: number; chunk?: boolean }) =>
+=======
+    mutationFn: (input: { file: File; documentId: string; chunk?: boolean }) =>
+>>>>>>> origin/AI-Study-fix
       input.chunk
         ? ragApi.uploadAndChunk(input.file, input.documentId)
         : ragApi.upload(input.file, input.documentId),
   });
 }
 
+<<<<<<< HEAD
 // ================================================================
 <<<<<<< HEAD
 // QUIZ  (sẵn sàng khi BE implement /api/quiz)
@@ -568,6 +670,29 @@ export const quizKeys = {
 };
 
 export function useQuizByDocument(documentId: number) {
+=======
+export function useProcessRagPipeline() {
+  return useMutation({
+    mutationFn: (req: RagProcessRequest) => ragApi.processDocumentPipeline(req),
+  });
+}
+
+export function useChatWithFolder() {
+  return useMutation({
+    mutationFn: (req: RagChatRequest) => ragApi.chatWithFolder(req),
+  });
+}
+
+// ================================================================
+// QUIZ
+// ================================================================
+
+export const quizKeys = {
+  byDocument: (docId: string) => ["quiz", "document", docId] as const,
+};
+
+export function useQuizByDocument(documentId: string) {
+>>>>>>> origin/AI-Study-fix
   return useQuery({
     queryKey: quizKeys.byDocument(documentId),
     queryFn: () => quizApi.listByDocument(documentId),
@@ -578,7 +703,11 @@ export function useQuizByDocument(documentId: number) {
 export function useGenerateQuiz() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
     mutationFn: (input: { documentId: number; questionCount?: number }) =>
+=======
+    mutationFn: (input: { documentId: string; questionCount?: number }) =>
+>>>>>>> origin/AI-Study-fix
       quizApi.generate(input.documentId, input.questionCount),
     onSuccess: (_d, v) =>
       qc.invalidateQueries({ queryKey: quizKeys.byDocument(v.documentId) }),
@@ -586,6 +715,7 @@ export function useGenerateQuiz() {
 }
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 // FLASHCARD  (sẵn sàng khi BE implement /api/flashcard)
 =======
@@ -598,6 +728,16 @@ export const flashcardKeys = {
 };
 
 export function useFlashcardsByDocument(documentId: number) {
+=======
+// FLASHCARD
+// ================================================================
+
+export const flashcardKeys = {
+  byDocument: (docId: string) => ["flashcard", "document", docId] as const,
+};
+
+export function useFlashcardsByDocument(documentId: string) {
+>>>>>>> origin/AI-Study-fix
   return useQuery({
     queryKey: flashcardKeys.byDocument(documentId),
     queryFn: () => flashcardApi.listByDocument(documentId),
@@ -608,12 +748,17 @@ export function useFlashcardsByDocument(documentId: number) {
 export function useGenerateFlashcards() {
   const qc = useQueryClient();
   return useMutation({
+<<<<<<< HEAD
     mutationFn: (documentId: number) => flashcardApi.generate(documentId),
+=======
+    mutationFn: (documentId: string) => flashcardApi.generate(documentId),
+>>>>>>> origin/AI-Study-fix
     onSuccess: (_d, documentId) =>
       qc.invalidateQueries({ queryKey: flashcardKeys.byDocument(documentId) }),
   });
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // ================================================================
 // Re-exports (giữ backward compat với code hiện tại)
@@ -622,3 +767,6 @@ export type { Document, Folder, Semester, Subject, SharedDocument };
 =======
 export type { Document, Folder, SharedDocument };
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+export type { Document, Folder, SharedDocument };
+>>>>>>> origin/AI-Study-fix

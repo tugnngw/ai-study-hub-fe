@@ -1,5 +1,8 @@
 // src/components/document-viewer/PdfViewer.tsx
+<<<<<<< HEAD
 // Enhanced PDF viewer with drag-to-pan, smooth zoom, scroll-based navigation
+=======
+>>>>>>> origin/AI-Study-fix
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import * as pdfjsLib from "pdfjs-dist";
@@ -12,6 +15,7 @@ import {
   ZoomIn,
   ZoomOut,
   Maximize2,
+<<<<<<< HEAD
   Hand,
   MousePointer2,
   Search,
@@ -19,22 +23,41 @@ import {
   FileText,
   Sun,
   Moon,
+=======
+>>>>>>> origin/AI-Study-fix
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+<<<<<<< HEAD
 import { API_BASE, tokenStore } from "@/lib/api";
 
+=======
+import { API_BASE } from "@/lib/api";
+import { tokenStore } from "@/lib/api";
+
+// Configure PDF worker
+>>>>>>> origin/AI-Study-fix
 pdfjsLib.GlobalWorkerOptions.workerSrc = `/pdfjs/pdf.worker.mjs`;
 
 interface PdfViewerProps {
   url: string;
   fileName?: string;
   className?: string;
+<<<<<<< HEAD
   documentId?: number;
 }
 
+=======
+  documentId?: string;
+}
+
+/**
+ * PdfViewer — Direct pdfjs-dist canvas renderer
+ * More reliable than react-pdf, full control over rendering
+ */
+>>>>>>> origin/AI-Study-fix
 export const PdfViewer: React.FC<PdfViewerProps> = ({
   url,
   fileName = "document.pdf",
@@ -50,6 +73,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [scale, setScale] = useState(1);
+<<<<<<< HEAD
   const [dragging, setDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [scrollStart, setScrollStart] = useState({ left: 0, top: 0 });
@@ -57,6 +81,11 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   const [showThumbs, setShowThumbs] = useState(false);
 
   // Fetch PDF binary data
+=======
+  const [fitToPage, setFitToPage] = useState(true);
+
+  // Fetch PDF binary data manually (bypass pdfjs network layer)
+>>>>>>> origin/AI-Study-fix
   useEffect(() => {
     let cancelled = false;
 
@@ -64,6 +93,10 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
       setLoading(true);
       setError(null);
 
+<<<<<<< HEAD
+=======
+      // Helper: fetch URL as ArrayBuffer
+>>>>>>> origin/AI-Study-fix
       const fetchBuffer = async (fetchUrl: string, authToken?: string) => {
         const res = await fetch(fetchUrl, {
           headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
@@ -78,6 +111,10 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         const token = tokenStore.get();
         let arrayBuffer: ArrayBuffer | null = null;
 
+<<<<<<< HEAD
+=======
+        // Try 1: backend download API
+>>>>>>> origin/AI-Study-fix
         if (documentId) {
           try {
             const downloadResp = await fetch(
@@ -94,24 +131,60 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
                 const data = await downloadResp.json();
                 const signedUrl = data?.url || data?.data?.url || data?.signedUrl;
                 if (signedUrl) {
+<<<<<<< HEAD
                   try { arrayBuffer = await fetchBuffer(signedUrl, token); } catch { throw new Error("signed URL failed"); }
+=======
+                  try {
+                    arrayBuffer = await fetchBuffer(signedUrl, token || undefined);
+                  } catch {
+                    // signed URL failed, try direct
+                    throw new Error("signed URL failed");
+                  }
+>>>>>>> origin/AI-Study-fix
                 } else throw new Error("No URL in response");
               } else {
                 arrayBuffer = await downloadResp.arrayBuffer();
                 if (!arrayBuffer || arrayBuffer.byteLength === 0) throw new Error("Empty response");
               }
             } else throw new Error(`API ${downloadResp.status}`);
+<<<<<<< HEAD
           } catch {
             try { arrayBuffer = await fetchBuffer(url); } catch { if (!cancelled) setError("Không thể tải PDF. Mở tab mới để xem."); return; }
           }
         } else {
           try { arrayBuffer = await fetchBuffer(url); } catch { if (!cancelled) setError("Không thể tải PDF."); return; }
+=======
+          } catch (e) {
+            console.warn("[PdfViewer] Backend API failed, trying direct URL:", e);
+            // Try 2: fetch original URL directly
+            try {
+              arrayBuffer = await fetchBuffer(url);
+            } catch (e2) {
+              console.warn("[PdfViewer] Direct fetch also failed:", e2);
+              // Try 3: use iframe as last resort
+              if (!cancelled) setError("Không thể tải PDF. Mở tab mới để xem.");
+              return;
+            }
+          }
+        } else {
+          // No documentId, fetch directly
+          try {
+            arrayBuffer = await fetchBuffer(url);
+          } catch {
+            if (!cancelled) setError("Không thể tải PDF.");
+            return;
+          }
+>>>>>>> origin/AI-Study-fix
         }
 
         if (!cancelled && arrayBuffer) {
           setPdfData(new Uint8Array(arrayBuffer));
         }
       } catch (e: any) {
+<<<<<<< HEAD
+=======
+        console.error("[PdfViewer] Fetch failed:", e);
+>>>>>>> origin/AI-Study-fix
         if (!cancelled) setError(e.message || "Không thể tải PDF");
       } finally {
         if (!cancelled) setLoading(false);
@@ -119,16 +192,31 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
     };
 
     loadPdfData();
+<<<<<<< HEAD
     return () => { cancelled = true; };
   }, [url, documentId]);
 
   // Load PDF document
   useEffect(() => {
     let cancelled = false;
+=======
+
+    return () => { cancelled = true; };
+  }, [url, documentId]);
+
+  // Load PDF document from binary data
+  useEffect(() => {
+    let cancelled = false;
+
+>>>>>>> origin/AI-Study-fix
     const loadDocument = async () => {
       if (!pdfData) return;
       setLoading(true);
       setError(null);
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/AI-Study-fix
       try {
         const doc = await pdfjsLib.getDocument({ data: pdfData }).promise;
         if (!cancelled) {
@@ -137,11 +225,16 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
           setPageNumber(1);
         }
       } catch (e: any) {
+<<<<<<< HEAD
+=======
+        console.error("[PdfViewer] Document load error:", e);
+>>>>>>> origin/AI-Study-fix
         if (!cancelled) setError(e.message || "Không thể tải PDF");
       } finally {
         if (!cancelled) setLoading(false);
       }
     };
+<<<<<<< HEAD
     loadDocument();
     return () => { cancelled = true; };
   }, [pdfData]);
@@ -149,6 +242,18 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
   // Render current page
   const renderPage = useCallback(async () => {
     if (!pdfDoc || !canvasRef.current) return;
+=======
+
+    loadDocument();
+
+    return () => { cancelled = true; };
+  }, [pdfData]);
+
+  // Render current page on canvas
+  const renderPage = useCallback(async () => {
+    if (!pdfDoc || !canvasRef.current) return;
+
+>>>>>>> origin/AI-Study-fix
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
 
@@ -157,6 +262,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
       const viewport = page.getViewport({ scale });
 
       const canvas = canvasRef.current;
+<<<<<<< HEAD
       const dpr = window.devicePixelRatio || 1;
       canvas.width = viewport.width * dpr;
       canvas.height = viewport.height * dpr;
@@ -167,11 +273,25 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
       ctx.fillStyle = "white";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       await page.render({ canvasContext: ctx, viewport }).promise;
+=======
+      canvas.width = viewport.width * (window.devicePixelRatio || 1);
+      canvas.height = viewport.height * (window.devicePixelRatio || 1);
+      canvas.style.width = `${viewport.width}px`;
+      canvas.style.height = `${viewport.height}px`;
+
+      ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+
+      await page.render({
+        canvasContext: ctx,
+        viewport,
+      }).promise;
+>>>>>>> origin/AI-Study-fix
     } catch (e: any) {
       console.error("[PdfViewer] Page render error:", e);
     }
   }, [pdfDoc, pageNumber, scale]);
 
+<<<<<<< HEAD
   useEffect(() => { renderPage(); }, [renderPage]);
 
   // Fit to container width
@@ -240,10 +360,31 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 
   const handleMouseUp = () => setDragging(false);
 
+=======
+  // Re-render when page or scale changes
+  useEffect(() => {
+    renderPage();
+  }, [renderPage]);
+
+  // Handle zoom
+  const handleZoom = (direction: "in" | "out" | "fit") => {
+    if (direction === "fit") {
+      setFitToPage((prev) => !prev);
+    } else if (direction === "in") {
+      setScale((prev) => Math.min(prev + 0.25, 3));
+      setFitToPage(false);
+    } else {
+      setScale((prev) => Math.max(prev - 0.25, 0.25));
+      setFitToPage(false);
+    }
+  };
+
+>>>>>>> origin/AI-Study-fix
   // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!numPages) return;
+<<<<<<< HEAD
       if ((e.key === "ArrowLeft" || e.key === "PageUp") && !e.ctrlKey && !e.metaKey) {
         setPageNumber((p) => Math.max(1, p - 1));
       } else if ((e.key === "ArrowRight" || e.key === "PageDown") && !e.ctrlKey && !e.metaKey) {
@@ -252,6 +393,12 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
         setPageNumber(1);
       } else if (e.key === "End") {
         setPageNumber(numPages);
+=======
+      if (e.key === "ArrowLeft" || e.key === "PageUp") {
+        setPageNumber((p) => Math.max(1, p - 1));
+      } else if (e.key === "ArrowRight" || e.key === "PageDown") {
+        setPageNumber((p) => Math.min(numPages, p + 1));
+>>>>>>> origin/AI-Study-fix
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -260,6 +407,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
 
   // Toolbar
   const Toolbar = (
+<<<<<<< HEAD
     <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/30 shrink-0 flex-wrap gap-1">
       <div className="flex items-center gap-2 min-w-0">
         <span className="text-sm font-semibold truncate max-w-[200px]">{fileName}</span>
@@ -330,6 +478,105 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
           <a href={url} download target="_blank" rel="noopener noreferrer">
             <Download className="h-4 w-4 mr-1" />
             Tải
+=======
+    <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white shrink-0">
+      <div className="flex items-center gap-3 flex-1">
+        <span className="text-sm font-semibold text-gray-800 truncate max-w-[250px]">
+          {fileName}
+        </span>
+        {numPages && (
+          <span className="text-xs text-gray-500">{numPages} trang</span>
+        )}
+      </div>
+
+      <div className="flex items-center gap-2">
+        {/* Zoom Controls */}
+        {numPages && (
+          <div className="flex items-center gap-1 border-r border-gray-200 pr-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleZoom("out")}
+              disabled={scale <= 0.25}
+              title="Thu nhỏ"
+              className="h-8 w-8 p-0"
+            >
+              <ZoomOut className="h-4 w-4" />
+            </Button>
+            <span className="text-xs text-gray-600 w-8 text-center">
+              {Math.round(scale * 100)}%
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleZoom("in")}
+              disabled={scale >= 3}
+              title="Phóng to"
+              className="h-8 w-8 p-0"
+            >
+              <ZoomIn className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => handleZoom("fit")}
+              title="Vừa khung"
+              className={cn("h-8 w-8 p-0", !fitToPage && "bg-gray-100")}
+            >
+              <Maximize2 className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
+
+        {/* Page Navigation */}
+        {numPages && (
+          <div className="flex items-center gap-1 border-r border-gray-200 px-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setPageNumber((p) => Math.max(1, p - 1))}
+              disabled={pageNumber <= 1}
+              title="Trang trước"
+              className="h-8 w-8 p-0"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <Input
+              type="number"
+              min={1}
+              max={numPages}
+              value={pageNumber}
+              onChange={(e) => {
+                const num = Math.min(
+                  Math.max(1, parseInt(e.target.value) || 1),
+                  numPages
+                );
+                setPageNumber(num);
+              }}
+              className="h-8 w-10 px-2 py-0 text-center text-xs border-gray-300"
+            />
+            <span className="text-xs text-gray-600">/ {numPages}</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() =>
+                setPageNumber((p) => Math.min(numPages, p + 1))
+              }
+              disabled={pageNumber >= numPages}
+              title="Trang sau"
+              className="h-8 w-8 p-0"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
+
+        {/* Action Buttons */}
+        <Button variant="ghost" size="sm" asChild className="h-8 px-2 text-xs">
+          <a href={url} download target="_blank" rel="noopener noreferrer">
+            <Download className="h-4 w-4 mr-1" />
+            Tải xuống
+>>>>>>> origin/AI-Study-fix
           </a>
         </Button>
         <Button variant="ghost" size="sm" asChild className="h-8 px-2 text-xs">
@@ -347,11 +594,20 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
     return (
       <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
         {Toolbar}
+<<<<<<< HEAD
         <div className="flex-1 flex flex-col items-center justify-center p-8">
           <p className="text-red-500 text-center mb-4 font-medium">{error}</p>
           <Button variant="outline" size="sm" asChild>
             <a href={url} target="_blank" rel="noopener noreferrer">
               <Download className="h-4 w-4 mr-2" /> Tải xuống tệp
+=======
+        <div className="flex-1 flex flex-col items-center justify-center p-8 bg-white">
+          <p className="text-red-500 text-center mb-4 font-medium">{error}</p>
+          <Button variant="outline" size="sm" asChild>
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              <Download className="h-4 w-4 mr-2" />
+              Tải xuống tệp
+>>>>>>> origin/AI-Study-fix
             </a>
           </Button>
         </div>
@@ -359,6 +615,7 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
     );
   }
 
+<<<<<<< HEAD
   return (
     <Card className={cn("flex flex-col overflow-hidden min-h-0", className)}>
       {Toolbar}
@@ -386,6 +643,24 @@ export const PdfViewer: React.FC<PdfViewerProps> = ({
             <div className="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-0.5 rounded-full">
               {pageNumber}/{numPages}
             </div>
+=======
+  // Main render
+  return (
+    <Card className={cn("flex flex-col overflow-hidden min-h-0 bg-white", className)}>
+      {Toolbar}
+      <div
+        ref={containerRef}
+        className="flex-1 overflow-auto bg-gray-100 flex items-start justify-center py-6"
+      >
+        {loading ? (
+          <div className="flex flex-col items-center justify-center p-12">
+            <Loader2 className="h-10 w-10 animate-spin text-blue-500 mb-3" />
+            <p className="text-sm text-gray-600">Đang tải PDF...</p>
+          </div>
+        ) : (
+          <div className="bg-white shadow-lg rounded-sm">
+            <canvas ref={canvasRef} className="block" />
+>>>>>>> origin/AI-Study-fix
           </div>
         )}
       </div>

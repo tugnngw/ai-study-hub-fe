@@ -24,6 +24,7 @@ const Alert = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
 >(({ className, variant, ...props }, ref) => (
 <<<<<<< HEAD
+<<<<<<< HEAD
   <div ref={ref} role="alert" className={cn(alertVariants({ variant }), className)} {...props} />
 ));
 Alert.displayName = "Alert";
@@ -38,6 +39,8 @@ const AlertTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<H
   ),
 );
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   <div
     ref={ref}
     role="alert"
@@ -57,7 +60,10 @@ const AlertTitle = React.forwardRef<
     {...props}
   />
 ));
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 AlertTitle.displayName = "AlertTitle";
 
 const AlertDescription = React.forwardRef<
@@ -65,14 +71,20 @@ const AlertDescription = React.forwardRef<
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
 <<<<<<< HEAD
+<<<<<<< HEAD
   <div ref={ref} className={cn("text-sm [&_p]:leading-relaxed", className)} {...props} />
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   <div
     ref={ref}
     className={cn("text-sm [&_p]:leading-relaxed", className)}
     {...props}
   />
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 ));
 AlertDescription.displayName = "AlertDescription";
 

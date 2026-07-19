@@ -10,12 +10,15 @@ const buttonVariants = cva(
     variants: {
       variant: {
 <<<<<<< HEAD
+<<<<<<< HEAD
         default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
 =======
+=======
+>>>>>>> origin/AI-Study-fix
         default:
           "bg-primary text-primary-foreground shadow hover:bg-primary/90",
         destructive:
@@ -24,7 +27,10 @@ const buttonVariants = cva(
           "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
@@ -44,12 +50,18 @@ const buttonVariants = cva(
 
 export interface ButtonProps
 <<<<<<< HEAD
+<<<<<<< HEAD
   extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
 =======
   extends
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+>>>>>>> origin/AI-Study-fix
   asChild?: boolean;
 }
 
@@ -58,14 +70,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     return (
 <<<<<<< HEAD
+<<<<<<< HEAD
       <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />
 =======
+=======
+>>>>>>> origin/AI-Study-fix
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
       />
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     );
   },
 );

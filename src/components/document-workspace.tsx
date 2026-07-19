@@ -1,9 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 
 =======
 import { Link, useNavigate } from "@tanstack/react-router";
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+import { Link, useNavigate } from "@tanstack/react-router";
+>>>>>>> origin/AI-Study-fix
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ChevronLeft,
@@ -18,9 +22,13 @@ import {
   X,
   ChevronRight,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   Loader2,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  Loader2,
+>>>>>>> origin/AI-Study-fix
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -29,16 +37,22 @@ import {
   useDocument,
   useDocumentsByFolder,
 <<<<<<< HEAD
+<<<<<<< HEAD
   useFolder,
   useUploadDocument,
 } from "@/lib/queries";
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   useDownloadDocument,
   useFolder,
   useUploadDocument,
 } from "@/lib/queries";
 import { DocumentViewer } from "@/components/document-viewer";
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -52,6 +66,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import {
   Select,
   SelectContent,
@@ -61,6 +76,8 @@ import {
 } from "@/components/ui/select";
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 import { cn } from "@/lib/utils";
 
 type Tab = "original" | "notes" | "summary" | "flashcards" | "quizzes";
@@ -68,11 +85,14 @@ type Highlight = "memo" | "quiz" | "summary" | "idea";
 
 const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
 <<<<<<< HEAD
+<<<<<<< HEAD
   { id: "memo", label: "Thẻ ghi nhớ", cls: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200" },
   { id: "quiz", label: "Bài kiểm tra", cls: "bg-green-100 text-green-700 hover:bg-green-200" },
   { id: "summary", label: "Tóm Tắt", cls: "bg-blue-100 text-blue-700 hover:bg-blue-200" },
   { id: "idea", label: "Ý Chính", cls: "bg-pink-100 text-pink-700 hover:bg-pink-200" },
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   {
     id: "memo",
     label: "Thẻ ghi nhớ",
@@ -93,7 +113,10 @@ const HIGHLIGHTS: { id: Highlight; label: string; cls: string }[] = [
     label: "Ý Chính",
     cls: "bg-purple-100 text-purple-700 hover:bg-purple-200",
   },
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 ];
 
 interface ChatMsg {
@@ -105,6 +128,7 @@ export function DocumentWorkspace({
   folderId,
   docId,
 }: {
+<<<<<<< HEAD
 <<<<<<< HEAD
   folderId: number;
 =======
@@ -121,6 +145,15 @@ export function DocumentWorkspace({
 =======
   const isValidDocId = typeof docId === 'number' && !isNaN(docId) && docId > 0;
   const doc = useDocument(isValidDocId ? docId : 0);;
+=======
+  folderId: string;
+  docId?: string;
+}) {
+  const folder = useFolder(folderId);
+  const folderDocs = useDocumentsByFolder(folderId);
+  const isValidDocId = typeof docId === 'string' && docId.trim().length > 0;
+  const doc = useDocument(isValidDocId ? docId : '');
+>>>>>>> origin/AI-Study-fix
   console.log("DOC DATA", doc.data);
   console.log('[TRACE-3] DocumentWorkspace: docId received:', docId);
   console.log('[TRACE-3.1] isValidDocId:', isValidDocId);
@@ -128,7 +161,10 @@ export function DocumentWorkspace({
   const del = useDeleteDocument();
   const ask = useAskRag();
   const download = useDownloadDocument();
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   const navigate = useNavigate();
 
   const [tab, setTab] = useState<Tab>("original");
@@ -140,28 +176,41 @@ export function DocumentWorkspace({
 
   useEffect(() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
     });
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   }, [messages]);
 
   // Note: user clicks files in the grid to open them — no auto-select.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   const submitChat = async () => {
     if (!input.trim() || !docId) return;
     const q = input.trim();
     setInput("");
     setMessages((m) => [...m, { role: "user", content: q }]);
     try {
+<<<<<<< HEAD
       const res = await ask.mutateAsync({ id: docId, question: q });
+=======
+      const res = await ask.mutateAsync({ id: folderId, question: q });
+>>>>>>> origin/AI-Study-fix
       setMessages((m) => [...m, { role: "assistant", content: res.answer }]);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
@@ -169,7 +218,10 @@ export function DocumentWorkspace({
   };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   const handleDownload = async () => {
     if (!docId) return;
     try {
@@ -180,7 +232,10 @@ export function DocumentWorkspace({
     }
   };
 
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   const handleDelete = async () => {
     if (!docId) return;
     if (!confirm("Xoá tài liệu này (chuyển vào Thùng rác)?")) return;
@@ -188,14 +243,20 @@ export function DocumentWorkspace({
       await del.mutateAsync(docId);
       toast.success("Đã chuyển vào thùng rác");
 <<<<<<< HEAD
+<<<<<<< HEAD
       navigate(`/folders/${folderId}`);
 =======
+=======
+>>>>>>> origin/AI-Study-fix
       navigate({
         to: "/folders/$id",
         params: { id: String(folderId) },
         search: {},
       });
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Failed");
     }
@@ -217,12 +278,18 @@ export function DocumentWorkspace({
             THƯ MỤC ĐANG DÙNG
           </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <div className="text-sm font-semibold font-display">{folder.data?.name ?? "—"}</div>
 =======
           <div className="text-sm font-semibold font-display">
             {folder.data?.name ?? "—"}
           </div>
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+          <div className="text-sm font-semibold font-display">
+            {folder.data?.name ?? "—"}
+          </div>
+>>>>>>> origin/AI-Study-fix
           <div className="text-xs text-muted-foreground mt-0.5">
             {folderDocs.data?.length ?? 0} tài liệu
           </div>
@@ -235,17 +302,24 @@ export function DocumentWorkspace({
           <div className="space-y-1 overflow-y-auto flex-1 -mx-1 px-1">
             {folderDocs.isLoading &&
 <<<<<<< HEAD
+<<<<<<< HEAD
               Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-9 rounded-lg" />)}
 =======
               Array.from({ length: 3 }).map((_, i) => (
                 <Skeleton key={i} className="h-9 rounded-lg" />
               ))}
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+              Array.from({ length: 3 }).map((_, i) => (
+                <Skeleton key={i} className="h-9 rounded-lg" />
+              ))}
+>>>>>>> origin/AI-Study-fix
             {(folderDocs.data ?? []).map((d) => {
               const active = d.id === docId;
               return (
                 <Link
                   key={d.id}
+<<<<<<< HEAD
 <<<<<<< HEAD
                   to={`/folders/${String(folderId)}?docId=${d.id}`}
 =======
@@ -253,6 +327,11 @@ export function DocumentWorkspace({
                   params={{ id: String(folderId) }}
                   search={{ docId: d.id }}
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+                  to="/folders/$id"
+                  params={{ id: String(folderId) }}
+                  search={{ docId: d.id }}
+>>>>>>> origin/AI-Study-fix
                   className={cn(
                     "flex items-center gap-2 text-sm px-2.5 py-2 rounded-lg transition-colors",
                     active
@@ -267,12 +346,18 @@ export function DocumentWorkspace({
             })}
             {!folderDocs.isLoading && (folderDocs.data ?? []).length === 0 && (
 <<<<<<< HEAD
+<<<<<<< HEAD
               <div className="text-xs text-muted-foreground px-2">Chưa có tài liệu</div>
 =======
               <div className="text-xs text-muted-foreground px-2">
                 Chưa có tài liệu
               </div>
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+              <div className="text-xs text-muted-foreground px-2">
+                Chưa có tài liệu
+              </div>
+>>>>>>> origin/AI-Study-fix
             )}
           </div>
         </div>
@@ -320,14 +405,20 @@ export function DocumentWorkspace({
             <button
               onClick={() =>
 <<<<<<< HEAD
+<<<<<<< HEAD
                 navigate(`/folders/${folderId}`)
 =======
+=======
+>>>>>>> origin/AI-Study-fix
                 navigate({
                   to: "/folders/$id",
                   params: { id: String(folderId) },
                   search: {},
                 })
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
               }
               className={cn(
                 "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
@@ -342,12 +433,18 @@ export function DocumentWorkspace({
               <Link
                 key={d.id}
 <<<<<<< HEAD
+<<<<<<< HEAD
                 to={`/folders/${String(folderId)}?docId=${d.id}`}
 =======
                 to="/folders/$id"
                 params={{ id: String(folderId) }}
                 search={{ docId: d.id }}
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+                to="/folders/$id"
+                params={{ id: String(folderId) }}
+                search={{ docId: d.id }}
+>>>>>>> origin/AI-Study-fix
                 className={cn(
                   "px-3 py-1 text-xs rounded-full font-medium whitespace-nowrap transition-colors",
                   d.id === docId
@@ -363,6 +460,7 @@ export function DocumentWorkspace({
 
         <div className="flex-1 overflow-y-auto p-6">
           {tab === "original" ? (
+<<<<<<< HEAD
 <<<<<<< HEAD
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
               {folderDocs.isLoading &&
@@ -398,6 +496,8 @@ export function DocumentWorkspace({
               )}
             </div>
 =======
+=======
+>>>>>>> origin/AI-Study-fix
             // 🔥 Kiểm tra kỹ hơn
             docId && doc.data ? (
               // Display original document viewer when a document is selected
@@ -465,7 +565,10 @@ export function DocumentWorkspace({
                 </div>
               </div>
             )
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
           ) : !docId ? (
             <div className="text-sm text-muted-foreground text-center mt-16">
               Chọn một tài liệu để xem nội dung.
@@ -479,6 +582,7 @@ export function DocumentWorkspace({
             <div className="space-y-3">
               <div className="flex flex-wrap gap-1 border border-border rounded-lg px-2 py-1.5 text-xs text-muted-foreground bg-muted/40">
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer font-bold">B</span>
                 <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer italic">I</span>
                 <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer underline">U</span>
@@ -490,6 +594,8 @@ export function DocumentWorkspace({
               </div>
               <h2 className="text-xl font-bold text-gradient-brand font-display">Ghi chú AI</h2>
 =======
+=======
+>>>>>>> origin/AI-Study-fix
                 <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer font-bold">
                   B
                 </span>
@@ -518,7 +624,10 @@ export function DocumentWorkspace({
               <h2 className="text-xl font-bold text-gradient-brand font-display">
                 Ghi chú AI
               </h2>
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
               <Textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
@@ -528,13 +637,19 @@ export function DocumentWorkspace({
             </div>
           ) : tab === "summary" ? (
 <<<<<<< HEAD
+<<<<<<< HEAD
             <SummaryTab title={doc.data?.title ?? ""} description={doc.data?.description ?? ""} />
 =======
+=======
+>>>>>>> origin/AI-Study-fix
             <SummaryTab
               title={doc.data?.title ?? ""}
               description={doc.data?.description ?? ""}
             />
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
           ) : tab === "flashcards" ? (
             <FlashcardsTab title={doc.data?.title ?? ""} />
           ) : (
@@ -543,17 +658,21 @@ export function DocumentWorkspace({
         </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
         {docId && (
           <div className="p-3 border-t border-border flex items-center gap-2">
             <Button
               variant="outline"
               size="sm"
+<<<<<<< HEAD
 <<<<<<< HEAD
               disabled={!doc.data?.cloudinaryUrl}
               onClick={() => {
@@ -564,12 +683,17 @@ export function DocumentWorkspace({
             >
               <Download className="h-3.5 w-3.5 mr-2" /> Download
 =======
+=======
+>>>>>>> origin/AI-Study-fix
               onClick={handleDownload}
               disabled={download.isPending}
             >
               <Download className="h-3.5 w-3.5 mr-2" />{" "}
               {download.isPending ? "Đang tải…" : "Tải xuống"}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
             </Button>
             <Button
               variant="ghost"
@@ -676,9 +800,12 @@ export function DocumentWorkspace({
       </aside>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
       <UploadDialog
         open={uploadOpen}
         onOpenChange={setUploadOpen}
@@ -696,10 +823,14 @@ function UploadDialog({
   open: boolean;
   onOpenChange: (v: boolean) => void;
 <<<<<<< HEAD
+<<<<<<< HEAD
   folderId: number;
 =======
   folderId: string;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  folderId: string;
+>>>>>>> origin/AI-Study-fix
 }) {
   const upload = useUploadDocument();
   const [file, setFile] = useState<File | null>(null);
@@ -731,13 +862,19 @@ function UploadDialog({
           <div className="space-y-2">
             <Label>File</Label>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Input type="file" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
 =======
+=======
+>>>>>>> origin/AI-Study-fix
             <Input
               type="file"
               onChange={(e) => setFile(e.target.files?.[0] ?? null)}
             />
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
           </div>
           <div className="space-y-2">
             <Label>Tiêu đề</Label>
@@ -746,13 +883,19 @@ function UploadDialog({
           <div className="space-y-2">
             <Label>Mô tả</Label>
 <<<<<<< HEAD
+<<<<<<< HEAD
             <Textarea value={description} onChange={(e) => setDescription(e.target.value)} />
 =======
+=======
+>>>>>>> origin/AI-Study-fix
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
           </div>
         </div>
         <DialogFooter>
@@ -770,8 +913,11 @@ function UploadDialog({
 
 /* -------------------- AI Summary -------------------- */
 <<<<<<< HEAD
+<<<<<<< HEAD
 function SummaryTab({ title, description }: { title: string; description: string }) {
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 function SummaryTab({
   title,
   description,
@@ -779,7 +925,10 @@ function SummaryTab({
   title: string;
   description: string;
 }) {
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   const [loading, setLoading] = useState(true);
   const [tick, setTick] = useState(0);
 
@@ -812,14 +961,20 @@ function SummaryTab({
           </p>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <Button size="sm" variant="outline" onClick={() => setTick((t) => t + 1)}>
 =======
+=======
+>>>>>>> origin/AI-Study-fix
         <Button
           size="sm"
           variant="outline"
           onClick={() => setTick((t) => t + 1)}
         >
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
           <RotateCw className="h-3.5 w-3.5 mr-2" /> Tạo lại
         </Button>
       </div>
@@ -835,12 +990,18 @@ function SummaryTab({
         <>
           <div className="rounded-lg border border-primary/20 bg-brand-soft/60 p-4">
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div className="text-xs font-semibold text-primary mb-1">Tóm tắt ngắn</div>
 =======
             <div className="text-xs font-semibold text-primary mb-1">
               Tóm tắt ngắn
             </div>
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+            <div className="text-xs font-semibold text-primary mb-1">
+              Tóm tắt ngắn
+            </div>
+>>>>>>> origin/AI-Study-fix
             <p className="text-sm leading-relaxed">
               {description ||
                 `Tài liệu “${title}” tổng hợp các kiến thức cốt lõi và thuật ngữ quan trọng, giúp người đọc nắm chắc lý thuyết và áp dụng vào thực tế.`}
@@ -870,12 +1031,15 @@ function FlashcardsTab({ title }: { title: string }) {
   const cards = useMemo(
     () => [
 <<<<<<< HEAD
+<<<<<<< HEAD
       { front: "Algorithm", back: "Tập hợp các bước cụ thể để giải quyết một bài toán." },
       { front: "Variable", back: "Vùng nhớ có tên, dùng để lưu trữ giá trị có thể thay đổi." },
       { front: "Function", back: "Khối lệnh có thể tái sử dụng, nhận đầu vào và trả về kết quả." },
       { front: "Loop", back: "Cấu trúc lặp lại một khối lệnh nhiều lần theo điều kiện." },
       { front: "Class", back: "Khuôn mẫu định nghĩa thuộc tính và hành vi của đối tượng (OOP)." },
 =======
+=======
+>>>>>>> origin/AI-Study-fix
       {
         front: "Algorithm",
         back: "Tập hợp các bước cụ thể để giải quyết một bài toán.",
@@ -896,7 +1060,10 @@ function FlashcardsTab({ title }: { title: string }) {
         front: "Class",
         back: "Khuôn mẫu định nghĩa thuộc tính và hành vi của đối tượng (OOP).",
       },
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     ],
     [],
   );
@@ -929,15 +1096,21 @@ function FlashcardsTab({ title }: { title: string }) {
           {flipped ? "Định nghĩa" : "Thuật ngữ"}
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div className={cn("font-semibold", flipped ? "text-base leading-relaxed" : "text-2xl")}>
 =======
+=======
+>>>>>>> origin/AI-Study-fix
         <div
           className={cn(
             "font-semibold",
             flipped ? "text-base leading-relaxed" : "text-2xl",
           )}
         >
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
           {flipped ? cards[idx].back : cards[idx].front}
         </div>
         <div className="text-xs text-muted-foreground mt-4">Bấm để lật thẻ</div>
@@ -978,6 +1151,7 @@ interface Quiz {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const QUIZ_TYPE_OPTIONS = [
   { id: "mcq", label: "Multiple Choice" },
   { id: "fill", label: "Fill in the Blank" },
@@ -990,6 +1164,10 @@ function QuizzesTab({ title }: { title: string }) {
 function QuizzesTab({ title }: { title: string }) {
   const quizzes: Quiz[] = useMemo(
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+function QuizzesTab({ title }: { title: string }) {
+  const quizzes: Quiz[] = useMemo(
+>>>>>>> origin/AI-Study-fix
     () => [
       {
         q: "Thuật ngữ “Algorithm” có nghĩa là gì?",
@@ -1021,6 +1199,7 @@ function QuizzesTab({ title }: { title: string }) {
   );
 
 <<<<<<< HEAD
+<<<<<<< HEAD
   // Create-quiz config (per spec: số lượng câu hỏi + loại câu hỏi, trạng thái rỗng "No quizzes found")
   const [numQuestions, setNumQuestions] = useState("25");
   const [types, setTypes] = useState<string[]>(["mcq"]);
@@ -1030,21 +1209,28 @@ function QuizzesTab({ title }: { title: string }) {
   const [quizzes, setQuizzes] = useState<Quiz[] | null>(null);
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [submitted, setSubmitted] = useState(false);
 
   const score = useMemo(
 <<<<<<< HEAD
+<<<<<<< HEAD
     () => (quizzes ?? []).reduce((s, q, i) => (answers[i] === q.answer ? s + 1 : s), 0),
 =======
     () => quizzes.reduce((s, q, i) => (answers[i] === q.answer ? s + 1 : s), 0),
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+    () => quizzes.reduce((s, q, i) => (answers[i] === q.answer ? s + 1 : s), 0),
+>>>>>>> origin/AI-Study-fix
     [answers, quizzes],
   );
 
   const reset = () => {
     setAnswers({});
     setSubmitted(false);
+<<<<<<< HEAD
 <<<<<<< HEAD
     setQuizzes(null);
   };
@@ -1127,6 +1313,10 @@ function QuizzesTab({ title }: { title: string }) {
   };
 
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  };
+
+>>>>>>> origin/AI-Study-fix
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
@@ -1176,6 +1366,7 @@ function QuizzesTab({ title }: { title: string }) {
                       className={cn(
                         "h-5 w-5 rounded-full border flex items-center justify-center text-[10px] font-bold shrink-0",
 <<<<<<< HEAD
+<<<<<<< HEAD
                         correct && "bg-emerald-500 text-white border-emerald-500",
                         wrong && "bg-red-500 text-white border-red-500",
                         !submitted && picked && "bg-gradient-brand text-white border-transparent",
@@ -1183,6 +1374,8 @@ function QuizzesTab({ title }: { title: string }) {
                     >
                       {correct ? <Check className="h-3 w-3" /> : wrong ? <X className="h-3 w-3" /> : String.fromCharCode(65 + oi)}
 =======
+=======
+>>>>>>> origin/AI-Study-fix
                         correct &&
                           "bg-emerald-500 text-white border-emerald-500",
                         wrong && "bg-red-500 text-white border-red-500",
@@ -1198,7 +1391,10 @@ function QuizzesTab({ title }: { title: string }) {
                       ) : (
                         String.fromCharCode(65 + oi)
                       )}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
                     </span>
                     <span>{opt}</span>
                   </button>
@@ -1232,6 +1428,9 @@ function QuizzesTab({ title }: { title: string }) {
   );
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix

@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // realApi.ts — Real API calls, 1-1 mapping với BE endpoints
 // =============================================================
@@ -13,11 +14,17 @@ import { api } from "./api"; // client có sẵn, tự gán Bearer token
 import { api } from "./api";
 import { tokenStore } from "./api";
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+// src/lib/realApi.ts
+import { api } from "./api";
+import { tokenStore } from "./api";
+>>>>>>> origin/AI-Study-fix
 import type {
   User,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
+<<<<<<< HEAD
 <<<<<<< HEAD
   Semester,
   CreateSemesterRequest,
@@ -25,6 +32,8 @@ import type {
   CreateSubjectRequest,
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   Folder,
   CreateFolderRequest,
   UpdateFolderRequest,
@@ -33,29 +42,42 @@ import type {
   UpdateDocumentRequest,
   DownloadUrlResponse,
 <<<<<<< HEAD
+<<<<<<< HEAD
   ShareInfo,
   SharedDocument,
 =======
   ShareResponse,
   ShareRequest,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  ShareResponse,
+  ShareRequest,
+>>>>>>> origin/AI-Study-fix
   AskRequest,
   AskResponse,
   ReportDocumentRequest,
   Quiz,
   Flashcard,
   FlashcardProgress,
+<<<<<<< HEAD
 } from "./types";
 <<<<<<< HEAD
 import { tokenStore } from "./api";
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  RagProcessRequest,
+  RagChatRequest,
+  RagChatResponse,
+} from "./types";
+>>>>>>> origin/AI-Study-fix
 
 // ================================================================
 // AUTH  →  /api/auth
 // ================================================================
 
 export const authApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   /** POST /api/auth/register */
   register: (data: RegisterRequest) =>
@@ -81,6 +103,8 @@ export const authApi = {
     tokenStore.clear();
   },
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   register: (data: RegisterRequest) =>
     api<void>("/api/auth/register", { method: "POST", body: data }),
 
@@ -122,7 +146,10 @@ export const authApi = {
       method: "POST",
       body: { email, password: newPassword },
     }),
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 };
 
 // ================================================================
@@ -130,6 +157,7 @@ export const authApi = {
 // ================================================================
 
 export const accountApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   /** GET /api/account/me */
   me: () => api<User>("/account/me"),
@@ -196,6 +224,9 @@ export const subjectApi = {
 =======
   me: () => api<User>("/api/account/me"),
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  me: () => api<User>("/api/account/me"),
+>>>>>>> origin/AI-Study-fix
 };
 
 // ================================================================
@@ -203,6 +234,7 @@ export const subjectApi = {
 // ================================================================
 
 export const folderApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   /** GET /api/folder/getall */
   list: () => api<Folder[]>("/folder/getall"),
@@ -222,6 +254,8 @@ export const folderApi = {
   delete: (id: string) =>
     api<void>(`/folder/delete/${id}`, { method: "DELETE" }),
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   list: () => api<Folder[]>("/api/folder/getall"),
   getById: (id: string) => api<Folder>(`/api/folder/getbyid/${id}`),
   create: (body: CreateFolderRequest) =>
@@ -230,7 +264,10 @@ export const folderApi = {
     api<Folder>(`/api/folder/update/${id}`, { method: "PUT", body }),
   delete: (id: string) =>
     api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 };
 
 // ================================================================
@@ -238,6 +275,7 @@ export const folderApi = {
 // ================================================================
 
 export const documentApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   /** GET /api/documents */
   list: () => api<Document[]>("/documents"),
@@ -336,6 +374,12 @@ export const shareApi = {
   listByFolder: (folderId: string) =>
     api<Document[]>(`/api/documents/folder/${folderId}`),
   getById: (id: number) => {
+=======
+  list: () => api<Document[]>("/api/documents"),
+  listByFolder: (folderId: string) =>
+    api<Document[]>(`/api/documents/folder/${folderId}`),
+  getById: (id: string) => {
+>>>>>>> origin/AI-Study-fix
     console.log('[TRACE-6] documentApi.getById called with id:', id);
     return api<Document>(`/api/documents/${id}`);
   },
@@ -362,6 +406,7 @@ export const shareApi = {
     );
   },
 
+<<<<<<< HEAD
   update: (id: number, body: UpdateDocumentRequest) =>
     api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
@@ -369,15 +414,31 @@ export const shareApi = {
     api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
   getDownloadUrl: (id: number) =>
+=======
+  update: (id: string, body: UpdateDocumentRequest) =>
+    api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
+
+  delete: (id: string) =>
+    api<void>(`/api/documents/${id}`, { method: "DELETE" }),
+
+  getDownloadUrl: (id: string) =>
+>>>>>>> origin/AI-Study-fix
     api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
   // Trash (soft-deleted docs)
   listTrash: () => api<Document[]>("/api/documents/trash"),
+<<<<<<< HEAD
   restoreFromTrash: (id: number) =>
     api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
   emptyTrash: (id: number) =>
     api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  restoreFromTrash: (id: string) =>
+    api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
+  emptyTrash: (id: string) =>
+    api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+>>>>>>> origin/AI-Study-fix
 };
 
 // ================================================================
@@ -385,6 +446,7 @@ export const shareApi = {
 // ================================================================
 
 export const ragApi = {
+<<<<<<< HEAD
 <<<<<<< HEAD
   /**
    * POST /api/rag/upload
@@ -453,6 +515,33 @@ export const quizApi = {
       method: "POST",
       body: { id: input.id, question: input.question },
     }),
+=======
+  upload: (file: File, documentId: string) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("documentId", documentId);
+    return api<void>("/api/v1/rag/upload", { method: "POST", formData: fd });
+  },
+
+  uploadAndChunk: (file: File, documentId: string) => {
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("documentId", documentId);
+    return api<void>("/api/v1/rag/upload/chunk", { method: "POST", formData: fd });
+  },
+
+  ask: (input: AskRequest): Promise<AskResponse> =>
+    api<AskResponse>("/api/v1/rag/chat", {
+      method: "POST",
+      body: { folderId: input.id, documentId: input.id, question: input.question },
+    }),
+
+  processDocumentPipeline: (req: RagProcessRequest) =>
+    api<string>(`/api/v1/rag/process/${req.documentId}`, { method: "POST" }),
+
+  chatWithFolder: (req: RagChatRequest) =>
+    api<RagChatResponse>("/api/v1/rag/chat", { method: "POST", body: req }),
+>>>>>>> origin/AI-Study-fix
 };
 
 // ================================================================
@@ -487,18 +576,27 @@ export const shareApi = {
 // ================================================================
 
 export const quizApi = {
+<<<<<<< HEAD
   listByDocument: (documentId: number) =>
     api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
 
   generate: (documentId: number, questionCount = 10) =>
     api<Quiz>("/api/quiz/generate", {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  listByDocument: (documentId: string) =>
+    api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
+
+  generate: (documentId: string, questionCount = 10) =>
+    api<Quiz>("/api/quiz/generate", {
+>>>>>>> origin/AI-Study-fix
       method: "POST",
       body: { documentId, questionCount },
     }),
 };
 
 // ================================================================
+<<<<<<< HEAD
 <<<<<<< HEAD
 // FLASHCARD  →  (chuẩn bị sẵn — chưa có trong API doc)
 // ================================================================
@@ -512,20 +610,31 @@ export const flashcardApi = {
   generate: (documentId: number) =>
     api<Flashcard[]>("/flashcard/generate", {
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 // FLASHCARD  →  /api/flashcard
 // ================================================================
 
 export const flashcardApi = {
+<<<<<<< HEAD
   listByDocument: (documentId: number) =>
     api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
 
   generate: (documentId: number) =>
     api<Flashcard[]>("/api/flashcard/generate", {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  listByDocument: (documentId: string) =>
+    api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
+
+  generate: (documentId: string) =>
+    api<Flashcard[]>("/api/flashcard/generate", {
+>>>>>>> origin/AI-Study-fix
       method: "POST",
       body: { documentId },
     }),
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /** PUT /api/flashcard/:id/progress */
   updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
@@ -534,6 +643,10 @@ export const flashcardApi = {
   updateProgress: (flashcardId: number, status: FlashcardProgress["status"]) =>
     api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  updateProgress: (flashcardId: string, status: FlashcardProgress["status"]) =>
+    api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
+>>>>>>> origin/AI-Study-fix
       method: "PUT",
       body: { status },
     }),

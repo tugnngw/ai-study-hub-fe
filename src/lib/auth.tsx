@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // =============================================================
 // auth.tsx — AuthContext. Gọi thẳng BE thật (không còn mock).
 // =============================================================
@@ -6,21 +7,29 @@
 =======
 // src/lib/auth.tsx
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+// src/lib/auth.tsx
+>>>>>>> origin/AI-Study-fix
 import {
   createContext,
   useContext,
   useState,
   useEffect,
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   useCallback,
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+  useCallback,
+>>>>>>> origin/AI-Study-fix
   type ReactNode,
 } from "react";
 import type { User, RegisterRequest } from "./types";
 import { authApi, accountApi } from "./realApi";
 import { tokenStore } from "./api";
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // Nguồn auth: luôn là API thật.
 const authSource = {
@@ -39,6 +48,8 @@ interface AuthContextValue {
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
 =======
+=======
+>>>>>>> origin/AI-Study-fix
 interface AuthContextValue {
   user: User | null;
   isLoading: boolean;
@@ -50,7 +61,10 @@ interface AuthContextValue {
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -59,6 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   // Khi app khởi động: nếu đã có token → lấy thông tin user
   useEffect(() => {
@@ -98,6 +113,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(null);
     }
 =======
+=======
+>>>>>>> origin/AI-Study-fix
   // --- Initial Auth Check ---
   // Effect này chạy một lần khi component mount để kiểm tra token và load user
   useEffect(() => {
@@ -316,7 +333,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const resetPassword = async (email: string, password: string) => {
     await authApi.resetPassword(email, password);
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
   };
 
   return (
@@ -325,12 +345,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         isLoading,
 <<<<<<< HEAD
+<<<<<<< HEAD
         isAuthenticated: !!user,
         login,
         register,
         logout,
         refresh,
 =======
+=======
+>>>>>>> origin/AI-Study-fix
         // isAuthenticated: !!user && !!tokenStore.get(), // Xác thực khi có user VÀ có access token
         isAuthenticated: !!user, // Chỉ cần user tồn tại là coi như đã xác thực, vì user chỉ set khi có token hợp lệ
         login,
@@ -340,7 +363,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         requestPasswordReset,
         verifyResetOtp,
         resetPassword,
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
       }}
     >
       {children}
@@ -355,7 +381,10 @@ export function useAuth() {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // Re-export type để các component không cần import lại
 =======
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
 export type { RegisterRequest };

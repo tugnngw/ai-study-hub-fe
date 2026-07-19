@@ -12,13 +12,19 @@ const Avatar = React.forwardRef<
   <AvatarPrimitive.Root
     ref={ref}
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full", className)}
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     className={cn(
       "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
       className,
     )}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     {...props}
   />
 ));

@@ -39,13 +39,19 @@ const SelectScrollUpButton = React.forwardRef<
   <SelectPrimitive.ScrollUpButton
     ref={ref}
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("flex cursor-default items-center justify-center py-1", className)}
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className,
     )}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     {...props}
   >
     <ChevronUp className="h-4 w-4" />
@@ -60,24 +66,35 @@ const SelectScrollDownButton = React.forwardRef<
   <SelectPrimitive.ScrollDownButton
     ref={ref}
 <<<<<<< HEAD
+<<<<<<< HEAD
     className={cn("flex cursor-default items-center justify-center py-1", className)}
 =======
+=======
+>>>>>>> origin/AI-Study-fix
     className={cn(
       "flex cursor-default items-center justify-center py-1",
       className,
     )}
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
     {...props}
   >
     <ChevronDown className="h-4 w-4" />
   </SelectPrimitive.ScrollDownButton>
 ));
 <<<<<<< HEAD
+<<<<<<< HEAD
 SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName;
 =======
 SelectScrollDownButton.displayName =
   SelectPrimitive.ScrollDownButton.displayName;
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+SelectScrollDownButton.displayName =
+  SelectPrimitive.ScrollDownButton.displayName;
+>>>>>>> origin/AI-Study-fix
 
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,

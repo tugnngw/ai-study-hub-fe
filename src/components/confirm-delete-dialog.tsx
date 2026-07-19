@@ -30,11 +30,16 @@ export function ConfirmDeleteDialog({
           <DialogTitle className="truncate">Xóa "{title}"?</DialogTitle>
           <DialogDescription>
 <<<<<<< HEAD
+<<<<<<< HEAD
             {description ?? "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
 =======
             {description ??
               "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+            {description ??
+              "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
+>>>>>>> origin/AI-Study-fix
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -42,14 +47,20 @@ export function ConfirmDeleteDialog({
             Hủy
           </Button>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <Button variant="destructive" onClick={onConfirm} disabled={isPending}>
 =======
+=======
+>>>>>>> origin/AI-Study-fix
           <Button
             variant="destructive"
             onClick={onConfirm}
             disabled={isPending}
           >
+<<<<<<< HEAD
 >>>>>>> origin/Ai-Study-fix-folder-refactor
+=======
+>>>>>>> origin/AI-Study-fix
             {isPending ? "Đang xóa..." : "Xóa"}
           </Button>
         </DialogFooter>

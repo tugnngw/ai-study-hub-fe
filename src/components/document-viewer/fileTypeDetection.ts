@@ -117,6 +117,10 @@ export function getTypeLabel(type: SupportedFileType): string {
     pdf: "PDF",
     docx: "Word Document",
     txt: "Text File",
+<<<<<<< HEAD
+=======
+    image: "Image",
+>>>>>>> origin/AI-Study-fix
     unsupported: "Unsupported File",
   };
   return labels[type];
