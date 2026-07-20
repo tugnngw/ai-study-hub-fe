@@ -20,16 +20,21 @@ export function SharePage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight font-display">Chia sẻ</h1>
+        <h1 className="text-2xl font-bold tracking-tight font-display">
+          Chia sẻ
+        </h1>
         <p className="text-muted-foreground mt-1 text-sm">
           Quản lý tài liệu bạn được chia sẻ và những tài liệu bạn đã chia sẻ
         </p>
       </div>
 
       <ShareToolbar
-        q={s.q} onQ={s.setQ}
-        sort={s.sort} onSort={s.setSort}
-        tab={tab} onTab={setTab}
+        q={s.q}
+        onQ={s.setQ}
+        sort={s.sort}
+        onSort={s.setSort}
+        tab={tab}
+        onTab={setTab}
       />
 
       {showWithMe && (

@@ -4,7 +4,8 @@ import { tokenStore } from "./api";
 import type {
   User,
   LoginRequest,
-  LoginResponse,
+  AuthResponse,
+  RefreshResponse,
   RegisterRequest,
   Folder,
   CreateFolderRequest,
@@ -29,47 +30,49 @@ import type { QuizItem } from "@/features/quiz/types/quiz.types";
 // ================================================================
 
 export const authApi = {
-  register: (data: RegisterRequest) =>
-    api<void>("/api/auth/register", { method: "POST", body: data }),
+  register: (data: RegisterRequest): Promise<AuthResponse> =>
+      api<AuthResponse>("/api/auth/register", { method: "POST", body: data }),
 
-  login: async (data: LoginRequest): Promise<any> => {
-    localStorage.clear(); // Clear old tokens before new login
-    const res = await api<any>("/api/auth/login", {
+  login: async (data: LoginRequest): Promise<AuthResponse> => {
+    const res = await api<AuthResponse>("/api/auth/login", {
       method: "POST",
       body: data,
     });
-    
-    // api() already unwraps ApiResponse<T> → res is the AuthResponse object
-    const token = res?.accessToken ?? res?.token;
+
+    const token = res?.accessToken;
+    const refreshToken = res?.refreshToken;
+
     if (token) {
       tokenStore.set(token);
     }
-    
-    if (res?.refreshToken) tokenStore.setRefresh(res.refreshToken);
+
+    if (refreshToken) {
+      tokenStore.setRefresh(refreshToken);
+    }
+
     return res;
   },
 
-  refresh: (): Promise<{ accessToken: string; refreshToken?: string }> =>
-    api("/api/auth/refresh", {
-      method: "POST",
-      body: { refreshToken: tokenStore.getRefresh() },
-    }),
+  refresh: (): Promise<RefreshResponse> =>
+      api<RefreshResponse>("/api/auth/refresh", {
+        method: "POST",
+        body: { refreshToken: tokenStore.getRefresh() },
+      }),
 
   logout: async (): Promise<void> => {
     await api("/api/auth/logout", { method: "POST" }).catch(() => {});
     tokenStore.clear();
   },
 
-  // Password reset flow
-  requestPasswordReset: (email: string) =>
-    api<void>("/api/auth/request-reset", { method: "POST", body: { email } }),
-  verifyResetOtp: (email: string, otp: string) =>
-    api<void>("/api/auth/verify-otp", { method: "POST", body: { email, otp } }),
-  resetPassword: (email: string, newPassword: string) =>
-    api<void>("/api/auth/reset-password", {
-      method: "POST",
-      body: { email, password: newPassword },
-    }),
+  requestPasswordReset: (email: string): Promise<void> =>
+      api<void>("/api/auth/request-reset", { method: "POST", body: { email } }),
+  verifyResetOtp: (email: string, otp: string): Promise<void> =>
+      api<void>("/api/auth/verify-otp", { method: "POST", body: { email, otp } }),
+  resetPassword: (email: string, newPassword: string): Promise<void> =>
+      api<void>("/api/auth/reset-password", {
+        method: "POST",
+        body: { email, password: newPassword },
+      }),
 };
 
 // ================================================================
@@ -77,7 +80,7 @@ export const authApi = {
 // ================================================================
 
 export const accountApi = {
-  me: () => api<User>("/api/account/me"),
+  me: (): Promise<User> => api<User>("/api/account/me"),
 };
 
 // ================================================================
@@ -85,14 +88,15 @@ export const accountApi = {
 // ================================================================
 
 export const folderApi = {
-  list: () => api<Folder[]>("/api/folder/getall"),
-  getById: (id: string) => api<Folder>(`/api/folder/getbyid/${id}`),
-  create: (body: CreateFolderRequest) =>
-    api<Folder>("/api/folder/create", { method: "POST", body }),
-  update: (id: string, body: UpdateFolderRequest) =>
-    api<Folder>(`/api/folder/update/${id}`, { method: "PUT", body }),
-  delete: (id: string) =>
-    api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
+  list: (): Promise<Folder[]> => api<Folder[]>("/api/folder/getall"),
+  getById: (id: string): Promise<Folder> =>
+      api<Folder>(`/api/folder/getbyid/${id}`),
+  create: (body: CreateFolderRequest): Promise<Folder> =>
+      api<Folder>("/api/folder/create", { method: "POST", body }),
+  update: (id: string, body: UpdateFolderRequest): Promise<Folder> =>
+      api<Folder>(`/api/folder/update/${id}`, { method: "PUT", body }),
+  delete: (id: string): Promise<void> =>
+      api<void>(`/api/folder/delete/${id}`, { method: "DELETE" }),
 };
 
 // ================================================================
@@ -100,17 +104,15 @@ export const folderApi = {
 // ================================================================
 
 export const documentApi = {
-  list: () => api<Document[]>("/api/documents"),
-  listByFolder: (folderId: string) =>
-    api<Document[]>(`/api/documents/folder/${folderId}`),
-  getById: (id: string) => {
-    console.log('[TRACE-6] documentApi.getById called with id:', id);
-    return api<Document>(`/api/documents/${id}`);
-  },
+  list: (): Promise<Document[]> => api<Document[]>("/api/documents"),
+  listByFolder: (folderId: string): Promise<Document[]> =>
+      api<Document[]>(`/api/documents/folder/${folderId}`),
+  getById: (id: string): Promise<Document> =>
+      api<Document>(`/api/documents/${id}`),
 
   upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
     const fd = new FormData();
-    fd.append("files", input.file); // <-- file -> files
+    fd.append("files", input.file);
     fd.append("title", input.title);
     if (input.description) {
       fd.append("description", input.description);
@@ -121,30 +123,27 @@ export const documentApi = {
     if (input.subjectId) {
       fd.append("subjectId", String(input.subjectId));
     }
-    return api<Document[]>(
-      "/api/documents",
-      {
-        method: "POST",
-        formData: fd,
-      }
-    );
+    return api<Document[]>("/api/documents", {
+      method: "POST",
+      formData: fd,
+    });
   },
 
-  update: (id: string, body: UpdateDocumentRequest) =>
-    api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
+  update: (id: string, body: UpdateDocumentRequest): Promise<Document> =>
+      api<Document>(`/api/documents/${id}`, { method: "PUT", body }),
 
-  delete: (id: string) =>
-    api<void>(`/api/documents/${id}`, { method: "DELETE" }),
+  delete: (id: string): Promise<void> =>
+      api<void>(`/api/documents/${id}`, { method: "DELETE" }),
 
-  getDownloadUrl: (id: string) =>
-    api<DownloadUrlResponse>(`/api/documents/${id}/download`),
+  getDownloadUrl: (id: string): Promise<DownloadUrlResponse> =>
+      api<DownloadUrlResponse>(`/api/documents/${id}/download`),
 
-  // Trash (soft-deleted docs)
-  listTrash: () => api<Document[]>("/api/documents/trash"),
-  restoreFromTrash: (id: string) =>
-    api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
-  emptyTrash: (id: string) =>
-    api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
+  listTrash: (): Promise<Document[]> =>
+      api<Document[]>("/api/documents/trash"),
+  restoreFromTrash: (id: string): Promise<void> =>
+      api<void>(`/api/documents/${id}/restore`, { method: "POST" }),
+  emptyTrash: (id: string): Promise<void> =>
+      api<void>(`/api/documents/${id}/permanent`, { method: "DELETE" }),
 };
 
 // ================================================================
@@ -152,22 +151,20 @@ export const documentApi = {
 // ================================================================
 
 export const ragApi = {
-  processDocument: (documentId: string) => {
-    console.log('[RAG] processDocument', documentId);
-    return api<void>(`/api/v1/rag/process/${documentId}`, { method: "POST" });
-  },
+  processDocument: (documentId: string): Promise<void> =>
+      api<void>(`/api/v1/rag/process/${documentId}`, { method: "POST" }),
 
-  getDocumentStatus: (documentId: string) =>
-    api<{ documentId: string; status: string }>(`/api/v1/rag/status/${documentId}`),
+  getDocumentStatus: (documentId: string): Promise<{ documentId: string; status: string }> =>
+      api<{ documentId: string; status: string }>(`/api/v1/rag/status/${documentId}`),
 
-  upload: (file: File, documentId: string) => {
+  upload: (file: File, documentId: string): Promise<void> => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", documentId);
     return api<void>("/api/rag/upload", { method: "POST", formData: fd });
   },
 
-  uploadAndChunk: (file: File, documentId: string) => {
+  uploadAndChunk: (file: File, documentId: string): Promise<void> => {
     const fd = new FormData();
     fd.append("file", file);
     fd.append("documentId", documentId);
@@ -175,37 +172,30 @@ export const ragApi = {
   },
 
   ask: (input: AskRequest): Promise<AskResponse> =>
-    api<AskResponse>("/api/rag/ask", {
-      method: "POST",
-      body: { id: input.id, question: input.question },
-    }),
+      api<AskResponse>("/api/rag/ask", {
+        method: "POST",
+        body: { id: input.id, question: input.question },
+      }),
 };
 
 // ================================================================
-// SHARE  →  /api/documents
+// SHARE  →  /api/shares
 // ================================================================
 
 export const shareApi = {
-  // List shares where current user is the owner
-  listOwned: () => api<ShareResponse[]>("/api/shares/owner"),
-
-  // List shares where current user is shared with
-  listSharedWithMe: () => api<ShareResponse[]>("/api/shares/shared-with-me"),
-
-    // Create a new share (share folder with username)
-    shareFolder: (request: ShareRequest) =>
+  listOwned: (): Promise<ShareResponse[]> =>
+      api<ShareResponse[]>("/api/shares/owner"),
+  listSharedWithMe: (): Promise<ShareResponse[]> =>
+      api<ShareResponse[]>("/api/shares/shared-with-me"),
+  shareFolder: (request: ShareRequest): Promise<ShareResponse> =>
       api<ShareResponse>("/api/shares", { method: "POST", body: request }),
-
-  // Remove a share by its ID
-  removeShare: (shareId: string) =>
-    api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
-
-  // Report a document
-  report: (body: ReportDocumentRequest) =>
-    api<void>(`/api/documents/${body.id}/report`, {
-      method: "POST",
-      body: { reason: body.reason, description: body.description },
-    }),
+  removeShare: (shareId: string): Promise<void> =>
+      api<void>(`/api/shares/${shareId}`, { method: "DELETE" }),
+  report: (body: ReportDocumentRequest): Promise<void> =>
+      api<void>(`/api/documents/${body.id}/report`, {
+        method: "POST",
+        body: { reason: body.reason, description: body.description },
+      }),
 };
 
 // ================================================================
@@ -213,20 +203,18 @@ export const shareApi = {
 // ================================================================
 
 export const quizApi = {
-  listByDocument: (documentId: string) =>
-    api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
-
-  generate: (documentId: string, questionCount = 10) =>
-    api<Quiz>('/api/quiz/generate', {
-      method: "POST",
-      body: { documentId, questionCount },
-    }),
-
-  // Sinh quiz theo tùy chọn (scope: "all" | documentId, nhiều loại câu hỏi).
-  // TODO(backend): hiện thực POST /api/quiz/generate nhận { scope, types, questionCount }
-  // và trả về QuizItem[] ({ id, type, question, options[], correctAnswers[] }).
-  generateAdvanced: (body: { scope: "all" | string; types: string[]; questionCount: number }) =>
-    api<QuizItem[]>("/api/quiz/generate", { method: "POST", body }),
+  listByDocument: (documentId: string): Promise<Quiz[]> =>
+      api<Quiz[]>(`/api/quiz?documentId=${documentId}`),
+  generate: (documentId: string, questionCount = 10): Promise<Quiz> =>
+      api<Quiz>("/api/quiz/generate", {
+        method: "POST",
+        body: { documentId, questionCount },
+      }),
+  generateAdvanced: (body: {
+    scope: "all" | string;
+    types: string[];
+    questionCount: number;
+  }): Promise<QuizItem[]> => api<QuizItem[]>("/api/quiz/generate", { method: "POST", body }),
 };
 
 // ================================================================
@@ -234,18 +222,16 @@ export const quizApi = {
 // ================================================================
 
 export const flashcardApi = {
-  listByDocument: (documentId: string) =>
-    api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
-
-  generate: (documentId: string) =>
-    api<Flashcard[]>('/api/flashcard/generate', {
-      method: "POST",
-      body: { documentId },
-    }),
-
-  updateProgress: (flashcardId: string, status: FlashcardProgress["status"]) =>
-    api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
-      method: "PUT",
-      body: { status },
-    }),
+  listByDocument: (documentId: string): Promise<Flashcard[]> =>
+      api<Flashcard[]>(`/api/flashcard?documentId=${documentId}`),
+  generate: (documentId: string): Promise<Flashcard[]> =>
+      api<Flashcard[]>("/api/flashcard/generate", {
+        method: "POST",
+        body: { documentId },
+      }),
+  updateProgress: (flashcardId: string, status: FlashcardProgress["status"]): Promise<FlashcardProgress> =>
+      api<FlashcardProgress>(`/api/flashcard/${flashcardId}/progress`, {
+        method: "PUT",
+        body: { status },
+      }),
 };

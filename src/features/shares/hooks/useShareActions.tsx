@@ -20,8 +20,13 @@ export function useShareActions(opts?: {
     try {
       const { url } = await sharesApi.getDownloadUrl(id);
       const a = document.createElement("a");
-      a.href = url; a.download = name; a.target = "_blank"; a.rel = "noopener";
-      document.body.appendChild(a); a.click(); a.remove();
+      a.href = url;
+      a.download = name;
+      a.target = "_blank";
+      a.rel = "noopener";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
       toast.success(`Đang tải xuống "${name}"`);
     } catch {
       toast.error("Không tải xuống được");
