@@ -45,9 +45,9 @@ export const authApi = {
   verifyResetOtp: (email: string, otp: string) =>
     api<void>("/api/auth/verify-otp", { method: "POST", body: { email, otp } }),
 
-  resetPassword: (email: string, newPassword: string) =>
+  resetPassword: (email: string, otp: string, newPassword: string) =>
     api<void>("/api/auth/reset-password", {
       method: "POST",
-      body: { email, password: newPassword },
+      body: { email, otp, newPassword },
     }),
 };

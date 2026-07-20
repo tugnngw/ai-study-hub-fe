@@ -17,6 +17,7 @@ import {
 
 const searchSchema = z.object({
   email: z.string().optional().default(""),
+  otp: z.string().optional().default(""),
 });
 
 const schema = z
@@ -35,7 +36,7 @@ export const Route = createFileRoute("/auth/reset-password")({
 });
 
 function ResetPasswordPage() {
-  const { email } = Route.useSearch();
+  const { email, otp } = Route.useSearch();
   const { resetPassword } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ password: "", confirmPassword: "" });
@@ -54,7 +55,7 @@ function ResetPasswordPage() {
     setErrors({});
     setLoading(true);
     try {
-      await resetPassword(email, form.password);
+      await resetPassword(email, otp, form.password);
       toast.success("Đổi mật khẩu thành công! Vui lòng đăng nhập lại.");
       navigate({ to: "/auth/login" });
     } catch (err) {

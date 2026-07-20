@@ -74,10 +74,10 @@ export const authApi = {
       api<void>("/api/auth/forgot-password", { method: "POST", body: { email } }),
   verifyResetOtp: (email: string, otp: string): Promise<void> =>
       api<void>("/api/auth/verify-otp", { method: "POST", body: { email, otp } }),
-  resetPassword: (email: string, newPassword: string): Promise<void> =>
+  resetPassword: (email: string, otp: string, newPassword: string): Promise<void> =>
       api<void>("/api/auth/reset-password", {
         method: "POST",
-        body: { email, password: newPassword },
+        body: { email, otp, newPassword },
       }),
   verifyEmail: (token: string): Promise<void> =>
       api<void>(`/api/auth/verify?token=${encodeURIComponent(token)}`, { method: "POST" }),

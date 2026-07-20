@@ -65,7 +65,7 @@ function ForgotPasswordPage() {
     setLoading(true);
     try {
       await verifyResetOtp(email, otp);
-      navigate({ to: "/auth/reset-password", search: { email } });
+      navigate({ to: "/auth/reset-password", search: { email, otp } });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Mã OTP không đúng");
     } finally {

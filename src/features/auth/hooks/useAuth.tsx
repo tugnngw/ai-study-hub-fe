@@ -22,7 +22,7 @@ interface AuthContextValue {
   refresh: () => Promise<void>; // hàm này sẽ làm mới access token và có thể cả refresh token
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
-  resetPassword: (email: string, password: string) => Promise<void>;
+  resetPassword: (email: string, otp: string, newPassword: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -196,8 +196,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await authApi.verifyResetOtp(email, otp);
   };
 
-  const resetPassword = async (email: string, password: string) => {
-    await authApi.resetPassword(email, password);
+  const resetPassword = async (email: string, otp: string, newPassword: string) => {
+    await authApi.resetPassword(email, otp, newPassword);
   };
 
   return (

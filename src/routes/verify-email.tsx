@@ -1,8 +1,9 @@
-// src/routes/auth/verify-email.tsx
+// src/routes/verify-email.tsx
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { toast } from "sonner";
 import { authApi } from "@/lib/realApi";
+import { tokenStore } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,11 +12,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Loader2, CheckCircle2, XCircle, Mail } from "lucide-react";
+import { Loader2, CheckCircle2, XCircle, Mail, RefreshCw } from "lucide-react";
 
 export const Route = createFileRoute("/verify-email")({
   component: VerifyEmailPage,
 });
+
+const COOLDOWN_SECONDS = 30;
 
 type VerifyState = "idle" | "verifying" | "success" | "error";
 
@@ -23,17 +26,24 @@ function VerifyEmailPage() {
   const navigate = useNavigate();
   const [state, setState] = useState<VerifyState>("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [resending, setResending] = useState(false);
+  const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const verifiedRef = useRef(false);
 
+  // Auto-start verification if token is present in URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
     if (!token) return;
+    if (verifiedRef.current) return;
 
     setState("verifying");
 
     const doVerify = async () => {
       try {
         await authApi.verifyEmail(token);
+        verifiedRef.current = true;
         setState("success");
         toast.success("Xác thực email thành công!");
 
@@ -41,13 +51,64 @@ function VerifyEmailPage() {
           navigate({ to: "/auth/login", replace: true });
         }, 3000);
       } catch (err: any) {
+        const msg = err instanceof Error ? err.message : "";
         setState("error");
-        setErrorMsg(err instanceof Error ? err.message : "Liên kết không hợp lệ hoặc đã hết hạn.");
+        if (msg.includes("đã được sử dụng") || msg.includes("already been used")) {
+          setErrorMsg("Liên kết này đã được sử dụng. Vui lòng đăng nhập.");
+        } else if (msg.includes("hết hạn") || msg.includes("expired")) {
+          setErrorMsg("Liên kết đã hết hạn. Vui lòng yêu cầu gửi lại email xác thực.");
+        } else {
+          setErrorMsg(msg || "Liên kết không hợp lệ hoặc đã hết hạn.");
+        }
       }
     };
 
     doVerify();
   }, [navigate]);
+
+  // Cleanup cooldown interval on unmount
+  useEffect(() => {
+    return () => {
+      if (cooldownRef.current) clearInterval(cooldownRef.current);
+    };
+  }, []);
+
+  const startCooldown = () => {
+    setResendCooldown(COOLDOWN_SECONDS);
+    cooldownRef.current = setInterval(() => {
+      setResendCooldown((prev) => {
+        if (prev <= 1) {
+          if (cooldownRef.current) clearInterval(cooldownRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const handleResend = async () => {
+    if (resending || resendCooldown > 0) return;
+    setResending(true);
+
+    try {
+      const token = tokenStore.get();
+      if (token) {
+        await authApi.resendVerification();
+      } else {
+        toast.error("Vui lòng đăng nhập để gửi lại email xác thực.");
+        setResending(false);
+        return;
+      }
+      toast.success("Email xác thực đã được gửi lại!");
+      startCooldown();
+    } catch {
+      toast.error("Không thể gửi lại email xác thực. Vui lòng thử lại sau.");
+    } finally {
+      setResending(false);
+    }
+  };
+
+  const canResend = !resending && resendCooldown === 0;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
@@ -100,6 +161,21 @@ function VerifyEmailPage() {
                 <Button
                   variant="outline"
                   className="w-full"
+                  disabled={!canResend}
+                  onClick={handleResend}
+                >
+                  {resending ? (
+                    <><Loader2 className="h-4 w-4 animate-spin mr-2" />Đang gửi...</>
+                  ) : resendCooldown > 0 ? (
+                    <>Gửi lại ({resendCooldown}s)</>
+                  ) : (
+                    <><RefreshCw className="h-4 w-4 mr-2" />Gửi lại email xác thực</>
+                  )}
+                </Button>
+
+                <Button
+                  variant="link"
+                  className="w-full"
                   onClick={() => navigate({ to: "/auth/login" })}
                 >
                   Đi đến đăng nhập
@@ -140,6 +216,21 @@ function VerifyEmailPage() {
                 <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-xs text-destructive">
                   {errorMsg}
                 </div>
+
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  disabled={!canResend}
+                  onClick={handleResend}
+                >
+                  {resending ? (
+                    <><Loader2 className="h-4 w-4 animate-spin mr-2" />Đang gửi...</>
+                  ) : resendCooldown > 0 ? (
+                    <>Gửi lại ({resendCooldown}s)</>
+                  ) : (
+                    <><RefreshCw className="h-4 w-4 mr-2" />Gửi lại email xác thực</>
+                  )}
+                </Button>
 
                 <Button
                   className="w-full bg-gradient-brand shadow-brand hover:opacity-90"

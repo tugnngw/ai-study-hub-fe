@@ -7,7 +7,7 @@ import {
   useCallback,
   type ReactNode,
 } from "react";
-import type { User, RegisterRequest, AuthResponse } from "./types";
+import type { User, RegisterRequest } from "@/features/auth/types/auth.types";
 import { authApi, accountApi } from "./realApi";
 import { tokenStore } from "./api";
 
@@ -23,7 +23,24 @@ interface AuthContextValue {
   updateProfile: (data: { fullName?: string; email?: string }) => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
-  resetPassword: (email: string, password: string) => Promise<void>;
+  resetPassword: (email: string, otp: string, newPassword: string) => Promise<void>;
+}
+
+interface AuthResponse {
+  userId: string;
+  username: string;
+  email: string | null;
+  fullName: string;
+  role: "USER" | "ADMIN";
+  accessToken?: string;
+  refreshToken?: string;
+  expiresIn: number;
+  emailVerified: boolean;
+}
+
+interface RefreshResponse {
+  accessToken: string;
+  refreshToken?: string;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -31,6 +48,13 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Reset the logout guard flag whenever auth state is refreshed
+  const resetLogoutGuard = useCallback(() => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("auth:login-success"));
+    }
+  }, []);
 
   // --- Initial Auth Check ---
   useEffect(() => {
@@ -41,6 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (!accessToken) {
         setIsLoading(false);
         setUser(null);
+        resetLogoutGuard();
         return;
       }
 
@@ -60,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     initializeAuth();
-  }, []);
+  }, [resetLogoutGuard]);
 
   // --- Listen for token changes (auto-logout when token cleared) ---
   useEffect(() => {
@@ -94,6 +119,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("storage", handleSessionChange);
   }, [user]);
 
+  // --- Listen for forced logout event from api.ts (refresh failed) ---
+  // Clears local auth state only — navigation is the router's job.
+  useEffect(() => {
+    const handleForcedLogout = () => {
+      console.log("🔴 Forced logout due to refresh failure");
+      tokenStore.clear();
+      setUser(null);
+    };
+
+    window.addEventListener("auth:logout", handleForcedLogout);
+    return () => window.removeEventListener("auth:logout", handleForcedLogout);
+  }, []);
+
   // --- Periodically refresh token (every 10 min) ---
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -112,6 +150,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           tokenStore.set(res.accessToken);
           tokenStore.setRefresh(res.refreshToken);
           console.log("✅ Token refreshed successfully");
+          resetLogoutGuard();
         } else {
           console.warn("⚠️ Refresh response invalid");
           tokenStore.clear();
@@ -125,7 +164,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, 10 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [resetLogoutGuard]);
 
   // --- Authentication Functions ---
   const login = async (username: string, password: string) => {
@@ -137,6 +176,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (accessToken && refreshToken) {
       tokenStore.set(accessToken);
       tokenStore.setRefresh(refreshToken);
+      resetLogoutGuard();
 
       try {
         const fullUser = await accountApi.me();
@@ -147,11 +187,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const userObj: User = {
           id: res.userId,
           username: res.username,
-          email: res.email,
+          email: res.email ?? "",
           fullName: res.fullName,
           role: res.role,
           status: "ACTIVE",
           authProvider: "LOCAL",
+          emailVerified: res.emailVerified ?? false,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
@@ -169,7 +210,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // No email → auto-login (existing flow)
       tokenStore.set(res.accessToken);
       tokenStore.setRefresh(res.refreshToken);
-      
+      resetLogoutGuard();
+
       try {
         const fullUser = await accountApi.me();
         setUser(fullUser);
@@ -179,7 +221,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const userObj: User = {
           id: res.userId,
           username: res.username,
-          email: res.email,
+          email: res.email ?? "",
           fullName: res.fullName,
           role: res.role,
           status: "ACTIVE",
@@ -226,6 +268,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (res?.accessToken && res.refreshToken) {
         tokenStore.set(res.accessToken);
         tokenStore.setRefresh(res.refreshToken);
+        resetLogoutGuard();
 
         try {
           const u = await accountApi.me();
@@ -241,7 +284,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(null);
       throw error;
     }
-  }, []);
+  }, [resetLogoutGuard]);
 
   const reloadUser = useCallback(async () => {
     try {
@@ -266,8 +309,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await authApi.verifyResetOtp(email, otp);
   };
 
-  const resetPassword = async (email: string, password: string) => {
-    await authApi.resetPassword(email, password);
+  const resetPassword = async (email: string, otp: string, newPassword: string) => {
+    await authApi.resetPassword(email, otp, newPassword);
   };
 
   return (

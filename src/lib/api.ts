@@ -63,6 +63,12 @@ let refreshPromise: Promise<boolean> | null = null;
 const MAX_RETRY_COUNT = 1;
 const retryCountMap = new Map<string, number>();
 
+/** Guard: fires auth:logout only once per session. Reset on login success. */
+let logoutDispatched = false;
+if (typeof window !== "undefined") {
+  window.addEventListener("auth:login-success", () => { logoutDispatched = false; });
+}
+
 const ts = () => new Date().toISOString().slice(11, 23);
 
 export async function attemptRefresh(): Promise<boolean> {
@@ -172,6 +178,15 @@ export async function api<T = unknown>(
 
     const refreshed = await refreshPromise;
     console.log(`[API:${ts()}] Refresh result: ${refreshed ? "✅ Success" : "❌ Failed"}`);
+
+    if (!refreshed) {
+      // Clear stale tokens immediately, then notify AuthProvider once per session
+      tokenStore.clear();
+      if (!logoutDispatched) {
+        logoutDispatched = true;
+        window.dispatchEvent(new CustomEvent("auth:logout"));
+      }
+    }
 
     if (refreshed) {
       retryCountMap.set(requestKey, currentRetryCount + 1);
