@@ -264,6 +264,7 @@ function PlanConfigCard() {
         mode={modalMode}
         createPlan={createPlan}
         updatePlan={updatePlan}
+        existingPlans={plans}
       />
     </>
   );

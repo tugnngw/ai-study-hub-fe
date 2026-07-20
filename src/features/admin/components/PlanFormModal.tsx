@@ -1,5 +1,5 @@
 // src/features/admin/components/PlanFormModal.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,6 +25,7 @@ interface PlanFormModalProps {
   mode: "create" | "edit";
   createPlan: ReturnType<typeof useCreatePlan>;
   updatePlan: ReturnType<typeof useUpdatePlan>;
+  existingPlans?: AdminPlan[];
 }
 
 export const PlanFormModal: React.FC<PlanFormModalProps> = ({
@@ -34,6 +35,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
   mode,
   createPlan,
   updatePlan,
+  existingPlans = [],
 }) => {
   const [name, setName] = useState<string>("");
   const [price, setPrice] = useState<number>(0);
@@ -143,21 +145,48 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
     }
   };
 
+  const limitHint = (val: number) =>
+    val === -1 ? "(không giới hạn)" : val === 0 ? "(tắt)" : "";
+
+  // Tier map: group existing plans by tier
+  const tierMap = useMemo(() => {
+    const map = new Map<number, AdminPlan[]>();
+    for (const p of existingPlans) {
+      const t = p.tier ?? 0;
+      if (!map.has(t)) map.set(t, []);
+      map.get(t)!.push(p);
+    }
+    return map;
+  }, [existingPlans]);
+
+  const sortedTiers = useMemo(() =>
+    Array.from(tierMap.entries()).sort(([a], [b]) => a - b),
+    [tierMap],
+  );
+
+  const tierConflict = useMemo(() => {
+    const existing = tierMap.get(tier) ?? [];
+    if (existing.length === 0) return null;
+    if (mode === "edit" && plan && existing.length === 1 && existing[0].id === plan.id) return null;
+    return `Tier ${tier} đã được dùng bởi: ${existing.map(p => p.name).join(", ")}`;
+  }, [tier, tierMap, mode, plan]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>
             {mode === "create" ? "Tạo gói nâng cấp mới" : `Sửa gói "${plan?.name}"`}
           </DialogTitle>
           <DialogDescription>
-            {mode === "create" 
-              ? "Điền thông tin để tạo gói nâng cấp mới" 
+            {mode === "create"
+              ? "Điền thông tin để tạo gói nâng cấp mới"
               : "Chỉnh sửa thông tin gói nâng cấp"}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 py-4">
+        <div className="space-y-5 py-4">
+          {/* Tên gói */}
           <div className="space-y-2">
             <Label htmlFor="name">Tên gói *</Label>
             <Input
@@ -168,134 +197,189 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="price">Giá (VNĐ) *</Label>
-            <Input
-              id="price"
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(Number(e.target.value))}
-              placeholder="99000"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="durationDays">Thời hạn (ngày) *</Label>
-            <Input
-              id="durationDays"
-              type="number"
-              value={durationDays}
-              onChange={(e) => setDurationDays(Number(e.target.value))}
-              placeholder="30"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="storage">Dung lượng lưu trữ *</Label>
-            <div className="flex gap-2">
-              <Input
-                id="storage"
-                type="number"
-                step="any"
-                value={storageValue}
-                onChange={(e) => setStorageValue(Number(e.target.value))}
-                className="flex-1"
-                placeholder="1"
-              />
-              <select
-                className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-                value={storageUnit}
-                onChange={(e) => setStorageUnit(e.target.value as "MB" | "GB")}
-              >
-                <option value="MB">MB</option>
-                <option value="GB">GB</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="aiQuestions">Quiz (số câu) *</Label>
-            <Input
-              id="aiQuestions"
-              type="number"
-              value={aiQuestions}
-              onChange={(e) => setAiQuestions(Number(e.target.value))}
-              placeholder="100"
-            />
-          </div>
-
-          <div className="grid grid-cols-4 gap-4">
+          {/* Giá & Thời hạn */}
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="flashcardLimit">Flashcard (lượt) *</Label>
+              <Label htmlFor="price">Giá (VNĐ) *</Label>
               <Input
-                id="flashcardLimit"
+                id="price"
                 type="number"
-                value={flashcardLimit}
-                onChange={(e) => setFlashcardLimit(Number(e.target.value))}
-                placeholder="0"
+                value={price}
+                onChange={(e) => setPrice(Number(e.target.value))}
+                placeholder="99000"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="questionLimit">Quiz (lượt) *</Label>
+              <Label htmlFor="durationDays">Thời hạn (ngày) *</Label>
               <Input
-                id="questionLimit"
+                id="durationDays"
                 type="number"
-                value={questionLimit}
-                onChange={(e) => setQuestionLimit(Number(e.target.value))}
-                placeholder="0"
+                value={durationDays}
+                onChange={(e) => setDurationDays(Number(e.target.value))}
+                placeholder="30"
               />
+              <p className="text-xs text-muted-foreground">-1 = vĩnh viễn</p>
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="summaryLimit">Tóm tắt (lượt) *</Label>
-              <Input
-                id="summaryLimit"
-                type="number"
-                value={summaryLimit}
-                onChange={(e) => setSummaryLimit(Number(e.target.value))}
-                placeholder="0"
-              />
-            </div>
-          <div className="space-y-2">
-            <Label htmlFor="chatLimit">AI Chat (số lần) *</Label>
-            <Input
-              id="chatLimit"
-              type="number"
-              value={chatLimit}
-              onChange={(e) => setChatLimit(Number(e.target.value))}
-              placeholder="0"
-            />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="tier">Cấp độ (Tier) *</Label>
-            <Input
-              id="tier"
-              type="number"
-              value={tier}
-              onChange={(e) => setTier(Number(e.target.value))}
-              placeholder="0"
-            />
-            <p className="text-xs text-muted-foreground">
-              Số càng cao = gói càng cao. Dùng để ngăn hạ gói khi còn hạn.
-              Gợi ý: Free=0, Basic=1, Pro=2, Premium=3
-            </p>
-          </div>
-        </div>
 
-          {mode === "edit" && (
-            <div className="flex items-center justify-between pt-2">
-              <Label htmlFor="isActive">Trạng thái</Label>
-              <div className="flex items-center gap-2">
-                <Switch
-                  id="isActive"
-                  checked={isActive}
-                  onCheckedChange={setIsActive}
+          {/* Dung lượng & Quiz */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="storage">Dung lượng lưu trữ *</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="storage"
+                  type="number"
+                  step="any"
+                  value={storageValue}
+                  onChange={(e) => setStorageValue(Number(e.target.value))}
+                  className="flex-1"
+                  placeholder="1"
                 />
-                <Badge variant={isActive ? "secondary" : "outline"}>
-                  {isActive ? "Đang bật" : "Đã ẩn"}
-                </Badge>
+                <select
+                  className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  value={storageUnit}
+                  onChange={(e) => setStorageUnit(e.target.value as "MB" | "GB")}
+                >
+                  <option value="MB">MB</option>
+                  <option value="GB">GB</option>
+                </select>
               </div>
             </div>
-          )}
+            <div className="space-y-2">
+              <Label htmlFor="aiQuestions">Số câu hỏi Quiz AI *</Label>
+              <Input
+                id="aiQuestions"
+                type="number"
+                value={aiQuestions}
+                onChange={(e) => setAiQuestions(Number(e.target.value))}
+                placeholder="100"
+              />
+              <p className="text-xs text-muted-foreground">Số câu hỏi mỗi lần tạo</p>
+            </div>
+          </div>
+
+          {/* Giới hạn tính năng */}
+          <div>
+            <div className="text-sm font-medium text-muted-foreground mb-3">
+              Giới hạn tính năng <span className="text-xs font-normal">(-1 = không giới hạn, 0 = tắt)</span>
+            </div>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+              <div className="space-y-2">
+                <Label htmlFor="flashcardLimit">Flashcard (lượt) *</Label>
+                <Input
+                  id="flashcardLimit"
+                  type="number"
+                  value={flashcardLimit}
+                  onChange={(e) => setFlashcardLimit(Number(e.target.value))}
+                  placeholder="0"
+                />
+                <p className="text-xs text-muted-foreground h-4">{limitHint(flashcardLimit)}</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="questionLimit">Quiz (lượt) *</Label>
+                <Input
+                  id="questionLimit"
+                  type="number"
+                  value={questionLimit}
+                  onChange={(e) => setQuestionLimit(Number(e.target.value))}
+                  placeholder="0"
+                />
+                <p className="text-xs text-muted-foreground h-4">{limitHint(questionLimit)}</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="summaryLimit">Tóm tắt (lượt) *</Label>
+                <Input
+                  id="summaryLimit"
+                  type="number"
+                  value={summaryLimit}
+                  onChange={(e) => setSummaryLimit(Number(e.target.value))}
+                  placeholder="0"
+                />
+                <p className="text-xs text-muted-foreground h-4">{limitHint(summaryLimit)}</p>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="chatLimit">AI Chat (lượt) *</Label>
+                <Input
+                  id="chatLimit"
+                  type="number"
+                  value={chatLimit}
+                  onChange={(e) => setChatLimit(Number(e.target.value))}
+                  placeholder="0"
+                />
+                <p className="text-xs text-muted-foreground h-4">{limitHint(chatLimit)}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Cấp độ & Trạng thái */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="tier">Cấp độ (Tier) *</Label>
+              <Input
+                id="tier"
+                type="number"
+                value={tier}
+                onChange={(e) => setTier(Number(e.target.value))}
+                placeholder="0"
+                className={tierConflict ? "border-red-500 focus-visible:ring-red-500" : ""}
+              />
+              {tierConflict ? (
+                <p className="text-xs text-red-500 flex items-center gap-1">
+                  <span>⚠</span> {tierConflict}
+                </p>
+              ) : (
+                <p className="text-xs text-muted-foreground">
+                  Số càng cao = gói càng cao. Không nên trùng tier giữa các gói.
+                </p>
+              )}
+              {/* Tier map */}
+              {sortedTiers.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {sortedTiers.map(([t, plans]) => {
+                    const isCurrentTier = t === tier;
+                    const isOwn = mode === "edit" && plan && plans.length === 1 && plans[0].id === plan.id;
+                    const taken = isCurrentTier && !isOwn;
+                    return (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={() => setTier(t)}
+                        className={`
+                          inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium border
+                          ${taken
+                            ? "bg-red-50 border-red-200 text-red-600"
+                            : isCurrentTier
+                              ? "bg-primary/10 border-primary/30 text-primary"
+                              : "bg-muted/50 border-border text-muted-foreground hover:border-primary/30"
+                          }
+                          ${isOwn ? "ring-1 ring-primary/30" : ""}
+                        `}
+                      >
+                        <span className="font-mono">{t}</span>
+                        <span>{plans.map(p => p.name).join(", ")}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+            {mode === "edit" && (
+              <div className="space-y-2">
+                <Label>Trạng thái</Label>
+                <div className="flex items-center gap-3 pt-2">
+                  <Switch
+                    id="isActive"
+                    checked={isActive}
+                    onCheckedChange={setIsActive}
+                  />
+                  <Badge variant={isActive ? "secondary" : "outline"}>
+                    {isActive ? "Đang bật" : "Đã ẩn"}
+                  </Badge>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         <DialogFooter>
