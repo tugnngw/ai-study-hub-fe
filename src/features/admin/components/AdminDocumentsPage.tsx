@@ -17,6 +17,11 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAdminDocuments, useApproveDocument, useRejectDocument, useDeleteDocument, useRestoreDocument } from "../hooks";
 
+// UUID validation helper
+const isValidUUID = (id: string): boolean => {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+};
+
 type TabValue = "all" | "pending" | "approved" | "rejected" | "trash";
 
 const statusLabel: Record<string, string> = {
@@ -145,11 +150,17 @@ export const AdminDocumentsPage: React.FC = () => {
                                     variant="outline"
                                     size="sm"
                                     disabled={approveDocument.isPending}
-                                    onClick={() =>
+                                    onClick={() => {
+                                      console.log("[DEBUG] Approve clicked, docId:", d.id);
+                                      if (!isValidUUID(d.id)) {
+                                        toast.error("Invalid document ID format");
+                                        return;
+                                      }
                                       approveDocument.mutate(d.id, {
                                         onSuccess: () => toast.success("Đã duyệt tài liệu"),
-                                      })
-                                    }
+                                        onError: (err) => toast.error("Lỗi: " + err.message),
+                                      });
+                                    }}
                                   >
                                     <CheckCircle2 className="h-3.5 w-3.5" /> Duyệt
                                   </Button>
@@ -157,11 +168,17 @@ export const AdminDocumentsPage: React.FC = () => {
                                     variant="outline"
                                     size="sm"
                                     disabled={rejectDocument.isPending}
-                                    onClick={() =>
+                                    onClick={() => {
+                                      console.log("[DEBUG] Reject clicked, docId:", d.id);
+                                      if (!isValidUUID(d.id)) {
+                                        toast.error("Invalid document ID format");
+                                        return;
+                                      }
                                       rejectDocument.mutate(d.id, {
                                         onSuccess: () => toast.success("Đã từ chối tài liệu"),
-                                      })
-                                    }
+                                        onError: (err) => toast.error("Lỗi: " + err.message),
+                                      });
+                                    }}
                                   >
                                     <XCircle className="h-3.5 w-3.5" /> Từ chối
                                   </Button>
@@ -172,11 +189,15 @@ export const AdminDocumentsPage: React.FC = () => {
                                   variant="outline"
                                   size="sm"
                                   disabled={restoreDocument.isPending}
-                                  onClick={() =>
+                                  onClick={() => {
+                                    if (!isValidUUID(d.id)) {
+                                      toast.error("Invalid document ID format");
+                                      return;
+                                    }
                                     restoreDocument.mutate(d.id, {
                                       onSuccess: () => toast.success("Đã khôi phục tài liệu"),
-                                    })
-                                  }
+                                    });
+                                  }}
                                 >
                                   <RotateCcw className="h-3.5 w-3.5" /> Khôi phục
                                 </Button>
@@ -187,6 +208,10 @@ export const AdminDocumentsPage: React.FC = () => {
                                   className="text-destructive hover:text-destructive"
                                   disabled={deleteDocument.isPending}
                                   onClick={() => {
+                                    if (!isValidUUID(d.id)) {
+                                      toast.error("Invalid document ID format");
+                                      return;
+                                    }
                                     if (window.confirm("Xóa vĩnh viễn tài liệu này?")) {
                                       deleteDocument.mutate(d.id, {
                                         onSuccess: () => toast.success("Đã xóa tài liệu"),

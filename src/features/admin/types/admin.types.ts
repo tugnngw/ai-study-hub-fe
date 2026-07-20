@@ -14,7 +14,7 @@ export interface AdminStats {
 export type ActivityType = "user" | "upload" | "report" | "delete";
 
 export interface ActivityItem {
-  id: number;
+  id: string;
   title: string;
   actor: string;
   type: ActivityType;
@@ -53,7 +53,7 @@ export interface DocumentResponse {
 
 // ── Reported / managed files ───────────────────────────
 export interface ReportedFileItem {
-  id: number;
+  id: string;
   name: string;
   uploader: string;
   size: string;
@@ -66,7 +66,7 @@ export type ReportDecision = "remove" | "reject";
 
 // ── Approval queue ─────────────────────────────────────
 export interface ApprovalItem {
-  id: number;
+  id: string;
   title: string;
   uploader: string;
   date: string;
@@ -77,14 +77,14 @@ export type ApprovalAction = "approve" | "reject";
 
 // ── Trash ──────────────────────────────────────────────
 export interface DeletedFileItem {
-  id: number;
+  id: string;
   name: string;
   deletedDate: string;
   remainingDays: number;
 }
 
 export interface DeletedAccountItem {
-  id: number;
+  id: string;
   name: string;
   email: string;
   deletedDate: string;
@@ -99,7 +99,7 @@ export type PaymentMethod = "MOMO" | "VNPay" | "ACB" | "Thẻ cào";
 export type PremiumRequestStatus = "Pending" | "Approved" | "Rejected";
 
 export interface PremiumRequestItem {
-  id: number;
+  id: string;
   name: string;
   email: string;
   plan: Exclude<PlanId, "FREE">;
