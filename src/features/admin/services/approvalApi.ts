@@ -12,7 +12,9 @@ export const approvalApi = {
   getPendingList: async (): Promise<ApprovalItem[]> => {
     try {
       const reports = await reportApi.getReports();
-      return reports.map((r) => ({
+      // Filter only pending reports (including those with null/undefined status)
+      const pendingReports = reports.filter(r => !r.status || r.status === "pending");
+      const data = pendingReports.map((r) => ({
         id: r.id,
         title: r.name || "Unknown",
         uploader: r.uploader,
@@ -21,6 +23,8 @@ export const approvalApi = {
         reporter: r.reporter,
         reason: r.reason,
       }));
+      console.log("[approvalApi.getPendingList] returning pending reports length:", data.length, "total reports:", reports.length);
+      return JSON.parse(JSON.stringify(data));
     } catch {
       return [];
     }

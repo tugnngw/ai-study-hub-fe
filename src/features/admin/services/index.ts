@@ -6,3 +6,4 @@ export * from "./approvalApi";
 export * from "./premiumApi";
 export * from "./paymentApi";
 export * from "./documentApi";
+export * from "./reportApi";
