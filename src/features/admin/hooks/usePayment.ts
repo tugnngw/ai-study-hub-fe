@@ -27,12 +27,49 @@ export function useAdminPlans() {
 export function useUpdatePlan() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, ...body }: { id: number } & Partial<Omit<AdminPlan, "id">>) =>
+    mutationFn: ({ id, ...body }: { id: string } & Partial<Omit<AdminPlan, "id">>) =>
       paymentApi.adminUpdatePlan(id, body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: adminKeys.adminPlans() });
       qc.invalidateQueries({ queryKey: adminKeys.planOptions() });
       // Đồng bộ sang trang Premium phía user (cùng cache ["plans"]).
+      qc.invalidateQueries({ queryKey: ["plans"] });
+    },
+  });
+}
+
+export function useCreatePlan() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (body: Omit<AdminPlan, "id" | "activeSubscriptionCount">) =>
+      paymentApi.adminCreatePlan(body),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: adminKeys.adminPlans() });
+      qc.invalidateQueries({ queryKey: adminKeys.planOptions() });
+      qc.invalidateQueries({ queryKey: ["plans"] });
+    },
+  });
+}
+
+export function useDeletePlan() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => paymentApi.adminDeletePlan(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: adminKeys.adminPlans() });
+      qc.invalidateQueries({ queryKey: adminKeys.planOptions() });
+      qc.invalidateQueries({ queryKey: ["plans"] });
+    },
+  });
+}
+
+export function useRestorePlan() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => paymentApi.adminRestorePlan(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: adminKeys.adminPlans() });
+      qc.invalidateQueries({ queryKey: adminKeys.planOptions() });
       qc.invalidateQueries({ queryKey: ["plans"] });
     },
   });
