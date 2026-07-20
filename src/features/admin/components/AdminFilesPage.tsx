@@ -89,6 +89,13 @@ export const AdminFilesPage: React.FC = () => {
 
             {["all", "pending", "approved", "rejected", "trash"].map((tab) => (
               <TabsContent key={tab} value={tab} className="space-y-4">
+                {tab === "trash" && (
+                  <div className="px-4 py-3 bg-muted/50 rounded-lg border border-muted">
+                    <p className="text-sm text-muted-foreground">
+                      💡 File trong thùng rác có thể được khôi phục lại cho user. Admin không thể xóa vĩnh viễn file tại đây.
+                    </p>
+                  </div>
+                )}
                 <div className="relative w-full max-w-xs">
                   <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -104,7 +111,7 @@ export const AdminFilesPage: React.FC = () => {
                     <TableRow>
                       <TableHead>File</TableHead>
                       <TableHead>Owner</TableHead>
-                      <TableHead>Trạng thái</TableHead>
+                      <TableHead>{tab === "trash" ? "Thời gian xóa" : "Trạng thái"}</TableHead>
                       <TableHead>Size</TableHead>
                       <TableHead className="text-right">Hành động</TableHead>
                     </TableRow>
@@ -136,9 +143,21 @@ export const AdminFilesPage: React.FC = () => {
                             {d.ownerId?.slice(0, 8)}...
                           </TableCell>
                           <TableCell>
-                            <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
-                              {statusLabel[d.status as string] ?? d.status}
-                            </Badge>
+                            {tab === "trash" && d.deletedAt ? (
+                              <span className="text-sm text-muted-foreground">
+                                {new Date(d.deletedAt).toLocaleDateString("vi-VN", {
+                                  year: "numeric",
+                                  month: "2-digit",
+                                  day: "2-digit",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                })}
+                              </span>
+                            ) : (
+                              <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
+                                {statusLabel[d.status as string] ?? d.status}
+                              </Badge>
+                            )}
                           </TableCell>
                           <TableCell className="text-muted-foreground">
                             {d.fileSize ? `${(d.fileSize / 1024).toFixed(1)} KB` : "-"}
@@ -175,34 +194,21 @@ export const AdminFilesPage: React.FC = () => {
                                   </Button>
                                 </>
                               )}
-                              {activeTab === "trash" ? (
+                              {activeTab === "trash" && (
                                 <Button
                                   variant="outline"
                                   size="sm"
                                   disabled={restoreDocument.isPending}
-                                  onClick={() =>
-                                    restoreDocument.mutate(d.id, {
-                                      onSuccess: () => toast.success("Đã khôi phục file"),
-                                    })
-                                  }
-                                >
-                                  <RotateCcw className="h-3.5 w-3.5" /> Khôi phục
-                                </Button>
-                              ) : (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="text-destructive hover:text-destructive"
-                                  disabled={deleteDocument.isPending}
                                   onClick={() => {
-                                    if (window.confirm("Xóa file này?")) {
-                                      deleteDocument.mutate(d.id, {
-                                        onSuccess: () => toast.success("Đã xóa file"),
+                                    if (window.confirm(`Khôi phục file "${d.title}" cho user?`)) {
+                                      restoreDocument.mutate(d.id, {
+                                        onSuccess: () => toast.success("Đã khôi phục file"),
+                                        onError: (err) => toast.error("Lỗi: " + err.message),
                                       });
                                     }
                                   }}
                                 >
-                                  <Trash2 className="h-3.5 w-3.5" /> Xóa
+                                  <RotateCcw className="h-3.5 w-3.5" /> Khôi phục
                                 </Button>
                               )}
                             </div>
