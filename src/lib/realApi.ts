@@ -220,6 +220,7 @@ export const shareApi = {
         method: "POST",
         body: { documentId: body.id, reason: body.reason, description: body.description },
       }),
+  listMyReports: (): Promise<any[]> => api<any[]>("/api/reports/my"),
 };
 
 // ================================================================

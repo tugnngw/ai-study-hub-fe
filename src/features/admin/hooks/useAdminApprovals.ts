@@ -26,9 +26,9 @@ export function useApprovals() {
 export function useApprovalAction() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, action }: { id: string; action: ApprovalAction }) => {
-      console.log("[useApprovalAction] mutating:", { id, action });
-      return action === "approve" ? approvalApi.approve(id) : approvalApi.reject(id);
+    mutationFn: ({ id, action, reason }: { id: string; action: ApprovalAction; reason?: string }) => {
+      console.log("[useApprovalAction] mutating:", { id, action, reason });
+      return action === "approve" ? approvalApi.approve(id) : approvalApi.reject(id, reason || "");
     },
     onSuccess: async (_, variables) => {
       console.log("[useApprovalAction] mutation settled, clearing cache");

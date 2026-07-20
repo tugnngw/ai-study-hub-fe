@@ -9,3 +9,10 @@ export function useReportHistory() {
     queryFn: () => reportApi.getReportHistory(),
   });
 }
+
+export function useReportedDocuments() {
+  return useQuery({
+    queryKey: ["reports", "pending"],
+    queryFn: () => reportApi.getReports(),
+  });
+}

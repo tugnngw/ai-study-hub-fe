@@ -7,7 +7,7 @@ const TOKEN_KEY = "auth_token";
 const REFRESH_KEY = "refresh_token";
 
 // Use sessionStorage instead of localStorage to keep sessions separate per tab
-const storage = typeof window !== "undefined" ? sessionStorage : null;
+const storage = typeof window !== "undefined" ? localStorage : null;
 
 export const tokenStore = {
   get: () => {
@@ -127,6 +127,7 @@ export async function api<T = unknown>(
     }
 
     console.log(`[API] ${opts.method || "GET"} ${path} - token exists: ${!!token}`);
+    console.log(`[API] Headers:`, JSON.stringify(headers));
     return fetch(`${API_BASE}${path}`, {
       method: opts.method ?? "GET",
       headers,

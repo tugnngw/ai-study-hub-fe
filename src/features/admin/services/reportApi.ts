@@ -1,4 +1,4 @@
-// src/features/admin/services/reportApi.ts
+import { api } from "@/lib/api";
 import type { 
   ReportedFileItem,
   ReportDecision,
@@ -18,6 +18,7 @@ export const reportApi = {
         id: r.id, // Report ID from backend
         documentId: r.documentId,
         documentTitle: r.documentTitle,
+        cloudinaryUrl: r.cloudinaryUrl, // Add this
         name: r.documentTitle || "Unknown",
         uploader: r.reporterUsername || r.reporterId || "Unknown",
         size: "N/A",
@@ -63,6 +64,7 @@ export const reportApi = {
         id: r.id,
         documentId: r.documentId,
         documentTitle: r.documentTitle,
+        cloudinaryUrl: r.cloudinaryUrl, // Add this
         name: r.documentTitle || "Unknown",
         uploader: r.reporterUsername || r.reporterId || "Unknown",
         size: "N/A",
@@ -81,31 +83,18 @@ export const reportApi = {
     }
   },
 
-  handleReportDecision: async (id: string, decision: ReportDecision): Promise<boolean> => {
-    console.log("[ReportAPI] handleReportDecision:", { id, decision });
+  handleReportDecision: async (id: string, decision: ReportDecision, reason?: string): Promise<boolean> => {
+    console.log("[ReportAPI] handleReportDecision:", { id, decision, reason });
     try {
-      const token = localStorage.getItem("auth_token");
-      const res = await fetch(`http://localhost:4040/api/reports/${id}/decision`, {
+      await api<void>(`/api/reports/${id}/decision`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ 
+        body: { 
           decision: decision === "approve" ? "approved" : 
                    decision === "reject" ? "rejected" : 
                    "removed", 
-          comment: "" 
-        }),
+          comment: reason ?? "" 
+        }
       });
-      const text = await res.text();
-      console.log("[ReportAPI] Decision response status:", res.status);
-      console.log("[ReportAPI] Decision response body:", text);
-      
-      if (!res.ok) {
-        throw new Error(`Decision failed: ${text}`);
-      }
-      
       return true;
     } catch (err: any) {
       console.error("[ReportAPI] handleReportDecision error:", err);

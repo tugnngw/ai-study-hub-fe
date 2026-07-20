@@ -46,9 +46,9 @@ export const useApproveDocument = () => {
 export const useRejectDocument = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => {
-      console.log("[DEBUG] Rejecting document:", id);
-      return adminDocumentApi.reject(id);
+    mutationFn: (data: { id: string; reason?: string }) => {
+      console.log("[DEBUG] Rejecting document:", data.id, "reason:", data.reason);
+      return adminDocumentApi.reject(data);
     },
     onSuccess: () => {
       console.log("[DEBUG] Reject success");
