@@ -142,6 +142,18 @@ export async function api<T = unknown>(
   console.log(`[API:${ts()}] ${opts.method || "GET"} ${path} - response status:`, res.status);
 
   if (res.status === 401) {
+    // Skip refresh for public auth endpoints (no auth required)
+    const PUBLIC_AUTH_PATHS = [
+      "/api/auth/login",
+      "/api/auth/register",
+      "/api/auth/forgot-password",
+      "/api/auth/verify-otp",
+      "/api/auth/reset-password",
+    ];
+    if (PUBLIC_AUTH_PATHS.some((p) => path.startsWith(p))) {
+      throw new ApiError(401, "Unauthorized");
+    }
+
     const requestKey = `${opts.method || "GET"}:${path}`;
     const currentRetryCount = retryCountMap.get(requestKey) || 0;
 

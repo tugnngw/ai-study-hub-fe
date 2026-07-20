@@ -4,6 +4,7 @@ import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
+import type { RegisterRequest } from "@/features/auth/types/auth.types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,6 +31,13 @@ const schema = z
       .max(30, "Tối đa 30 ký tự"),
     password: z.string().min(6, "Tối thiểu 6 ký tự"),
     confirmPassword: z.string().min(6, "Tối thiểu 6 ký tự"),
+    email: z
+      .string()
+      .trim()
+      .max(100, "Tối đa 100 ký tự")
+      .email("Email không hợp lệ")
+      .optional()
+      .or(z.literal("")),
   })
   .refine((d) => d.password === d.confirmPassword, {
     path: ["confirmPassword"],
@@ -48,6 +56,7 @@ function RegisterPage() {
     fullName: "",
     password: "",
     confirmPassword: "",
+    email: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -68,13 +77,24 @@ function RegisterPage() {
     setErrors({});
     setLoading(true);
     try {
-      await register({
+      const payload: RegisterRequest = {
         username: form.username,
         fullName: form.fullName,
         password: form.password,
-      });
-      toast.success("Tạo tài khoản thành công! Vui lòng đăng nhập.");
-      navigate({ to: "/auth/login" });
+      };
+      if (form.email.trim()) {
+        payload.email = form.email.trim();
+      }
+      await register(payload);
+      if (form.email.trim()) {
+        // Email provided → must verify before login
+        toast.success("Tạo tài khoản thành công! Vui lòng kiểm tra email để xác thực.");
+        navigate({ to: "/verify-email" });
+      } else {
+        // No email → logged in immediately
+        toast.success("Tạo tài khoản thành công! Chào mừng bạn.");
+        navigate({ to: "/dashboard", replace: true });
+      }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Đăng ký thất bại");
     } finally {
@@ -113,6 +133,20 @@ function RegisterPage() {
             />
             {errors.fullName && (
               <p className="text-xs text-destructive">{errors.fullName}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email (không bắt buộc)</Label>
+            <Input
+              id="email"
+              type="email"
+              autoComplete="email"
+              placeholder="email@example.com"
+              value={form.email}
+              onChange={update("email")}
+            />
+            {errors.email && (
+              <p className="text-xs text-destructive">{errors.email}</p>
             )}
           </div>
           <div className="space-y-2">

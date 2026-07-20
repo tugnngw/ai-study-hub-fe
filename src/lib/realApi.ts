@@ -71,7 +71,7 @@ export const authApi = {
   },
 
   requestPasswordReset: (email: string): Promise<void> =>
-      api<void>("/api/auth/request-reset", { method: "POST", body: { email } }),
+      api<void>("/api/auth/forgot-password", { method: "POST", body: { email } }),
   verifyResetOtp: (email: string, otp: string): Promise<void> =>
       api<void>("/api/auth/verify-otp", { method: "POST", body: { email, otp } }),
   resetPassword: (email: string, newPassword: string): Promise<void> =>
@@ -79,6 +79,14 @@ export const authApi = {
         method: "POST",
         body: { email, password: newPassword },
       }),
+  verifyEmail: (token: string): Promise<void> =>
+      api<void>(`/api/auth/verify?token=${encodeURIComponent(token)}`, { method: "POST" }),
+  sendVerification: (email: string): Promise<void> =>
+      api<void>(`/api/auth/send-verification?email=${encodeURIComponent(email)}`, { method: "POST" }),
+  resendVerificationByUsername: (username: string): Promise<void> =>
+      api<void>(`/api/auth/resend-verification-by-username?username=${encodeURIComponent(username)}`, { method: "POST" }),
+  resendVerification: (): Promise<void> =>
+      api<void>("/api/auth/resend-verification", { method: "POST" }),
 };
 
 // ================================================================
@@ -87,6 +95,8 @@ export const authApi = {
 
 export const accountApi = {
   me: (): Promise<User> => api<User>("/api/account/me"),
+  updateProfile: (body: { fullName?: string; email?: string }): Promise<void> =>
+    api<void>("/api/account/profile", { method: "PUT", body }),
 };
 
 // ================================================================

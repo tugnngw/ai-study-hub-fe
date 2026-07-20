@@ -1,12 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
-import { FileText, FolderKanban, Share2, Pencil, Save, X, Crown } from "lucide-react";
+import { FileText, FolderKanban, Share2, Pencil, Save, X, Crown, Send, BadgeCheck } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import { authApi } from "@/lib/realApi";
 import { useDocuments, useFolders, useSharedDocuments } from "@/lib/queries";
 import { remainingDaysUntil } from "@/features/payment/proration";
 
@@ -15,12 +17,13 @@ export const Route = createFileRoute("/_authenticated/profile")({
 });
 
 function ProfilePage() {
-  const { user } = useAuth();
+  const { user, updateProfile, reloadUser } = useAuth();
   const docs = useDocuments();
   const folders = useFolders();
   const sharedDocs = useSharedDocuments();
 
   const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
   const initialForm = useMemo(
     () => ({
       fullName: user?.fullName ?? "",
@@ -36,15 +39,45 @@ function ProfilePage() {
 
   const planRemainingDays = remainingDaysUntil(user?.planExpiresAt);
 
-  const save = (e: React.FormEvent) => {
+  const save = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Đã cập nhật hồ sơ");
-    setEditing(false);
+    setSaving(true);
+    try {
+      const payload: { fullName?: string; email?: string } = {};
+      if (form.fullName !== user?.fullName) payload.fullName = form.fullName;
+      if (form.email !== (user?.email ?? "")) {
+        if (form.email.trim() && !/^[^\s@]+@[^\s@]+$/.test(form.email.trim())) {
+          toast.error("Email không hợp lệ");
+          setSaving(false);
+          return;
+        }
+        payload.email = form.email.trim() || undefined;
+      }
+      if (Object.keys(payload).length > 0) {
+        await updateProfile(payload);
+      }
+      toast.success("Đã cập nhật hồ sơ");
+      setEditing(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Cập nhật thất bại");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const cancel = () => {
     setForm(initialForm);
     setEditing(false);
+  };
+
+  const resendVerification = async () => {
+    if (!user?.email) return;
+    try {
+      await authApi.sendVerification(user.email);
+      toast.success("Email xác thực đã được gửi");
+    } catch {
+      toast.error("Gửi thất bại");
+    }
   };
 
   const stats = [
@@ -181,12 +214,34 @@ function ProfilePage() {
               </div>
               <div className="space-y-2">
                 <Label>Email</Label>
-                <Input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => update("email", e.target.value)}
-                  disabled={!editing}
-                />
+                <div className="flex gap-2 items-start">
+                  <div className="flex-1">
+                    <Input
+                      type="email"
+                      value={form.email}
+                      onChange={(e) => update("email", e.target.value)}
+                      disabled={!editing}
+                    />
+                  </div>
+                  {!editing && user?.email && (
+                    <div className="flex items-center gap-2 pt-1 shrink-0">
+                      {user.emailVerified ? (
+                        <Badge variant="outline" className="border-green-500/30 text-green-600 bg-green-500/5 gap-1">
+                          <BadgeCheck className="h-3 w-3" /> Đã xác thực
+                        </Badge>
+                      ) : (
+                        <>
+                          <Badge variant="outline" className="border-amber-500/30 text-amber-600 bg-amber-500/5">
+                            Chưa xác thực
+                          </Badge>
+                          <Button type="button" variant="ghost" size="sm" onClick={resendVerification} className="h-7 text-xs gap-1">
+                            <Send className="h-3 w-3" /> Gửi lại
+                          </Button>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </CardContent>
@@ -194,11 +249,11 @@ function ProfilePage() {
 
         {editing && (
           <div className="flex justify-end gap-2 mt-4">
-            <Button type="button" variant="outline" onClick={cancel}>
+            <Button type="button" variant="outline" onClick={cancel} disabled={saving}>
               <X className="h-4 w-4 mr-2" /> Huỷ
             </Button>
-            <Button type="submit">
-              <Save className="h-4 w-4 mr-2" /> Lưu thay đổi
+            <Button type="submit" disabled={saving}>
+              <Save className="h-4 w-4 mr-2" /> {saving ? "Đang lưu..." : "Lưu thay đổi"}
             </Button>
           </div>
         )}

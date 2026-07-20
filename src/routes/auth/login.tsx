@@ -3,8 +3,9 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Mail, Facebook } from "lucide-react";
+import { Mail, Facebook, AlertTriangle, RefreshCw } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { authApi } from "@/lib/realApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,6 +33,7 @@ function LoginPage() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [emailVerifyError, setEmailVerifyError] = useState(false);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +46,7 @@ function LoginPage() {
     }
     setErrors({});
     setLoading(true);
+    setEmailVerifyError(false);
     try {
       await login(form.username, form.password);
       toast.success("Chào mừng trở lại!");
@@ -51,9 +54,27 @@ function LoginPage() {
       await navigate({ to: "/dashboard", replace: true });
     } catch (err) {
       console.error("❌ Login error:", err);
-      toast.error(err instanceof Error ? err.message : "Đăng nhập thất bại");
+      const msg = err instanceof Error ? err.message : "Đăng nhập thất bại";
+      if (
+        msg.includes("xác thực") ||
+        msg.includes("verify") ||
+        msg.includes("Email chưa")
+      ) {
+        setEmailVerifyError(true);
+      }
+      toast.error(msg);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const resendVerification = async () => {
+    try {
+      // User not authenticated yet — use public endpoint with username
+      await authApi.resendVerificationByUsername(form.username);
+      toast.success("Email xác thực đã được gửi lại! Nếu tài khoản hợp lệ, bạn sẽ nhận được email.");
+    } catch {
+      toast.error("Không thể gửi lại email xác thực. Vui lòng thử lại sau.");
     }
   };
 
@@ -113,6 +134,26 @@ function LoginPage() {
           >
             {loading ? "Đang đăng nhập..." : "Đăng nhập"}
           </Button>
+
+          {emailVerifyError && (
+            <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 p-3">
+              <div className="flex items-start gap-2">
+                <AlertTriangle className="h-4 w-4 mt-0.5 text-amber-500 shrink-0" />
+                <div className="text-xs text-amber-600 dark:text-amber-400">
+                  <p className="font-medium mb-1">Email chưa được xác thực</p>
+                  <p>Vui lòng kiểm tra hộp thư và nhấn vào liên kết xác thực.</p>
+                  <button
+                    type="button"
+                    onClick={resendVerification}
+                    className="inline-flex items-center gap-1 mt-2 text-primary hover:underline"
+                  >
+                    <RefreshCw className="h-3 w-3" />
+                    Gửi lại email xác thực
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="relative py-1">
             <Separator />

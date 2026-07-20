@@ -5,6 +5,7 @@ export interface RegisterRequest {
   username: string;
   password: string;
   fullName?: string;
+  email?: string;
 }
 
 export interface LoginRequest {
@@ -29,6 +30,7 @@ export interface User {
   status: "ACTIVE" | "BANNED";
   authProvider: "LOCAL" | "GOOGLE";
   providerId?: string;
+  emailVerified: boolean;
   lastLoginAt?: string;
   createdAt: string;
   updatedAt: string;

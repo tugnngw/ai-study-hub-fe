@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as OauthSuccessRouteImport } from './routes/oauth-success'
 import { Route as AuthRouteRouteImport } from './routes/auth/route'
 import { Route as Admin_panelRouteRouteImport } from './routes/admin_panel/route'
@@ -47,6 +48,11 @@ import { Route as AuthenticatedPaymentCancelRouteImport } from './routes/_authen
 import { Route as AuthenticatedFoldersIdRouteImport } from './routes/_authenticated/folders.$id'
 import { Route as AuthenticatedDocumentsIdRouteImport } from './routes/_authenticated/documents.$id'
 
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OauthSuccessRoute = OauthSuccessRouteImport.update({
   id: '/oauth-success',
   path: '/oauth-success',
@@ -243,6 +249,7 @@ export interface FileRoutesByFullPath {
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/ai': typeof AuthenticatedAiRoute
   '/cloud': typeof AuthenticatedCloudRoute
@@ -279,6 +286,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/oauth-success': typeof OauthSuccessRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/ai': typeof AuthenticatedAiRoute
   '/cloud': typeof AuthenticatedCloudRoute
@@ -319,6 +327,7 @@ export interface FileRoutesById {
   '/admin_panel': typeof Admin_panelRouteRouteWithChildren
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/ai': typeof AuthenticatedAiRoute
   '/_authenticated/cloud': typeof AuthenticatedCloudRoute
@@ -359,6 +368,7 @@ export interface FileRouteTypes {
     | '/admin_panel'
     | '/auth'
     | '/oauth-success'
+    | '/verify-email'
     | '/admin'
     | '/ai'
     | '/cloud'
@@ -395,6 +405,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/oauth-success'
+    | '/verify-email'
     | '/admin'
     | '/ai'
     | '/cloud'
@@ -434,6 +445,7 @@ export interface FileRouteTypes {
     | '/admin_panel'
     | '/auth'
     | '/oauth-success'
+    | '/verify-email'
     | '/_authenticated/admin'
     | '/_authenticated/ai'
     | '/_authenticated/cloud'
@@ -474,10 +486,18 @@ export interface RootRouteChildren {
   Admin_panelRouteRoute: typeof Admin_panelRouteRouteWithChildren
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   OauthSuccessRoute: typeof OauthSuccessRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/oauth-success': {
       id: '/oauth-success'
       path: '/oauth-success'
@@ -868,6 +888,7 @@ const rootRouteChildren: RootRouteChildren = {
   Admin_panelRouteRoute: Admin_panelRouteRouteWithChildren,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   OauthSuccessRoute: OauthSuccessRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

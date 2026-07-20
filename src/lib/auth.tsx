@@ -16,10 +16,11 @@ interface AuthContextValue {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<void>;
-  register: (data: RegisterRequest) => Promise<void>;
+  register: (data: RegisterRequest) => Promise<{ needsVerification: boolean }>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
   reloadUser: () => Promise<void>;
+  updateProfile: (data: { fullName?: string; email?: string }) => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
   verifyResetOtp: (email: string, otp: string) => Promise<void>;
   resetPassword: (email: string, password: string) => Promise<void>;
@@ -161,9 +162,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const register = async (data: RegisterRequest) => {
+  const register = async (data: RegisterRequest): Promise<{ needsVerification: boolean }> => {
     const res: AuthResponse = await authApi.register(data);
+
     if (res?.accessToken && res.refreshToken) {
+      // No email → auto-login (existing flow)
       tokenStore.set(res.accessToken);
       tokenStore.setRefresh(res.refreshToken);
       
@@ -181,14 +184,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           role: res.role,
           status: "ACTIVE",
           authProvider: "LOCAL",
+          emailVerified: res.emailVerified ?? false,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         };
         setUser(userObj);
       }
-    } else {
-      throw new Error("Registration failed: Missing tokens from backend.");
+      return { needsVerification: false };
     }
+
+    // Email provided → needs verification, no tokens issued
+    return { needsVerification: true };
   };
 
   const logout = async () => {
@@ -247,6 +253,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const updateProfile = async (data: { fullName?: string; email?: string }) => {
+    await accountApi.updateProfile(data);
+    await reloadUser();
+  };
+
   const requestPasswordReset = async (email: string) => {
     await authApi.requestPasswordReset(email);
   };
@@ -270,6 +281,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             logout,
             refresh,
             reloadUser,
+            updateProfile,
             requestPasswordReset,
             verifyResetOtp,
             resetPassword,
