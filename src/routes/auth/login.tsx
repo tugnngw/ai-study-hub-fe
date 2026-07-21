@@ -3,7 +3,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Mail, Facebook } from "lucide-react";
+import { Mail } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,7 +123,7 @@ function LoginPage() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3">
             <Button
               type="button"
               variant="outline"
@@ -132,15 +132,6 @@ function LoginPage() {
             >
               <Mail className="h-4 w-4" />
               Google
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full"
-              onClick={() => onSocialLogin("Facebook")}
-            >
-              <Facebook className="h-4 w-4" />
-              Facebook
             </Button>
           </div>
 
