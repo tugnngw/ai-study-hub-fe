@@ -1,5 +1,6 @@
 // src/features/admin/services/fileApi.ts
 import { adminDocumentApi } from "./documentApi";
+import { adminUserApi } from "./userApi";
 import { reportApi } from "./reportApi";
 import type {
   ReportedFileItem,
@@ -63,12 +64,25 @@ export const adminFileApi = {
   },
 
   getDeletedAccounts: async (): Promise<DeletedAccountItem[]> => {
-    return [];
+    try {
+      const accounts = await adminUserApi.getTrashUsers();
+      return accounts.map((a) => ({
+        id: a.id,
+        name: a.name,
+        email: a.email,
+        deletedDate: a.deletedAt ?? new Date().toISOString(),
+        remainingDays: 30 - Math.floor((Date.now() - new Date(a.deletedAt ?? new Date()).getTime()) / (1000 * 60 * 60 * 24)),
+      }));
+    } catch {
+      return [];
+    }
   },
 
   permanentDelete: async (id: string, type: TrashItemType): Promise<boolean> => {
     if (type === "file") {
       await adminDocumentApi.delete(id);
+    } else if (type === "account") {
+      await adminUserApi.hardDeleteUser(id);
     }
     return true;
   },
@@ -76,6 +90,8 @@ export const adminFileApi = {
   restoreItem: async (id: string, type: TrashItemType): Promise<boolean> => {
     if (type === "file") {
       await adminDocumentApi.restore(id);
+    } else if (type === "account") {
+      await adminUserApi.restoreUser(id);
     }
     return true;
   },

@@ -37,6 +37,23 @@ export const adminUserApi = {
   softDeleteUser: (id: string): Promise<AdminUserItem> =>
       api<AdminUserItem>(`/api/admin/users/${id}`, { method: "DELETE" }),
 
+  hardDeleteUser: (id: string): Promise<AdminUserItem> =>
+      api<AdminUserItem>(`/api/admin/users/${id}/hard`, { method: "DELETE" }),
+
+  getTrashUsers: async (): Promise<AdminUserItem[]> => {
+    const response = await api<any>("/api/admin/users/trash");
+    const list = response?.data ?? response ?? [];
+    return Array.isArray(list) ? list.map((u: any) => ({
+      id: u.id ?? u.accountId,
+      name: u.fullName ?? u.username ?? "Unknown",
+      email: u.email ?? "",
+      status: "Xóa mềm" as const,
+      plan: "FREE" as const,
+      role: u.role,
+      deletedAt: u.deletedAt,
+    })) : [];
+  },
+
   restoreUser: (id: string): Promise<AdminUserItem> =>
       api<AdminUserItem>(`/api/admin/users/${id}/restore`, { method: "PATCH" }),
 

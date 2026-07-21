@@ -7,6 +7,7 @@ import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { OtpVerification } from "@/components/ui/otp-verification";
 import {
   Card,
   CardContent,
@@ -14,11 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
+import { Loader2 } from "lucide-react";
 
 const emailSchema = z.string().email("Email không hợp lệ");
 
@@ -31,7 +28,6 @@ function ForgotPasswordPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState<"email" | "otp">("email");
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -55,22 +51,18 @@ function ForgotPasswordPage() {
     }
   };
 
-  const onVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (otp.length !== 6) {
-      setError("Vui lòng nhập đủ 6 số");
-      return;
-    }
-    setError("");
-    setLoading(true);
+  const onVerifyOtp = async (otp: string) => {
     try {
       await verifyResetOtp(email, otp);
       navigate({ to: "/auth/reset-password", search: { email, otp } });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Mã OTP không đúng");
-    } finally {
-      setLoading(false);
+      throw err;
     }
+  };
+
+  const onResendOtp = async () => {
+    await requestPasswordReset(email);
+    toast.success("Mã OTP đã được gửi lại");
   };
 
   return (
@@ -80,7 +72,7 @@ function ForgotPasswordPage() {
         <CardDescription>
           {step === "email"
             ? "Nhập email để nhận mã xác nhận OTP"
-            : `Nhập mã OTP đã gửi tới ${email}`}
+            : "Nhập mã OTP đã gửi tới email của bạn"}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -94,6 +86,7 @@ function ForgotPasswordPage() {
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
               {error && <p className="text-xs text-destructive">{error}</p>}
             </div>
@@ -102,45 +95,18 @@ function ForgotPasswordPage() {
               className="w-full bg-gradient-brand shadow-brand hover:opacity-90"
               disabled={loading}
             >
-              {loading ? "Đang gửi..." : "Gửi mã OTP"}
+              {loading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" />Đang gửi...</> : "Gửi mã OTP"}
             </Button>
           </form>
         ) : (
-          <form onSubmit={onVerifyOtp} className="space-y-4">
-            <div className="space-y-2 flex flex-col items-center">
-              <Label htmlFor="otp" className="self-start">
-                Mã OTP
-              </Label>
-              <InputOTP maxLength={6} value={otp} onChange={setOtp}>
-                <InputOTPGroup>
-                  <InputOTPSlot index={0} />
-                  <InputOTPSlot index={1} />
-                  <InputOTPSlot index={2} />
-                  <InputOTPSlot index={3} />
-                  <InputOTPSlot index={4} />
-                  <InputOTPSlot index={5} />
-                </InputOTPGroup>
-              </InputOTP>
-              {error && (
-                <p className="text-xs text-destructive self-start">{error}</p>
-              )}
-            </div>
-            <Button
-              type="submit"
-              className="w-full bg-gradient-brand shadow-brand hover:opacity-90"
-              disabled={loading}
-            >
-              {loading ? "Đang xác nhận..." : "Xác nhận"}
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              className="w-full"
-              onClick={() => setStep("email")}
-            >
-              Đổi email khác
-            </Button>
-          </form>
+          <OtpVerification
+            email={email}
+            loading={loading}
+            onVerify={onVerifyOtp}
+            onResend={onResendOtp}
+            onChangeEmail={() => setStep("email")}
+            mode="otp"
+          />
         )}
         <Link
           to="/auth/login"

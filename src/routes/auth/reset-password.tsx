@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -85,6 +85,7 @@ function ResetPasswordPage() {
               autoComplete="new-password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
+              disabled={loading}
             />
             {errors.password && (
               <p className="text-xs text-destructive">{errors.password}</p>
@@ -97,14 +98,11 @@ function ResetPasswordPage() {
               type="password"
               autoComplete="new-password"
               value={form.confirmPassword}
-              onChange={(e) =>
-                setForm({ ...form, confirmPassword: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+              disabled={loading}
             />
             {errors.confirmPassword && (
-              <p className="text-xs text-destructive">
-                {errors.confirmPassword}
-              </p>
+              <p className="text-xs text-destructive">{errors.confirmPassword}</p>
             )}
           </div>
           <Button
@@ -112,7 +110,7 @@ function ResetPasswordPage() {
             className="w-full bg-gradient-brand shadow-brand hover:opacity-90"
             disabled={loading}
           >
-            {loading ? "Đang lưu..." : "Đổi mật khẩu"}
+            {loading ? <><Loader2 className="h-4 w-4 animate-spin mr-2" />Đang lưu...</> : "Đổi mật khẩu"}
           </Button>
         </form>
         <Link

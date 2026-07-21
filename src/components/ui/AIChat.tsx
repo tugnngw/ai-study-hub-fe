@@ -16,6 +16,7 @@ import {
   Upload,
   ZoomIn,
   ZoomOut,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -58,12 +59,14 @@ import { DocumentViewer } from "@/components/document-viewer";
 import { AISummary } from "@/features/ai/AISummary";
 import { FlashcardTab } from "@/features/ai/FlashcardTab";
 import { QuizTab } from "@/features/ai/QuizTab";
+import { DocumentStatusBadge } from "@/components/ui/document-status-badge";
 import { useGenerateSummary, useSummary } from "@/lib/queries";
 import type { GenerateSummaryResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import type { Document } from "@/lib/types";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { isAIAvailable, aiUnavailableReason } from "@/lib/document-status";
 
 interface ChatMsg {
   role: "user" | "assistant";
@@ -114,7 +117,10 @@ export function AIChat({
   const sessionDetail = useRagSessionDetail(activeSessionId);
   const deleteSession = useDeleteRagSession();
   const ragStatus = useRagStatus(docId ?? "");
-  const aiStatus = ragStatus.data?.status ?? doc.data?.aiStatus ?? "NOT_STARTED";
+  const aiStatus = (ragStatus.data as any)?.status ?? doc.data?.aiStatus ?? "NOT_STARTED";
+  const docStatus = doc.data?.status;
+  const aiAllowed = isAIAvailable(docStatus);
+  const aiBlockReason = aiUnavailableReason(docStatus);
 
   const sessions = sessionsQuery.data ?? [];
 
@@ -520,7 +526,9 @@ export function AIChat({
           )}{" "}
           {activeTab === "summary" && (
             <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
-            {aiStatus === "NOT_STARTED" ? (
+            {!aiAllowed ? (
+              <AiBlockedOverlay reason={aiBlockReason} />
+            ) : aiStatus === "NOT_STARTED" ? (
               <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <Sparkles className="h-12 w-12 text-muted-foreground/40" />
                 <p className="text-sm text-muted-foreground">Knowledge has not been prepared.</p>
@@ -549,7 +557,7 @@ export function AIChat({
                 onGenerate={(opts) =>
                   generateSummary.mutate(opts, {
                     onSuccess: (data: GenerateSummaryResponse) => {
-                      setSummary(data.markdown);
+                      setSummary(data.markdown ?? null);
                       toast.success("Summary generated!");
                     },
                     onError: (err) =>
@@ -562,7 +570,9 @@ export function AIChat({
           )}
           {activeTab === "flashcards" && (
             <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
-            {aiStatus === "NOT_STARTED" ? (
+            {!aiAllowed ? (
+              <AiBlockedOverlay reason={aiBlockReason} />
+            ) : aiStatus === "NOT_STARTED" ? (
               <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <Sparkles className="h-12 w-12 text-muted-foreground/40" />
                 <p className="text-sm text-muted-foreground">Knowledge has not been prepared.</p>
@@ -589,7 +599,9 @@ export function AIChat({
           )}
           {activeTab === "quizzes" && (
             <div className="flex-1 min-h-0 overflow-hidden flex flex-col">
-            {aiStatus === "NOT_STARTED" ? (
+            {!aiAllowed ? (
+              <AiBlockedOverlay reason={aiBlockReason} />
+            ) : aiStatus === "NOT_STARTED" ? (
               <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <Sparkles className="h-12 w-12 text-muted-foreground/40" />
                 <p className="text-sm text-muted-foreground">Knowledge has not been prepared.</p>
@@ -687,9 +699,10 @@ export function AIChat({
               </DropdownMenuContent>
             </DropdownMenu>
             {doc.data?.title && (
-              <span className="text-xs text-muted-foreground truncate shrink-0 ml-auto max-w-[160px]" title={doc.data.title}>
-                <FileText className="h-3 w-3 inline-block mr-1 -mt-0.5" />
-                {doc.data.title}
+              <span className="text-xs text-muted-foreground truncate shrink-0 ml-auto max-w-[160px] flex items-center gap-1.5" title={doc.data.title}>
+                <FileText className="h-3 w-3 shrink-0 -mt-0.5" />
+                <span className="truncate">{doc.data.title}</span>
+                <DocumentStatusBadge status={doc.data.status} className="text-[10px] px-1 py-0 h-auto" />
               </span>
             )}
           </div>
@@ -771,7 +784,11 @@ export function AIChat({
             )}
           </div>
 
-          {aiStatus === "COMPLETED" ? (
+          {!aiAllowed ? (
+            <div className="p-3 border-t border-border text-center text-xs text-muted-foreground">
+              {aiBlockReason}
+            </div>
+          ) : aiStatus === "COMPLETED" ? (
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -829,6 +846,17 @@ export function AIChat({
           folderId={folderId}
         />
       </div>
+  );
+}
+
+function AiBlockedOverlay({ reason }: { reason: string | null }) {
+  return (
+    <div className="flex flex-col items-center justify-center h-full gap-4 p-8 text-center">
+      <AlertTriangle className="h-12 w-12 text-amber-500" />
+      <p className="text-sm text-muted-foreground max-w-sm">
+        {reason ?? "Tính năng AI không khả dụng cho tài liệu này."}
+      </p>
+    </div>
   );
 }
 

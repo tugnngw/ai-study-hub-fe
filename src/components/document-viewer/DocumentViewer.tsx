@@ -10,7 +10,8 @@ import {
 } from "./fileTypeDetection";
 import type { Document } from "@/lib/types";
 import { Card } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Clock, XCircle } from "lucide-react";
+import { isContentAccessible, contentBlockedReason } from "@/lib/document-status";
 
 interface DocumentViewerProps {
   document: Document;
@@ -74,9 +75,33 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
     );
   }
 
-  // COMPLETED means upload done, admin may or may not approve yet.
-  // We still show the file so the user can preview it.
-  // Only block when the doc is clearly rejected or banned.
+  // COMPLETED/REJECT: show placeholder with metadata, no file content.
+  if (!isContentAccessible(document.status)) {
+    const blockReason = contentBlockedReason(document.status);
+    return (
+      <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
+        <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
+          {document.status === "COMPLETED" ? (
+            <Clock className="h-16 w-16 text-yellow-500 mb-4" />
+          ) : (
+            <XCircle className="h-16 w-16 text-red-500 mb-4" />
+          )}
+          <h3 className="text-lg font-semibold mb-2">
+            {document.status === "COMPLETED" ? "Đang chờ phê duyệt" : "Tài liệu bị từ chối"}
+          </h3>
+          <p className="text-sm text-muted-foreground max-w-md mb-4">
+            {blockReason}
+          </p>
+          {document.rejectReason && (
+            <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg p-3 max-w-md text-left">
+              <p className="text-sm font-medium text-red-800 dark:text-red-300">Lý do từ chối:</p>
+              <p className="text-sm text-red-700 dark:text-red-400 mt-1">{document.rejectReason}</p>
+            </div>
+          )}
+        </div>
+      </Card>
+    );
+  }
 
   if (document.status === "REPORTED") {
     return (
@@ -124,54 +149,20 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   const fileName = document.title || extractFileName(fileUrl);
 
   // Render appropriate viewer based on detected type
-  switch (fileType) {
-    case "pdf":
-      console.log('[Debug Flow] DocumentViewer: Rendering PdfViewer');
-      return (
-        <PdfViewer
-          url={fileUrl}
-          fileName={fileName}
-          className={className}
-          documentId={document.id}
-          fileSize={document.fileSize}
-          mimeType={document.mimeType}
-          totalPages={document.totalPages}
-          createdAt={document.createdAt}
-        />
-      );
+  const viewer = (() => {
+    switch (fileType) {
+      case "pdf":
+        return <PdfViewer url={fileUrl} fileName={fileName} className={className} documentId={document.id} fileSize={document.fileSize} mimeType={document.mimeType} totalPages={document.totalPages} createdAt={document.createdAt} />;
+      case "docx":
+        return <DocxViewer url={fileUrl} fileName={fileName} className={className} />;
+      case "txt":
+        return <TextViewer url={fileUrl} fileName={fileName} className={className} />;
+      default:
+        return <UnsupportedFileViewer fileName={fileName} detectedType={getTypeLabel("unsupported")} fileUrl={fileUrl} className={className} />;
+    }
+  })();
 
-    case "docx":
-      console.log('[Debug Flow] DocumentViewer: Rendering DocxViewer');
-      return (
-        <DocxViewer
-          url={fileUrl}
-          fileName={fileName}
-          className={className}
-        />
-      );
-
-    case "txt":
-      console.log('[Debug Flow] DocumentViewer: Rendering TextViewer');
-      return (
-        <TextViewer
-          url={fileUrl}
-          fileName={fileName}
-          className={className}
-        />
-      );
-
-    case "unsupported":
-    default:
-      console.log('[Debug Flow] DocumentViewer: Rendering UnsupportedFileViewer');
-      return (
-        <UnsupportedFileViewer
-          fileName={fileName}
-          detectedType={getTypeLabel("unsupported")}
-          fileUrl={fileUrl}
-          className={className}
-        />
-      );
-  }
+  return <>{viewer}</>;
 };
 
 export type { Document } from "@/lib/types";

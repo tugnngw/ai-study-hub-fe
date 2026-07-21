@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { authApi } from "@/lib/realApi";
 import { tokenStore } from "@/lib/api";
 import { Button } from "@/components/ui/button";
+import { OtpVerification } from "@/components/ui/otp-verification";
 import {
   Card,
   CardContent,
@@ -12,23 +13,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Loader2, CheckCircle2, XCircle, Mail, RefreshCw } from "lucide-react";
+import { Loader2, CheckCircle2, XCircle, Mail } from "lucide-react";
 
 export const Route = createFileRoute("/verify-email")({
   component: VerifyEmailPage,
 });
-
-const COOLDOWN_SECONDS = 30;
 
 type VerifyState = "idle" | "verifying" | "success" | "error";
 
 function VerifyEmailPage() {
   const navigate = useNavigate();
   const [state, setState] = useState<VerifyState>("idle");
-  const [errorMsg, setErrorMsg] = useState("");
-  const [resendCooldown, setResendCooldown] = useState(0);
-  const [resending, setResending] = useState(false);
-  const cooldownRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const verifiedRef = useRef(false);
 
   // Auto-start verification if token is present in URL
@@ -66,49 +63,28 @@ function VerifyEmailPage() {
     doVerify();
   }, [navigate]);
 
-  // Cleanup cooldown interval on unmount
-  useEffect(() => {
-    return () => {
-      if (cooldownRef.current) clearInterval(cooldownRef.current);
-    };
-  }, []);
-
-  const startCooldown = () => {
-    setResendCooldown(COOLDOWN_SECONDS);
-    cooldownRef.current = setInterval(() => {
-      setResendCooldown((prev) => {
-        if (prev <= 1) {
-          if (cooldownRef.current) clearInterval(cooldownRef.current);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
   const handleResend = async () => {
-    if (resending || resendCooldown > 0) return;
-    setResending(true);
-
+    const token = tokenStore.get();
+    if (!token) {
+      const errText = "Vui lòng đăng nhập để gửi lại email xác thực.";
+      toast.error(errText);
+      setErrorMsg(errText);
+      throw new Error(errText);
+    }
+    setLoading(true);
+    setErrorMsg(null);
     try {
-      const token = tokenStore.get();
-      if (token) {
-        await authApi.resendVerification();
-      } else {
-        toast.error("Vui lòng đăng nhập để gửi lại email xác thực.");
-        setResending(false);
-        return;
-      }
+      await authApi.resendVerification();
       toast.success("Email xác thực đã được gửi lại!");
-      startCooldown();
-    } catch {
-      toast.error("Không thể gửi lại email xác thực. Vui lòng thử lại sau.");
+    } catch (err: any) {
+      const msg = err instanceof Error ? err.message : "Không thể gửi lại email xác thực. Vui lòng thử lại sau.";
+      toast.error(msg);
+      setErrorMsg(msg);
+      throw err;
     } finally {
-      setResending(false);
+      setLoading(false);
     }
   };
-
-  const canResend = !resending && resendCooldown === 0;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
@@ -158,20 +134,14 @@ function VerifyEmailPage() {
                   để gửi lại.
                 </div>
 
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  disabled={!canResend}
-                  onClick={handleResend}
-                >
-                  {resending ? (
-                    <><Loader2 className="h-4 w-4 animate-spin mr-2" />Đang gửi...</>
-                  ) : resendCooldown > 0 ? (
-                    <>Gửi lại ({resendCooldown}s)</>
-                  ) : (
-                    <><RefreshCw className="h-4 w-4 mr-2" />Gửi lại email xác thực</>
-                  )}
-                </Button>
+                <OtpVerification
+                  email=""
+                  loading={loading}
+                  onVerify={async () => {}}
+                  onResend={handleResend}
+                  errorMessage={errorMsg}
+                  mode="resend-only"
+                />
 
                 <Button
                   variant="link"
@@ -213,24 +183,14 @@ function VerifyEmailPage() {
                   </div>
                 </div>
 
-                <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-3 text-xs text-destructive">
-                  {errorMsg}
-                </div>
-
-                <Button
-                  variant="outline"
-                  className="w-full"
-                  disabled={!canResend}
-                  onClick={handleResend}
-                >
-                  {resending ? (
-                    <><Loader2 className="h-4 w-4 animate-spin mr-2" />Đang gửi...</>
-                  ) : resendCooldown > 0 ? (
-                    <>Gửi lại ({resendCooldown}s)</>
-                  ) : (
-                    <><RefreshCw className="h-4 w-4 mr-2" />Gửi lại email xác thực</>
-                  )}
-                </Button>
+                <OtpVerification
+                  email=""
+                  loading={loading}
+                  onVerify={async () => {}}
+                  onResend={handleResend}
+                  errorMessage={errorMsg}
+                  mode="resend-only"
+                />
 
                 <Button
                   className="w-full bg-gradient-brand shadow-brand hover:opacity-90"
@@ -246,3 +206,4 @@ function VerifyEmailPage() {
     </div>
   );
 }
+

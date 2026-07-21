@@ -46,7 +46,7 @@ export const AdminTrashPage: React.FC = () => {
   const permanentDelete = usePermanentDelete();
   const restoreItem = useRestoreItem();
 
-  const handleAction = (id: number, type: TrashItemType, act: TrashAction) => {
+  const handleAction = (id: string, type: TrashItemType, act: TrashAction) => {
     if (act === "delete") {
       if (!window.confirm("Xóa vĩnh viễn mục này?")) return;
       permanentDelete.mutate(
@@ -61,7 +61,7 @@ export const AdminTrashPage: React.FC = () => {
     }
   };
 
-  const ActionButtons = ({ id, type }: { id: number; type: TrashItemType }) => (
+  const ActionButtons = ({ id, type }: { id: string; type: TrashItemType }) => (
     <div className="flex justify-end gap-2">
       <Button
         variant="outline"

@@ -143,7 +143,10 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
                 <Skeleton key={i} className="h-9 rounded-lg" />
               ))}
             {docs
-              .filter((d: any) => d.status?.toUpperCase() !== "BANNED")
+              .filter((d: any) => {
+                const s = d.status?.toUpperCase();
+                return s !== "BANNED" && s !== "REJECT" && s !== "COMPLETED";
+              })
               .map((d: any) => {
                 const active = d.id === docId;
                 return (
@@ -205,7 +208,10 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {docs
-                  .filter((d: any) => d.status?.toUpperCase() !== "BANNED")
+                  .filter((d: any) => {
+                    const s = d.status?.toUpperCase();
+                    return s !== "BANNED" && s !== "REJECT" && s !== "COMPLETED";
+                  })
                   .map((d: any) => (
                     <button
                       key={d.id}

@@ -142,7 +142,7 @@ export const AdminUsersPage: React.FC = () => {
                                   variant="outline"
                                   size="sm"
                                   className="text-destructive hover:text-destructive"
-                                  disabled={deleteUser.isPending}
+                                  disabled={deleteUser.isPending || u.status === "Xóa mềm"}
                                   onClick={() => {
                                      if (window.confirm(`Xóa thành viên "${u.name ?? ""}"?`))
                                       deleteUser.mutate(u.id, {
@@ -151,7 +151,7 @@ export const AdminUsersPage: React.FC = () => {
                                       });
                                   }}
                               >
-                                <Trash2 className="h-3.5 w-3.5" /> Xóa
+                                <Trash2 className="h-3.5 w-3.5" /> {u.status === "Xóa mềm" ? "Đã xóa" : "Xóa"}
                               </Button>
                             </div>
                           </TableCell>

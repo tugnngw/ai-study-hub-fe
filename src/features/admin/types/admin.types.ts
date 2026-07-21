@@ -22,7 +22,7 @@ export interface ActivityItem {
 }
 
 // ── Users ──────────────────────────────────────────────
-export type UserStatus = "ACTIVE" | "BANNED" | "Hoạt động" | "Khóa";
+export type UserStatus = "ACTIVE" | "BANNED" | "Hoạt động" | "Khóa" | "Ngưng hoạt động (Khóa)" | "Xóa mềm";
 export type PlanId = "FREE" | "PLUS" | "PRO";
 
 export interface AdminUserItem {
@@ -34,6 +34,7 @@ export interface AdminUserItem {
   role?: string;
   createdAt?: string;
   lastLoginAt?: string;
+  deletedAt?: string;
 }
 
 // ── Document ──────────────────────────────────────────

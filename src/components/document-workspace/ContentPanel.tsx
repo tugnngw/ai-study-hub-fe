@@ -1,6 +1,7 @@
-import { Download, ExternalLink, FileText, Loader2, RotateCw, Trash2, Upload } from "lucide-react";
+import { Download, ExternalLink, FileText, Loader2, RotateCw, Trash2, Upload, AlertTriangle } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { DocumentViewer } from "@/components/document-viewer";
+import { DocumentStatusBadge } from "@/components/ui/document-status-badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -10,6 +11,7 @@ import { FlashcardsTab } from "./FlashcardsTab";
 import { QuizzesTab } from "./QuizzesTab";
 import { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 import { UploadDialog } from "./DocumentWorkspace";
+import { isAIAvailable, aiUnavailableReason } from "@/lib/document-status";
 
 type Tab = "original" | "notes" | "summary" | "flashcards" | "quizzes";
 
@@ -54,6 +56,9 @@ export function ContentPanel({
         }
     };
 
+    const aiAllowed = isAIAvailable(doc.data?.status);
+    const aiBlockReason = aiUnavailableReason(doc.data?.status);
+
     const handleDelete = async () => {
         if (!docId) return;
         if (!confirm("Xoá tài liệu này (chuyển vào Thùng rác)?")) return;
@@ -76,9 +81,13 @@ export function ContentPanel({
                     [
                         { id: "original", label: "Nội dung gốc" },
                         { id: "notes", label: "Ghi chú AI" },
-                        { id: "summary", label: "Tóm tắt AI" },
-                        { id: "flashcards", label: "Flashcards AI" },
-                        { id: "quizzes", label: "Quizzes AI" },
+                        ...(aiAllowed
+                            ? [
+                                { id: "summary", label: "Tóm tắt AI" } as const,
+                                { id: "flashcards", label: "Flashcards AI" } as const,
+                                { id: "quizzes", label: "Quizzes AI" } as const,
+                            ]
+                            : []),
                     ] as { id: Tab; label: string }[]
                 ).map((t) => (
                     <button
@@ -119,6 +128,9 @@ export function ContentPanel({
                                     <div className="text-xs text-muted-foreground">
                                         {folderDocs.data?.length ?? 0} tài liệu
                                     </div>
+                                    {doc.data?.status && (
+                                        <DocumentStatusBadge status={doc.data.status} />
+                                    )}
                                 </div>
                                 <Button
                                     variant="ghost"
@@ -227,6 +239,13 @@ export function ContentPanel({
                             placeholder="Ghi chú của bạn về tài liệu này..."
                             className="min-h-[300px] resize-none"
                         />
+                    </div>
+                ) : !aiAllowed && (tab as string) !== "original" && (tab as string) !== "notes" ? (
+                    <div className="flex flex-col items-center justify-center h-full gap-4 p-8 text-center">
+                        <AlertTriangle className="h-12 w-12 text-amber-500" />
+                        <p className="text-sm text-muted-foreground max-w-sm">
+                            {aiBlockReason ?? "Tính năng AI không khả dụng."}
+                        </p>
                     </div>
                 ) : tab === "summary" ? (
                     <SummaryTab
