@@ -33,6 +33,6 @@ export const ragApi = {
   ask: (input: AskRequest): Promise<AskResponse> =>
     api<AskResponse>("/api/rag/ask", {
       method: "POST",
-      body: { id: input.id, question: input.question },
+      body: { id: input.documentId, question: input.question },
     }),
 };

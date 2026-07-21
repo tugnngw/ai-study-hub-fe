@@ -17,8 +17,12 @@ export interface Folder {
 
 export interface CreateFolderRequest {
   name: string;
+  subjectId?: string;
+  description?: string;
 }
 
 export interface UpdateFolderRequest {
   name: string;
+  subjectId?: string;
+  description?: string;
 }

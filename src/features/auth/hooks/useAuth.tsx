@@ -73,7 +73,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async () => {
         if (!tokenStore.get() || !tokenStore.getRefresh()) {
           setUser(null);
-          clearInterval(this);
+          clearInterval(interval);
           return;
         }
         try {

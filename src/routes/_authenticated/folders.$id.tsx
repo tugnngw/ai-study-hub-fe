@@ -1,5 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
+import { useEffect } from "react";
+import { useDocument } from "@/lib/queries";
 import { DocumentWorkspace } from "@/components/document-workspace";
 
 const searchSchema = z.object({

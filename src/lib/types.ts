@@ -1,4 +1,64 @@
 // =============================================================
+// AUTH types
+// =============================================================
+export interface RegisterRequest {
+  username: string;
+  password: string;
+  fullName?: string;
+}
+
+export interface LoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface AuthResponse {
+  accessToken: string;
+  refreshToken?: string;
+  expiresIn: number;
+  userId: string;
+  username: string;
+  email: string;
+  fullName: string;
+  role: string;
+}
+
+export interface RefreshResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface User {
+  id: string;
+  username: string;
+  email: string;
+  fullName: string;
+  avatarUrl?: string | null;
+  role: "USER" | "ADMIN";
+  status: "ACTIVE" | "BANNED";
+  authProvider: "LOCAL" | "GOOGLE";
+  providerId?: string;
+  lastLoginAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
+  version?: number;
+  storageGb?: number;
+  plan?: string;
+  planExpiresAt?: string | null;
+}
+
+export interface QuestionResponse {
+  id: string;
+  content: string;
+  optionA: string;
+  optionB: string;
+  optionC: string;
+  optionD: string;
+  correctAnswer: string;
+}
+
+// =============================================================
 // PLAN / SUBSCRIPTION
 // =============================================================
 export interface Plan {
@@ -84,6 +144,7 @@ export interface RagStatusResponse {
 
 export interface AskRequest {
   sessionId?: string | null;
+  folderId?: string;
   documentId: string;
   question: string;
 }
@@ -150,5 +211,93 @@ export interface QuizResponse {
 export interface ReportDocumentRequest {
   id: string;
   reason: string;
-  description: string;
+  description?: string;
+}
+
+// =============================================================
+// FOLDER types
+// =============================================================
+export interface Folder {
+  id: string;
+  ownerId: string;
+  name: string;
+  aiSummary?: string | null;
+  subjectId?: string | null;
+  semesterId?: string | null;
+  description?: string | null;
+  documentCount?: number | null;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
+}
+
+export interface CreateFolderRequest {
+  name: string;
+  subjectId?: string;
+  description?: string;
+}
+
+export interface UpdateFolderRequest {
+  name: string;
+  subjectId?: string;
+  description?: string;
+}
+
+// =============================================================
+// DOCUMENT types
+// =============================================================
+export interface UploadDocumentRequest {
+  file?: File;
+  files?: File[];
+  title: string;
+  description?: string;
+  folderId?: string;
+  subjectId?: number;
+}
+
+export interface UpdateDocumentRequest {
+  title?: string;
+  description?: string;
+  folderId?: string;
+}
+
+export interface DownloadUrlResponse {
+  url: string;
+  expiresAt: string;
+}
+
+// =============================================================
+// SHARE types
+// =============================================================
+export interface ShareResponse {
+  id: string;
+  folderId: string | null;
+  documentId: string | null;
+  ownerId: string;
+  ownerUsername: string;
+  ownerEmail: string;
+  sharedAccountId: string | null;
+  sharedUsername: string | null;
+  sharedEmail: string | null;
+  visibility: string;
+  shareToken: string;
+  shareLink: string;
+  createdAt: string;
+  recipients: ShareRecipient[];
+  documentTitle: string | null;
+  folderName: string | null;
+  fileCount: number | null;
+}
+
+export interface ShareRequest {
+  folderId?: string;
+  documentId?: string;
+  username?: string;
+  email?: string;
+  visibility: "public" | "private";
+}
+
+export interface ShareRecipient {
+  username?: string;
+  email?: string;
 }

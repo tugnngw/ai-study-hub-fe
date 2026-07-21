@@ -18,7 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAdminDocuments, useApproveDocument, useRejectDocument, useDeleteDocument, useRestoreDocument } from "../hooks";
 import { FilePreviewDialog } from "./FilePreviewDialog";
 
-type TabValue = "all" | "pending" | "approved" | "rejected";
+type TabValue = "all" | "pending" | "approved" | "rejected" | "trash";
 
 const statusLabel: Record<string, string> = {
   COMPLETED: "Đã upload",
@@ -89,14 +89,15 @@ export const AdminFilesPage: React.FC = () => {
               <TabsTrigger value="pending">Chờ duyệt</TabsTrigger>
               <TabsTrigger value="approved">Đã duyệt</TabsTrigger>
               <TabsTrigger value="rejected">Từ chối</TabsTrigger>
+              <TabsTrigger value="trash">Thùng rác</TabsTrigger>
             </TabsList>
 
-            {["all", "pending", "approved", "rejected"].map((tab) => (
+            {["all", "pending", "approved", "rejected", "trash"].map((tab) => (
               <TabsContent key={tab} value={tab} className="space-y-4">
                 {tab === "trash" && (
                   <div className="px-4 py-3 bg-muted/50 rounded-lg border border-muted">
                     <p className="text-sm text-muted-foreground">
-                      💡 File trong thùng rác có thể được khôi phục lại cho user. Admin không thể xóa vĩnh viễn file tại đây.
+                      File trong thùng rác có thể được khôi phục lại cho user. Admin không thể xóa vĩnh viễn file tại đây.
                     </p>
                   </div>
                 )}

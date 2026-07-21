@@ -122,8 +122,8 @@ function DocumentsPage() {
                {filtered.map((d) => {
                 const folderInfo = folderLookup.get(d.folderId ?? "");
                 const folderName = folderInfo?.name || "-";
-                const semesterName = folderInfo?.semesterId ? semesterMap.get(folderInfo.semesterId) : "-";
-                const subjectName = folderInfo?.subjectId ? subjectNameMap.get(folderInfo.subjectId) : "-";
+                const semesterName = folderInfo?.semesterId ? (semesterMap.get(folderInfo.semesterId) ?? "-") : "-";
+                const subjectName = folderInfo?.subjectId ? (subjectNameMap.get(folderInfo.subjectId) ?? "-") : "-";
                 return (
                   <DocumentRow
                     key={d.id}
@@ -176,6 +176,7 @@ function DocumentRow({
   pinned: boolean;
   onTogglePin: () => void;
 }) {
+  const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
 
   const isRejected = status?.toUpperCase() === "REJECT";
@@ -228,8 +229,8 @@ function DocumentRow({
               <Pin className={cn("h-3.5 w-3.5", pinned ? "fill-amber-400 text-amber-500" : "text-muted-foreground")} />
             </button>
             <Link
-              to={isBlocked ? "#" : "/ai"}
-              search={isBlocked ? {} : { folderId, docId: id }}
+              to="/ai"
+              search={{ folderId, docId: id }}
               onClick={handleDocumentClick}
               className="flex items-center gap-2 hover:text-primary min-w-0"
             >

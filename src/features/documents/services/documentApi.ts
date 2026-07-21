@@ -16,7 +16,8 @@ export const documentApi = {
 
   upload: async (input: UploadDocumentRequest): Promise<Document[]> => {
     const fd = new FormData();
-    fd.append("files", input.file);
+    const files = input.files ?? (input.file ? [input.file] : []);
+    files.forEach((f) => fd.append("files", f));
     fd.append("title", input.title);
     if (input.description) {
       fd.append("description", input.description);

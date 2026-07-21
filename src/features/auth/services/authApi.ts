@@ -5,8 +5,8 @@ import { api, tokenStore, attemptRefresh } from "@/lib/api";
 import type { LoginRequest, RegisterRequest } from "@/lib/types";
 
 export const authApi = {
-  register: (data: RegisterRequest) =>
-    api<void>("/api/auth/register", { method: "POST", body: data }),
+  register: (data: RegisterRequest): Promise<any> =>
+    api<any>("/api/auth/register", { method: "POST", body: data }),
 
   login: async (data: LoginRequest): Promise<any> => {
     const res = await api<any>("/api/auth/login", {

@@ -22,7 +22,7 @@ export interface ActivityItem {
 }
 
 // ── Users ──────────────────────────────────────────────
-export type UserStatus = "ACTIVE" | "BANNED" | "Hoạt động" | "Khóa";
+export type UserStatus = "ACTIVE" | "BANNED" | "Hoạt động" | "Khóa" | "Ngưng hoạt động (Khóa)" | "Xóa mềm" | "Không xác định";
 export type PlanId = "FREE" | "PLUS" | "PRO";
 
 export interface AdminUserItem {
@@ -45,6 +45,7 @@ export interface DocumentResponse {
   description?: string;
   status: DocumentStatus;
   ownerId: string;
+  ownerName?: string;
   fileSize?: number;
   createdAt: string;
   updatedAt: string;
@@ -54,6 +55,7 @@ export interface DocumentResponse {
   mimeType?: string;
   cloudinaryUrl?: string;
   aiStatus?: "NOT_STARTED" | "PROCESSING" | "COMPLETED" | "FAILED";
+  rejectReason?: string;
 }
 
 // ── Reported / managed files ───────────────────────────
@@ -66,9 +68,14 @@ export interface ReportedFileItem {
   reports: number;
   reporter: string;
   reason: string;
+  status?: string;
+  createdAt?: string;
+  documentTitle?: string;
+  reporterId?: string;
+  reporterUsername?: string;
 }
 
-export type ReportDecision = "approve" | "reject";
+export type ReportDecision = "approve" | "reject" | "remove";
 
 // ── Approval queue ─────────────────────────────────────
 export interface ApprovalItem {
@@ -158,7 +165,7 @@ export interface TransactionItem {
 
 // ── Plan catalog ──────────────────────────────────────
 export interface PlanOption {
-  id: Exclude<PlanId, "FREE">;
+  id: string;
   name: string;
   price: number;
   tagline: string;

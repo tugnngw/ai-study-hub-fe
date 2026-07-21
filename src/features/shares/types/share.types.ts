@@ -22,7 +22,8 @@ export interface ShareResponse {
 }
 
 export interface ShareRequest {
-  folderId: string;
+  folderId?: string;
+  documentId?: string;
   username?: string;
   email?: string;
   visibility: "public" | "private";

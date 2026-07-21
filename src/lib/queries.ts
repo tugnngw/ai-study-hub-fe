@@ -514,7 +514,7 @@ export function useRagStatus(documentId: string) {
     enabled: !!documentId,
     refetchInterval: (query) => {
       const data = query.state.data as RagStatusResponse | undefined;
-      if (data?.status === "PROCESSING") return 3000;
+      if (data?.aiStatus === "PROCESSING") return 3000;
       return false;
     },
   });

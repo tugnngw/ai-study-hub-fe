@@ -307,7 +307,6 @@ export function UploadDocumentDialog({
                 <Select
                   value={folderId}
                   onValueChange={(v) => setFolderId(v === "__none" ? "" : v)}
-                  className="flex-1"
                 >
                   <SelectTrigger className="flex-1">
                     <SelectValue

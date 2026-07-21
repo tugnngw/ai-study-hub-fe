@@ -25,7 +25,7 @@ export const adminFileApi = {
     try {
       const reports = await reportApi.getReports();
       return reports.map((r) => ({
-        id: r.documentId,
+        id: r.documentId ?? r.id,
         name: r.documentTitle || "Unknown",
         uploader: r.reporterId || "Unknown",
         size: "N/A",
@@ -41,7 +41,7 @@ export const adminFileApi = {
 
   handleReportDecision: async (id: string, decision: ReportDecision): Promise<boolean> => {
     if (decision === "remove") {
-      await adminDocumentApi.reject(id);
+      await adminDocumentApi.reject({ id });
     } else {
       await adminDocumentApi.approve(id);
     }

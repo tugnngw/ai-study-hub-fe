@@ -9,7 +9,7 @@ interface Props {
   isLoading: boolean;
 }
 
-type AnswerMap = Map<number, string>;
+type AnswerMap = Map<string, string>;
 
 interface ShuffledOption {
   label: string;
@@ -19,9 +19,9 @@ interface ShuffledOption {
 export function QuizViewer({ quizzes, isLoading }: Props) {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState<AnswerMap>(new Map());
-  const [revealed, setRevealed] = useState<Set<number>>(new Set());
+  const [revealed, setRevealed] = useState<Set<string>>(new Set());
   const [finished, setFinished] = useState(false);
-  const [shuffledOptions, setShuffledOptions] = useState<Map<number, ShuffledOption[]>>(new Map());
+  const [shuffledOptions, setShuffledOptions] = useState<Map<string, ShuffledOption[]>>(new Map());
   const [shuffledQuestions, setShuffledQuestions] = useState<{ q: QuestionResponse }[] | null>(null);
   const [isShuffled, setIsShuffled] = useState(false);
 

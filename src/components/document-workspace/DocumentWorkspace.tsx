@@ -37,8 +37,7 @@ export function DocumentWorkspace({
 }) {
   const folder = useFolder(folderId);
   const folderDocs = useDocumentsByFolder(folderId);
-  const isValidDocId = Boolean(docId);
-  const doc = useDocument(isValidDocId ? docId : "");
+  const doc = useDocument(docId ?? "");
   const del = useDeleteDocument();
   const chat = useRagChat();
   const download = useDownloadDocument();
@@ -103,7 +102,7 @@ export function DocumentWorkspace({
             input={input}
             setInput={setInput}
             submitChat={submitChat}
-            isPending={ask.isPending}
+            isPending={chat.isPending}
             isDocSelected={Boolean(docId)}
         />
       </div>

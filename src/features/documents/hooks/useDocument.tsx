@@ -10,11 +10,11 @@ export function useDocument(id: string) {
     enabled: !!id,
     refetchInterval: (query) => {
       const data = query.state.data as Document | undefined;
-      return data?.status === "processing" ? 3000 : false;
+      return data?.aiStatus === "PROCESSING" ? 3000 : false;
     },
     refetchOnWindowFocus: (query) => {
       const data = query.state.data as Document | undefined;
-      return data?.status === "processing";
+      return data?.aiStatus === "PROCESSING";
     },
   });
 }

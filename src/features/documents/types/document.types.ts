@@ -27,7 +27,8 @@ export interface Document {
 }
 
 export interface UploadDocumentRequest {
-  file: File;
+  file?: File;
+  files?: File[];
   title: string;
   description?: string;
   folderId?: string;

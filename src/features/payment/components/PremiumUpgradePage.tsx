@@ -57,10 +57,10 @@ export function PremiumUpgradePage() {
     // Ưu tiên data từ subQuery nếu có
     if (subQuery.data) {
       setCurrentPlan(subQuery.data.planName.toUpperCase());
-      setExpiresAt(subQuery.data.endDate);
+      setExpiresAt(subQuery.data.endDate ?? null);
     } else if (user?.plan) {
       setCurrentPlan(String(user.plan).toUpperCase());
-      setExpiresAt(user.planExpiresAt);
+      setExpiresAt(user.planExpiresAt ?? null);
     }
   }, [user?.plan, user?.planExpiresAt, subQuery.data]);
 

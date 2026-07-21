@@ -114,7 +114,7 @@ export function AIChat({
   const sessionDetail = useRagSessionDetail(activeSessionId);
   const deleteSession = useDeleteRagSession();
   const ragStatus = useRagStatus(docId ?? "");
-  const aiStatus = ragStatus.data?.status ?? doc.data?.aiStatus ?? "NOT_STARTED";
+  const aiStatus = ragStatus.data?.aiStatus ?? doc.data?.aiStatus ?? "NOT_STARTED";
 
   const sessions = sessionsQuery.data ?? [];
 
@@ -533,7 +533,7 @@ export function AIChat({
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
               </div>
-            ) : aiStatus === "REJECT" ? (
+            ) : aiStatus === "FAILED" ? (
               <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <p className="text-sm text-red-500">Knowledge preparation failed.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
@@ -549,7 +549,7 @@ export function AIChat({
                 onGenerate={(opts) =>
                   generateSummary.mutate(opts, {
                     onSuccess: (data: GenerateSummaryResponse) => {
-                      setSummary(data.markdown);
+                      setSummary(data.markdown ?? null);
                       toast.success("Summary generated!");
                     },
                     onError: (err) =>
@@ -575,7 +575,7 @@ export function AIChat({
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
               </div>
-            ) : aiStatus === "REJECT" ? (
+            ) : aiStatus === "FAILED" ? (
               <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <p className="text-sm text-red-500">Knowledge preparation failed.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">
@@ -602,7 +602,7 @@ export function AIChat({
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 <p className="text-sm text-muted-foreground">Preparing AI knowledge...</p>
               </div>
-            ) : aiStatus === "REJECT" ? (
+            ) : aiStatus === "FAILED" ? (
               <div className="flex flex-col items-center justify-center h-full gap-4 p-8">
                 <p className="text-sm text-red-500">Knowledge preparation failed.</p>
                 <Button onClick={handlePrepareKnowledge} disabled={processDoc.isPending} variant="outline">

@@ -22,11 +22,19 @@ export const sharesApi = {
       api<void>(`/api/shares/token/${shareToken}`, { method: "DELETE" }),
 
   // POST — Lưu shared item vào thư mục của tôi
-  saveShared: (shareId: string, body: { folderId: string; title?: string; description?: string }) =>
-    api<SaveToFolderResponse>(`/api/shares/${shareId}/save`, {
+  saveShared: (shareIdOrBody: string | { shareId: number | string; kind?: string; folderId?: string; newFolderName?: string; title?: string; description?: string }, body?: { folderId?: string; title?: string; description?: string }) => {
+    if (typeof shareIdOrBody === 'string') {
+      return api<SaveToFolderResponse>(`/api/shares/${shareIdOrBody}/save`, {
+        method: "POST",
+        body: body ?? {},
+      });
+    }
+    const opts = shareIdOrBody;
+    return api<SaveToFolderResponse>(`/api/shares/${opts.shareId}/save`, {
       method: "POST",
-      body,
-    }),
+      body: { folderId: opts.folderId ?? '', title: opts.title, description: opts.description },
+    });
+  },
 
   // GET — Lấy link chia sẻ
   getShareLink: (shareToken: string) =>

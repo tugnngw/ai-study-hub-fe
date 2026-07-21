@@ -117,6 +117,7 @@ export function getTypeLabel(type: SupportedFileType): string {
     pdf: "PDF",
     docx: "Word Document",
     txt: "Text File",
+    image: "Image",
     unsupported: "Unsupported File",
   };
   return labels[type];

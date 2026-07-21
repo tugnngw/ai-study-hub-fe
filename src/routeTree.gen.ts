@@ -9,52 +9,51 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as OauthSuccessRouteImport } from './routes/oauth-success'
-import { Route as AuthRouteRouteImport } from './routes/auth/route'
-import { Route as Admin_panelRouteRouteImport } from './routes/admin_panel/route'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthIndexRouteImport } from './routes/auth/index'
-import { Route as Admin_panelIndexRouteImport } from './routes/admin_panel/index'
-import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
-import { Route as AuthRegisterRouteImport } from './routes/auth/register'
-import { Route as AuthLoginRouteImport } from './routes/auth/login'
-import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
-import { Route as Admin_panelUsersRouteImport } from './routes/admin_panel/users'
-import { Route as Admin_panelTrashRouteImport } from './routes/admin_panel/trash'
-import { Route as Admin_panelTransactionsRouteImport } from './routes/admin_panel/transactions'
-import { Route as Admin_panelReport_historyRouteImport } from './routes/admin_panel/report_history'
-import { Route as Admin_panelProfileRouteImport } from './routes/admin_panel/profile'
-import { Route as Admin_panelPremiumRouteImport } from './routes/admin_panel/premium'
-import { Route as Admin_panelFilesRouteImport } from './routes/admin_panel/files'
-import { Route as Admin_panelApprovalsRouteImport } from './routes/admin_panel/approvals'
-import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
-import { Route as AuthenticatedTransactionsRouteImport } from './routes/_authenticated/transactions'
-import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
-import { Route as AuthenticatedReportedRouteImport } from './routes/_authenticated/reported'
-import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
-import { Route as AuthenticatedPremiumRouteImport } from './routes/_authenticated/premium'
-import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated/folders'
-import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedCloudRouteImport } from './routes/_authenticated/cloud'
-import { Route as AuthenticatedAiRouteImport } from './routes/_authenticated/ai'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as Admin_panelRouteRouteImport } from './routes/admin_panel/route'
+import { Route as AuthRouteRouteImport } from './routes/auth/route'
+import { Route as OauthSuccessRouteImport } from './routes/oauth-success'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as AuthenticatedSubjectsIdRouteImport } from './routes/_authenticated/subjects.$id'
-import { Route as AuthenticatedSharedShareIdRouteImport } from './routes/_authenticated/shared.$shareId'
-import { Route as AuthenticatedPaymentSuccessRouteImport } from './routes/_authenticated/payment.success'
-import { Route as AuthenticatedPaymentCancelRouteImport } from './routes/_authenticated/payment.cancel'
-import { Route as AuthenticatedFoldersIdRouteImport } from './routes/_authenticated/folders.$id'
+import { Route as AuthenticatedAiRouteImport } from './routes/_authenticated/ai'
+import { Route as AuthenticatedCloudRouteImport } from './routes/_authenticated/cloud'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
+import { Route as AuthenticatedFoldersRouteImport } from './routes/_authenticated/folders'
+import { Route as AuthenticatedPremiumRouteImport } from './routes/_authenticated/premium'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedReportedRouteImport } from './routes/_authenticated/reported'
+import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
+import { Route as AuthenticatedTransactionsRouteImport } from './routes/_authenticated/transactions'
+import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
+import { Route as Admin_panelIndexRouteImport } from './routes/admin_panel/index'
+import { Route as Admin_panelApprovalsRouteImport } from './routes/admin_panel/approvals'
+import { Route as Admin_panelFilesRouteImport } from './routes/admin_panel/files'
+import { Route as Admin_panelPremiumRouteImport } from './routes/admin_panel/premium'
+import { Route as Admin_panelProfileRouteImport } from './routes/admin_panel/profile'
+import { Route as Admin_panelReport_historyRouteImport } from './routes/admin_panel/report_history'
+import { Route as Admin_panelTransactionsRouteImport } from './routes/admin_panel/transactions'
+import { Route as Admin_panelTrashRouteImport } from './routes/admin_panel/trash'
+import { Route as Admin_panelUsersRouteImport } from './routes/admin_panel/users'
+import { Route as AuthIndexRouteImport } from './routes/auth/index'
+import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
+import { Route as AuthLoginRouteImport } from './routes/auth/login'
+import { Route as AuthRegisterRouteImport } from './routes/auth/register'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth/reset-password'
 import { Route as AuthenticatedDocumentsIdRouteImport } from './routes/_authenticated/documents.$id'
+import { Route as AuthenticatedFoldersIdRouteImport } from './routes/_authenticated/folders.$id'
+import { Route as AuthenticatedPaymentCancelRouteImport } from './routes/_authenticated/payment.cancel'
+import { Route as AuthenticatedPaymentSuccessRouteImport } from './routes/_authenticated/payment.success'
+import { Route as AuthenticatedSharedShareIdRouteImport } from './routes/_authenticated/shared.$shareId'
+import { Route as AuthenticatedSubjectsIdRouteImport } from './routes/_authenticated/subjects.$id'
 
-const OauthSuccessRoute = OauthSuccessRouteImport.update({
-  id: '/oauth-success',
-  path: '/oauth-success',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRouteRoute = AuthRouteRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Admin_panelRouteRoute = Admin_panelRouteRouteImport.update({
@@ -62,89 +61,64 @@ const Admin_panelRouteRoute = Admin_panelRouteRouteImport.update({
   path: '/admin_panel',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const AuthRouteRoute = AuthRouteRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const OauthSuccessRoute = OauthSuccessRouteImport.update({
+  id: '/oauth-success',
+  path: '/oauth-success',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthIndexRoute = AuthIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthRouteRoute,
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const Admin_panelIndexRoute = Admin_panelIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => Admin_panelRouteRoute,
+const AuthenticatedAiRoute = AuthenticatedAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => AuthRouteRoute,
+const AuthenticatedCloudRoute = AuthenticatedCloudRouteImport.update({
+  id: '/cloud',
+  path: '/cloud',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthRegisterRoute = AuthRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => AuthRouteRoute,
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthLoginRoute = AuthLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => AuthRouteRoute,
+const AuthenticatedDocumentsRoute = AuthenticatedDocumentsRouteImport.update({
+  id: '/documents',
+  path: '/documents',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => AuthRouteRoute,
+const AuthenticatedFoldersRoute = AuthenticatedFoldersRouteImport.update({
+  id: '/folders',
+  path: '/folders',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const Admin_panelUsersRoute = Admin_panelUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => Admin_panelRouteRoute,
-} as any)
-const Admin_panelTrashRoute = Admin_panelTrashRouteImport.update({
-  id: '/trash',
-  path: '/trash',
-  getParentRoute: () => Admin_panelRouteRoute,
-} as any)
-const Admin_panelTransactionsRoute = Admin_panelTransactionsRouteImport.update({
-  id: '/transactions',
-  path: '/transactions',
-  getParentRoute: () => Admin_panelRouteRoute,
-} as any)
-const Admin_panelReport_historyRoute =
-  Admin_panelReport_historyRouteImport.update({
-    id: '/report_history',
-    path: '/report_history',
-    getParentRoute: () => Admin_panelRouteRoute,
-  } as any)
-const Admin_panelProfileRoute = Admin_panelProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => Admin_panelRouteRoute,
-} as any)
-const Admin_panelPremiumRoute = Admin_panelPremiumRouteImport.update({
+const AuthenticatedPremiumRoute = AuthenticatedPremiumRouteImport.update({
   id: '/premium',
   path: '/premium',
-  getParentRoute: () => Admin_panelRouteRoute,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const Admin_panelFilesRoute = Admin_panelFilesRouteImport.update({
-  id: '/files',
-  path: '/files',
-  getParentRoute: () => Admin_panelRouteRoute,
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const Admin_panelApprovalsRoute = Admin_panelApprovalsRouteImport.update({
-  id: '/approvals',
-  path: '/approvals',
-  getParentRoute: () => Admin_panelRouteRoute,
+const AuthenticatedReportedRoute = AuthenticatedReportedRouteImport.update({
+  id: '/reported',
+  path: '/reported',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedTrashRoute = AuthenticatedTrashRouteImport.update({
-  id: '/trash',
-  path: '/trash',
+const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
+  id: '/shared',
+  path: '/shared',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedTransactionsRoute =
@@ -153,83 +127,81 @@ const AuthenticatedTransactionsRoute =
     path: '/transactions',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
-  id: '/shared',
-  path: '/shared',
+const AuthenticatedTrashRoute = AuthenticatedTrashRouteImport.update({
+  id: '/trash',
+  path: '/trash',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedReportedRoute = AuthenticatedReportedRouteImport.update({
-  id: '/reported',
-  path: '/reported',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const Admin_panelIndexRoute = Admin_panelIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => Admin_panelRouteRoute,
 } as any)
-const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const Admin_panelApprovalsRoute = Admin_panelApprovalsRouteImport.update({
+  id: '/approvals',
+  path: '/approvals',
+  getParentRoute: () => Admin_panelRouteRoute,
 } as any)
-const AuthenticatedPremiumRoute = AuthenticatedPremiumRouteImport.update({
+const Admin_panelFilesRoute = Admin_panelFilesRouteImport.update({
+  id: '/files',
+  path: '/files',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+const Admin_panelPremiumRoute = Admin_panelPremiumRouteImport.update({
   id: '/premium',
   path: '/premium',
-  getParentRoute: () => AuthenticatedRouteRoute,
+  getParentRoute: () => Admin_panelRouteRoute,
 } as any)
-const AuthenticatedFoldersRoute = AuthenticatedFoldersRouteImport.update({
-  id: '/folders',
-  path: '/folders',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const Admin_panelProfileRoute = Admin_panelProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => Admin_panelRouteRoute,
 } as any)
-const AuthenticatedDocumentsRoute = AuthenticatedDocumentsRouteImport.update({
-  id: '/documents',
-  path: '/documents',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedCloudRoute = AuthenticatedCloudRouteImport.update({
-  id: '/cloud',
-  path: '/cloud',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedAiRoute = AuthenticatedAiRouteImport.update({
-  id: '/ai',
-  path: '/ai',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedSubjectsIdRoute = AuthenticatedSubjectsIdRouteImport.update({
-  id: '/subjects/$id',
-  path: '/subjects/$id',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedSharedShareIdRoute =
-  AuthenticatedSharedShareIdRouteImport.update({
-    id: '/$shareId',
-    path: '/$shareId',
-    getParentRoute: () => AuthenticatedSharedRoute,
+const Admin_panelReport_historyRoute =
+  Admin_panelReport_historyRouteImport.update({
+    id: '/report_history',
+    path: '/report_history',
+    getParentRoute: () => Admin_panelRouteRoute,
   } as any)
-const AuthenticatedPaymentSuccessRoute =
-  AuthenticatedPaymentSuccessRouteImport.update({
-    id: '/payment/success',
-    path: '/payment/success',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedPaymentCancelRoute =
-  AuthenticatedPaymentCancelRouteImport.update({
-    id: '/payment/cancel',
-    path: '/payment/cancel',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedFoldersIdRoute = AuthenticatedFoldersIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AuthenticatedFoldersRoute,
+const Admin_panelTransactionsRoute = Admin_panelTransactionsRouteImport.update({
+  id: '/transactions',
+  path: '/transactions',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+const Admin_panelTrashRoute = Admin_panelTrashRouteImport.update({
+  id: '/trash',
+  path: '/trash',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+const Admin_panelUsersRoute = Admin_panelUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+const AuthIndexRoute = AuthIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthForgotPasswordRoute = AuthForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthRegisterRoute = AuthRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 const AuthenticatedDocumentsIdRoute =
   AuthenticatedDocumentsIdRouteImport.update({
@@ -237,6 +209,34 @@ const AuthenticatedDocumentsIdRoute =
     path: '/$id',
     getParentRoute: () => AuthenticatedDocumentsRoute,
   } as any)
+const AuthenticatedFoldersIdRoute = AuthenticatedFoldersIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedFoldersRoute,
+} as any)
+const AuthenticatedPaymentCancelRoute =
+  AuthenticatedPaymentCancelRouteImport.update({
+    id: '/payment/cancel',
+    path: '/payment/cancel',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPaymentSuccessRoute =
+  AuthenticatedPaymentSuccessRouteImport.update({
+    id: '/payment/success',
+    path: '/payment/success',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSharedShareIdRoute =
+  AuthenticatedSharedShareIdRouteImport.update({
+    id: '/$shareId',
+    path: '/$shareId',
+    getParentRoute: () => AuthenticatedSharedRoute,
+  } as any)
+const AuthenticatedSubjectsIdRoute = AuthenticatedSubjectsIdRouteImport.update({
+  id: '/subjects/$id',
+  path: '/subjects/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -478,25 +478,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/oauth-success': {
-      id: '/oauth-success'
-      path: '/oauth-success'
-      fullPath: '/oauth-success'
-      preLoaderRoute: typeof OauthSuccessRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin_panel': {
-      id: '/admin_panel'
-      path: '/admin_panel'
-      fullPath: '/admin_panel'
-      preLoaderRoute: typeof Admin_panelRouteRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -506,179 +492,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/admin_panel': {
+      id: '/admin_panel'
+      path: '/admin_panel'
+      fullPath: '/admin_panel'
+      preLoaderRoute: typeof Admin_panelRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth/': {
-      id: '/auth/'
-      path: '/'
-      fullPath: '/auth/'
-      preLoaderRoute: typeof AuthIndexRouteImport
-      parentRoute: typeof AuthRouteRoute
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/admin_panel/': {
-      id: '/admin_panel/'
-      path: '/'
-      fullPath: '/admin_panel/'
-      preLoaderRoute: typeof Admin_panelIndexRouteImport
-      parentRoute: typeof Admin_panelRouteRoute
+    '/oauth-success': {
+      id: '/oauth-success'
+      path: '/oauth-success'
+      fullPath: '/oauth-success'
+      preLoaderRoute: typeof OauthSuccessRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/auth/reset-password': {
-      id: '/auth/reset-password'
-      path: '/reset-password'
-      fullPath: '/auth/reset-password'
-      preLoaderRoute: typeof AuthResetPasswordRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/auth/register': {
-      id: '/auth/register'
-      path: '/register'
-      fullPath: '/auth/register'
-      preLoaderRoute: typeof AuthRegisterRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/auth/login': {
-      id: '/auth/login'
-      path: '/login'
-      fullPath: '/auth/login'
-      preLoaderRoute: typeof AuthLoginRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/auth/forgot-password': {
-      id: '/auth/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/auth/forgot-password'
-      preLoaderRoute: typeof AuthForgotPasswordRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/admin_panel/users': {
-      id: '/admin_panel/users'
-      path: '/users'
-      fullPath: '/admin_panel/users'
-      preLoaderRoute: typeof Admin_panelUsersRouteImport
-      parentRoute: typeof Admin_panelRouteRoute
-    }
-    '/admin_panel/trash': {
-      id: '/admin_panel/trash'
-      path: '/trash'
-      fullPath: '/admin_panel/trash'
-      preLoaderRoute: typeof Admin_panelTrashRouteImport
-      parentRoute: typeof Admin_panelRouteRoute
-    }
-    '/admin_panel/transactions': {
-      id: '/admin_panel/transactions'
-      path: '/transactions'
-      fullPath: '/admin_panel/transactions'
-      preLoaderRoute: typeof Admin_panelTransactionsRouteImport
-      parentRoute: typeof Admin_panelRouteRoute
-    }
-    '/admin_panel/report_history': {
-      id: '/admin_panel/report_history'
-      path: '/report_history'
-      fullPath: '/admin_panel/report_history'
-      preLoaderRoute: typeof Admin_panelReport_historyRouteImport
-      parentRoute: typeof Admin_panelRouteRoute
-    }
-    '/admin_panel/profile': {
-      id: '/admin_panel/profile'
-      path: '/profile'
-      fullPath: '/admin_panel/profile'
-      preLoaderRoute: typeof Admin_panelProfileRouteImport
-      parentRoute: typeof Admin_panelRouteRoute
-    }
-    '/admin_panel/premium': {
-      id: '/admin_panel/premium'
-      path: '/premium'
-      fullPath: '/admin_panel/premium'
-      preLoaderRoute: typeof Admin_panelPremiumRouteImport
-      parentRoute: typeof Admin_panelRouteRoute
-    }
-    '/admin_panel/files': {
-      id: '/admin_panel/files'
-      path: '/files'
-      fullPath: '/admin_panel/files'
-      preLoaderRoute: typeof Admin_panelFilesRouteImport
-      parentRoute: typeof Admin_panelRouteRoute
-    }
-    '/admin_panel/approvals': {
-      id: '/admin_panel/approvals'
-      path: '/approvals'
-      fullPath: '/admin_panel/approvals'
-      preLoaderRoute: typeof Admin_panelApprovalsRouteImport
-      parentRoute: typeof Admin_panelRouteRoute
-    }
-    '/_authenticated/trash': {
-      id: '/_authenticated/trash'
-      path: '/trash'
-      fullPath: '/trash'
-      preLoaderRoute: typeof AuthenticatedTrashRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/transactions': {
-      id: '/_authenticated/transactions'
-      path: '/transactions'
-      fullPath: '/transactions'
-      preLoaderRoute: typeof AuthenticatedTransactionsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/shared': {
-      id: '/_authenticated/shared'
-      path: '/shared'
-      fullPath: '/shared'
-      preLoaderRoute: typeof AuthenticatedSharedRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/reported': {
-      id: '/_authenticated/reported'
-      path: '/reported'
-      fullPath: '/reported'
-      preLoaderRoute: typeof AuthenticatedReportedRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/premium': {
-      id: '/_authenticated/premium'
-      path: '/premium'
-      fullPath: '/premium'
-      preLoaderRoute: typeof AuthenticatedPremiumRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/folders': {
-      id: '/_authenticated/folders'
-      path: '/folders'
-      fullPath: '/folders'
-      preLoaderRoute: typeof AuthenticatedFoldersRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/documents': {
-      id: '/_authenticated/documents'
-      path: '/documents'
-      fullPath: '/documents'
-      preLoaderRoute: typeof AuthenticatedDocumentsRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/cloud': {
-      id: '/_authenticated/cloud'
-      path: '/cloud'
-      fullPath: '/cloud'
-      preLoaderRoute: typeof AuthenticatedCloudRouteImport
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/ai': {
@@ -688,18 +527,200 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAiRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+    '/_authenticated/cloud': {
+      id: '/_authenticated/cloud'
+      path: '/cloud'
+      fullPath: '/cloud'
+      preLoaderRoute: typeof AuthenticatedCloudRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/subjects/$id': {
-      id: '/_authenticated/subjects/$id'
-      path: '/subjects/$id'
-      fullPath: '/subjects/$id'
-      preLoaderRoute: typeof AuthenticatedSubjectsIdRouteImport
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/documents': {
+      id: '/_authenticated/documents'
+      path: '/documents'
+      fullPath: '/documents'
+      preLoaderRoute: typeof AuthenticatedDocumentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/folders': {
+      id: '/_authenticated/folders'
+      path: '/folders'
+      fullPath: '/folders'
+      preLoaderRoute: typeof AuthenticatedFoldersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/premium': {
+      id: '/_authenticated/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof AuthenticatedPremiumRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reported': {
+      id: '/_authenticated/reported'
+      path: '/reported'
+      fullPath: '/reported'
+      preLoaderRoute: typeof AuthenticatedReportedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/shared': {
+      id: '/_authenticated/shared'
+      path: '/shared'
+      fullPath: '/shared'
+      preLoaderRoute: typeof AuthenticatedSharedRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/transactions': {
+      id: '/_authenticated/transactions'
+      path: '/transactions'
+      fullPath: '/transactions'
+      preLoaderRoute: typeof AuthenticatedTransactionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/trash': {
+      id: '/_authenticated/trash'
+      path: '/trash'
+      fullPath: '/trash'
+      preLoaderRoute: typeof AuthenticatedTrashRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/admin_panel/': {
+      id: '/admin_panel/'
+      path: '/'
+      fullPath: '/admin_panel/'
+      preLoaderRoute: typeof Admin_panelIndexRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/approvals': {
+      id: '/admin_panel/approvals'
+      path: '/approvals'
+      fullPath: '/admin_panel/approvals'
+      preLoaderRoute: typeof Admin_panelApprovalsRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/files': {
+      id: '/admin_panel/files'
+      path: '/files'
+      fullPath: '/admin_panel/files'
+      preLoaderRoute: typeof Admin_panelFilesRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/premium': {
+      id: '/admin_panel/premium'
+      path: '/premium'
+      fullPath: '/admin_panel/premium'
+      preLoaderRoute: typeof Admin_panelPremiumRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/profile': {
+      id: '/admin_panel/profile'
+      path: '/profile'
+      fullPath: '/admin_panel/profile'
+      preLoaderRoute: typeof Admin_panelProfileRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/report_history': {
+      id: '/admin_panel/report_history'
+      path: '/report_history'
+      fullPath: '/admin_panel/report_history'
+      preLoaderRoute: typeof Admin_panelReport_historyRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/transactions': {
+      id: '/admin_panel/transactions'
+      path: '/transactions'
+      fullPath: '/admin_panel/transactions'
+      preLoaderRoute: typeof Admin_panelTransactionsRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/trash': {
+      id: '/admin_panel/trash'
+      path: '/trash'
+      fullPath: '/admin_panel/trash'
+      preLoaderRoute: typeof Admin_panelTrashRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/users': {
+      id: '/admin_panel/users'
+      path: '/users'
+      fullPath: '/admin_panel/users'
+      preLoaderRoute: typeof Admin_panelUsersRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/auth/': {
+      id: '/auth/'
+      path: '/'
+      fullPath: '/auth/'
+      preLoaderRoute: typeof AuthIndexRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/register': {
+      id: '/auth/register'
+      path: '/register'
+      fullPath: '/auth/register'
+      preLoaderRoute: typeof AuthRegisterRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/auth/reset-password': {
+      id: '/auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
+    '/_authenticated/documents/$id': {
+      id: '/_authenticated/documents/$id'
+      path: '/$id'
+      fullPath: '/documents/$id'
+      preLoaderRoute: typeof AuthenticatedDocumentsIdRouteImport
+      parentRoute: typeof AuthenticatedDocumentsRoute
+    }
+    '/_authenticated/folders/$id': {
+      id: '/_authenticated/folders/$id'
+      path: '/$id'
+      fullPath: '/folders/$id'
+      preLoaderRoute: typeof AuthenticatedFoldersIdRouteImport
+      parentRoute: typeof AuthenticatedFoldersRoute
+    }
+    '/_authenticated/payment/cancel': {
+      id: '/_authenticated/payment/cancel'
+      path: '/payment/cancel'
+      fullPath: '/payment/cancel'
+      preLoaderRoute: typeof AuthenticatedPaymentCancelRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/payment/success': {
+      id: '/_authenticated/payment/success'
+      path: '/payment/success'
+      fullPath: '/payment/success'
+      preLoaderRoute: typeof AuthenticatedPaymentSuccessRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/shared/$shareId': {
@@ -709,33 +730,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSharedShareIdRouteImport
       parentRoute: typeof AuthenticatedSharedRoute
     }
-    '/_authenticated/payment/success': {
-      id: '/_authenticated/payment/success'
-      path: '/payment/success'
-      fullPath: '/payment/success'
-      preLoaderRoute: typeof AuthenticatedPaymentSuccessRouteImport
+    '/_authenticated/subjects/$id': {
+      id: '/_authenticated/subjects/$id'
+      path: '/subjects/$id'
+      fullPath: '/subjects/$id'
+      preLoaderRoute: typeof AuthenticatedSubjectsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/payment/cancel': {
-      id: '/_authenticated/payment/cancel'
-      path: '/payment/cancel'
-      fullPath: '/payment/cancel'
-      preLoaderRoute: typeof AuthenticatedPaymentCancelRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/folders/$id': {
-      id: '/_authenticated/folders/$id'
-      path: '/$id'
-      fullPath: '/folders/$id'
-      preLoaderRoute: typeof AuthenticatedFoldersIdRouteImport
-      parentRoute: typeof AuthenticatedFoldersRoute
-    }
-    '/_authenticated/documents/$id': {
-      id: '/_authenticated/documents/$id'
-      path: '/$id'
-      fullPath: '/documents/$id'
-      preLoaderRoute: typeof AuthenticatedDocumentsIdRouteImport
-      parentRoute: typeof AuthenticatedDocumentsRoute
     }
   }
 }

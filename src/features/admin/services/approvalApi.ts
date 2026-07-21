@@ -19,7 +19,7 @@ export const approvalApi = {
         documentId: (r as any).documentId,
         title: r.name || "Unknown",
         uploader: r.uploader,
-        date: new Date(r.createdAt).toLocaleDateString("vi-VN"),
+        date: new Date(r.createdAt ?? new Date().toISOString()).toLocaleDateString("vi-VN"),
         size: r.size,
         reporter: r.reporter,
         reason: r.reason,
