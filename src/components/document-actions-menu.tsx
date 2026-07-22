@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Flag, FolderOpen, MoreVertical, Download, Trash2, Pin, PinOff, Share2, Pencil } from "lucide-react";
+import { FolderOpen, MoreVertical, Trash2, Pin, PinOff, Share2, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -8,9 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDeleteDocument, useDownloadDocument } from "@/lib/queries";
+import { useDeleteDocument } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
-import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 import { ShareEntityDialog } from "@/components/share-entity-dialog";
 import { EditDocumentDialog } from "@/components/edit-document-dialog";
@@ -36,12 +35,10 @@ export function DocumentActionsMenu({
 }) {
   const navigate = useNavigate();
   const del = useDeleteDocument();
-  const download = useDownloadDocument();
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
   const pinned = isPinned(documentId);
   const isRejected = status?.toUpperCase() === "REJECT";
 
-  const [reportOpen, setReportOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
@@ -53,15 +50,6 @@ export function DocumentActionsMenu({
       setDeleteOpen(false);
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Xóa thất bại");
-    }
-  };
-
-  const handleDownload = async () => {
-    try {
-      const res = await download.mutateAsync(documentId);
-      window.open(res.url, "_blank");
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Tải xuống thất bại");
     }
   };
 
@@ -95,9 +83,6 @@ export function DocumentActionsMenu({
           <DropdownMenuItem onClick={() => setEditOpen(true)}>
             <Pencil className="h-3.5 w-3.5 mr-2" /> Sửa thông tin
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleDownload} disabled={download.isPending}>
-            <Download className="h-3.5 w-3.5 mr-2" /> Tải xuống
-          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
               if (isRejected) {
@@ -110,9 +95,6 @@ export function DocumentActionsMenu({
             className={isRejected ? "opacity-50 cursor-not-allowed" : ""}
           >
             <Share2 className="h-3.5 w-3.5 mr-2" /> Chia sẻ
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setReportOpen(true)}>
-            <Flag className="h-3.5 w-3.5 mr-2" /> Báo cáo
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => setDeleteOpen(true)}
@@ -136,12 +118,6 @@ export function DocumentActionsMenu({
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <ReportDocumentDialog
-        open={reportOpen}
-        onOpenChange={setReportOpen}
-        documentId={documentId}
-        documentTitle={title}
-      />
       <ConfirmDeleteDialog
         open={deleteOpen}
         onOpenChange={setDeleteOpen}

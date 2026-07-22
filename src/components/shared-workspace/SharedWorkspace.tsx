@@ -178,7 +178,7 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
                         setReportDocTitle(d.title);
                         setReportOpen(true);
                       }}
-                      className="h-7 w-7 shrink-0 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 hover:bg-red-500/10 hover:text-red-500 transition-all"
+                      className="h-7 w-7 shrink-0 rounded-lg flex items-center justify-center border border-border/60 text-muted-foreground/60 hover:border-red-300 hover:bg-red-500/10 hover:text-red-500 transition-all"
                       title="Báo cáo"
                     >
                       <Flag className="h-3.5 w-3.5" />
