@@ -58,7 +58,7 @@ export const AdminReportHistoryPage: React.FC = () => {
       case "removed":
         return "Không chấp nhận";
       case "pending":
-        return "Chấp nhận";
+        return "Chờ xử lý";
       default:
         return status || "Unknown";
     }

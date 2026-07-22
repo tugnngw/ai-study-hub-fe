@@ -61,12 +61,18 @@ export interface DocumentResponse {
 export interface ReportedFileItem {
   id: string;
   documentId?: string;
+  documentTitle?: string;
   name: string;
   uploader: string;
   size: string;
   reports: number;
   reporter: string;
   reason: string;
+  createdAt?: string;
+  status?: string;
+  decision?: string;
+  cloudinaryUrl?: string | null;
+  mimeType?: string | null;
 }
 
 export type ReportDecision = "approve" | "reject";
@@ -90,6 +96,7 @@ export type ApprovalAction = "approve" | "reject";
 // ── Report history ─────────────────────────────────────
 export interface ReportHistoryItem {
   id: string;
+  documentId?: string;
   title: string;
   uploader: string;
   date: string;
@@ -97,6 +104,8 @@ export interface ReportHistoryItem {
   reporter?: string;
   status: string;
   decision?: string;
+  cloudinaryUrl?: string | null;
+  mimeType?: string | null;
 }
 
 // ── Trash ──────────────────────────────────────────────

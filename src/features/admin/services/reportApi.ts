@@ -40,6 +40,7 @@ export const reportApi = {
     return content.map((r: any) => ({
       id: r.id,
       documentId: r.documentId,
+      documentTitle: r.documentTitle,
       name: r.documentTitle || "Unknown",
       uploader: r.reporterUsername || r.reporterId || "Unknown",
       size: "N/A",
@@ -48,6 +49,8 @@ export const reportApi = {
       reason: r.reason || "No reason provided",
       createdAt: r.createdAt || new Date().toISOString(),
       status: r.status || "pending",
+      cloudinaryUrl: r.cloudinaryUrl,
+      mimeType: r.mimeType,
     }));
   },
 
@@ -73,9 +76,9 @@ export const reportApi = {
         reason: r.reason || "No reason provided",
         createdAt: r.createdAt || new Date().toISOString(),
         status: r.status || "pending",
-        decision: r.status === "accepted" ? "Đã chấp nhận" : 
-                 r.status === "rejected" || r.status === "removed" ? "Không chấp nhận" : 
-                 "Chấp nhận",
+        decision: r.status === "accepted" || r.status === "approved" ? "Đã chấp nhận" :
+                 r.status === "rejected" || r.status === "removed" ? "Không chấp nhận" :
+                 "Chờ xử lý",
       }));
     } catch (err) {
       console.error("[ReportAPI] getReportHistory error:", err);
