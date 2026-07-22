@@ -13,7 +13,6 @@ import { Card } from "@/components/ui/card";
 import {
   Clock,
   XCircle,
-  Flag,
 } from "lucide-react";
 import { isContentAccessible, contentBlockedReason } from "@/lib/document-status";
 
@@ -109,15 +108,8 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
     );
   }
 
-  // REPORTED: show warning banner above the file but don't block viewing.
-  const reportedBanner = document.status === "REPORTED" ? (
-    <div className="flex items-center justify-between gap-3 px-4 py-2.5 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-800">
-      <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
-        <Flag className="h-4 w-4 shrink-0" />
-        <p className="text-sm font-medium">Tài liệu đang được quản trị viên xem xét</p>
-      </div>
-    </div>
-  ) : null;
+  // REPORTED: hidden from user — file works normally until admin bans it.
+  const reportedBanner = null;
 
   console.log('[Debug Flow] DocumentViewer: File URL:', document.cloudinaryUrl);
 

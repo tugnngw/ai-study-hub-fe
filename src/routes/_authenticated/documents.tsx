@@ -198,7 +198,7 @@ function DocumentRow({
     if (statusUpper === "COMPLETED") {
       return <Badge className="bg-yellow-500/10 text-yellow-600 border-yellow-500/20 hover:bg-yellow-500/20">Chờ duyệt</Badge>;
     }
-    if (statusUpper === "READY") {
+    if (statusUpper === "READY" || statusUpper === "REPORTED") {
       return <Badge className="bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20">Sẵn sàng</Badge>;
     }
     if (statusUpper === "REJECT") {
@@ -206,9 +206,6 @@ function DocumentRow({
     }
     if (statusUpper === "BANNED") {
       return <Badge className="bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20">Bị cấm</Badge>;
-    }
-    if (statusUpper === "REPORTED") {
-      return <Badge className="bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20">Bị báo cáo</Badge>;
     }
     return <Badge variant="outline">{status}</Badge>;
   };

@@ -2,9 +2,10 @@
 
 export type DocStatus = "COMPLETED" | "READY" | "REJECT" | "REPORTED" | "BANNED";
 
-/** AI actions only available when document is approved (READY). */
+/** AI actions only available when document is approved (READY) or under review (REPORTED). */
 export function isAIAvailable(status?: string | null): boolean {
-  return status?.toUpperCase() === "READY";
+  const s = status?.toUpperCase();
+  return s === "READY" || s === "REPORTED";
 }
 
 /** Owner can view any status except BANNED (metadata only). */
@@ -13,9 +14,10 @@ export function isOwnerViewable(status?: string | null): boolean {
   return s !== "BANNED";
 }
 
-/** Owner can view document content (file viewer) only for READY. */
+/** Owner can view document content (file viewer) only for READY or REPORTED. */
 export function isContentAccessible(status?: string | null): boolean {
-  return status?.toUpperCase() === "READY";
+  const s = status?.toUpperCase();
+  return s === "READY" || s === "REPORTED";
 }
 
 /** Shared users should only see READY docs. */
@@ -32,11 +34,11 @@ export function isBlocked(status?: string | null): boolean {
 /** Vietnamese label for each status. */
 export function statusLabel(status?: string | null): string {
   switch (status?.toUpperCase()) {
-    case "READY": return "Sẵn sàng";
+    case "READY":
+    case "REPORTED": return "Sẵn sàng";
     case "COMPLETED": return "Chờ duyệt";
     case "REJECT": return "Bị từ chối";
     case "BANNED": return "Bị cấm";
-    case "REPORTED": return "Đã báo cáo";
     default: return status ?? "Không xác định";
   }
 }
@@ -53,7 +55,7 @@ export function statusBadgeClasses(status?: string | null): string {
     case "BANNED":
       return "bg-red-500/10 text-red-600 border-red-500/20 hover:bg-red-500/20";
     case "REPORTED":
-      return "bg-amber-500/10 text-amber-600 border-amber-500/20 hover:bg-amber-500/20";
+      return "bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20";
     default:
       return "";
   }
@@ -80,8 +82,6 @@ export function aiUnavailableReason(status?: string | null): string | null {
       return "Tài liệu đã bị từ chối duyệt. Vui lòng chỉnh sửa và tải lên lại, hoặc liên hệ quản trị viên.";
     case "BANNED":
       return "Tài liệu đã bị cấm do vi phạm quy định.";
-    case "REPORTED":
-      return "Tài liệu đang được xem xét.";
     default:
       return null;
   }
