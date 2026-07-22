@@ -1,8 +1,10 @@
 // src/features/shares/components/SharedWithMeTable.tsx
-import { FolderOpen, Download, Trash2, Star } from "lucide-react";
+import { useState } from "react";
+import { FolderOpen, Download, Trash2, Star, Flag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useStarredSharedDocuments } from "@/lib/preferences";
+import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import type { SharedWithMeItem } from "../types/share.types";
 import { ItemIcon } from "./ItemIcon";
 import { PersonAvatar } from "./PersonAvatar";
@@ -35,7 +37,9 @@ export function SharedWithMeTable({
   const sortedItems = [...items].sort(
       (a, b) => Number(isStarred(b.id)) - Number(isStarred(a.id)),
   );
-  return (
+  const [reportDocId, setReportDocId] = useState("");
+  const [reportDocTitle, setReportDocTitle] = useState("");
+  return (<>
       <section className="space-y-3">
         <h2 className="flex items-center gap-2 font-bold">
           Được chia sẻ với tôi
@@ -81,7 +85,7 @@ export function SharedWithMeTable({
                           />
                         </button>
                         <div className="flex items-center gap-3 min-w-0">
-                          <ItemIcon />
+                          <ItemIcon isDocument={it.isDocument} />
                           <div className="min-w-0">
                             <div className="font-medium truncate">{it.name}</div>
                             <div className="text-xs text-muted-foreground">
@@ -106,6 +110,14 @@ export function SharedWithMeTable({
                                 label: "Tải xuống",
                                 onClick: () => onDownload(it.id, it.name),
                               },
+                              ...(it.isDocument && it.documentId ? [{
+                                icon: <Flag className="h-4 w-4" />,
+                                label: "Báo cáo",
+                                onClick: () => {
+                                  setReportDocId(it.documentId!);
+                                  setReportDocTitle(it.name);
+                                },
+                              }] : []),
                               {
                                 icon: <Trash2 className="h-4 w-4" />,
                                 label: "Xóa",
@@ -134,5 +146,12 @@ export function SharedWithMeTable({
         </Card>
         <Pager page={page} totalPages={totalPages} onChange={onPage} />
       </section>
+      <ReportDocumentDialog
+        open={!!reportDocId}
+        onOpenChange={(v) => { if (!v) { setReportDocId(""); setReportDocTitle(""); } }}
+        documentId={reportDocId}
+        documentTitle={reportDocTitle}
+      />
+    </>
   );
 }

@@ -26,7 +26,7 @@ export function isSharedViewable(status?: string | null): boolean {
 /** Document is blocked from full interaction (but may still be viewable). */
 export function isBlocked(status?: string | null): boolean {
   const s = status?.toUpperCase();
-  return s === "REJECT" || s === "BANNED" || s === "REPORTED";
+  return s === "REJECT" || s === "BANNED";
 }
 
 /** Vietnamese label for each status. */

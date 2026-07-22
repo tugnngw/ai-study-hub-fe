@@ -10,17 +10,23 @@ import {
 } from "./fileTypeDetection";
 import type { Document } from "@/lib/types";
 import { Card } from "@/components/ui/card";
-import { Loader2, Clock, XCircle } from "lucide-react";
+import {
+  Clock,
+  XCircle,
+  Flag,
+} from "lucide-react";
 import { isContentAccessible, contentBlockedReason } from "@/lib/document-status";
 
 interface DocumentViewerProps {
   document: Document;
   className?: string;
+  onReport?: () => void;
 }
 
 export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   document,
   className,
+  onReport,
 }) => {
   console.log('[Debug Flow] DocumentViewer: Received document prop:', {
     id: document.id,
@@ -103,18 +109,17 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
     );
   }
 
-  if (document.status === "REPORTED") {
-    return (
-      <Card className={`flex flex-col overflow-hidden min-h-0 ${className || ""}`}>
-        <div className="flex-1 flex flex-col items-center justify-center p-8">
-          <div className="text-center space-y-3">
-            <p className="text-lg font-medium text-amber-600">Tài liệu đã bị báo cáo</p>
-            <p className="text-sm text-gray-500">Tài liệu đang được quản trị viên xem xét.</p>
-          </div>
-        </div>
-      </Card>
-    );
-  }
+  // REPORTED: show warning banner above the file but don't block viewing.
+  const reportedBanner = document.status === "REPORTED" ? (
+    <div className="flex items-center justify-between gap-3 px-4 py-2.5 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-800">
+      <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400">
+        <Flag className="h-4 w-4 shrink-0" />
+        <p className="text-sm font-medium">Tài liệu đang được quản trị viên xem xét</p>
+      </div>
+    </div>
+  ) : null;
+
+  console.log('[Debug Flow] DocumentViewer: File URL:', document.cloudinaryUrl);
 
   console.log('[Debug Flow] DocumentViewer: File URL:', document.cloudinaryUrl);
   // Validate cloudinaryUrl exists
@@ -162,7 +167,12 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
     }
   })();
 
-  return <>{viewer}</>;
+  return (
+    <div className={`flex flex-col ${className || ""}`}>
+      {reportedBanner}
+      <div className="flex-1 min-h-0">{viewer}</div>
+    </div>
+  );
 };
 
 export type { Document } from "@/lib/types";

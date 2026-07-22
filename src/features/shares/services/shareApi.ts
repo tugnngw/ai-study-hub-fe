@@ -4,6 +4,7 @@
 // nhận — không có thao tác "Lưu" thủ công ở FE.
 
 import { api } from "@/lib/api";
+import { formatRelativeTime } from "@/lib/formatTime";
 import type { SharedWithMeItem, SharedByMeItem, ShareResponse, SaveToFolderResponse } from "../types/share.types";
 
 export const sharesApi = {
@@ -49,11 +50,12 @@ function mapShareResponseToSharedWithMe(resp: ShareResponse): SharedWithMeItem {
       name: resp.ownerUsername || resp.ownerEmail || "Unknown",
       avatarUrl: null,
     },
-    time: "21 giờ trước",
+    time: formatRelativeTime(resp.createdAt),
     order: new Date(resp.createdAt).getTime(),
     fileCount: resp.fileCount || 0,
     savedFolderId: resp.folderId ?? undefined,
     isDocument: !!resp.documentId,
+    documentId: resp.documentId ?? undefined,
   };
 }
 
@@ -73,9 +75,10 @@ function mapShareResponseToSharedByMe(resp: ShareResponse): SharedByMeItem {
     size: "11.4mb",
     items: resp.fileCount || 0,
     sharedWith: sharedWith,
-    time: "21 giờ trước",
+    time: formatRelativeTime(resp.createdAt),
     order: new Date(resp.createdAt).getTime(),
     fileCount: resp.fileCount || 0,
     savedFolderId: resp.folderId ?? undefined,
+    documentId: resp.documentId ?? undefined,
   };
 }

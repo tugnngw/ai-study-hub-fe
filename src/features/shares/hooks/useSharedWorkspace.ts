@@ -20,6 +20,8 @@ export interface SharedFolderInfo {
   shareDbId: string;
   /** Whether this share is a document (true) or folder (false) */
   isDocument: boolean;
+  /** Document UUID when share is a single document */
+  documentId?: string;
 }
 
 export function useSharedFolder(shareToken: string) {
@@ -30,20 +32,22 @@ export function useSharedFolder(shareToken: string) {
       const share = allShares.find((s) => s.id === shareToken);
       if (share) {
         return {
-          folderId: share.actualFolderId,
+          folderId: share.isDocument ? "" : share.actualFolderId,
           folderName: share.name,
           shareDbId: share.shareId,
           isDocument: share.isDocument ?? false,
+          documentId: share.documentId,
         };
       }
       const owned = await sharesApi.getSharedByMe();
       const ownedShare = owned.find((s) => s.id === shareToken);
       if (ownedShare) {
         return {
-          folderId: ownedShare.actualFolderId,
+          folderId: ownedShare.documentId ? "" : ownedShare.actualFolderId,
           folderName: ownedShare.name,
           shareDbId: ownedShare.shareId,
-          isDocument: false,
+          isDocument: !!ownedShare.documentId,
+          documentId: ownedShare.documentId,
         };
       }
       throw new Error("Không tìm thấy thông tin chia sẻ");

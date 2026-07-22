@@ -179,9 +179,8 @@ function DocumentRow({
   const [showDialog, setShowDialog] = useState(false);
 
   const isRejected = status?.toUpperCase() === "REJECT";
-  const isReported = status?.toUpperCase() === "REPORTED";
   const isBanned = status?.toUpperCase() === "BANNED";
-  const isBlocked = isRejected || isReported || isBanned;
+  const isBlocked = isRejected || isBanned;
 
   const handleDocumentClick = (e: React.MouseEvent) => {
     if (isBlocked) {
@@ -268,14 +267,12 @@ function DocumentRow({
          <DialogContent>
            <DialogHeader>
              <DialogTitle className={isRejected || isBanned ? "text-red-600" : "text-amber-600"}>
-               {isBanned ? "Tài liệu đã bị cấm" : (isRejected ? "Tài liệu đã bị từ chối" : "Tài liệu đang bị báo cáo")}
+               {isBanned ? "Tài liệu đã bị cấm" : "Tài liệu đã bị từ chối"}
              </DialogTitle>
              <DialogDescription>
                {isBanned
                  ? "Tài liệu này đã bị cấm do vi phạm quy định."
-                 : (isRejected 
-                   ? "Tài liệu này không đủ điều kiện để hiển thị." 
-                   : "Tài liệu này đang bị báo cáo và cần được kiểm duyệt.")}
+                 : "Tài liệu này không đủ điều kiện để hiển thị."}
              </DialogDescription>
            </DialogHeader>
            {isRejected && (
@@ -290,7 +287,7 @@ function DocumentRow({
              <Button variant="outline" onClick={() => setShowDialog(false)}>
                Đóng
              </Button>
-             {!isReported && !isBanned && (
+             {!isBanned && (
                <Button variant="default" onClick={proceedToDocument}>
                  Vẫn truy cập
                </Button>

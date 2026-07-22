@@ -52,6 +52,7 @@ export interface SharedWithMeItem {
   id: string;          // shareToken (URL-friendly)
   shareId: string;     // DB id (for API calls)
   actualFolderId: string; // actual folder UUID from backend (for document listing)
+  documentId?: string; // document UUID when share is a single document
   name: string;
   size: string;
   items: number;
@@ -67,6 +68,7 @@ export interface SharedByMeItem {
   id: string;
   shareId: string;
   actualFolderId: string;
+  documentId?: string; // document UUID when share is a single document
   name: string;
   size: string;
   items: number;
