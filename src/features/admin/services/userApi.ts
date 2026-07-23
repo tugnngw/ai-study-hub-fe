@@ -16,7 +16,7 @@ export const adminUserApi = {
               u.status === "INACTIVE" ? "Ngưng hoạt động (Khóa)" as const :
               u.status === "SOFT_deleted" ? "Xóa mềm" as const :
               "Không xác định" as const,
-      plan: u.role === "ADMIN" ? "PRO" as const : "FREE" as const,
+      plan: u.plan || (u.role === "ADMIN" ? "PRO" : "FREE"),
       role: u.role,
       createdAt: u.createdAt,
       lastLoginAt: u.lastLoginAt,

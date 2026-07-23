@@ -2,22 +2,23 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { AIChat } from "@/components/ui/AIChat";
 import { useDocument } from "@/lib/queries";
+import { decodeId } from "@/lib/id-encoder";
 import { useEffect } from "react";
 
-const searchSchema = z.object({
-  folderId: z.string(),
-  docId: z.string().optional(),
-});
-
 export const Route = createFileRoute("/_authenticated/ai")({
-  validateSearch: searchSchema,
+  validateSearch: z.object({
+    f: z.string().optional(),
+    d: z.string().optional(),
+  }),
   component: AIChatPage,
 });
 
 function AIChatPage() {
-  const { folderId, docId } = Route.useSearch();
+  const { f, d } = Route.useSearch();
   const navigate = useNavigate();
-  const doc = useDocument(docId ?? "");
+  const folderId = f ? decodeId(f) : "";
+  const docId = d ? decodeId(d) : "";
+  const doc = useDocument(docId);
 
   useEffect(() => {
     if (doc.data?.status?.toUpperCase() === "BANNED") {
@@ -25,5 +26,5 @@ function AIChatPage() {
     }
   }, [doc.data, navigate]);
 
-  return <AIChat folderId={folderId} docId={docId} />;
+  return <AIChat folderId={folderId} docId={docId || undefined} />;
 }

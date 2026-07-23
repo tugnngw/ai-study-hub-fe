@@ -177,7 +177,7 @@ function Dashboard() {
               <Link
                 key={d.id}
                 to="/ai"
-                search={{ folderId: d.folderId ?? "", docId: d.id }}
+                search={{ f: d.folderId ?? "", d: d.id }}
                 className="flex items-center gap-3 p-4 hover:bg-accent/40 transition-colors"
               >
                 <div className="h-9 w-9 rounded-lg bg-violet-50 text-violet-500 flex items-center justify-center shrink-0">

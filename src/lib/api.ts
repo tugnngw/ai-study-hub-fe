@@ -95,7 +95,7 @@ export async function attemptRefresh(): Promise<boolean> {
 
     const json = await res.json();
     const data = json?.data ?? json;
-    const newAccess = data?.accessToken ?? data?.token;
+    const newAccess = data?.accessToken;
     const newRefresh = data?.refreshToken;
 
     console.log(`[API] Refresh result: ${newAccess ? "✅ Success" : "❌ Failed (no new token)"}`);
@@ -236,6 +236,11 @@ export async function api<T = unknown>(
             String((json as { message: unknown }).message)) ||
         "You do not have permission to access this resource";
     throw new ApiError(403, message, json);
+  }
+
+  // 204 No Content — return null (caller handles)
+  if (res.status === 204) {
+    return null as T;
   }
 
   const ct = res.headers.get("content-type") ?? "";

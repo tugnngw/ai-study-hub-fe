@@ -1,24 +1,21 @@
 import { api } from "@/lib/api";
-import type { 
+import type {
   ReportedFileItem,
   ReportDecision,
-  TrashItemType,
 } from "../types/admin.types";
 
 export const reportApi = {
+  // GET /api/reports — ApiResponse<Page<ReportResponse>>
   getReports: async (): Promise<ReportedFileItem[]> => {
-    console.log("[ReportAPI] getReports called");
     try {
-      const res: any = await api<any>("/api/reports");
-      console.log("[ReportAPI] getReports response:", res);
-      const content = res?.content || res?.data || res || [];
-      console.log("[ReportAPI] getReports content:", content);
-      console.log("[ReportAPI] getReports statuses:", content.map((r: any) => ({ id: r.id, status: r.status })));
+      // api() unwraps ApiResponse.data, result is Page<ReportResponse> = { content, totalElements, ... }
+      const page: any = await api<any>("/api/reports");
+      const content = page?.content ?? page ?? [];
       return content.map((r: any) => ({
-        id: r.id, // Report ID from backend
+        id: r.id,
         documentId: r.documentId,
         documentTitle: r.documentTitle,
-        cloudinaryUrl: r.cloudinaryUrl, // Add this
+        cloudinaryUrl: r.cloudinaryUrl,
         name: r.documentTitle || "Unknown",
         uploader: r.reporterUsername || r.reporterId || "Unknown",
         size: "N/A",
@@ -28,15 +25,15 @@ export const reportApi = {
         createdAt: r.createdAt || new Date().toISOString(),
         status: r.status || "pending",
       }));
-    } catch (err) {
-      console.error("[ReportAPI] getReports error:", err);
+    } catch {
       return [];
     }
   },
 
+  // GET /api/reports/my — current user's reports
   getReportsByReporter: async (reporterId: string): Promise<ReportedFileItem[]> => {
-    const res: any = await api<any>(`/api/reports/reporter/${reporterId}`);
-    const content = res?.content || res?.data || res || [];
+    const page: any = await api<any>("/api/reports/my");
+    const content = page?.content ?? page ?? [];
     return content.map((r: any) => ({
       id: r.id,
       documentId: r.documentId,
@@ -54,20 +51,16 @@ export const reportApi = {
     }));
   },
 
+  // GET /api/reports/history — ApiResponse<Page<ReportResponse>>
   getReportHistory: async (): Promise<ReportedFileItem[]> => {
-    console.log("[ReportAPI] getReportHistory called");
     try {
-      const res: any = await api<any>("/api/reports/history");
-      console.log("[ReportAPI] getReportHistory response:", res);
-      console.log("[ReportAPI] getReportHistory response type:", typeof res, Object.keys(res));
-      const content = res?.content || res?.data || res || [];
-      console.log("[ReportAPI] getReportHistory content:", content);
-      console.log("[ReportAPI] getReportHistory first item keys:", content.length > 0 ? Object.keys(content[0]) : []);
+      const page: any = await api<any>("/api/reports/history");
+      const content = page?.content ?? page ?? [];
       return content.map((r: any) => ({
         id: r.id,
         documentId: r.documentId,
         documentTitle: r.documentTitle,
-        cloudinaryUrl: r.cloudinaryUrl, // Add this
+        cloudinaryUrl: r.cloudinaryUrl,
         name: r.documentTitle || "Unknown",
         uploader: r.reporterUsername || r.reporterId || "Unknown",
         size: "N/A",
@@ -76,31 +69,29 @@ export const reportApi = {
         reason: r.reason || "No reason provided",
         createdAt: r.createdAt || new Date().toISOString(),
         status: r.status || "pending",
-        decision: r.status === "accepted" || r.status === "approved" ? "Đã chấp nhận" :
+        decision: r.status === "approved" ? "Đã chấp nhận" :
                  r.status === "rejected" || r.status === "removed" ? "Không chấp nhận" :
                  "Chờ xử lý",
       }));
-    } catch (err) {
-      console.error("[ReportAPI] getReportHistory error:", err);
+    } catch {
       return [];
     }
   },
 
+  // POST /api/reports/{id}/decision — body { decision: "approved"|"rejected"|"removed", comment }
   handleReportDecision: async (id: string, decision: ReportDecision, reason?: string): Promise<boolean> => {
-    console.log("[ReportAPI] handleReportDecision:", { id, decision, reason });
     try {
       await api<void>(`/api/reports/${id}/decision`, {
         method: "POST",
-        body: { 
-          decision: decision === "approve" ? "approved" : 
-                   decision === "reject" ? "rejected" : 
-                   "removed", 
-          comment: reason ?? "" 
-        }
+        body: {
+          decision: decision === "approve" ? "approved" :
+                   decision === "reject" ? "rejected" :
+                   "removed",
+          comment: reason ?? "",
+        },
       });
       return true;
     } catch (err: any) {
-      console.error("[ReportAPI] handleReportDecision error:", err);
       throw err;
     }
   },

@@ -3,6 +3,7 @@ import { toast } from "sonner";
 import { Link } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { encodeId } from "@/lib/id-encoder";
 import { UseQueryResult } from "@tanstack/react-query";
 import { statusLabel } from "@/lib/document-status";
 
@@ -49,8 +50,8 @@ export function FolderPanel({
                             <div key={d.id} className="group relative">
                                 <Link
                                     to="/folders/$id"
-                                    params={{ id: String(folderId) }}
-                                    search={{ docId: d.id }}
+                                    params={{ id: encodeId(folderId) }}
+                                    search={{ docId: encodeId(d.id) }}
                                     className={cn(
                                         "flex items-center gap-2 text-sm px-2.5 py-2 rounded-lg transition-colors",
                                         active

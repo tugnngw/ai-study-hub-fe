@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { encodeId } from "@/lib/id-encoder";
 import {
   Check,
   ChevronDown,
@@ -310,7 +311,7 @@ export function AIChat({
                   <DropdownMenuItem
                     key={f.id}
                     onClick={() =>
-                      navigate({ to: "/ai", search: { folderId: String(f.id) } })
+                      navigate({ to: "/ai", search: { f: encodeId(f.id) } })
                     }
                     className={cn(
                       "cursor-pointer",
@@ -374,7 +375,7 @@ export function AIChat({
                 >
                   <Link
                     to="/ai"
-                    search={{ folderId, docId: d.id }}
+                    search={{ f: folderId, d: d.id }}
                     className="flex items-center gap-2 min-w-0 flex-1"
                   >
                     <FileText className={cn("h-4 w-4 shrink-0", tone.icon)} />
@@ -500,7 +501,7 @@ export function AIChat({
                       >
                         <Link
                           to="/ai"
-                          search={{ folderId, docId: d.id }}
+                          search={{ f: folderId, d: d.id }}
                           className="flex flex-col items-center w-full"
                         >
                           <div className="flex-1 flex items-center justify-center w-full py-4">

@@ -16,20 +16,35 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
 import { useAdminStats, useAdminActivity } from "../hooks";
 import type { ActivityType } from "../types/admin.types";
+import { formatDistanceToNow } from "date-fns";
+import { vi } from "date-fns/locale";
 
 const activityIcon: Record<ActivityType, React.ReactNode> = {
-  user: <UserPlus className="h-4 w-4" />,
-  upload: <Upload className="h-4 w-4" />,
-  report: <Flag className="h-4 w-4" />,
-  delete: <Trash className="h-4 w-4" />,
+  USER_REGISTER: <UserPlus className="h-4 w-4" />,
+  USER_UPGRADE: <UserPlus className="h-4 w-4" />,
+  DOCUMENT_UPLOAD: <Upload className="h-4 w-4" />,
+  DOCUMENT_DELETE: <Trash className="h-4 w-4" />,
+  DOCUMENT_DOWNLOAD: <Download className="h-4 w-4" />,
+  DOCUMENT_RESTORE: <Upload className="h-4 w-4" />,
+  PAYMENT_SUCCESS: <Flag className="h-4 w-4" />,
+  PAYMENT_FAILED: <Flag className="h-4 w-4" />,
 };
 
 const activityTone: Record<ActivityType, string> = {
-  user: "bg-primary/10 text-primary",
-  upload: "bg-emerald-500/10 text-emerald-600",
-  report: "bg-amber-500/10 text-amber-600",
-  delete: "bg-destructive/10 text-destructive",
+  USER_REGISTER: "bg-primary/10 text-primary",
+  USER_UPGRADE: "bg-primary/10 text-primary",
+  DOCUMENT_UPLOAD: "bg-emerald-500/10 text-emerald-600",
+  DOCUMENT_DELETE: "bg-destructive/10 text-destructive",
+  DOCUMENT_DOWNLOAD: "bg-amber-500/10 text-amber-600",
+  DOCUMENT_RESTORE: "bg-emerald-500/10 text-emerald-600",
+  PAYMENT_SUCCESS: "bg-emerald-500/10 text-emerald-600",
+  PAYMENT_FAILED: "bg-destructive/10 text-destructive",
 };
+
+function calculateTrend(lastWeek: number, prevWeek: number): number {
+  if (prevWeek === 0) return lastWeek > 0 ? 100 : 0;
+  return Math.round(((lastWeek - prevWeek) / prevWeek) * 100);
+}
 
 function StatCard({
   label,
@@ -98,6 +113,10 @@ export const AdminDashboardPage: React.FC = () => {
     );
   }
 
+  const usersTrend = stats ? calculateTrend(stats.usersLastWeek, stats.usersPrevWeek) : undefined;
+  const docsTrend = stats ? calculateTrend(stats.docsLastWeek, stats.docsPrevWeek) : undefined;
+  const downloadsTrend = stats ? calculateTrend(stats.downloadsLastWeek, stats.downloadsPrevWeek) : undefined;
+
   return (
     <div className="space-y-6">
       <div>
@@ -113,21 +132,21 @@ export const AdminDashboardPage: React.FC = () => {
         <StatCard
           label="Tổng Users"
           value={stats?.totalUsers.toLocaleString("vi-VN") ?? "—"}
-          trend={stats?.totalUsersTrend}
+          trend={usersTrend}
           icon={<Users className="h-5 w-5" />}
           tone="bg-primary/10 text-primary"
         />
         <StatCard
           label="Tổng Tài liệu"
           value={stats?.totalDocs.toLocaleString("vi-VN") ?? "—"}
-          trend={stats?.totalDocsTrend}
+          trend={docsTrend}
           icon={<FileStack className="h-5 w-5" />}
           tone="bg-emerald-500/10 text-emerald-600"
         />
         <StatCard
           label="Download"
           value={stats?.totalDownloads.toLocaleString("vi-VN") ?? "—"}
-          trend={stats?.totalDownloadsTrend}
+          trend={downloadsTrend}
           icon={<Download className="h-5 w-5" />}
           tone="bg-amber-500/10 text-amber-600"
         />
@@ -166,7 +185,7 @@ export const AdminDashboardPage: React.FC = () => {
                 </p>
               </div>
               <span className="text-muted-foreground text-xs shrink-0">
-                {item.time}
+                {formatDistanceToNow(new Date(item.createdAt), { addSuffix: true, locale: vi })}
               </span>
             </div>
           ))}

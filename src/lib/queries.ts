@@ -32,6 +32,7 @@ import type {
   FlashcardResponse,
   QuizResponse,
   RagStatusResponse,
+  ReportResponse,
 } from "./types";
 
 function handleAccountLockedError(error: unknown): boolean {
@@ -404,6 +405,34 @@ export function useEmptyTrash() {
   });
 }
 
+export function useFolderTrash() {
+  return useQuery({
+    queryKey: ["folders", "trash"],
+    queryFn: () => folderApi.listTrash(),
+  });
+}
+
+export function useRestoreFolderFromTrash() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => folderApi.restoreFromTrash(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["folders", "trash"] });
+      qc.invalidateQueries({ queryKey: ["folders"] });
+    },
+  });
+}
+
+export function usePermanentDeleteFolder() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => folderApi.permanentDelete(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["folders", "trash"] });
+    },
+  });
+}
+
 // ================================================================
 // SHARE
 // ================================================================
@@ -654,6 +683,11 @@ export function useGenerateFlashcards() {
 export function useMySubmittedReports() {
   return useQuery({
     queryKey: ["my-reports"],
-    queryFn: () => shareApi.listMyReports(),
+    queryFn: async () => {
+      const result = await shareApi.listMyReports();
+      // Backend returns Page<ReportResponse> — api() unwraps ApiResponse.data,
+      // so result is { content: ReportResponse[], totalElements, ... }
+      return (result as any)?.content ?? result ?? [];
+    },
   });
 }

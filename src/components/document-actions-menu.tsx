@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { encodeId } from "@/lib/id-encoder";
 import { useDeleteDocument } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
@@ -74,7 +75,7 @@ export function DocumentActionsMenu({
             onClick={() =>
               navigate({
                 to: "/ai",
-                search: { folderId, docId: documentId },
+                search: { f: encodeId(folderId), d: encodeId(documentId) },
               })
             }
           >

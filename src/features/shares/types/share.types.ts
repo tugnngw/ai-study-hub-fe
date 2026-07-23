@@ -34,13 +34,14 @@ export interface ShareRecipient {
 }
 
 export interface SaveToFolderResponse {
-  message: string;
+  total: number;
   copied: number;
   skipped: number;
   failed: number;
-  copiedDocuments?: string[];
-  skippedDocuments?: string[];
-  failedDocuments?: string[];
+  copiedDocuments?: { name: string; documentId: string | null; reason?: string }[];
+  skippedDocuments?: { name: string; documentId: string | null; reason?: string }[];
+  failedDocuments?: { name: string; documentId: string | null; reason?: string }[];
+  message: string;
 }
 
 export interface SharePerson {

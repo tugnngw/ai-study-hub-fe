@@ -3,27 +3,37 @@
 // ── Dashboard ──────────────────────────────────────────
 export interface AdminStats {
   totalUsers: number;
-  totalUsersTrend: number;
+  usersLastWeek: number;
+  usersPrevWeek: number;
   totalDocs: number;
-  totalDocsTrend: number;
+  docsLastWeek: number;
+  docsPrevWeek: number;
   totalDownloads: number;
-  totalDownloadsTrend: number;
-  pendingApprovals: number;
+  downloadsLastWeek: number;
+  downloadsPrevWeek: number;
 }
 
-export type ActivityType = "user" | "upload" | "report" | "delete";
+export type ActivityType = 
+  | "USER_REGISTER" 
+  | "USER_UPGRADE" 
+  | "DOCUMENT_UPLOAD" 
+  | "DOCUMENT_DELETE" 
+  | "DOCUMENT_DOWNLOAD" 
+  | "DOCUMENT_RESTORE"
+  | "PAYMENT_SUCCESS" 
+  | "PAYMENT_FAILED";
 
 export interface ActivityItem {
   id: string;
   title: string;
   actor: string;
   type: ActivityType;
-  time: string;
+  createdAt: string;
 }
 
 // ── Users ──────────────────────────────────────────────
 export type UserStatus = "ACTIVE" | "BANNED" | "Hoạt động" | "Khóa" | "Ngưng hoạt động (Khóa)" | "Xóa mềm";
-export type PlanId = "FREE" | "PLUS" | "PRO";
+export type PlanId = "FREE" | "BASIC" | "PRO" | "PREMIUM";
 
 export interface AdminUserItem {
   id: string; // UUID from BE

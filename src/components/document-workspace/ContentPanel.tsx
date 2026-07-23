@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { encodeId } from "@/lib/id-encoder";
 import { SummaryTab } from "./SummaryTab";
 import { FlashcardsTab } from "./FlashcardsTab";
 import { QuizzesTab } from "./QuizzesTab";
@@ -66,7 +67,7 @@ export function ContentPanel({
             await del.mutateAsync(docId);
             navigate({
                 to: "/folders/$id",
-                params: { id: String(folderId) },
+                params: { id: encodeId(folderId) },
                 search: {},
             });
         } catch (e) {
@@ -168,8 +169,8 @@ export function ContentPanel({
                                     <Link
                                         key={d.id}
                                         to="/folders/$id"
-                                        params={{ id: String(folderId) }}
-                                        search={{ docId: d.id }}
+                                        params={{ id: encodeId(folderId) }}
+                                        search={{ docId: encodeId(d.id) }}
                                         className={cn(
                                             "group flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
                                             active &&

@@ -1,5 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
+import { useEffect } from "react";
+import { useDocument } from "@/lib/queries";
+import { decodeId } from "@/lib/id-encoder";
 import { DocumentWorkspace } from "@/components/document-workspace";
 
 const searchSchema = z.object({
@@ -14,7 +17,8 @@ export const Route = createFileRoute("/_authenticated/folders/$id")({
 function FolderDetail() {
   const { id } = Route.useParams();
   const { docId } = Route.useSearch();
-  const doc = useDocument(docId ?? "");
+  const folderId = decodeId(id);
+  const doc = useDocument(docId ? decodeId(docId) : "");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,5 +27,5 @@ function FolderDetail() {
     }
   }, [doc.data, id, navigate]);
 
-  return <DocumentWorkspace folderId={id} docId={docId} />;
+  return <DocumentWorkspace folderId={folderId} docId={docId ? decodeId(docId) : ""} />;
 }

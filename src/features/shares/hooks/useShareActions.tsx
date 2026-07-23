@@ -13,7 +13,7 @@ export function useShareActions(opts?: {
 
   // Mở folder trong AI chat. /ai yêu cầu search { folderId, docId? }.
   const openInAI = (id: string, folderId?: string) => {
-    navigate({ to: "/ai", search: { folderId: folderId ?? `shared-${id}` } });
+    navigate({ to: "/ai", search: { f: folderId ?? `shared-${id}` } });
   };
 
   const download = async (id: string, name: string) => {
