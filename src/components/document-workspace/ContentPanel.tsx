@@ -5,8 +5,6 @@ import { DocumentStatusBadge } from "@/components/ui/document-status-badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cn } from "@/lib/utils";
-import { encodeId } from "@/lib/id-encoder";
 import { SummaryTab } from "./SummaryTab";
 import { FlashcardsTab } from "./FlashcardsTab";
 import { QuizzesTab } from "./QuizzesTab";
@@ -67,7 +65,7 @@ export function ContentPanel({
             await del.mutateAsync(docId);
             navigate({
                 to: "/folders/$id",
-                params: { id: encodeId(folderId) },
+                params: { id: folderId },
                 search: {},
             });
         } catch (e) {
@@ -148,6 +146,14 @@ export function ContentPanel({
                             </div>
                             <DocumentViewer document={doc.data} className="flex-1 min-h-0 w-full h-full" />
                         </div>
+                    ) : doc.isError ? (
+                        <div className="flex flex-col items-center justify-center h-full gap-3 p-8 text-center">
+                            <AlertTriangle className="h-12 w-12 text-muted-foreground/50" />
+                            <h3 className="text-lg font-semibold">Tài liệu không tồn tại hoặc đã bị xoá</h3>
+                            <p className="text-sm text-muted-foreground max-w-sm">
+                                Tài liệu này có thể đã bị xoá hoặc bạn không có quyền truy cập.
+                            </p>
+                        </div>
                     ) : doc.isLoading ? (
                         <div className="flex items-center justify-center h-full">
                             <div className="flex flex-col items-center gap-2">
@@ -169,8 +175,8 @@ export function ContentPanel({
                                     <Link
                                         key={d.id}
                                         to="/folders/$id"
-                                        params={{ id: encodeId(folderId) }}
-                                        search={{ docId: encodeId(d.id) }}
+                                        params={{ id: folderId }}
+                                        search={{ docId: d.id }}
                                         className={cn(
                                             "group flex flex-col items-center text-center rounded-xl border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-soft hover:-translate-y-0.5",
                                             active &&

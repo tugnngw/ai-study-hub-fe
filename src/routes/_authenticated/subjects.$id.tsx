@@ -100,7 +100,7 @@ function SubjectDetailPage() {
               <Link
                 key={f.id}
                 to="/ai"
-                search={{ folderId: f.id }}
+                search={{ f: f.id }}
                 className={cn(
                   "group rounded-2xl border border-border/60 bg-card p-5 hover:border-primary/40 hover:shadow-soft transition-all",
                 )}

@@ -2,7 +2,6 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { AIChat } from "@/components/ui/AIChat";
 import { useDocument } from "@/lib/queries";
-import { decodeId } from "@/lib/id-encoder";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/_authenticated/ai")({
@@ -16,8 +15,8 @@ export const Route = createFileRoute("/_authenticated/ai")({
 function AIChatPage() {
   const { f, d } = Route.useSearch();
   const navigate = useNavigate();
-  const folderId = f ? decodeId(f) : "";
-  const docId = d ? decodeId(d) : "";
+  const folderId = f || "";
+  const docId = d || "";
   const doc = useDocument(docId);
 
   useEffect(() => {

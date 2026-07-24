@@ -169,7 +169,7 @@ function FoldersPage() {
                         <Star className="h-3.5 w-3.5 absolute top-3 right-3 fill-amber-400 text-amber-400" />
                     )}
                     <CardContent className="p-5">
-                      <Link to="/ai" search={{ folderId: f.id }} className="block">
+                      <Link to="/ai" search={{ f: f.id }} className="block">
                         <div className="flex items-start gap-3">
                           <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
                             <FolderKanban className="h-5 w-5 text-primary" />

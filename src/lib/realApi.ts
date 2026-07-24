@@ -100,6 +100,10 @@ export const accountApi = {
 export const semesterApi = {
   list: (): Promise<Semester[]> => api<Semester[]>("/api/semesters"),
   getById: (id: string): Promise<Semester> => api<Semester>(`/api/semesters/${id}`),
+  create: (name: string): Promise<Semester> =>
+    api<Semester>("/api/semesters", { method: "POST", body: { name } }),
+  delete: (id: string): Promise<void> =>
+    api<void>(`/api/semesters/${id}`, { method: "DELETE" }),
 };
 
 // ================================================================
@@ -109,6 +113,10 @@ export const subjectApi = {
   listBySemester: (semesterId: string): Promise<Subject[]> =>
     api<Subject[]>(`/api/subjects/semester/${semesterId}`),
   getById: (id: string): Promise<Subject> => api<Subject>(`/api/subjects/${id}`),
+  create: (body: { semesterId: string; code: string; name: string }): Promise<Subject> =>
+    api<Subject>("/api/subjects", { method: "POST", body }),
+  delete: (id: string): Promise<void> =>
+    api<void>(`/api/subjects/${id}`, { method: "DELETE" }),
 };
 
 // ================================================================

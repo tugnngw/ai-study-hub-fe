@@ -1,5 +1,5 @@
 // src/features/payment/components/PremiumUpgradePage.tsx
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { toast } from "sonner";
 import { Check, Loader2, Crown, CheckCircle2, CalendarClock, ExternalLink, QrCode, Clock, Smartphone } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -41,9 +41,17 @@ export function PremiumUpgradePage() {
   const [loading, setLoading] = useState(false);
   const [selected, setSelected] = useState<AdminPlan | null>(null);
   const { user, reloadUser } = useAuth();
-  const [paymentInfo, setPaymentInfo] = useState<{checkoutUrl: string; orderCode: number; amount: number; qrCode?: string} | null>(null);
+  const [paymentInfo, setPaymentInfo] = useState<{checkoutUrl: string; orderCode: number; amount: number; expiredAt: string; qrCode: string | null} | null>(null);
   const [qrCodeModal, setQrCodeModal] = useState(false);
   const [countdown, setCountdown] = useState(180); // 3 phút
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!qrCodeModal || !paymentInfo?.qrCode) { setQrDataUrl(null); return; }
+    import("qrcode").then((QRCode) =>
+      QRCode.toDataURL(paymentInfo.qrCode, { width: 300, margin: 2 })
+    ).then(url => setQrDataUrl(url)).catch(e => console.error("[QR] error", e));
+  }, [qrCodeModal]);
 
   const plans = useMemo(
     () =>
@@ -132,14 +140,19 @@ export function PremiumUpgradePage() {
         toast.success(`Đã nâng cấp lên ${selected.name}!`);
       } else if (url) {
         // Lưu thông tin payment và hiển thị QR code modal
+        const expiredAt = res.expiredAt;
+        const remainingSec = expiredAt
+          ? Math.max(0, Math.floor((new Date(expiredAt).getTime() - Date.now()) / 1000))
+          : 180;
         setPaymentInfo({
           checkoutUrl: url,
           orderCode: res.orderCode,
           amount: res.amount,
+          expiredAt,
           qrCode: res.qrCode,
         });
         setQrCodeModal(true);
-        setCountdown(180);
+        setCountdown(remainingSec);
         setSelected(null); // Đóng dialog cũ
       }
     } catch (e) {
@@ -496,9 +509,11 @@ export function PremiumUpgradePage() {
                <p className="text-xs text-muted-foreground mt-1">Tự động kiểm tra sau 5 giây</p>
             </div>
             <div className="border p-2 rounded-lg bg-white">
-              {paymentInfo?.checkoutUrl && (
+              {qrDataUrl ? (
+                <img src={qrDataUrl} className="w-[300px] h-[300px]" alt="QR thanh toán" />
+              ) : (
                 <img
-                  src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(paymentInfo.qrCode || paymentInfo.checkoutUrl)}`}
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(paymentInfo?.checkoutUrl ?? "")}`}
                   className="w-[300px] h-[300px]"
                   alt="QR thanh toán"
                 />

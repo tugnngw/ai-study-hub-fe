@@ -3,7 +3,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { FileText, Plus, Search, Upload, Pin, X } from "lucide-react";
 import { toast } from "sonner";
-import { encodeId } from "@/lib/id-encoder";
 import { 
   Dialog, 
   DialogContent, 
@@ -192,7 +191,7 @@ function DocumentRow({
 
   const proceedToDocument = () => {
     setShowDialog(false);
-    navigate({ to: "/ai", search: { f: encodeId(folderId), d: encodeId(id) } });
+    navigate({ to: "/ai", search: { f: folderId, d: id } });
   };
   const getStatusBadge = () => {
     const statusUpper = status?.toUpperCase();

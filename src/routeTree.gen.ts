@@ -24,6 +24,7 @@ import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-pas
 import { Route as Admin_panelUsersRouteImport } from './routes/admin_panel/users'
 import { Route as Admin_panelTrashRouteImport } from './routes/admin_panel/trash'
 import { Route as Admin_panelTransactionsRouteImport } from './routes/admin_panel/transactions'
+import { Route as Admin_panelSemestersRouteImport } from './routes/admin_panel/semesters'
 import { Route as Admin_panelReport_historyRouteImport } from './routes/admin_panel/report_history'
 import { Route as Admin_panelProfileRouteImport } from './routes/admin_panel/profile'
 import { Route as Admin_panelPremiumRouteImport } from './routes/admin_panel/premium'
@@ -120,6 +121,11 @@ const Admin_panelTrashRoute = Admin_panelTrashRouteImport.update({
 const Admin_panelTransactionsRoute = Admin_panelTransactionsRouteImport.update({
   id: '/transactions',
   path: '/transactions',
+  getParentRoute: () => Admin_panelRouteRoute,
+} as any)
+const Admin_panelSemestersRoute = Admin_panelSemestersRouteImport.update({
+  id: '/semesters',
+  path: '/semesters',
   getParentRoute: () => Admin_panelRouteRoute,
 } as any)
 const Admin_panelReport_historyRoute =
@@ -267,6 +273,7 @@ export interface FileRoutesByFullPath {
   '/admin_panel/premium': typeof Admin_panelPremiumRoute
   '/admin_panel/profile': typeof Admin_panelProfileRoute
   '/admin_panel/report_history': typeof Admin_panelReport_historyRoute
+  '/admin_panel/semesters': typeof Admin_panelSemestersRoute
   '/admin_panel/transactions': typeof Admin_panelTransactionsRoute
   '/admin_panel/trash': typeof Admin_panelTrashRoute
   '/admin_panel/users': typeof Admin_panelUsersRoute
@@ -304,6 +311,7 @@ export interface FileRoutesByTo {
   '/admin_panel/premium': typeof Admin_panelPremiumRoute
   '/admin_panel/profile': typeof Admin_panelProfileRoute
   '/admin_panel/report_history': typeof Admin_panelReport_historyRoute
+  '/admin_panel/semesters': typeof Admin_panelSemestersRoute
   '/admin_panel/transactions': typeof Admin_panelTransactionsRoute
   '/admin_panel/trash': typeof Admin_panelTrashRoute
   '/admin_panel/users': typeof Admin_panelUsersRoute
@@ -345,6 +353,7 @@ export interface FileRoutesById {
   '/admin_panel/premium': typeof Admin_panelPremiumRoute
   '/admin_panel/profile': typeof Admin_panelProfileRoute
   '/admin_panel/report_history': typeof Admin_panelReport_historyRoute
+  '/admin_panel/semesters': typeof Admin_panelSemestersRoute
   '/admin_panel/transactions': typeof Admin_panelTransactionsRoute
   '/admin_panel/trash': typeof Admin_panelTrashRoute
   '/admin_panel/users': typeof Admin_panelUsersRoute
@@ -386,6 +395,7 @@ export interface FileRouteTypes {
     | '/admin_panel/premium'
     | '/admin_panel/profile'
     | '/admin_panel/report_history'
+    | '/admin_panel/semesters'
     | '/admin_panel/transactions'
     | '/admin_panel/trash'
     | '/admin_panel/users'
@@ -423,6 +433,7 @@ export interface FileRouteTypes {
     | '/admin_panel/premium'
     | '/admin_panel/profile'
     | '/admin_panel/report_history'
+    | '/admin_panel/semesters'
     | '/admin_panel/transactions'
     | '/admin_panel/trash'
     | '/admin_panel/users'
@@ -463,6 +474,7 @@ export interface FileRouteTypes {
     | '/admin_panel/premium'
     | '/admin_panel/profile'
     | '/admin_panel/report_history'
+    | '/admin_panel/semesters'
     | '/admin_panel/transactions'
     | '/admin_panel/trash'
     | '/admin_panel/users'
@@ -594,6 +606,13 @@ declare module '@tanstack/react-router' {
       path: '/transactions'
       fullPath: '/admin_panel/transactions'
       preLoaderRoute: typeof Admin_panelTransactionsRouteImport
+      parentRoute: typeof Admin_panelRouteRoute
+    }
+    '/admin_panel/semesters': {
+      id: '/admin_panel/semesters'
+      path: '/semesters'
+      fullPath: '/admin_panel/semesters'
+      preLoaderRoute: typeof Admin_panelSemestersRouteImport
       parentRoute: typeof Admin_panelRouteRoute
     }
     '/admin_panel/report_history': {
@@ -841,6 +860,7 @@ interface Admin_panelRouteRouteChildren {
   Admin_panelPremiumRoute: typeof Admin_panelPremiumRoute
   Admin_panelProfileRoute: typeof Admin_panelProfileRoute
   Admin_panelReport_historyRoute: typeof Admin_panelReport_historyRoute
+  Admin_panelSemestersRoute: typeof Admin_panelSemestersRoute
   Admin_panelTransactionsRoute: typeof Admin_panelTransactionsRoute
   Admin_panelTrashRoute: typeof Admin_panelTrashRoute
   Admin_panelUsersRoute: typeof Admin_panelUsersRoute
@@ -853,6 +873,7 @@ const Admin_panelRouteRouteChildren: Admin_panelRouteRouteChildren = {
   Admin_panelPremiumRoute: Admin_panelPremiumRoute,
   Admin_panelProfileRoute: Admin_panelProfileRoute,
   Admin_panelReport_historyRoute: Admin_panelReport_historyRoute,
+  Admin_panelSemestersRoute: Admin_panelSemestersRoute,
   Admin_panelTransactionsRoute: Admin_panelTransactionsRoute,
   Admin_panelTrashRoute: Admin_panelTrashRoute,
   Admin_panelUsersRoute: Admin_panelUsersRoute,

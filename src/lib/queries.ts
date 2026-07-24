@@ -1,5 +1,6 @@
 // src/lib/queries.ts
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { paymentApi } from "@/features/admin/services/paymentApi";
 import {
   accountApi,
@@ -229,6 +230,7 @@ export function useFolder(id: string) {
     queryKey: folderKeys.detail(id),
     queryFn: () => folderApi.getById(id),
     enabled: !!id,
+    retry: false,
   });
 }
 
@@ -329,6 +331,7 @@ export function useDocument(id: string) {
       }
     },
     enabled: !!id,
+    retry: false,
   });
 }
 
@@ -392,6 +395,9 @@ export function useRestoreFromTrash() {
       qc.invalidateQueries({ queryKey: docKeys.trash });
       qc.invalidateQueries({ queryKey: docKeys.all });
     },
+    onError: (err: any) => {
+      toast.error(err?.message || err?.data || "Không thể khôi phục tài liệu");
+    },
   });
 }
 
@@ -419,6 +425,9 @@ export function useRestoreFolderFromTrash() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["folders", "trash"] });
       qc.invalidateQueries({ queryKey: ["folders"] });
+    },
+    onError: (err: any) => {
+      toast.error(err?.message || err?.data || "Không thể khôi phục thư mục");
     },
   });
 }

@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { encodeId } from "@/lib/id-encoder";
 import {
   Check,
   ChevronDown,
@@ -8,6 +7,7 @@ import {
   ChevronRight,
   FileText,
   FolderClosed,
+  FolderX,
   Loader2,
   MessageSquare,
   Plus,
@@ -275,6 +275,27 @@ export function AIChat({
     }
   };
 
+  if (folder.isError) {
+    return (
+      <div ref={containerRef} className="flex flex-col items-center justify-center h-full gap-4 text-center p-8">
+        <FolderX className="h-16 w-16 text-muted-foreground/50" />
+        <h2 className="text-xl font-semibold">Thư mục không tồn tại hoặc đã bị xoá</h2>
+        <p className="text-sm text-muted-foreground max-w-sm">
+          Thư mục này có thể đã bị xoá hoặc bạn không có quyền truy cập.
+          Hãy khôi phục từ thùng rác nếu bạn muốn sử dụng lại.
+        </p>
+        <div className="flex gap-3 mt-2">
+          <Button variant="outline" onClick={() => navigate({ to: "/folders" })}>
+            Quay lại thư mục
+          </Button>
+          <Button variant="outline" onClick={() => navigate({ to: "/trash" })}>
+            Mở thùng rác
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div ref={containerRef} className="flex flex-col lg:flex-row h-full gap-1.5 p-3">
         {/* Column 1: folder + file list */}
@@ -311,7 +332,7 @@ export function AIChat({
                   <DropdownMenuItem
                     key={f.id}
                     onClick={() =>
-                      navigate({ to: "/ai", search: { f: encodeId(f.id) } })
+                      navigate({ to: "/ai", search: { f: f.id } })
                     }
                     className={cn(
                       "cursor-pointer",
@@ -478,6 +499,14 @@ export function AIChat({
             <div className="flex-1 min-h-0 overflow-y-auto">
               {docId && doc.data ? (
                 <DocumentViewer document={doc.data} className="flex-1 w-full h-full" />
+              ) : docId && doc.isError ? (
+                <div className="flex flex-col items-center justify-center h-full gap-3 p-8 text-center">
+                  <AlertTriangle className="h-12 w-12 text-muted-foreground/50" />
+                  <h3 className="text-lg font-semibold">Tài liệu không tồn tại hoặc đã bị xoá</h3>
+                  <p className="text-sm text-muted-foreground max-w-sm">
+                    Tài liệu này có thể đã bị xoá hoặc bạn không có quyền truy cập.
+                  </p>
+                </div>
               ) : docId && !doc.data ? (
                 <div className="flex items-center justify-center h-full p-8">
                   <Loader2 className="h-8 w-8 animate-spin text-primary" />

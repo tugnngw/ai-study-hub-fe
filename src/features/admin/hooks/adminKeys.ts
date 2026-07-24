@@ -19,4 +19,6 @@ export const adminKeys = {
   transactionsByStatus: (status: string, page?: number, size?: number) => [...adminKeys.all, "payment", "transactions", "status", status, page ?? 0, size ?? 20] as const,
   planOptions: () => [...adminKeys.all, "payment", "plans"] as const,
   adminPlans: () => [...adminKeys.all, "plans", "admin"] as const,
+  semesters: () => [...adminKeys.all, "semesters"] as const,
+  subjects: () => [...adminKeys.all, "subjects"] as const,
 };

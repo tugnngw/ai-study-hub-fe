@@ -124,7 +124,7 @@ function Dashboard() {
                   <Link
                     key={f.id}
                     to="/ai"
-                    search={{ folderId: f.id }}
+                    search={{ f: f.id }}
                     className={cn(
                       "relative h-36 rounded-2xl p-5 text-white overflow-hidden bg-gradient-to-br shadow-soft transition-transform hover:-translate-y-0.5",
                       NOTE_GRADIENTS[i % NOTE_GRADIENTS.length],
