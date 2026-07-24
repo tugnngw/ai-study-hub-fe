@@ -1,11 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Cloud, Database, HardDrive } from "lucide-react";
 import { useDocuments } from "@/lib/queries";
+import { useQuota } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { useAuth } from "@/lib/auth";
 import { formatBytes } from "@/lib/utils";
-import { useEffect } from "react";
 
 export const Route = createFileRoute("/_authenticated/cloud")({
   component: CloudPage,
@@ -13,14 +12,10 @@ export const Route = createFileRoute("/_authenticated/cloud")({
 
 function CloudPage() {
   const docs = useDocuments();
-  const { user, reloadUser } = useAuth();
-
-  useEffect(() => {
-    reloadUser().catch(console.error);
-  }, [reloadUser]);
+  const quota = useQuota();
 
   const used = docs.data?.reduce((sum, d) => sum + (d.fileSize ?? 0), 0) ?? 0;
-  const total = (user?.storageGb || 1) * 1024 * 1024 * 1024;
+  const total = ((quota.data?.storageGb ?? 1) * 1024 * 1024 * 1024);
   const pct = Math.min((used / total) * 100, 100);
   const free = total - used;
   const isOverLimit = used > total;

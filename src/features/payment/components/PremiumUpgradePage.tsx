@@ -26,6 +26,7 @@ import {
   computeUpgrade,
   remainingDaysUntil,
 } from "../proration";
+import QRCode from "qrcode";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
 const fmtDate = (d?: string | null) =>
@@ -48,9 +49,9 @@ export function PremiumUpgradePage() {
 
   useEffect(() => {
     if (!qrCodeModal || !paymentInfo?.qrCode) { setQrDataUrl(null); return; }
-    import("qrcode").then((QRCode) =>
-      QRCode.toDataURL(paymentInfo.qrCode, { width: 300, margin: 2 })
-    ).then(url => setQrDataUrl(url)).catch(e => console.error("[QR] error", e));
+    QRCode.toDataURL(paymentInfo.qrCode, { width: 300, margin: 2 })
+      .then(url => setQrDataUrl(url))
+      .catch(e => console.error("[QR] error", e));
   }, [qrCodeModal]);
 
   const plans = useMemo(
@@ -519,13 +520,6 @@ export function PremiumUpgradePage() {
                 />
               )}
             </div>
-            <Button
-              variant="default"
-              className="w-full gap-2"
-              onClick={() => window.open(paymentInfo?.checkoutUrl, "_blank")}
-            >
-              <ExternalLink className="h-4 w-4" /> Mở trang thanh toán
-            </Button>
             <p className="text-xs text-muted-foreground text-center max-w-xs">
               Sau khi thanh toán thành công, trang sẽ tự động cập nhật. Nếu không thấy, bấm nút "Làm mới" bên trên.
             </p>
