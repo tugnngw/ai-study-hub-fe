@@ -127,18 +127,16 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
           </div>
         </div>
 
-        {!isDocument && (
-          <Button
-            variant="default"
-            size="sm"
-            className="mt-3 w-full bg-gradient-brand shadow-brand hover:opacity-90"
-            onClick={() => resetSaveDialog(false)}
-            disabled={saveMutation.isPending}
-          >
-            <Save className="h-4 w-4 mr-1.5" />
-            Lưu vào thư mục của tôi
-          </Button>
-        )}
+        <Button
+          variant="default"
+          size="sm"
+          className="mt-3 w-full bg-gradient-brand shadow-brand hover:opacity-90"
+          onClick={() => resetSaveDialog(isDocument)}
+          disabled={saveMutation.isPending}
+        >
+          <Save className="h-4 w-4 mr-1.5" />
+          {isDocument ? "Lưu tài liệu này" : "Lưu vào thư mục của tôi"}
+        </Button>
 
         <div className="mt-5 flex-1 min-h-0 flex flex-col">
           <div className="text-[10px] font-semibold tracking-wider text-muted-foreground mb-2 px-1">
