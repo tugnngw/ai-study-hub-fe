@@ -57,6 +57,7 @@ export const adminFileApi = {
         name: doc.title,
         deletedDate: doc.deletedAt || doc.updatedAt || new Date().toISOString(),
         remainingDays: calculateRemainingDays(doc.deletedAt || doc.updatedAt || new Date().toISOString()),
+        size: doc.formattedFileSize,
       }));
     } catch {
       return [];

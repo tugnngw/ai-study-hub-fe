@@ -63,7 +63,7 @@ export function PremiumUpgradePage() {
       setCurrentPlan(subQuery.data.planName.toUpperCase());
       setExpiresAt(subQuery.data.endDate ?? null);
     } else if (user?.plan) {
-      setCurrentPlan(String(user.plan).toUpperCase());
+      setCurrentPlan(String(user.plan || "FREE").toUpperCase());
       setExpiresAt(user.planExpiresAt);
     }
   }, [user?.plan, user?.planExpiresAt, subQuery.data]);

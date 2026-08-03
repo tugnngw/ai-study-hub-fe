@@ -150,6 +150,7 @@ export function UploadDialog({
               <Label>File</Label>
               <Input
                   type="file"
+                  accept=".pdf,.txt"
                   onChange={(e) => setFile(e.target.files?.[0] ?? null)}
               />
             </div>

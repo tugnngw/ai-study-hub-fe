@@ -12,4 +12,3 @@ export * from "./AdminPremiumPage";
 export * from "./AdminTransactionsPage";
 export * from "./PlanBadge";
 export * from "./PlanFormModal";
-export * from "./AdminSemestersPage";

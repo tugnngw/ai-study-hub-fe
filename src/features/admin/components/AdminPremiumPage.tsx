@@ -4,7 +4,6 @@ import {
   Crown,
   Wallet,
   XCircle,
-  TrendingUp,
   Pencil,
   Plus,
   Trash2,
@@ -274,32 +273,22 @@ export const AdminPremiumPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <StatCard
           label="Total Revenue"
           value={fmtVnd(stats?.totalRevenue ?? 0)}
-          trend={0}
           icon={<Wallet className="h-5 w-5" />}
           tone="bg-emerald-500/10 text-emerald-600"
         />
         <StatCard
           label="Paid Transactions"
           value={String(stats?.totalPaidTransactions ?? 0)}
-          trend={0}
           icon={<Crown className="h-5 w-5" />}
           tone="bg-primary/10 text-primary"
         />
         <StatCard
-          label="Success Rate"
-          value={`${(stats?.successRate ?? 0).toFixed(1)}%`}
-          trend={0}
-          icon={<TrendingUp className="h-5 w-5" />}
-          tone="bg-purple-500/10 text-purple-600"
-        />
-        <StatCard
           label="Failed Transactions"
           value={String(stats?.totalFailedTransactions ?? 0)}
-          trend={0}
           icon={<XCircle className="h-5 w-5" />}
           tone="bg-destructive/10 text-destructive"
         />

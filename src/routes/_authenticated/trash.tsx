@@ -6,6 +6,7 @@ import {
   RotateCcw,
   Trash2,
   Loader2,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -91,6 +92,13 @@ function TrashPage() {
         </p>
       </div>
 
+      <div className="flex items-start gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-3">
+        <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+        <p className="text-sm text-amber-700 dark:text-amber-500">
+          Tài liệu đã xoá mềm vẫn được tính vào tổng dung lượng lưu trữ của bạn cho đến khi bị xoá vĩnh viễn.
+        </p>
+      </div>
+
       {isLoading ? (
         <Card>
           <CardContent className="py-12 text-center text-sm text-muted-foreground flex items-center justify-center gap-2">
@@ -157,6 +165,11 @@ function TrashPage() {
                     )}
                   </div>
                 </div>
+                {d._type !== "folder" && (
+                  <span className="text-xs text-muted-foreground shrink-0 whitespace-nowrap">
+                    {d.formattedFileSize || "—"}
+                  </span>
+                )}
                 <Button
                   size="sm"
                   variant="outline"

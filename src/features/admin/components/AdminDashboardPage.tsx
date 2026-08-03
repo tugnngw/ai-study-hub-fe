@@ -1,16 +1,6 @@
 // src/features/admin/components/AdminDashboardPage.tsx
 import React from "react";
-import {
-  Users,
-  FileStack,
-  Download,
-  UserPlus,
-  Upload,
-  Flag,
-  Trash,
-  TrendingUp,
-  TrendingDown,
-} from "lucide-react";
+import { Users, FileStack, Download, UserPlus, Upload, Flag, Trash } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
@@ -41,25 +31,17 @@ const activityTone: Record<ActivityType, string> = {
   PAYMENT_FAILED: "bg-destructive/10 text-destructive",
 };
 
-function calculateTrend(lastWeek: number, prevWeek: number): number {
-  if (prevWeek === 0) return lastWeek > 0 ? 100 : 0;
-  return Math.round(((lastWeek - prevWeek) / prevWeek) * 100);
-}
-
 function StatCard({
   label,
   value,
-  trend,
   icon,
   tone,
 }: {
   label: string;
   value: string;
-  trend?: number;
   icon: React.ReactNode;
   tone: string;
 }) {
-  const up = (trend ?? 0) >= 0;
   return (
     <Card>
       <CardContent className="pt-6">
@@ -72,23 +54,6 @@ function StatCard({
           >
             {icon}
           </div>
-          {trend !== undefined && (
-            <span
-              className={cn(
-                "inline-flex items-center gap-0.5 text-xs font-semibold px-2 py-1 rounded-full",
-                up
-                  ? "bg-emerald-500/10 text-emerald-600"
-                  : "bg-destructive/10 text-destructive",
-              )}
-            >
-              {up ? (
-                <TrendingUp className="h-3.5 w-3.5" />
-              ) : (
-                <TrendingDown className="h-3.5 w-3.5" />
-              )}
-              {Math.abs(trend)}%
-            </span>
-          )}
         </div>
         <p className="text-muted-foreground text-sm font-medium mt-4">
           {label}
@@ -113,10 +78,6 @@ export const AdminDashboardPage: React.FC = () => {
     );
   }
 
-  const usersTrend = stats ? calculateTrend(stats.usersLastWeek, stats.usersPrevWeek) : undefined;
-  const docsTrend = stats ? calculateTrend(stats.docsLastWeek, stats.docsPrevWeek) : undefined;
-  const downloadsTrend = stats ? calculateTrend(stats.downloadsLastWeek, stats.downloadsPrevWeek) : undefined;
-
   return (
     <div className="space-y-6">
       <div>
@@ -132,21 +93,18 @@ export const AdminDashboardPage: React.FC = () => {
         <StatCard
           label="Tổng Users"
           value={stats?.totalUsers.toLocaleString("vi-VN") ?? "—"}
-          trend={usersTrend}
           icon={<Users className="h-5 w-5" />}
           tone="bg-primary/10 text-primary"
         />
         <StatCard
           label="Tổng Tài liệu"
           value={stats?.totalDocs.toLocaleString("vi-VN") ?? "—"}
-          trend={docsTrend}
           icon={<FileStack className="h-5 w-5" />}
           tone="bg-emerald-500/10 text-emerald-600"
         />
         <StatCard
           label="Download"
           value={stats?.totalDownloads.toLocaleString("vi-VN") ?? "—"}
-          trend={downloadsTrend}
           icon={<Download className="h-5 w-5" />}
           tone="bg-amber-500/10 text-amber-600"
         />

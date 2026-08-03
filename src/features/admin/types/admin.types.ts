@@ -57,6 +57,7 @@ export interface DocumentResponse {
   status: DocumentStatus;
   ownerId: string;
   fileSize?: number;
+  formattedFileSize?: string;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
@@ -124,6 +125,7 @@ export interface DeletedFileItem {
   name: string;
   deletedDate: string;
   remainingDays: number;
+  size?: string;
 }
 
 export interface DeletedAccountItem {

@@ -21,7 +21,6 @@ import {
   PanelLeft,
   Sun,
   Moon,
-  GraduationCap,
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/lib/theme";
@@ -69,7 +68,6 @@ const nav = [
     exact: false,
   },
   { to: "/admin_panel/trash", label: "Thùng rác", icon: Trash2, exact: false },
-  { to: "/admin_panel/semesters", label: "Kỳ học & Môn học", icon: GraduationCap, exact: false },
   { to: "/admin_panel/premium", label: "Premium", icon: Crown, exact: false },
   { to: "/admin_panel/profile", label: "Hồ sơ", icon: UserIcon, exact: false },
 ] as const;

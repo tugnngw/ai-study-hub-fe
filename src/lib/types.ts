@@ -49,7 +49,7 @@ export interface User {
   avatarUrl?: string | null;
   role: AccountRole;
   status: AccountStatus;
-  plan: PlanName;
+  plan: string;
   storageGb: number;
   createdAt: string;
   updatedAt: string;
@@ -164,6 +164,7 @@ export interface Document {
   mimeType?: string | null;
   checksum?: string | null;
   fileSize?: number | null;
+  formattedFileSize?: string | null;
   totalPages?: number | null;
   createdAt: string;
   deletedAt?: string | null;
@@ -196,6 +197,13 @@ export interface DownloadUrlResponse {
 export interface QuotaDetails {
   planName: string;
   storageGb: number;
+  storageUsedBytes: number;
+  storageTotalBytes: number;
+  storageFreeBytes: number;
+  storageUsagePercent: number;
+  formattedStorageUsed: string;
+  formattedStorageTotal: string;
+  formattedStorageFree: string;
   aiQuestions: number;
   chatLimit: number;
   flashcardLimit: number;

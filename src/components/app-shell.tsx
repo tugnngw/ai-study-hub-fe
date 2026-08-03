@@ -102,10 +102,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const openDocId = search?.docId ? String(search.docId) : undefined;
   const openDoc = useDocument(openDocId || "");
 
-  const used = documents?.reduce((sum, doc) => sum + (doc.fileSize || 0), 0) || 0;
-  const storageGb = quota?.storageGb ?? user?.storageGb ?? 1;
-  const total = storageGb * 1024 * 1024 * 1024;
-  const pct = Math.min(100, (used / total) * 100);
+  const usedFormatted = quota?.formattedStorageUsed || "0 B";
+  const totalFormatted = quota?.formattedStorageTotal || "1 GB";
+  const pct = quota?.storageUsagePercent || 0;
 
   const handleLogout = async () => {
     await logout();
@@ -177,7 +176,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   </div>
                   <Progress value={pct} className="h-1.5" />
                   <div className="text-[11px] text-muted-foreground">
-                    <span className="font-medium text-foreground">{formatBytes(used)}</span> / {formatBytes(total)}
+                    <span className="font-medium text-foreground">{usedFormatted}</span> / {totalFormatted}
                   </div>
                 </div>
               </div>
@@ -283,7 +282,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     <div className="hidden sm:flex flex-col items-start leading-tight">
                       <div className="flex items-center gap-1.5">
                         <span className="text-xs font-medium">{user?.fullName ?? "User"}</span>
-                         {user?.role !== "ADMIN" && user?.plan && user.plan !== "FREE" && (
+                         {user?.role !== "ADMIN" && user?.plan && user.plan.toUpperCase() !== "FREE" && (
                            <span className="text-[9px] font-bold bg-amber-500/10 text-amber-600 px-1.5 py-0.5 rounded-full border border-amber-500/20">
                              {user.plan}
                            </span>

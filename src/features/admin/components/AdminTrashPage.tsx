@@ -112,6 +112,7 @@ export const AdminTrashPage: React.FC = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Tên File</TableHead>
+                    <TableHead>Kích thước</TableHead>
                     <TableHead>Ngày xóa</TableHead>
                     <TableHead>Còn lại</TableHead>
                     <TableHead className="text-right">Hành động</TableHead>
@@ -121,7 +122,7 @@ export const AdminTrashPage: React.FC = () => {
                   {delFiles.length === 0 ? (
                     <TableRow>
                       <TableCell
-                        colSpan={4}
+                        colSpan={5}
                         className="h-24 text-center text-muted-foreground"
                       >
                         Thùng rác trống
@@ -139,6 +140,9 @@ export const AdminTrashPage: React.FC = () => {
                               {f.name}
                             </span>
                           </div>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground whitespace-nowrap">
+                          {f.size || "—"}
                         </TableCell>
                         <TableCell className="text-muted-foreground">
                           {f.deletedDate}

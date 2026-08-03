@@ -135,7 +135,7 @@ function DocumentsPage() {
                     subjectName={subjectName}
                     title={d.title}
                     description={d.description ?? ""}
-                    fileSize={d.fileSize ?? 0}
+                    fileSize={d.formattedFileSize ?? "-"}
                     status={d.status}
                     rejectReason={(d as any).rejectReason}
                     pinned={isPinned(d.id)}
@@ -174,7 +174,7 @@ function DocumentRow({
   subjectName: string;
   title: string;
   description: string;
-  fileSize: number;
+  fileSize: string;
   status: string;
   rejectReason?: string;
   pinned: boolean;
@@ -251,7 +251,7 @@ function DocumentRow({
           {description}
         </td>
         <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">
-          {formatBytes(fileSize)}
+          {fileSize}
         </td>
         <td className="px-4 py-3 hidden sm:table-cell">
            {getStatusBadge()}
@@ -406,6 +406,7 @@ function UploadDialog({
             <Input
               type="file"
               multiple
+              accept=".pdf,.txt"
               onChange={(e) => {
                 const picked = Array.from(e.target.files ?? []);
                 if (picked.length) setFiles((prev) => [...prev, ...picked]);

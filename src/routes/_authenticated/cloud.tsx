@@ -4,7 +4,6 @@ import { useDocuments } from "@/lib/queries";
 import { useQuota } from "@/lib/queries";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { formatBytes } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/cloud")({
   component: CloudPage,
@@ -14,11 +13,11 @@ function CloudPage() {
   const docs = useDocuments();
   const quota = useQuota();
 
-  const used = docs.data?.reduce((sum, d) => sum + (d.fileSize ?? 0), 0) ?? 0;
-  const total = ((quota.data?.storageGb ?? 1) * 1024 * 1024 * 1024);
-  const pct = Math.min((used / total) * 100, 100);
-  const free = total - used;
-  const isOverLimit = used > total;
+  const usedFormatted = quota.data?.formattedStorageUsed || "0 B";
+  const totalFormatted = quota.data?.formattedStorageTotal || "1 GB";
+  const freeFormatted = quota.data?.formattedStorageFree || "0 B";
+  const pct = quota.data?.storageUsagePercent || 0;
+  const isOverLimit = pct >= 100;
 
   return (
       <div className="space-y-5">
@@ -43,9 +42,9 @@ function CloudPage() {
                   Tổng dung lượng đã dùng
                 </div>
                 <div className="text-2xl font-bold font-display">
-                  {formatBytes(used)}{" "}
+                  {usedFormatted}{" "}
                   <span className="text-base text-muted-foreground font-normal">
-                    / {formatBytes(total)}
+                    / {totalFormatted}
                   </span>
                 </div>
               </div>
@@ -83,7 +82,7 @@ function CloudPage() {
                   <HardDrive className="h-3.5 w-3.5 text-primary" /> Giới hạn
                 </div>
                 <div className="text-xl font-bold font-display mt-0.5">
-                  {formatBytes(total)}
+                  {totalFormatted}
                 </div>
               </div>
               <div className="px-4">
@@ -100,7 +99,7 @@ function CloudPage() {
                     isOverLimit ? "text-destructive" : ""
                   }`}
                 >
-                  {isOverLimit ? "0 B" : formatBytes(free)}
+                  {freeFormatted}
                 </div>
               </div>
             </div>
