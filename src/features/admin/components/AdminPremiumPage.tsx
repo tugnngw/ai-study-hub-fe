@@ -2,11 +2,9 @@
 import React, { useMemo, useState } from "react";
 import {
   Crown,
-  Clock,
   Wallet,
   XCircle,
   TrendingUp,
-  TrendingDown,
   Pencil,
   Plus,
   Trash2,
@@ -25,6 +23,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 import {
   useAdminTransactions,
   useAdminPlans,
@@ -36,52 +35,20 @@ import {
 import { formatStorage } from "@/lib/config";
 import { Loader2 } from "lucide-react";
 import { PlanFormModal } from "./PlanFormModal";
-import type { AdminPlan } from "../services/paymentApi";
+import type { AdminPlan, RevenueStatsResponse } from "../services/paymentApi";
+import { paymentApi } from "../services/paymentApi";
+import { StatCard } from "@/components/ui/stat-card";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
 const fmtDate = (date: string) => new Date(date).toLocaleString("vi-VN");
 
-function StatCard({
-  label,
-  value,
-  trend,
-  icon,
-  tone,
-}: {
-  label: string;
-  value: string;
-  trend: number;
-  icon: React.ReactNode;
-  tone: string;
-}) {
-  const up = trend >= 0;
-  return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="flex items-start justify-between">
-          <div className={`h-11 w-11 rounded-xl flex items-center justify-center ${tone}`}>
-            {icon}
-          </div>
-          <span
-            className={`inline-flex items-center gap-0.5 text-xs font-semibold px-2 py-1 rounded-full ${up ? "bg-emerald-500/10 text-emerald-600" : "bg-destructive/10 text-destructive"}`}
-          >
-            {up ? <TrendingUp className="h-3.5 w-3.5" /> : <TrendingDown className="h-3.5 w-3.5" />}
-            {Math.abs(trend)}%
-          </span>
-        </div>
-        <p className="text-muted-foreground text-sm font-medium mt-4">{label}</p>
-        <h3 className="text-2xl font-bold tracking-tight mt-1 font-display">{value}</h3>
-        <p className="text-xs text-muted-foreground mt-0.5">so với tháng trước</p>
-      </CardContent>
-    </Card>
-  );
-}
-
 const statusBadge: Record<string, { label: string; cls: string }> = {
-  PENDING: { label: "Chờ xử lý", cls: "bg-amber-500/10 text-amber-600" },
-  PAID: { label: "Thành công", cls: "bg-emerald-500/10 text-emerald-600" },
+  PENDING: { label: "Chờ thanh toán", cls: "bg-amber-500/10 text-amber-600" },
+  PROCESSING: { label: "Đang xử lý", cls: "bg-blue-500/10 text-blue-600" },
+  PAID: { label: "Đã thanh toán", cls: "bg-emerald-500/10 text-emerald-600" },
+  CANCELLED: { label: "Đã hủy", cls: "bg-muted text-muted-foreground" },
   FAILED: { label: "Thất bại", cls: "bg-destructive/10 text-destructive" },
-  CANCELLED: { label: "Đã hủy", cls: "bg-gray-500/10 text-gray-600" },
+  EXPIRED: { label: "Hết hạn", cls: "bg-slate-500/10 text-slate-600" },
 };
 
 type TabKey = "all" | "PAID" | "PENDING";
@@ -276,20 +243,21 @@ function PlanConfigCard() {
 
 export const AdminPremiumPage: React.FC = () => {
   const [tab, setTab] = useState<TabKey>("all");
-  const { data, isLoading } = useAdminTransactions(0, 50);
+  const { data: transactions, isLoading: transactionsLoading } = useAdminTransactions(0, 50);
 
-  const transactions = data?.content || [];
-  const totalPaid = transactions.filter((t) => t.status === "PAID").length;
-  const totalRevenue = transactions
-    .filter((t) => t.status === "PAID")
-    .reduce((sum, t) => sum + t.amount, 0);
+  // ✅ SỬA: Dùng API thay vì đếm client
+  const { data: stats, isLoading: statsLoading } = useQuery<RevenueStatsResponse>({
+    queryKey: ['admin', 'revenue'],
+    queryFn: () => paymentApi.getRevenueStats(),
+    refetchInterval: 60000, // 1 minute
+  });
 
   const filtered = useMemo(
-    () => (tab === "all" ? transactions : transactions.filter((t) => t.status === tab)),
+    () => (tab === "all" ? (transactions?.content || []) : (transactions?.content || []).filter((t) => t.status === tab)),
     [transactions, tab],
   );
 
-  if (isLoading) {
+  if (transactionsLoading || statsLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -308,29 +276,29 @@ export const AdminPremiumPage: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard
-          label="Total Premium Users"
-          value={String(totalPaid)}
-          trend={0}
-          icon={<Crown className="h-5 w-5" />}
-          tone="bg-primary/10 text-primary"
-        />
-        <StatCard
-          label="Pending Requests"
-          value={String(transactions.filter((t) => t.status === "PENDING").length)}
-          trend={0}
-          icon={<Clock className="h-5 w-5" />}
-          tone="bg-amber-500/10 text-amber-600"
-        />
-        <StatCard
-          label="Revenue This Month"
-          value={fmtVnd(totalRevenue)}
+          label="Total Revenue"
+          value={fmtVnd(stats?.totalRevenue ?? 0)}
           trend={0}
           icon={<Wallet className="h-5 w-5" />}
           tone="bg-emerald-500/10 text-emerald-600"
         />
         <StatCard
-          label="Total Transactions"
-          value={String(transactions.length)}
+          label="Paid Transactions"
+          value={String(stats?.totalPaidTransactions ?? 0)}
+          trend={0}
+          icon={<Crown className="h-5 w-5" />}
+          tone="bg-primary/10 text-primary"
+        />
+        <StatCard
+          label="Success Rate"
+          value={`${(stats?.successRate ?? 0).toFixed(1)}%`}
+          trend={0}
+          icon={<TrendingUp className="h-5 w-5" />}
+          tone="bg-purple-500/10 text-purple-600"
+        />
+        <StatCard
+          label="Failed Transactions"
+          value={String(stats?.totalFailedTransactions ?? 0)}
           trend={0}
           icon={<XCircle className="h-5 w-5" />}
           tone="bg-destructive/10 text-destructive"

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/lib/auth';
 import { useQueryClient } from '@tanstack/react-query';
 import { paymentApi } from '@/features/admin/services/paymentApi';
+import type { PaymentStatusResponse } from '@/features/admin/services/paymentApi';
 
 export const Route = createFileRoute("/_authenticated/payment/success")({
   component: PaymentSuccessPage,
@@ -32,9 +33,8 @@ function PaymentSuccessPage() {
     const pollStatus = async () => {
       attemptRef.current++;
       try {
-        const res = await paymentApi.getTransactionStatus(Number(orderCode));
-        const tx = res as { status?: string };
-        if (tx?.status === 'PAID') {
+        const tx = await paymentApi.getTransactionStatus(Number(orderCode)) as PaymentStatusResponse;
+        if (tx?.paid) {
           if (pollRef.current) clearInterval(pollRef.current);
           await reloadUser();
           queryClient.invalidateQueries({ queryKey: ["my-subscription"] });
@@ -42,10 +42,10 @@ function PaymentSuccessPage() {
           queryClient.invalidateQueries({ queryKey: ["account", "me"] });
           setStatus('success');
           setMessage('Tài khoản của bạn đã được cập nhật thành công!');
-        } else if (tx?.status === 'FAILED' || tx?.status === 'CANCELLED' || tx?.status === 'EXPIRED') {
+        } else if (tx?.failed) {
           if (pollRef.current) clearInterval(pollRef.current);
           setStatus('failed');
-          setMessage(`Giao dịch không thành công (${tx.status}). Vui lòng thử lại.`);
+          setMessage(`Giao dịch không thành công: ${tx.statusMessage}`);
         } else {
           setMessage(`Đang chờ xác nhận giao dịch... (${attemptRef.current}s)`);
         }

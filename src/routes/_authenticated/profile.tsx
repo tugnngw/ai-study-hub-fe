@@ -9,8 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { authApi } from "@/lib/realApi";
-import { useDocuments, useFolders, useSharedDocuments } from "@/lib/queries";
-import { remainingDaysUntil } from "@/features/payment/proration";
+import { useDocuments, useFolders, useSharedDocuments, useMySubscription } from "@/lib/queries";
 
 export const Route = createFileRoute("/_authenticated/profile")({
   component: ProfilePage,
@@ -37,7 +36,8 @@ function ProfilePage() {
   const update = (k: keyof typeof form, v: string) =>
     setForm((p) => ({ ...p, [k]: v }));
 
-  const planRemainingDays = remainingDaysUntil(user?.planExpiresAt);
+  const subQuery = useMySubscription();
+  const planRemainingDays = subQuery.data?.daysRemaining ?? 0;
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -16,6 +16,40 @@ interface BackendPlan {
   isActive: boolean;
 }
 
+export interface PaymentStatusResponse {
+  orderCode: number;
+  status: 'PENDING' | 'PAID' | 'FAILED' | 'CANCELLED' | 'EXPIRED';
+  amount: number;
+  createdAt: string;
+  updatedAt: string;
+  planName: string | null;
+  transactionId: string | null;
+  paid: boolean;
+  pending: boolean;
+  failed: boolean;
+  statusMessage: string;
+}
+
+export interface UpgradePreviewResponse {
+  currentPlanName: string;
+  newPlanName: string;
+  newPlanPrice: number;
+  remainingDays: number;
+  remainingCredit: number;
+  amountToPay: number;
+  formattedAmount?: string;
+  savingMessage?: string | null;
+}
+
+export interface RevenueStatsResponse {
+  totalRevenue: number;
+  monthlyRevenue: number;
+  weeklyRevenue: number;
+  totalPaidTransactions: number;
+  totalFailedTransactions: number;
+  successRate: number;
+}
+
 interface PaymentResponse {
   checkoutUrl: string;
   orderCode: number;
@@ -152,8 +186,14 @@ export const paymentApi = {
   getMySubscription: (): Promise<SubscriptionResponse> =>
     api<SubscriptionResponse>("/api/payment/my-subscription"),
 
-  getTransactionStatus: (orderCode: number): Promise<unknown> =>
-    api(`/api/payment/status/${orderCode}`),
+  previewUpgrade: (planId: string): Promise<UpgradePreviewResponse> =>
+    api<UpgradePreviewResponse>(`/api/payment/upgrade-preview?planId=${encodeURIComponent(planId)}`),
+
+  getTransactionStatus: (orderCode: number): Promise<PaymentStatusResponse> =>
+    api<PaymentStatusResponse>(`/api/payment/status/${orderCode}`),
+
+  getRevenueStats: (): Promise<RevenueStatsResponse> =>
+    api<RevenueStatsResponse>("/api/admin/dashboard/revenue"),
 
   getTransactions: (): Promise<UserTransactionResponse[]> => 
     api<UserTransactionResponse[]>("/api/payment/my-transactions"),

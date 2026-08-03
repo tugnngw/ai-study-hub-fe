@@ -1,7 +1,7 @@
 // src/features/payment/components/PremiumUpgradePage.tsx
-import { useEffect, useMemo, useState, useRef, useCallback } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Check, Loader2, Crown, CheckCircle2, CalendarClock, ExternalLink, QrCode, Clock, Smartphone } from "lucide-react";
+import { Check, Loader2, Crown, CheckCircle2, CalendarClock, QrCode, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,12 +20,8 @@ import type { AdminPlan } from "@/features/admin/services/paymentApi";
 import { accountApi } from "@/features/auth/services";
 import { useAuth } from "@/lib/auth";
 import { usePlans, useMySubscription } from "@/lib/queries";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { formatStorage } from "@/lib/config";
-import {
-  computeUpgrade,
-  remainingDaysUntil,
-} from "../proration";
 import QRCode from "qrcode";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
@@ -44,14 +40,14 @@ export function PremiumUpgradePage() {
   const { user, reloadUser } = useAuth();
   const [paymentInfo, setPaymentInfo] = useState<{checkoutUrl: string; orderCode: number; amount: number; expiredAt: string; qrCode: string | null} | null>(null);
   const [qrCodeModal, setQrCodeModal] = useState(false);
-  const [countdown, setCountdown] = useState(180); // 3 phút
+  const [remainingSeconds, setRemainingSeconds] = useState(0);
   const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!qrCodeModal || !paymentInfo?.qrCode) { setQrDataUrl(null); return; }
     QRCode.toDataURL(paymentInfo.qrCode, { width: 300, margin: 2 })
       .then(url => setQrDataUrl(url))
-      .catch(e => console.error("[QR] error", e));
+      .catch(() => {});
   }, [qrCodeModal]);
 
   const plans = useMemo(
@@ -63,55 +59,60 @@ export function PremiumUpgradePage() {
   );
 
   useEffect(() => {
-    // Ưu tiên data từ subQuery nếu có
     if (subQuery.data) {
       setCurrentPlan(subQuery.data.planName.toUpperCase());
-      setExpiresAt(subQuery.data.endDate);
+      setExpiresAt(subQuery.data.endDate ?? null);
     } else if (user?.plan) {
       setCurrentPlan(String(user.plan).toUpperCase());
       setExpiresAt(user.planExpiresAt);
     }
   }, [user?.plan, user?.planExpiresAt, subQuery.data]);
 
-
-  const currentPlanObj = useMemo(
-    () => plans.find((p) => p.name.toUpperCase() === currentPlan) ?? null,
-    [plans, currentPlan],
-  );
-
-  const remainingDays = remainingDaysUntil(expiresAt);
+  // Dùng daysRemaining từ backend thay vì tính trên FE
+  const remainingDays = subQuery.data?.daysRemaining ?? 0;
   const isPaidActive = currentPlan !== "FREE" && remainingDays > 0;
 
   const currentPlanId = subQuery.data?.planId;
-  const currentTier = currentPlanObj?.tier ?? 0;
+  const currentTier = subQuery.data?.tierGranted ?? 0;
   const isCurrent = (p: AdminPlan) =>
     currentPlanId ? p.id === currentPlanId : p.name.toUpperCase() === currentPlan;
   const isUpgrade = (p: AdminPlan) => !isCurrent(p) && p.tier > currentTier;
   const isDowngrade = (p: AdminPlan) => !isCurrent(p) && p.tier < currentTier;
 
-  const quote = useMemo(() => {
+  // ✅ SỬA: Gọi API preview từ server - không tính trên FE
+  const { data: preview, isLoading: previewLoading } = useQuery({
+    queryKey: ['upgradePreview', selected?.id],
+    queryFn: () => paymentApi.previewUpgrade(selected!.id),
+    enabled: !!selected && isPaidActive && isUpgrade(selected),
+    staleTime: 5 * 60 * 1000,
+    retry: 1,
+  });
+
+  // Hiển thị thông tin từ server preview, không tính lại
+  const quoteFromPreview = useMemo(() => {
     if (!selected) return null;
     const upgrading = isPaidActive && isUpgrade(selected);
-    const planDuration = selected.durationDays || 30;
-    
-    if (upgrading) {
-      // Tính bù trừ cho gói đang dùng (chỉ để hiển thị cho user biết)
-      return computeUpgrade(
-        currentPlanObj
-          ? { name: currentPlanObj.name, price: currentPlanObj.price, durationDays: currentPlanObj.durationDays }
-          : null,
-        { name: selected.name, price: selected.price, durationDays: selected.durationDays },
-        expiresAt,
-      );
+
+    if (upgrading && preview) {
+      return {
+        remainingDays: preview.remainingDays,
+        remainingValue: preview.remainingCredit,
+        amountDue: preview.amountToPay,
+        daysCovered: selected.durationDays || 30,
+      };
     }
-    
-    return {
-      remainingDays: 0,
-      remainingValue: 0,
-      amountDue: selected.price,
-      daysCovered: planDuration,
-    };
-  }, [selected, isPaidActive, currentPlanObj, expiresAt]);
+
+    if (!upgrading) {
+      return {
+        remainingDays: 0,
+        remainingValue: 0,
+        amountDue: selected.price,
+        daysCovered: selected.durationDays || 30,
+      };
+    }
+
+    return null;
+  }, [selected, isPaidActive, preview]);
 
   const openCheckout = (p: AdminPlan) => {
     setSelected(p);
@@ -124,37 +125,18 @@ export function PremiumUpgradePage() {
       const res = await paymentApi.createPayment(selected.id);
 
       const url = res.checkoutUrl ?? "";
-      const isMockSuccess =
-        url.includes("upgraded=1") ||
-        (typeof window !== "undefined" &&
-          url.startsWith(window.location.origin) &&
-          url.includes("/premium"));
 
-      if (isMockSuccess) {
-        await reloadUser();
-        const u = await accountApi.me();
-        if (u?.plan) setCurrentPlan(String(u.plan).toUpperCase());
-        setExpiresAt(u?.planExpiresAt ?? null);
-        queryClient.invalidateQueries({ queryKey: ["my-subscription"] });
-        queryClient.invalidateQueries({ queryKey: ["quota"] });
-        setSelected(null);
-        toast.success(`Đã nâng cấp lên ${selected.name}!`);
-      } else if (url) {
-        // Lưu thông tin payment và hiển thị QR code modal
-        const expiredAt = res.expiredAt;
-        const remainingSec = expiredAt
-          ? Math.max(0, Math.floor((new Date(expiredAt).getTime() - Date.now()) / 1000))
-          : 180;
+      if (url) {
         setPaymentInfo({
           checkoutUrl: url,
           orderCode: res.orderCode,
           amount: res.amount,
-          expiredAt,
+          expiredAt: res.expiredAt,
           qrCode: res.qrCode,
         });
+        setRemainingSeconds(Math.max(0, Math.floor((new Date(res.expiredAt).getTime() - Date.now()) / 1000)));
         setQrCodeModal(true);
-        setCountdown(remainingSec);
-        setSelected(null); // Đóng dialog cũ
+        setSelected(null);
       }
     } catch (e) {
       toast.error("Lỗi tạo link thanh toán");
@@ -179,78 +161,62 @@ export function PremiumUpgradePage() {
 
   const upgrading = selected ? isPaidActive && isUpgrade(selected) : false;
 
-  const countdownRef = useRef<NodeJS.Timeout | null>(null);
+  const checkPaymentStatus = (poller: NodeJS.Timeout | null, ticker: NodeJS.Timeout | null) => {
+    if (!paymentInfo?.orderCode) return;
+    paymentApi.getTransactionStatus(paymentInfo.orderCode)
+      .then((tx) => {
+        if (tx?.paid) {
+          if (poller) clearInterval(poller);
+          if (ticker) clearInterval(ticker);
+          setQrCodeModal(false);
+          setPaymentInfo(null);
+          reloadUser().then(() => {
+            queryClient.invalidateQueries({ queryKey: ["my-subscription"] });
+            queryClient.invalidateQueries({ queryKey: ["quota"] });
+            toast.success("Thanh toán thành công! Gói đã được cập nhật.");
+            refresh();
+          });
+        } else if (tx?.failed) {
+          if (poller) clearInterval(poller);
+          if (ticker) clearInterval(ticker);
+          setQrCodeModal(false);
+          setPaymentInfo(null);
+          toast.error("Giao dịch không thành công hoặc đã hết hạn.");
+        }
+      })
+      .catch(() => {});
+  };
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    let poller: NodeJS.Timeout;
+    let ticker: NodeJS.Timeout | null = null;
+    let poller: NodeJS.Timeout | null = null;
 
     if (qrCodeModal && paymentInfo) {
-      // Countdown
-      timer = setInterval(() => {
-        setCountdown((prev) => {
+      ticker = setInterval(() => {
+        setRemainingSeconds((prev) => {
           if (prev <= 1) {
-            clearInterval(timer);
-            clearInterval(poller);
-            setQrCodeModal(false);
-            setPaymentInfo(null);
-            toast.error("Đã hết thời gian thanh toán");
+            clearInterval(ticker!);
+            checkPaymentStatus(poller, ticker);
             return 0;
           }
           return prev - 1;
         });
       }, 1000);
 
-      // Polling
-      poller = setInterval(async () => {
-        try {
-          const u = await accountApi.me();
-          if (u && u.plan && String(u.plan).toUpperCase() !== currentPlan) {
-            clearInterval(timer);
-            clearInterval(poller);
-            setQrCodeModal(false);
-            setPaymentInfo(null);
-            await reloadUser();
-            toast.success("Thanh toán thành công! Gói đã được cập nhật.");
-            refresh();
-          }
-        } catch (e) {
-          console.error("Error checking subscription status", e);
-        }
-      }, 5000); // Polling mỗi 5 giây
+      poller = setInterval(() => checkPaymentStatus(poller, ticker), 3000);
 
-      // Khi tab được focus lại (sau khi thanh toán xong), check ngay
       const onVisibilityChange = () => {
-        if (document.visibilityState === 'visible') {
-          accountApi.me().then(u => {
-            if (u && u.plan && String(u.plan).toUpperCase() !== currentPlan) {
-              clearInterval(timer);
-              clearInterval(poller);
-              setQrCodeModal(false);
-              setPaymentInfo(null);
-              reloadUser().then(() => {
-                toast.success("Thanh toán thành công! Gói đã được cập nhật.");
-                refresh();
-              });
-            }
-          }).catch(() => {});
-        }
+        if (document.visibilityState === 'visible') checkPaymentStatus(poller, ticker);
       };
       document.addEventListener('visibilitychange', onVisibilityChange);
 
       return () => {
-        clearInterval(timer);
-        clearInterval(poller);
+        if (ticker) clearInterval(ticker);
+        if (poller) clearInterval(poller);
         document.removeEventListener('visibilitychange', onVisibilityChange);
       };
     }
-  }, [qrCodeModal, paymentInfo, currentPlan]);
-
-  const formatCountdown = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
+  }, [qrCodeModal, paymentInfo]);
 
   return (
     <div className="space-y-6">
@@ -301,7 +267,7 @@ export function PremiumUpgradePage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {plans.map((p) => {
           const current = isCurrent(p);
-          const highlighted = false; // Tắt badge "Phổ biến"
+          const highlighted = false;
           const downgrade = isPaidActive && isDowngrade(p);
           const durationDays = p.durationDays || 30;
           return (
@@ -438,18 +404,23 @@ export function PremiumUpgradePage() {
           </DialogHeader>
 
           <div className="space-y-4">
-            {quote && (
+            {previewLoading && upgrading && (
+              <div className="flex justify-center py-4">
+                <Loader2 className="h-5 w-5 animate-spin text-primary" />
+              </div>
+            )}
+            {quoteFromPreview && (
               <div className="rounded-lg border bg-muted/40 p-4 space-y-1.5 text-sm">
                 {upgrading && (
                   <>
                     <Row label="Gói hiện tại" value={currentPlan} />
                     <Row
                       label="Ngày còn lại"
-                      value={`${quote.remainingDays} ngày`}
+                      value={`${quoteFromPreview.remainingDays} ngày`}
                     />
                     <Row
                       label="Giá trị chưa dùng (trừ đi)"
-                      value={`- ${fmtVnd(quote.remainingValue)}`}
+                      value={`- ${fmtVnd(quoteFromPreview.remainingValue)}`}
                     />
                     <Row
                       label={`Giá ${selected?.name} (${selected?.durationDays || 30} ngày)`}
@@ -460,12 +431,12 @@ export function PremiumUpgradePage() {
                 )}
                 <Row
                   label="Số ngày áp dụng"
-                  value={`${quote.daysCovered} ngày`}
+                  value={`${quoteFromPreview.daysCovered} ngày`}
                 />
                 <div className="flex items-center justify-between pt-1">
                   <span className="font-semibold">Thành tiền</span>
                   <span className="text-lg font-bold text-primary">
-                    {fmtVnd(quote.amountDue)}
+                    {fmtVnd(quoteFromPreview.amountDue)}
                   </span>
                 </div>
               </div>
@@ -476,7 +447,7 @@ export function PremiumUpgradePage() {
             <Button variant="outline" onClick={() => setSelected(null)}>
               Huỷ
             </Button>
-            <Button onClick={handlePay} disabled={loading}>
+            <Button onClick={handlePay} disabled={loading || (upgrading && previewLoading)}>
               {loading ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" /> Đang tạo link...
@@ -505,9 +476,9 @@ export function PremiumUpgradePage() {
             <div className="text-center">
               <div className="text-4xl font-mono font-bold text-primary flex items-center justify-center gap-2">
                 <Clock className="h-8 w-8" />
-                {formatCountdown(countdown)}
+                {String(Math.floor(remainingSeconds / 60)).padStart(2, '0')}:{String(remainingSeconds % 60).padStart(2, '0')}
               </div>
-               <p className="text-xs text-muted-foreground mt-1">Tự động kiểm tra sau 5 giây</p>
+              <p className="text-xs text-muted-foreground mt-1">Tự động cập nhật trạng thái sau mỗi 3 giây</p>
             </div>
             <div className="border p-2 rounded-lg bg-white">
               {qrDataUrl ? (

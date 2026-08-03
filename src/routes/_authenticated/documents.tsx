@@ -114,6 +114,7 @@ function DocumentsPage() {
                 <th className="px-4 py-3 font-medium hidden md:table-cell">
                   Description
                 </th>
+                <th className="px-4 py-3 font-medium hidden md:table-cell">Size</th>
                 <th className="px-4 py-3 font-medium hidden sm:table-cell">Status</th>
                 <th className="px-4 py-3 font-medium w-24">Actions</th>
               </tr>
@@ -134,6 +135,7 @@ function DocumentsPage() {
                     subjectName={subjectName}
                     title={d.title}
                     description={d.description ?? ""}
+                    fileSize={d.fileSize ?? 0}
                     status={d.status}
                     rejectReason={(d as any).rejectReason}
                     pinned={isPinned(d.id)}
@@ -159,6 +161,7 @@ function DocumentRow({
   subjectName,
   title,
   description,
+  fileSize,
   status,
   rejectReason,
   pinned,
@@ -171,6 +174,7 @@ function DocumentRow({
   subjectName: string;
   title: string;
   description: string;
+  fileSize: number;
   status: string;
   rejectReason?: string;
   pinned: boolean;
@@ -245,6 +249,9 @@ function DocumentRow({
         </td>
         <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
           {description}
+        </td>
+        <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">
+          {formatBytes(fileSize)}
         </td>
         <td className="px-4 py-3 hidden sm:table-cell">
            {getStatusBadge()}

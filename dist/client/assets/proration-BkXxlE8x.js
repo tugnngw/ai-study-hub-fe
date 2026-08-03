@@ -1,1 +1,0 @@
-function e(e){if(!e)return 0;let t=new Date(e).getTime(),n=Date.now();return Number.isNaN(t)||t<=n?0:Math.ceil((t-n)/864e5)}function t(e,t,n){let r=t||30;return Math.round(e*n/r)}function n(n,r,i){let a=e(i),o=n?.durationDays||30,s=r.durationDays||30,c=n?t(n.price,o,a):0;return{remainingDays:a,remainingValue:c,amountDue:Math.max(0,r.price-c),daysCovered:s}}export{e as n,n as t};
