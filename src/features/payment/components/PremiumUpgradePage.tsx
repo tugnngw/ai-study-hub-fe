@@ -17,11 +17,12 @@ import {
 import { cn } from "@/lib/utils";
 import { paymentApi } from "@/features/admin/services/paymentApi";
 import type { AdminPlan } from "@/features/admin/services/paymentApi";
-import { accountApi } from "@/features/auth/services";
+import { accountApi } from "@/lib/realApi";
 import { useAuth } from "@/lib/auth";
 import { usePlans, useMySubscription } from "@/lib/queries";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { formatStorage } from "@/lib/config";
+// @ts-ignore
 import QRCode from "qrcode";
 
 const fmtVnd = (n: number) => n.toLocaleString("vi-VN") + " ₫";
@@ -46,7 +47,7 @@ export function PremiumUpgradePage() {
   useEffect(() => {
     if (!qrCodeModal || !paymentInfo?.qrCode) { setQrDataUrl(null); return; }
     QRCode.toDataURL(paymentInfo.qrCode, { width: 300, margin: 2 })
-      .then(url => setQrDataUrl(url))
+      .then((url: string) => setQrDataUrl(url))
       .catch(() => {});
   }, [qrCodeModal]);
 
@@ -64,7 +65,7 @@ export function PremiumUpgradePage() {
       setExpiresAt(subQuery.data.endDate ?? null);
     } else if (user?.plan) {
       setCurrentPlan(String(user.plan || "FREE").toUpperCase());
-      setExpiresAt(user.planExpiresAt);
+      setExpiresAt(user.planExpiresAt ?? null);
     }
   }, [user?.plan, user?.planExpiresAt, subQuery.data]);
 

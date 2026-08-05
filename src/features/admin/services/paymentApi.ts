@@ -162,7 +162,7 @@ export const paymentApi = {
       .map((p) => {
         const isPremium = p.name === "Premium";
         return {
-          id: p.id,
+          id: p.id as any,
           name: p.name,
           price: p.price,
           tagline: p.description || "",
@@ -187,7 +187,7 @@ export const paymentApi = {
     api<SubscriptionResponse>("/api/payment/my-subscription"),
 
   previewUpgrade: (planId: string): Promise<UpgradePreviewResponse> =>
-    api<UpgradePreviewResponse>(`/api/payment/upgrade-preview?planId=${encodeURIComponent(planId)}`),
+    api<UpgradePreviewResponse>(`/api/subscriptions/upgrade-preview?newPlanId=${encodeURIComponent(planId)}`),
 
   getTransactionStatus: (orderCode: number): Promise<PaymentStatusResponse> =>
     api<PaymentStatusResponse>(`/api/payment/status/${orderCode}`),

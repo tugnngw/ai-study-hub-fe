@@ -5,20 +5,22 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
   type ReactNode,
 } from "react";
-import type { User, RegisterRequest } from "@/features/auth/types/auth.types";
+import type { User, RegisterRequest } from "@/lib/types";
 import { authApi, accountApi } from "./realApi";
-import { tokenStore } from "./api";
+import { tokenStore, refreshTokens, sessionFailed } from "./api";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AuthContextValue {
   user: User | null;
-  isLoading: boolean;
+  /** Đúng khi đang xác định phiên (khởi tạo / refresh) — guard dừng render. */
+  isInitializing: boolean;
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<void>;
   register: (data: RegisterRequest) => Promise<{ needsVerification: boolean }>;
   logout: () => Promise<void>;
-  refresh: () => Promise<void>;
   reloadUser: () => Promise<void>;
   updateProfile: (data: { fullName?: string; email?: string }) => Promise<void>;
   requestPasswordReset: (email: string) => Promise<void>;
@@ -38,133 +40,73 @@ interface AuthResponse {
   emailVerified: boolean;
 }
 
-interface RefreshResponse {
-  accessToken: string;
-  refreshToken?: string;
-}
-
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  // Reset the logout guard flag whenever auth state is refreshed
-  const resetLogoutGuard = useCallback(() => {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("auth:login-success"));
-    }
-  }, []);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const queryClient = useQueryClient();
+  const logoutRef = useRef<() => void>(() => {});
 
   // --- Initial Auth Check ---
+  // Có access token → xác thực qua /me.
+  // Có access token + refresh token → thử refresh rồi xác thực lại.
+  // Không có token nào → kết thúc khởi tạo ngay, không gọi network.
   useEffect(() => {
     const initializeAuth = async () => {
-      const accessToken = tokenStore.get();
-
-      // Nếu không có access token, người dùng chưa đăng nhập
-      if (!accessToken) {
-        setIsLoading(false);
-        setUser(null);
-        resetLogoutGuard();
-        return;
-      }
-
       try {
-        // Validate token by calling /me endpoint
-        const u = await accountApi.me();
-        setUser(u);
-        console.log("✅ Auth initialized, user:", u.username);
-      } catch (err: any) {
-        // Token is invalid or expired
-        console.warn("⚠️ Token validation failed during init:", err.status);
-        tokenStore.clear();
-        setUser(null);
+        const accessToken = tokenStore.get();
+        if (!accessToken) {
+          setUser(null);
+          return;
+        }
+
+        try {
+          const u = await accountApi.me();
+          setUser(u);
+          return;
+        } catch {
+          // Access token lỗi (hết hạn / không hợp lệ) → thử refresh.
+        }
+
+        if (!tokenStore.getRefresh()) {
+          // Không có refresh token → không thể phục hồi phiên.
+          tokenStore.clear();
+          setUser(null);
+          return;
+        }
+
+        const refreshed = await refreshTokens();
+        if (!refreshed) {
+          tokenStore.clear();
+          setUser(null);
+          return;
+        }
+
+        try {
+          const u = await accountApi.me();
+          setUser(u);
+        } catch {
+          tokenStore.clear();
+          setUser(null);
+        }
       } finally {
-        setIsLoading(false);
+        setIsInitializing(false);
       }
     };
 
     initializeAuth();
-  }, [resetLogoutGuard]);
-
-  // --- Listen for token changes (auto-logout when token cleared) ---
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "auth_token" || e.key === "refresh_token") {
-        // Only logout if the token was actually cleared/set to null
-        if (e.newValue === null) {
-          console.log("🔔 Token cleared in another tab, clearing local user state");
-          setUser(null);
-        }
-        // If token was updated to a new value, we don't need to do anything
-        // tokenStore.get() will return the correct value on next access
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  // --- Listen for sessionStorage changes within same tab ---
+  // --- Lắng nghe sự kiện session failed (refresh thất bại trong api layer) ---
   useEffect(() => {
-    const handleSessionChange = () => {
-      const token = tokenStore.get();
-      if (!token && user) {
-        console.log("⚠️ Session cleared, logging out");
-        setUser(null);
-      }
-    };
-
-    window.addEventListener("storage", handleSessionChange);
-    return () => window.removeEventListener("storage", handleSessionChange);
-  }, [user]);
-
-  // --- Listen for forced logout event from api.ts (refresh failed) ---
-  // Clears local auth state only — navigation is the router's job.
-  useEffect(() => {
-    const handleForcedLogout = () => {
-      console.log("🔴 Forced logout due to refresh failure");
-      tokenStore.clear();
+    const handleSessionFailed = () => {
       setUser(null);
+      logoutRef.current();
     };
-
-    window.addEventListener("auth:logout", handleForcedLogout);
-    return () => window.removeEventListener("auth:logout", handleForcedLogout);
+    window.addEventListener("auth:unauthorized", handleSessionFailed);
+    return () => window.removeEventListener("auth:unauthorized", handleSessionFailed);
   }, []);
-
-  // --- Periodically refresh token (every 10 min) ---
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      const token = tokenStore.get();
-      const refreshToken = tokenStore.getRefresh();
-
-      if (!token || !refreshToken) {
-        setUser(null);
-        clearInterval(interval);
-        return;
-      }
-
-      try {
-        const res = await authApi.refresh();
-        if (res?.accessToken && res.refreshToken) {
-          tokenStore.set(res.accessToken);
-          tokenStore.setRefresh(res.refreshToken);
-          console.log("✅ Token refreshed successfully");
-          resetLogoutGuard();
-        } else {
-          console.warn("⚠️ Refresh response invalid");
-          tokenStore.clear();
-          setUser(null);
-        }
-      } catch (err) {
-        console.error("❌ Token refresh failed:", err);
-        tokenStore.clear();
-        setUser(null);
-      }
-    }, 10 * 60 * 1000);
-
-    return () => clearInterval(interval);
-  }, [resetLogoutGuard]);
 
   // --- Authentication Functions ---
   const login = async (username: string, password: string) => {
@@ -173,118 +115,90 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const accessToken = res?.accessToken;
     const refreshToken = res?.refreshToken;
 
-    if (accessToken && refreshToken) {
-      tokenStore.set(accessToken);
-      tokenStore.setRefresh(refreshToken);
-      resetLogoutGuard();
-
-      try {
-        const fullUser = await accountApi.me();
-        setUser(fullUser);
-        console.log("✅ Login success, user loaded with storageGb:", fullUser.storageGb);
-      } catch (error) {
-        console.error("Failed to fetch full user info after login:", error);
-        const userObj: User = {
-          id: res.userId,
-          username: res.username,
-          email: res.email ?? "",
-          fullName: res.fullName,
-          role: res.role,
-          status: "ACTIVE",
-          authProvider: "LOCAL",
-          emailVerified: res.emailVerified ?? false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-        setUser(userObj);
-      }
-    } else {
+    if (!accessToken || !refreshToken) {
       throw new Error("Login failed: Missing tokens from backend.");
+    }
+
+    tokenStore.set(accessToken);
+    tokenStore.setRefresh(refreshToken);
+    // Reset single-fire guard của auth:unauthorized cho phiên mới.
+    window.dispatchEvent(new CustomEvent("auth:login-success"));
+
+    try {
+      const fullUser = await accountApi.me();
+      setUser(fullUser);
+    } catch {
+      // API /me hỏng nhưng token hợp lệ — dùng dữ liệu từ login response.
+      const userObj: User = {
+        id: res.userId,
+        username: res.username,
+        email: res.email ?? "",
+        fullName: res.fullName,
+        role: res.role,
+        status: "ACTIVE",
+        plan: "FREE",
+        emailVerified: res.emailVerified ?? false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      setUser(userObj);
     }
   };
 
   const register = async (data: RegisterRequest): Promise<{ needsVerification: boolean }> => {
     const res: AuthResponse = await authApi.register(data);
 
-    if (res?.accessToken && res.refreshToken) {
-      // No email → auto-login (existing flow)
-      tokenStore.set(res.accessToken);
-      tokenStore.setRefresh(res.refreshToken);
-      resetLogoutGuard();
-
-      try {
-        const fullUser = await accountApi.me();
-        setUser(fullUser);
-        console.log("✅ Register success, user loaded with storageGb:", fullUser.storageGb);
-      } catch (error) {
-        console.error("Failed to fetch full user info after register:", error);
-        const userObj: User = {
-          id: res.userId,
-          username: res.username,
-          email: res.email ?? "",
-          fullName: res.fullName,
-          role: res.role,
-          status: "ACTIVE",
-          authProvider: "LOCAL",
-          emailVerified: res.emailVerified ?? false,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-        setUser(userObj);
-      }
-      return { needsVerification: false };
+    if (!res?.accessToken || !res.refreshToken) {
+      // Có email → cần xác thực, backend không cấp token.
+      return { needsVerification: true };
     }
 
-    // Email provided → needs verification, no tokens issued
-    return { needsVerification: true };
+    // Không có email → auto-login (existing flow).
+    tokenStore.set(res.accessToken);
+    tokenStore.setRefresh(res.refreshToken);
+    window.dispatchEvent(new CustomEvent("auth:login-success"));
+
+    try {
+      const fullUser = await accountApi.me();
+      setUser(fullUser);
+    } catch {
+      const userObj: User = {
+        id: res.userId,
+        username: res.username,
+        email: res.email ?? "",
+        fullName: res.fullName,
+        role: res.role,
+        status: "ACTIVE",
+        plan: "FREE",
+        emailVerified: res.emailVerified ?? false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      setUser(userObj);
+    }
+    return { needsVerification: false };
   };
 
   const logout = async () => {
+    // Gọi backend dù stateless JWT (logout là no-op) — giữ API contract,
+    // sẵn sàng khi backend thêm refresh-token revocation.
     try {
       await authApi.logout();
     } catch {
-      // Ignore logout API error
+      // Không chặn logout khi API lỗi.
     }
 
-    // Clear session immediately
     tokenStore.clear();
     setUser(null);
-    console.log("✅ Logged out successfully");
-
-    // Redirect to login page
+    queryClient.clear();
     if (typeof window !== "undefined") {
       window.location.href = "/auth/login";
     }
   };
 
-  const refresh = useCallback(async () => {
-    const refreshToken = tokenStore.getRefresh();
-    if (!refreshToken) {
-      throw new Error("No refresh token available.");
-    }
-
-    try {
-      const res = await authApi.refresh();
-      if (res?.accessToken && res.refreshToken) {
-        tokenStore.set(res.accessToken);
-        tokenStore.setRefresh(res.refreshToken);
-        resetLogoutGuard();
-
-        try {
-          const u = await accountApi.me();
-          setUser(u);
-        } catch {
-          // User fetch failed, but token is refreshed
-        }
-      } else {
-        throw new Error("Refresh failed: Backend response invalid.");
-      }
-    } catch (error) {
-      tokenStore.clear();
-      setUser(null);
-      throw error;
-    }
-  }, [resetLogoutGuard]);
+  // lưu logout vào ref để listener session-failed dùng được mà không tạo
+  // dependency vòng (logout chưa tồn tại lúc effect đăng ký).
+  logoutRef.current = logout;
 
   const reloadUser = useCallback(async () => {
     try {
@@ -317,12 +231,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       <AuthContext.Provider
           value={{
             user,
-            isLoading,
+            isInitializing,
             isAuthenticated: !!user,
             login,
             register,
             logout,
-            refresh,
             reloadUser,
             updateProfile,
             requestPasswordReset,

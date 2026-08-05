@@ -34,11 +34,9 @@ export const useAdminDocuments = (tab: string) => {
   const ts = new Date().toISOString().slice(11, 23);
   console.log(
     `[RQ:${ts}] useQuery RENDER key=${JSON.stringify(key)} ` +
-    `observerCount=${queryInfo.observers?.length ?? "?"} ` +
     `fetchStatus=${queryInfo.fetchStatus} ` +
     `status=${queryInfo.status} ` +
     `isStale=${queryInfo.isStale} ` +
-    `isInvalidated=${queryInfo.isInvalidated} ` +
     `isFetching=${queryInfo.isFetching} ` +
     `dataCount=${(queryInfo.data as any[])?.length ?? 0}`
   );

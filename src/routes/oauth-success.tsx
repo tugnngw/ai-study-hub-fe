@@ -1,10 +1,10 @@
 // src/routes/oauth-success.tsx
-import { createFileRoute, redirect } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
-import { tokenStore } from "@/lib/api";
+import { tokenStore, refreshTokens } from "@/lib/api";
 
 export const Route = createFileRoute("/oauth-success")({
   component: OAuthSuccessPage,
@@ -12,61 +12,51 @@ export const Route = createFileRoute("/oauth-success")({
 
 function OAuthSuccessPage() {
   const navigate = useNavigate();
-  const { refresh, reloadUser } = useAuth();
+  const { reloadUser } = useAuth();
   const processed = useRef(false);
 
-  console.log("📱 OAuthSuccessPage MOUNTED");
-
   useEffect(() => {
-    console.log("📱 OAuthSuccessPage useEffect FIRED");
     const handleOAuth = async () => {
       const params = new URLSearchParams(window.location.search);
       const token = params.get("access_token");
       const refreshToken = params.get("refresh_token");
-      const userId = params.get("user_id");
 
-      console.log("📱 OAuthSuccessPage: token exists?", !!token, "refreshToken exists?", !!refreshToken, "userId exists?", !!userId);
+      // Xóa token khỏi URL NGAY — trước khi lưu — để token không nằm lại
+      // trong browser history / server logs.
+      window.history.replaceState({}, "", "/oauth-success");
 
       if (!token) {
-        console.log("📱 OAuthSuccessPage: NO TOKEN, redirecting to /auth/login");
         navigate({ to: "/auth/login", replace: true });
         return;
       }
 
-      console.log("📱 OAuthSuccessPage: SAVING token to tokenStore");
       tokenStore.set(token);
-
       if (refreshToken) {
-        console.log("📱 OAuthSuccessPage: SAVING refresh_token");
         tokenStore.setRefresh(refreshToken);
       }
 
-      if (userId) {
-        localStorage.setItem("user_id", userId);
-      }
-
-      console.log("📱 OAuthSuccessPage: CALLING reloadUser()");
       try {
         await reloadUser();
-      } catch (e) {
-        // If reloadUser fails, try refresh if we have a refresh token
+      } catch {
+        // reloadUser thất bại → thử refresh (single-flight, dùng token vừa lưu).
         if (refreshToken) {
-          console.log("📱 OAuthSuccessPage: reloadUser failed, trying refresh()");
-          await refresh();
+          const ok = await refreshTokens();
+          if (!ok) throw new Error("OAuth session could not be restored");
         } else {
-          throw e;
+          throw new Error("OAuth session could not be restored");
         }
       }
-      console.log("📱 OAuthSuccessPage: refresh() COMPLETED");
 
-      console.log("📱 OAuthSuccessPage: NAVIGATING to /dashboard");
       navigate({
         to: "/dashboard",
         replace: true,
       });
     };
 
-    handleOAuth();
+    if (!processed.current) {
+      processed.current = true;
+      handleOAuth();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

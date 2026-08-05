@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -38,6 +38,14 @@ export const Route = createFileRoute("/auth/reset-password")({
 function ResetPasswordPage() {
   const { email, otp } = Route.useSearch();
   const { resetPassword } = useAuth();
+
+  // OTP + email truyền qua URL (từ email reset) — xóa khỏi URL ngay sau khi
+  // đọc để OTP không nằm lại trong browser history.
+  useEffect(() => {
+    if (email || otp) {
+      window.history.replaceState({}, "", "/auth/reset-password");
+    }
+  }, [email, otp]);
   const navigate = useNavigate();
   const [form, setForm] = useState({ password: "", confirmPassword: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});

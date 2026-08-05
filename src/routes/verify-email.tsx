@@ -35,6 +35,9 @@ function VerifyEmailPage() {
     if (!token) return;
     if (verifiedRef.current) return;
 
+    // Xóa token khỏi URL — token xác thực không nên nằm lại trong history.
+    window.history.replaceState({}, "", "/verify-email");
+
     setState("verifying");
 
     const doVerify = async () => {

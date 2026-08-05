@@ -51,7 +51,8 @@ function ForgotPasswordPage() {
     }
   };
 
-  const onVerifyOtp = async (otp: string) => {
+  const onVerifyOtp = async (otp?: string) => {
+    if (!otp) return;
     try {
       await verifyResetOtp(email, otp);
       navigate({ to: "/auth/reset-password", search: { email, otp } });

@@ -32,7 +32,7 @@ export interface ActivityItem {
 }
 
 // ── Users ──────────────────────────────────────────────
-export type UserStatus = "ACTIVE" | "BANNED" | "Hoạt động" | "Khóa" | "Ngưng hoạt động (Khóa)" | "Xóa mềm";
+export type UserStatus = "ACTIVE" | "BANNED" | "Hoạt động" | "Khóa" | "Ngưng hoạt động (Khóa)" | "Xóa mềm" | "Không xác định";
 export type PlanId = "FREE" | "BASIC" | "PRO" | "PREMIUM";
 
 export interface AdminUserItem {
@@ -56,6 +56,8 @@ export interface DocumentResponse {
   description?: string;
   status: DocumentStatus;
   ownerId: string;
+  ownerName?: string;
+  rejectReason?: string | null;
   fileSize?: number;
   formattedFileSize?: string;
   createdAt: string;
@@ -86,7 +88,7 @@ export interface ReportedFileItem {
   mimeType?: string | null;
 }
 
-export type ReportDecision = "approve" | "reject";
+export type ReportDecision = "approve" | "reject" | "remove";
 
 // ── Approval queue ─────────────────────────────────────
 export interface ApprovalItem {

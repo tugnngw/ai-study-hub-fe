@@ -1,8 +1,3 @@
-// src/features/admin/components/AdminProfilePage.tsx
-// Trang Hồ sơ của chính admin — dựng theo profile.tsx bên user (cùng
-// Card/Input/Button), thêm phần đổi mật khẩu. Hiện là UI tĩnh; nối
-// API thật khi backend sẵn sàng.
-
 import React, { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Pencil, Save, X, ShieldCheck, KeyRound, Lock } from "lucide-react";
@@ -14,61 +9,62 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 
 export const AdminProfilePage: React.FC = () => {
-  const { user } = useAuth();
+  const { user, updateProfile } = useAuth();
 
   const [editing, setEditing] = useState(false);
-  const initialForm = useMemo(
-    () => ({
-      fullName: user?.fullName ?? "",
-      username: user?.username ?? "",
-      email: user?.email ?? "",
-    }),
-    [user],
-  );
-  const [form, setForm] = useState(initialForm);
-  const update = (k: keyof typeof form, v: string) =>
-    setForm((p) => ({ ...p, [k]: v }));
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const save = (e: React.FormEvent) => {
+  const initialForm = useMemo(() => ({
+    fullName: user?.fullName ?? "",
+    username: user?.username ?? "",
+    email: user?.email ?? "",
+  }), [user]);
+
+  const [form, setForm] = useState(initialForm);
+
+  const update = (k: keyof typeof form, v: string) => setForm(p => ({ ...p, [k]: v }));
+
+  const save = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO(backend): gọi accountApi.update(form)
-    toast.success("Đã cập nhật hồ sơ");
-    setEditing(false);
+    setLoading(true);
+    setError(null);
+    try {
+      await updateProfile({
+        fullName: form.fullName,
+        email: form.email,
+      });
+      toast.success("Cập nhật hồ sơ thành công");
+      setEditing(false);
+    } catch (e: any) {
+      const msg = e?.response?.data?.message ?? "Failed to update profile";
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
   };
+
   const cancel = () => {
     setForm(initialForm);
     setEditing(false);
+    setError(null);
   };
 
-  // Đổi mật khẩu
+  // Change password – backend not available
   const [pwd, setPwd] = useState({ current: "", next: "", confirm: "" });
-  const updatePwd = (k: keyof typeof pwd, v: string) =>
-    setPwd((p) => ({ ...p, [k]: v }));
+  const updatePwd = (k: keyof typeof pwd, v: string) => setPwd(p => ({ ...p, [k]: v }));
   const changePassword = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!pwd.current || !pwd.next) {
-      toast.error("Vui lòng nhập đầy đủ mật khẩu");
-      return;
-    }
-    if (pwd.next !== pwd.confirm) {
-      toast.error("Mật khẩu xác nhận không khớp");
-      return;
-    }
-    // TODO(backend): gọi accountApi.changePassword(...)
-    toast.success("Đã đổi mật khẩu");
-    setPwd({ current: "", next: "", confirm: "" });
+    toast.info("Chức năng sẽ khả dụng khi backend hỗ trợ");
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight font-display">
-            Hồ sơ quản trị
-          </h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Thông tin tài khoản admin của bạn
-          </p>
+          <h1 className="text-2xl font-bold tracking-tight font-display">Hồ sơ quản trị</h1>
+          <p className="text-muted-foreground mt-1 text-sm">Thông tin tài khoản admin của bạn</p>
         </div>
         {!editing && (
           <Button onClick={() => setEditing(true)} variant="outline">
@@ -78,7 +74,7 @@ export const AdminProfilePage: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        {/* Thông tin tài khoản */}
+        {/* Account info */}
         <form onSubmit={save}>
           <Card>
             <CardHeader>
@@ -90,9 +86,7 @@ export const AdminProfilePage: React.FC = () => {
                   {form.fullName?.[0]?.toUpperCase() ?? "A"}
                 </div>
                 <div className="flex-1">
-                  <div className="font-medium">
-                    {form.fullName || "Quản trị viên"}
-                  </div>
+                  <div className="font-medium">{form.fullName || "Quản trị viên"}</div>
                   <Badge variant="secondary" className="mt-1 gap-1">
                     <ShieldCheck className="h-3 w-3" /> Quản trị viên
                   </Badge>
@@ -109,7 +103,7 @@ export const AdminProfilePage: React.FC = () => {
                   <Label>Họ và tên</Label>
                   <Input
                     value={form.fullName}
-                    onChange={(e) => update("fullName", e.target.value)}
+                    onChange={e => update("fullName", e.target.value)}
                     disabled={!editing}
                   />
                 </div>
@@ -117,7 +111,7 @@ export const AdminProfilePage: React.FC = () => {
                   <Label>Tên đăng nhập</Label>
                   <Input
                     value={form.username}
-                    onChange={(e) => update("username", e.target.value)}
+                    onChange={e => update("username", e.target.value)}
                     disabled={!editing}
                   />
                 </div>
@@ -126,27 +120,33 @@ export const AdminProfilePage: React.FC = () => {
                   <Input
                     type="email"
                     value={form.email}
-                    onChange={(e) => update("email", e.target.value)}
+                    onChange={e => update("email", e.target.value)}
                     disabled={!editing}
                   />
                 </div>
               </div>
+
+              {error && (
+                <p className="text-sm text-red-600" role="alert">
+                  {error}
+                </p>
+              )}
+
+              {editing && (
+                <div className="flex justify-end gap-2 mt-4">
+                  <Button type="button" variant="outline" onClick={cancel}>
+                    <X className="h-4 w-4 mr-2" /> Huỷ
+                  </Button>
+                  <Button type="submit" disabled={loading}>
+                    {loading ? "Đang lưu..." : <><Save className="h-4 w-4 mr-2" /> Lưu thay đổi</>}
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
-
-          {editing && (
-            <div className="flex justify-end gap-2 mt-4">
-              <Button type="button" variant="outline" onClick={cancel}>
-                <X className="h-4 w-4 mr-2" /> Huỷ
-              </Button>
-              <Button type="submit">
-                <Save className="h-4 w-4 mr-2" /> Lưu thay đổi
-              </Button>
-            </div>
-          )}
         </form>
 
-        {/* Đổi mật khẩu */}
+        {/* Change password */}
         <form onSubmit={changePassword}>
           <Card>
             <CardHeader>
@@ -160,7 +160,7 @@ export const AdminProfilePage: React.FC = () => {
                 <Input
                   type="password"
                   value={pwd.current}
-                  onChange={(e) => updatePwd("current", e.target.value)}
+                  onChange={e => updatePwd("current", e.target.value)}
                   placeholder="••••••••"
                 />
               </div>
@@ -170,7 +170,7 @@ export const AdminProfilePage: React.FC = () => {
                   <Input
                     type="password"
                     value={pwd.next}
-                    onChange={(e) => updatePwd("next", e.target.value)}
+                    onChange={e => updatePwd("next", e.target.value)}
                     placeholder="••••••••"
                   />
                 </div>
@@ -179,16 +179,19 @@ export const AdminProfilePage: React.FC = () => {
                   <Input
                     type="password"
                     value={pwd.confirm}
-                    onChange={(e) => updatePwd("confirm", e.target.value)}
+                    onChange={e => updatePwd("confirm", e.target.value)}
                     placeholder="••••••••"
                   />
                 </div>
               </div>
               <div className="flex justify-end">
-                <Button type="submit" variant="outline">
+                <Button type="submit" variant="outline" disabled>
                   <Lock className="h-4 w-4 mr-2" /> Đổi mật khẩu
                 </Button>
               </div>
+              <p className="text-sm text-muted-foreground">
+                Chức năng đổi mật khẩu sẽ khả dụng khi backend hỗ trợ.
+              </p>
             </CardContent>
           </Card>
         </form>

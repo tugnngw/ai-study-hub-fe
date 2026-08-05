@@ -9,18 +9,18 @@ export const Route = createFileRoute("/admin_panel")({
 });
 
 function AdminLayoutRoute() {
-  const { isAuthenticated, isLoading, user } = useAuth();
+  const { isAuthenticated, isInitializing, user } = useAuth();
   const navigate = useNavigate();
 
   const isAdmin = user?.role === "ADMIN";
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isInitializing) return;
     if (!isAuthenticated) navigate({ to: "/auth/login", replace: true });
     else if (!isAdmin) navigate({ to: "/dashboard", replace: true });
-  }, [isAuthenticated, isLoading, isAdmin, navigate]);
+  }, [isAuthenticated, isInitializing, isAdmin, navigate]);
 
-  if (isLoading) {
+  if (isInitializing) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">

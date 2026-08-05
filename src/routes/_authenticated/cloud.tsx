@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Cloud, Database, HardDrive } from "lucide-react";
 import { useDocuments } from "@/lib/queries";
 import { useQuota } from "@/lib/queries";
+import { formatBytes } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
@@ -13,11 +14,14 @@ function CloudPage() {
   const docs = useDocuments();
   const quota = useQuota();
 
-  const usedFormatted = quota.data?.formattedStorageUsed || "0 B";
-  const totalFormatted = quota.data?.formattedStorageTotal || "1 GB";
-  const freeFormatted = quota.data?.formattedStorageFree || "0 B";
-  const pct = quota.data?.storageUsagePercent || 0;
-  const isOverLimit = pct >= 100;
+  // Storage — backend quyết định (used/limit/remaining/overQuota), frontend chỉ format hiển thị
+  const usedFormatted = formatBytes(quota.data?.storageUsedBytes) || "0 B";
+  const totalFormatted = formatBytes(quota.data?.storageLimitBytes) || "1 GB";
+  const freeFormatted = formatBytes(quota.data?.storageRemainingBytes) || "0 B";
+  const pct = quota.data?.storageLimitBytes
+    ? Math.min(100, Math.round((quota.data.storageUsedBytes / quota.data.storageLimitBytes) * 100))
+    : 0;
+  const isOverLimit = quota.data?.overQuota ?? false;
 
   return (
       <div className="space-y-5">

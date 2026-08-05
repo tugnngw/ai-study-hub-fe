@@ -102,9 +102,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   const openDocId = search?.docId ? String(search.docId) : undefined;
   const openDoc = useDocument(openDocId || "");
 
-  const usedFormatted = quota?.formattedStorageUsed || "0 B";
-  const totalFormatted = quota?.formattedStorageTotal || "1 GB";
-  const pct = quota?.storageUsagePercent || 0;
+  // Storage — backend quyết định (used/limit/remaining), frontend chỉ format hiển thị
+  const usedFormatted = formatBytes(quota?.storageUsedBytes) || "0 B";
+  const totalFormatted = formatBytes(quota?.storageLimitBytes) || "1 GB";
+  const pct = quota?.storageLimitBytes
+    ? Math.min(100, Math.round((quota.storageUsedBytes / quota.storageLimitBytes) * 100))
+    : 0;
 
   const handleLogout = async () => {
     await logout();

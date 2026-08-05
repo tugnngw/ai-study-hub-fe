@@ -53,7 +53,7 @@ export function ReportDocumentDialog({
       await report.mutateAsync({
         id: documentId,
         reason,
-        description: description.trim() || undefined,
+        description: description.trim(),
       });
       toast.success("Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);

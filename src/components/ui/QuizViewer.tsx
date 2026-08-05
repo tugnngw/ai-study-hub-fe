@@ -1,15 +1,16 @@
 import { useState, useCallback, useEffect } from "react";
-import { ChevronLeft, ChevronRight, CheckCircle2, XCircle, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, RotateCcw, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import type { QuizResponse, QuestionResponse } from "@/lib/types";
+import type { QuizResponse, QuestionResponse, QuizSubmitResponse } from "@/lib/types";
+import { quizApi } from "@/lib/realApi";
 
 interface Props {
   quizzes: QuizResponse[];
   isLoading: boolean;
 }
 
-type AnswerMap = Map<number, string>;
+type AnswerMap = Map<string, string>;
 
 interface ShuffledOption {
   label: string;
@@ -19,9 +20,9 @@ interface ShuffledOption {
 export function QuizViewer({ quizzes, isLoading }: Props) {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState<AnswerMap>(new Map());
-  const [revealed, setRevealed] = useState<Set<number>>(new Set());
   const [finished, setFinished] = useState(false);
-  const [shuffledOptions, setShuffledOptions] = useState<Map<number, ShuffledOption[]>>(new Map());
+  const [result, setResult] = useState<QuizSubmitResponse | null>(null);
+  const [shuffledOptions, setShuffledOptions] = useState<Map<string, ShuffledOption[]>>(new Map());
   const [shuffledQuestions, setShuffledQuestions] = useState<{ q: QuestionResponse }[] | null>(null);
   const [isShuffled, setIsShuffled] = useState(false);
 
@@ -50,37 +51,53 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
   }, [quizzes]);
 
   const selected = current ? answers.get(current.q.id) : undefined;
-  const isRevealed = current ? revealed.has(current.q.id) : false;
   const options = current ? (shuffledOptions.get(current.q.id) ?? []) : [];
-
-  const correctLabel = current
-    ? (shuffledOptions.get(current.q.id)?.find((o) => o.label === current.q.correctAnswer)?.label ?? "A")
-    : undefined;
 
   useEffect(() => {
     setCurrentIdx(0);
     setAnswers(new Map());
-    setRevealed(new Set());
     setFinished(false);
     setShuffledQuestions(null);
     setIsShuffled(false);
   }, [quizzes]);
 
   const selectAnswer = useCallback((opt: string) => {
-    if (!current || isRevealed) return;
+    if (!current) return;
     const next = new Map(answers);
     next.set(current.q.id, opt);
     setAnswers(next);
-    // auto-reveal
-    const nextRevealed = new Set(revealed);
-    nextRevealed.add(current.q.id);
-    setRevealed(nextRevealed);
-  }, [current, isRevealed, answers, revealed]);
+  }, [current, answers]);
 
   const goNext = useCallback(() => {
     if (currentIdx < allQuestions.length - 1) setCurrentIdx((i) => i + 1);
-    else setFinished(true);
-  }, [currentIdx, allQuestions.length]);
+    else {
+      setFinished(true);
+      void submitToBackend();
+    }
+  }, [currentIdx, allQuestions.length, answers, quizzes]);
+
+  const submitToBackend = useCallback(async () => {
+    try {
+      let totalCorrect = 0;
+      let totalQuestions = 0;
+      for (const quiz of quizzes) {
+        const qids = (quiz.questions || []).map((q) => q.id);
+        const payload = qids
+          .filter((id) => answers.has(id))
+          .map((id) => ({ questionId: String(id), selectedAnswer: answers.get(id)! }));
+        const res = await quizApi.submit(quiz.id, payload);
+        totalCorrect += res.correctCount;
+        totalQuestions += res.totalQuestions;
+      }
+      setResult({
+        correctCount: totalCorrect,
+        totalQuestions,
+        percentage: totalQuestions > 0 ? Math.round((totalCorrect * 100) / totalQuestions) : 0,
+      });
+    } catch {
+      setResult(null);
+    }
+  }, [quizzes, answers]);
 
   const goPrev = useCallback(() => {
     if (currentIdx > 0) setCurrentIdx((i) => i - 1);
@@ -89,8 +106,8 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
   const reset = useCallback(() => {
     setCurrentIdx(0);
     setAnswers(new Map());
-    setRevealed(new Set());
     setFinished(false);
+    setResult(null);
   }, []);
 
   const toggleShuffle = useCallback(() => {
@@ -103,7 +120,6 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
     }
     setCurrentIdx(0);
     setAnswers(new Map());
-    setRevealed(new Set());
     setFinished(false);
   }, [isShuffled, flatQuestions]);
 
@@ -125,16 +141,17 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
   }
 
   if (finished) {
-    const correctCount = allQuestions.filter((item) => {
-      const ans = answers.get(item.q.id);
-      return ans === (shuffledOptions.get(item.q.id)?.find((o) => o.label === item.q.correctAnswer)?.label);
-    }).length;
-
     return (
       <div className="flex flex-col items-center justify-center py-8 gap-4">
         <CheckCircle2 className="h-12 w-12 text-green-500" />
         <h3 className="text-lg font-semibold">Quiz Complete!</h3>
-        <p className="text-muted-foreground">{correctCount} / {allQuestions.length} correct</p>
+        {result ? (
+          <p className="text-muted-foreground">
+            {result.correctCount} / {result.totalQuestions} correct ({result.percentage}%)
+          </p>
+        ) : (
+          <p className="text-muted-foreground">Đang chấm điểm...</p>
+        )}
         <Button onClick={reset} variant="outline" className="gap-2">
           <RotateCcw className="h-4 w-4" />Retry
         </Button>
@@ -173,41 +190,25 @@ export function QuizViewer({ quizzes, isLoading }: Props) {
       <div className="w-full max-w-2xl space-y-3">
         {options.map((opt) => {
           const isSelected = selected === opt.label;
-          const isCorrect = correctLabel === opt.label;
-          const showAsCorrect = isRevealed && isCorrect;
-          const showAsWrong = isRevealed && isSelected && !isCorrect;
-          const showAsMissed = isRevealed && !isSelected && isCorrect && selected !== undefined;
           return (
             <button
               key={opt.label}
-              disabled={isRevealed}
               onClick={() => selectAnswer(opt.label)}
               className={cn(
                 "w-full flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all",
-                showAsCorrect && "border-green-500 bg-green-50 dark:bg-green-950",
-                showAsWrong && "border-red-500 bg-red-50 dark:bg-red-950",
-                showAsMissed && "border-green-500 bg-green-50 dark:bg-green-950",
-                !isRevealed && isSelected && "border-indigo-400 bg-indigo-50 dark:bg-indigo-950",
-                !isRevealed && !isSelected && "border-border bg-card hover:border-indigo-300 hover:bg-accent",
-                isRevealed && !isCorrect && !isSelected && "opacity-50 border-border",
-                isRevealed && isCorrect && "opacity-100"
+                isSelected && "border-indigo-400 bg-indigo-50 dark:bg-indigo-950",
+                !isSelected && "border-border bg-card hover:border-indigo-300 hover:bg-accent"
               )}
             >
               <span className="text-sm flex-1">{opt.content}</span>
-              {showAsCorrect && <CheckCircle2 className="h-5 w-5 text-green-500 shrink-0" />}
-              {showAsWrong && <XCircle className="h-5 w-5 text-red-500 shrink-0" />}
             </button>
           );
         })}
       </div>
 
-      {isRevealed ? (
-        <Button onClick={goNext} className="w-full max-w-2xl">
-          {currentIdx < allQuestions.length - 1 ? "Next Question" : "See Results"}
-        </Button>
-      ) : (
-        <p className="text-xs text-muted-foreground">Select an answer above</p>
-      )}
+{!selected && (
+  <p className="text-xs text-muted-foreground">Select an answer above</p>
+)}
     </div>
   );
 }

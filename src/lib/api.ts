@@ -6,14 +6,24 @@ export const API_BASE =
 const TOKEN_KEY = "auth_token";
 const REFRESH_KEY = "refresh_token";
 
-// Use sessionStorage instead of localStorage to keep sessions separate per tab
+// -----------------------------------------------------------------------------
+// Kiến trúc token storage (quyết định chủ đích, KHÔNG phải công nợ kỹ thuật):
+//
+//   - Access token + refresh token được lưu trong localStorage vì kiến trúc
+//     hiện tại là stateless JWT: backend không quản lý session, mọi request
+//     mang token qua `Authorization: Bearer <token>`.
+//   - Hệ quả: token đọc được từ JS (bề mặt XSS lộ token). Đây là ràng buộc
+//     cố hữu của kiến trúc, không phải lỗi vô ý.
+//   - Hướng nâng cấp tương lai: chuyển refresh token sang HttpOnly cookie
+//     (giảm bề mặt XSS) — cần backend mở rộng (cookie-based auth + CSRF),
+//     là thay đổi kiến trúc nên chưa thực hiện trong giai đoạn này.
+// -----------------------------------------------------------------------------
 const storage = typeof window !== "undefined" ? localStorage : null;
 
 export const tokenStore = {
   get: () => {
     if (!storage) return null;
-    const token = storage.getItem(TOKEN_KEY);
-    return token;
+    return storage.getItem(TOKEN_KEY);
   },
   set: (t: string) => {
     if (!storage) return;
@@ -59,58 +69,83 @@ type Options = {
   headers?: Record<string, string>;
 };
 
+/**
+ * Các endpoint auth công khai KHÔNG được trigger refresh khi trả 401.
+ * Ví dụ: refresh token hết hạn → POST /api/auth/refresh trả 401 →
+ * nếu refresh tiếp sẽ thành vòng lặp vô hạn. Những endpoint này thường
+ * trả 401 vì lý do nghiệp vụ (sai mật khẩu, OTP sai) chứ không phải vì
+ * access token hết hạn — không nên xử lý như "session hết hạn".
+ */
+const REFRESH_PATHS = [
+  "/api/auth/login",
+  "/api/auth/register",
+  "/api/auth/refresh",
+  "/api/auth/forgot-password",
+  "/api/auth/verify-otp",
+  "/api/auth/reset-password",
+  "/api/auth/verify",
+  "/api/auth/send-verification",
+];
+
+// -----------------------------------------------------------------------------
+// REFRESH — nơi duy nhất toàn app thực hiện refresh token.
+//   - Single-flight: mọi caller đồng thời dùng chung 1 Promise → đúng 1 request
+//     POST /api/auth/refresh trên toàn bộ phiên, bất kể có bao nhiêu 401.
+//   - Không có interval refresh, không có refresh rải rác ở AuthProvider.
+// -----------------------------------------------------------------------------
 let refreshPromise: Promise<boolean> | null = null;
-const MAX_RETRY_COUNT = 1;
-const retryCountMap = new Map<string, number>();
 
-/** Guard: fires auth:logout only once per session. Reset on login success. */
-let logoutDispatched = false;
-if (typeof window !== "undefined") {
-  window.addEventListener("auth:login-success", () => { logoutDispatched = false; });
-}
-
-const ts = () => new Date().toISOString().slice(11, 23);
-
-export async function attemptRefresh(): Promise<boolean> {
+async function doRefresh(): Promise<boolean> {
   const refreshToken = tokenStore.getRefresh();
-  console.log(`[API] attemptRefresh called, refreshToken exists: ${!!refreshToken}`);
-  if (!refreshToken) {
-    console.log(`[API] ❌ No refresh token available`);
-    return false;
-  }
+  if (!refreshToken) return false;
 
   try {
-    console.log(`[API] 🔄 Attempting refresh...`);
     const res = await fetch(`${API_BASE}/api/auth/refresh`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ refreshToken }),
+      credentials: "include",
     });
-
-    console.log(`[API] Refresh response status: ${res.status}`);
-    if (!res.ok) {
-      console.log(`[API] ❌ Refresh failed with status: ${res.status}`);
-      return false;
-    }
+    if (!res.ok) return false;
 
     const json = await res.json();
     const data = json?.data ?? json;
-    const newAccess = data?.accessToken;
-    const newRefresh = data?.refreshToken;
+    if (!data?.accessToken) return false;
 
-    console.log(`[API] Refresh result: ${newAccess ? "✅ Success" : "❌ Failed (no new token)"}`);
-    if (newAccess) {
-      tokenStore.set(newAccess);
-      console.log("[API] Token set to localStorage."); // Log for setting token
-      if (newRefresh) tokenStore.setRefresh(newRefresh);
-      return true;
-    } else {
-      console.log(`[API] ❌ Refresh response missing token`);
-      return false;
-    }
-  } catch (e) {
-    console.error(`[API] ❌ Refresh error:`, e);
+    tokenStore.set(data.accessToken);
+    if (data.refreshToken) tokenStore.setRefresh(data.refreshToken);
+    return true;
+  } catch {
     return false;
+  }
+}
+
+export function refreshTokens(): Promise<boolean> {
+  if (!refreshPromise) {
+    refreshPromise = doRefresh().finally(() => {
+      refreshPromise = null;
+    });
+  }
+  return refreshPromise;
+}
+
+// -----------------------------------------------------------------------------
+// SESSION FAILED — dấu hiệu duy nhất báo "không thể tiếp tục phiên".
+// Token bị xóa + 1 event `auth:unauthorized` (fire một lần, guard redirect).
+// AuthProvider cũng lắng nghe để clear user state.
+// -----------------------------------------------------------------------------
+let unauthorizedDispatched = false;
+if (typeof window !== "undefined") {
+  window.addEventListener("auth:login-success", () => {
+    unauthorizedDispatched = false;
+  });
+}
+
+export function sessionFailed() {
+  tokenStore.clear();
+  if (!unauthorizedDispatched) {
+    unauthorizedDispatched = true;
+    window.dispatchEvent(new CustomEvent("auth:unauthorized"));
   }
 }
 
@@ -120,7 +155,6 @@ export async function api<T = unknown>(
 ): Promise<T> {
   const doFetch = async (): Promise<Response> => {
     const token = tokenStore.get();
-    console.log(`[API] doFetch - Current token: ${token ? token.substring(0, 10) + '...' : 'null'}`);
     const headers: Record<string, string> = { ...(opts.headers ?? {}) };
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
@@ -134,8 +168,6 @@ export async function api<T = unknown>(
       body = JSON.stringify(opts.body);
     }
 
-    console.log(`[API:${ts()}] FETCH ${opts.method || "GET"} ${path} - token exists: ${!!token}`);
-    console.log(`[API:${ts()}] Headers:`, JSON.stringify(headers));
     return fetch(`${API_BASE}${path}`, {
       method: opts.method ?? "GET",
       headers,
@@ -145,90 +177,42 @@ export async function api<T = unknown>(
   };
 
   let res = await doFetch();
-  console.log(`[API:${ts()}] ${opts.method || "GET"} ${path} - response status:`, res.status);
 
-  if (res.status === 401) {
-    // Skip refresh for public auth endpoints (no auth required)
-    const PUBLIC_AUTH_PATHS = [
-      "/api/auth/login",
-      "/api/auth/register",
-      "/api/auth/forgot-password",
-      "/api/auth/verify-otp",
-      "/api/auth/reset-password",
-    ];
-    if (PUBLIC_AUTH_PATHS.some((p) => path.startsWith(p))) {
-      throw new ApiError(401, "Unauthorized");
-    }
-
-    const requestKey = `${opts.method || "GET"}:${path}`;
-    const currentRetryCount = retryCountMap.get(requestKey) || 0;
-
-    if (currentRetryCount >= MAX_RETRY_COUNT) {
-      console.log(`[API:${ts()}] ❌ Max retry count reached for ${path}, clearing retry count and throwing error`);
-      retryCountMap.delete(requestKey);
-      throw new ApiError(401, "Session expired. Please log in again.");
-    }
-
-    console.log(`[API:${ts()}] 🔴 Got 401 on ${path}, attempting refresh... (retry ${currentRetryCount + 1}/${MAX_RETRY_COUNT})`);
-    if (!refreshPromise) {
-      refreshPromise = attemptRefresh().finally(() => {
-        refreshPromise = null;
-      });
-    }
-
-    const refreshed = await refreshPromise;
-    console.log(`[API:${ts()}] Refresh result: ${refreshed ? "✅ Success" : "❌ Failed"}`);
-
-    if (!refreshed) {
-      // Clear stale tokens immediately, then notify AuthProvider once per session
-      tokenStore.clear();
-      if (!logoutDispatched) {
-        logoutDispatched = true;
-        window.dispatchEvent(new CustomEvent("auth:logout"));
-      }
-    }
-
+  if (res.status === 401 && !REFRESH_PATHS.some((p) => path.startsWith(p))) {
+    // Retry tối đa 1 lần mỗi request: refresh (single-flight) → retry với token mới.
+    const refreshed = await refreshTokens();
     if (refreshed) {
-      retryCountMap.set(requestKey, currentRetryCount + 1);
-      console.log(`[API:${ts()}] Retrying ${path} with new token...`);
-      try {
-        res = await doFetch();
-        console.log(`[API:${ts()}] Retry status:`, res.status);
-        if (res.ok || res.status !== 401) {
-          retryCountMap.delete(requestKey);
-        }
-      } catch (retryError) {
-        console.error(`[API:${ts()}] Error during retry fetch for ${path}:`, retryError);
-        retryCountMap.delete(requestKey);
-        throw new ApiError(500, `Failed to retry request: ${path}`);
+      res = await doFetch();
+      // Retry xong vẫn 401 → refresh token cũng đã hết hạn.
+      if (res.status === 401) {
+        sessionFailed();
+        throw new ApiError(401, "Session expired. Please log in again.");
       }
     } else {
-      console.log(`[API:${ts()}] ❌ Refresh failed, throwing 401 error`);
-      retryCountMap.delete(requestKey);
+      sessionFailed();
       throw new ApiError(401, "Session expired. Please log in again.");
     }
   }
 
   if (res.status === 403) {
-    console.log(`[API] 🚫 Got 403 Forbidden on ${path} - no refresh attempt, access denied`);
     const ct = res.headers.get("content-type") ?? "";
     const json = ct.includes("application/json")
         ? await res.json().catch(() => null)
         : null;
-    
+
     const errorCode = json && typeof json === "object" && "error" in json ? String((json as any).error) : null;
-    
+
     if (errorCode === "ACCOUNT_LOCKED") {
-      console.log(`[API] 🔒 Account locked detected, clearing auth state`);
+      // Tài khoản bị khóa: phiên không thể tiếp tục — dừng ngay, không refresh.
       tokenStore.clear();
-      
-      const message = json && typeof json === "object" && "message" in json 
-        ? String((json as { message: unknown }).message)
-        : "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.";
-      
+
+      const message = json && typeof json === "object" && "message" in json
+          ? String((json as { message: unknown }).message)
+          : "Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.";
+
       throw new ApiError(403, message, { ...json, accountLocked: true });
     }
-    
+
     const message =
         (json &&
             typeof json === "object" &&

@@ -1,1 +1,0 @@
-import{t as e}from"./jsx-runtime-DqMcooe2.js";import{a as t,i as n}from"./DocumentViewer-BiVidquu.js";import{t as r}from"./badge-DZPbAGtk.js";var i=e();function a({status:e,className:a=``}){return(0,i.jsx)(r,{className:`${n(e)} ${a}`,children:t(e)})}export{a as t};

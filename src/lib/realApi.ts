@@ -1,7 +1,6 @@
 // src/lib/realApi.ts
 // Single source of truth for all API calls. Aligned with backend controllers.
-import { api } from "./api";
-import { tokenStore } from "./api";
+import { api, refreshTokens } from "./api";
 import type {
   User,
   LoginRequest,
@@ -22,6 +21,7 @@ import type {
   AskResponse,
   ReportDocumentRequest,
   QuizResponse,
+  QuizSubmitResponse,
   FlashcardResponse,
   FlashcardProgress,
   GenerateSummaryRequest,
@@ -42,27 +42,16 @@ export const authApi = {
   register: (data: RegisterRequest): Promise<AuthResponse> =>
     api<AuthResponse>("/api/auth/register", { method: "POST", body: data }),
 
-  login: async (data: LoginRequest): Promise<AuthResponse> => {
-    const res = await api<AuthResponse>("/api/auth/login", {
-      method: "POST",
-      body: data,
-    });
-    const token = res?.accessToken;
-    const refreshToken = res?.refreshToken;
-    if (token) tokenStore.set(token);
-    if (refreshToken) tokenStore.setRefresh(refreshToken);
-    return res;
-  },
+  // Token lưu vào tokenStore — AuthProvider (lib/auth.tsx) là nơi duy nhất
+  // quản lý vòng đời token (set trên login/register, clear trên logout).
+  login: (data: LoginRequest): Promise<AuthResponse> =>
+    api<AuthResponse>("/api/auth/login", { method: "POST", body: data }),
 
-  refresh: (): Promise<AuthResponse> =>
-    api<AuthResponse>("/api/auth/refresh", {
-      method: "POST",
-      body: { refreshToken: tokenStore.getRefresh() },
-    }),
+  // Delegate cho single-flight refresh duy nhất trong lib/api.ts.
+  refresh: (): Promise<boolean> => refreshTokens(),
 
   logout: async (): Promise<void> => {
     await api("/api/auth/logout", { method: "POST" }).catch(() => {});
-    tokenStore.clear();
   },
 
   requestPasswordReset: (email: string): Promise<void> =>
@@ -263,6 +252,12 @@ export const quizApi = {
     api<QuizResponse>("/api/quizzes/generate", {
       method: "POST",
       body: input,
+    }),
+
+  submit: (quizId: string, answers: { questionId: string; selectedAnswer: string }[]): Promise<QuizSubmitResponse> =>
+    api<QuizSubmitResponse>(`/api/quizzes/${quizId}/submit`, {
+      method: "POST",
+      body: { answers },
     }),
 };
 

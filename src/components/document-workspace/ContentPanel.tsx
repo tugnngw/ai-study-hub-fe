@@ -1,5 +1,6 @@
 import { Download, ExternalLink, FileText, Loader2, RotateCw, Trash2, Upload, AlertTriangle } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 import { DocumentViewer } from "@/components/document-viewer";
 import { DocumentStatusBadge } from "@/components/ui/document-status-badge";
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SummaryTab } from "./SummaryTab";
 import { FlashcardsTab } from "./FlashcardsTab";
-import { QuizzesTab } from "./QuizzesTab";
 import { UseMutationResult, UseQueryResult } from "@tanstack/react-query";
 import { UploadDialog } from "./DocumentWorkspace";
 import { isAIAvailable, aiUnavailableReason } from "@/lib/document-status";
@@ -261,9 +261,7 @@ export function ContentPanel({
                     />
                 ) : tab === "flashcards" ? (
                     <FlashcardsTab title={doc.data?.title ?? ""} />
-                ) : (
-                    <QuizzesTab title={doc.data?.title ?? ""} />
-                )}
+                ) : null}
             </div>
 
             {docId && (

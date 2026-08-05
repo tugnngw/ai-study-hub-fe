@@ -27,6 +27,11 @@ export interface RegisterRequest {
   email?: string;
 }
 
+export interface UpdateProfileRequest {
+  fullName?: string;
+  email?: string;
+}
+
 // Backend AuthResponse record
 export interface AuthResponse {
   userId: string;
@@ -50,10 +55,10 @@ export interface User {
   role: AccountRole;
   status: AccountStatus;
   plan: string;
-  storageGb: number;
   createdAt: string;
   updatedAt: string;
   emailVerified: boolean;
+  planExpiresAt?: string | null;
 }
 
 // =============================================================
@@ -63,7 +68,7 @@ export interface User {
 export interface Plan {
   id: string;
   name: string;
-  tagline?: string;
+  tagline?: string | null;
   description?: string | null;
   price: number;
   durationDays: number;
@@ -77,7 +82,6 @@ export interface Plan {
   isPopular: boolean;
   displayOrder: number;
   isActive: boolean;
-  tagline?: string | null;
   activeSubscriptionCount?: number;
   tier: number;
 }
@@ -196,14 +200,11 @@ export interface DownloadUrlResponse {
 // Matches backend QuotaService.QuotaDetails
 export interface QuotaDetails {
   planName: string;
-  storageGb: number;
+  // Storage — backend quyết định, frontend chỉ render
   storageUsedBytes: number;
-  storageTotalBytes: number;
-  storageFreeBytes: number;
-  storageUsagePercent: number;
-  formattedStorageUsed: string;
-  formattedStorageTotal: string;
-  formattedStorageFree: string;
+  storageLimitBytes: number;
+  storageRemainingBytes: number;
+  overQuota: boolean;
   aiQuestions: number;
   chatLimit: number;
   flashcardLimit: number;
@@ -318,7 +319,13 @@ export interface QuestionResponse {
   optionB: string;
   optionC: string;
   optionD: string;
-  correctAnswer: string;
+}
+
+// Backend grades quiz — frontend chỉ render
+export interface QuizSubmitResponse {
+  correctCount: number;
+  totalQuestions: number;
+  percentage: number;
 }
 
 // =============================================================
