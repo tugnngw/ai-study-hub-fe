@@ -134,6 +134,7 @@ export interface Folder {
   createdAt: string;
   updatedAt: string;
   documentCount: number;
+  folderSizeBytes?: number | null;
   deletedAt?: string | null;
 }
 

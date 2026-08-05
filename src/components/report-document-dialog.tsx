@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useReportDocument } from "@/lib/queries";
+import { useReportDocument, useSubmitAppeal } from "@/lib/queries";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -22,18 +22,29 @@ const REPORT_REASONS = [
   { value: "other", label: "Lý do khác" },
 ] as const;
 
+const APPEAL_REASONS = [
+  { value: "not_violation", label: "Tài liệu của tôi không vi phạm quy định" },
+  { value: "misunderstood", label: "Nội dung bị hiểu lầm" },
+  { value: "fixed", label: "Tôi đã chỉnh sửa / sẽ chỉnh sửa nội dung" },
+  { value: "other", label: "Lý do khác" },
+] as const;
+
 export function ReportDocumentDialog({
   open,
   onOpenChange,
   documentId,
   documentTitle,
+  mode = "REPORT",
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   documentId: string;
   documentTitle: string;
+  mode?: "REPORT" | "APPEAL";
 }) {
   const report = useReportDocument();
+  const appeal = useSubmitAppeal();
+  const isAppeal = mode === "APPEAL";
   const [reason, setReason] = useState<string>("");
   const [description, setDescription] = useState("");
 
@@ -46,19 +57,19 @@ export function ReportDocumentDialog({
 
   const submit = async () => {
     if (!reason) {
-      toast.error("Vui lòng chọn lý do báo cáo");
+      toast.error(isAppeal ? "Vui lòng chọn lý do kháng cáo" : "Vui lòng chọn lý do báo cáo");
       return;
     }
     try {
-      await report.mutateAsync({
+      await (isAppeal ? appeal : report).mutateAsync({
         id: documentId,
         reason,
         description: description.trim(),
       });
-      toast.success("Đã gửi báo cáo, cảm ơn bạn!");
+      toast.success(isAppeal ? "Đã gửi kháng cáo, chờ quản trị viên xem xét!" : "Đã gửi báo cáo, cảm ơn bạn!");
       onOpenChange(false);
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Gửi báo cáo thất bại");
+      toast.error(e instanceof Error ? e.message : (isAppeal ? "Gửi kháng cáo thất bại" : "Gửi báo cáo thất bại"));
     }
   };
 
@@ -67,22 +78,24 @@ export function ReportDocumentDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="truncate">
-            Báo cáo "{documentTitle}"
+            {isAppeal ? "Kháng cáo" : "Báo cáo"} "{documentTitle}"
           </DialogTitle>
           <DialogDescription>
-            Cho chúng tôi biết vấn đề bạn gặp phải với tài liệu này.
+            {isAppeal
+              ? "Giải thích vì sao tài liệu của bạn không vi phạm quy định."
+              : "Cho chúng tôi biết vấn đề bạn gặp phải với tài liệu này."}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label>Lý do báo cáo</Label>
+            <Label>{isAppeal ? "Lý do kháng cáo" : "Lý do báo cáo"}</Label>
             <RadioGroup
               value={reason}
               onValueChange={setReason}
               className="space-y-2"
             >
-              {REPORT_REASONS.map((r) => (
+              {(isAppeal ? APPEAL_REASONS : REPORT_REASONS).map((r) => (
                 <label
                   key={r.value}
                   className="flex items-center gap-2 text-sm rounded-md border border-border/60 px-3 py-2 cursor-pointer hover:bg-accent/40"
@@ -99,7 +112,7 @@ export function ReportDocumentDialog({
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Cung cấp chi tiết để chúng tôi xử lý nhanh hơn..."
+              placeholder={isAppeal ? "Cung cấp chi tiết để quản trị viên xem xét..." : "Cung cấp chi tiết để chúng tôi xử lý nhanh hơn..."}
               rows={3}
             />
           </div>
@@ -112,9 +125,9 @@ export function ReportDocumentDialog({
           <Button
             variant="destructive"
             onClick={submit}
-            disabled={report.isPending}
+            disabled={(isAppeal ? appeal : report).isPending}
           >
-            {report.isPending ? "Đang gửi..." : "Gửi báo cáo"}
+            {(isAppeal ? appeal : report).isPending ? "Đang gửi..." : isAppeal ? "Gửi kháng cáo" : "Gửi báo cáo"}
           </Button>
         </DialogFooter>
       </DialogContent>

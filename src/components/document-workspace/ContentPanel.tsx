@@ -167,9 +167,7 @@ export function ContentPanel({
                                 Array.from({ length: 6 }).map((_, i) => (
                                     <Skeleton key={i} className="h-40 rounded-xl" />
                                 ))}
-                            {(folderDocs.data ?? [])
-                                .filter((d: any) => d.status?.toUpperCase() !== 'BANNED')
-                                .map((d: any) => {
+                            {(folderDocs.data ?? []).map((d: any) => {
                                 const active = d.id === docId;
                                 return (
                                     <Link

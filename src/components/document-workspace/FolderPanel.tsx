@@ -39,11 +39,10 @@ export function FolderPanel({
                         Array.from({ length: 3 }).map((_, i) => (
                             <Skeleton key={i} className="h-9 rounded-lg" />
                         ))}
-                    {(folderDocs.data ?? [])
-                        .filter((d: any) => d.status?.toUpperCase() !== 'BANNED')
-                        .map((d: any) => {
+                    {(folderDocs.data ?? []).map((d: any) => {
                         const active = d.id === docId;
                         const s = d.status?.toUpperCase();
+                        // Backend đã loại BANNED khỏi folder listing — chỉ còn COMPLETED/REJECT/READY.
                         const showStatusIcon = s === 'COMPLETED' || s === 'REJECT';
                         return (
                             <div key={d.id} className="group relative">
@@ -56,7 +55,6 @@ export function FolderPanel({
                                         active
                                             ? "bg-gradient-brand text-white font-medium shadow-soft"
                                             : "hover:bg-accent text-foreground/90",
-                                        s === 'BANNED' && "opacity-50 cursor-not-allowed pointer-events-none",
                                     )}
                                     onClick={(e) => {
                                         if (s === 'REJECT') { e.preventDefault(); toast.error("Tài liệu đã bị từ chối"); }

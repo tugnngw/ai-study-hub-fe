@@ -5,11 +5,11 @@ import type {
 } from "../types/admin.types";
 
 export const reportApi = {
-  // GET /api/reports — ApiResponse<Page<ReportResponse>>
-  getReports: async (): Promise<ReportedFileItem[]> => {
+  // GET /api/reports?type=REPORT|APPEAL — ApiResponse<Page<ReportResponse>>
+  getReports: async (type?: string): Promise<ReportedFileItem[]> => {
     try {
       // api() unwraps ApiResponse.data, result is Page<ReportResponse> = { content, totalElements, ... }
-      const page: any = await api<any>("/api/reports");
+      const page: any = await api<any>(type ? `/api/reports?type=${type}` : "/api/reports");
       const content = page?.content ?? page ?? [];
       return content.map((r: any) => ({
         id: r.id,

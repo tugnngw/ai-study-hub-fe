@@ -1,8 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { z } from "zod";
-import { useEffect } from "react";
 import { FolderX } from "lucide-react";
-import { useDocument, useFolder } from "@/lib/queries";
+import { useFolder } from "@/lib/queries";
 import { DocumentWorkspace } from "@/components/document-workspace";
 import { Button } from "@/components/ui/button";
 
@@ -19,14 +18,7 @@ function FolderDetail() {
   const { id } = Route.useParams();
   const { docId } = Route.useSearch();
   const folder = useFolder(id);
-  const doc = useDocument(docId || "");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (doc.data?.status?.toUpperCase() === "BANNED") {
-        navigate({ to: "/folders/$id", params: { id }, search: {} });
-    }
-  }, [doc.data, id, navigate]);
 
   if (folder.isLoading) return null;
   if (folder.error || !folder.data) {

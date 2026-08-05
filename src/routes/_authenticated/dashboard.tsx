@@ -320,6 +320,7 @@ function Dashboard() {
                                 </div>
                                 <div className="text-xs text-muted-foreground shrink-0">
                                   {f.documentCount ?? 0} tài liệu
+                                  {f.folderSizeBytes != null && ` · ${formatBytes(f.folderSizeBytes)}`}
                                 </div>
                                 <MoreHorizontal className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                               </Link>

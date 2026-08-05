@@ -14,12 +14,14 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useReportHistory } from "../hooks";
+import { useReportHistory, useReportsByType } from "../hooks";
+import { cn } from "@/lib/utils";
 import { FilePreviewDialog } from "./FilePreviewDialog";
 import { documentApi } from "@/lib/realApi";
 
 export const AdminReportHistoryPage: React.FC = () => {
   const { data: history = [], isLoading } = useReportHistory();
+  const [activeTab, setActiveTab] = useState<"reports" | "appeals" | "all">("reports");
   const [preview, setPreview] = useState<{ title: string; url?: string | null; mimeType?: string | null } | null>(null);
   const [loadingPreview, setLoadingPreview] = useState<string | null>(null);
 
@@ -64,22 +66,44 @@ export const AdminReportHistoryPage: React.FC = () => {
     }
   };
 
+  const tabItems = useReportsByType(activeTab === "appeals" ? "APPEAL" : activeTab === "reports" ? "REPORT" : undefined);
+  const shown = activeTab === "all" ? history : tabItems.data ?? [];
+
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight font-display">
-          Lịch sử Xử lý Báo cáo
-        </h1>
-        <p className="text-muted-foreground mt-1 text-sm">
-          Xem lại lịch sử các báo cáo đã xử lý và đang chờ
-        </p>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight font-display">
+            Lịch sử Xử lý Báo cáo
+          </h1>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Xem lại lịch sử các báo cáo / kháng cáo đã xử lý và đang chờ
+          </p>
+        </div>
+        <div className="flex rounded-lg border border-border/70 bg-muted/40 p-0.5">
+          {(["reports", "appeals", "all"] as const).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setActiveTab(t)}
+              className={cn(
+                "px-3 py-1.5 text-sm rounded-md transition-colors",
+                activeTab === t
+                  ? "bg-background shadow-sm font-medium"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {t === "reports" ? "Reports" : t === "appeals" ? "Appeals" : "Tất cả"}
+            </button>
+          ))}
+        </div>
       </div>
 
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
           <CardTitle className="text-base">Tất cả báo cáo</CardTitle>
           <span className="text-sm text-muted-foreground">
-            {history.length} mục
+            {shown.length} mục
           </span>
         </CardHeader>
         <CardContent className="p-0">
@@ -96,7 +120,7 @@ export const AdminReportHistoryPage: React.FC = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoading ? (
+              {isLoading || (activeTab !== "all" && tabItems.isLoading) ? (
                 <TableRow>
                   <TableCell
                     colSpan={7}
@@ -105,17 +129,17 @@ export const AdminReportHistoryPage: React.FC = () => {
                     Đang tải dữ liệu...
                   </TableCell>
                 </TableRow>
-              ) : history.length === 0 ? (
+              ) : shown.length === 0 ? (
                 <TableRow>
                   <TableCell
                     colSpan={7}
                     className="h-24 text-center text-muted-foreground"
                   >
-                    Không có báo cáo nào
+                    Không có {activeTab === "appeals" ? "kháng cáo" : "báo cáo"} nào
                   </TableCell>
                 </TableRow>
               ) : (
-                history.map((item: any) => (
+                shown.map((item: any) => (
                   <TableRow key={item.id}>
                     <TableCell>
                       <div className="flex items-center gap-3 min-w-0">

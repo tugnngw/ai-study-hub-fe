@@ -138,20 +138,11 @@ export function useSubjectsBySemester(semesterId: string) {
   });
 }
 
-// Backward compat: deprecated, use useSubjectsBySemester
-// Fetches all semesters → subjects for each → flattens
+// Backend GET /api/subjects trả toàn bộ subject (single source) — 1 call, không N+1.
 export function useSubjects() {
   return useQuery({
     queryKey: ["subjects", "all"],
-    queryFn: async () => {
-      const semesters = await semesterApi.list();
-      const results = await Promise.all(
-        semesters.map((s) =>
-          subjectApi.listBySemester(s.id).catch(() => [] as never[])
-        )
-      );
-      return results.flat();
-    },
+    queryFn: () => subjectApi.listAll(),
     staleTime: 10 * 60_000,
   });
 }
@@ -170,27 +161,10 @@ export function useDashboard() {
         semesterApi.list().catch(() => []),
       ]);
 
-      // Build subject list from all semesters
-      const subjectPromises = semesters.map((sem) =>
-        subjectApi.listBySemester(sem.id).catch(() => [] as never[])
-      );
-      const subjectArrays = await Promise.all(subjectPromises);
-      const allSubjects = subjectArrays.flat();
-
-      // Count docs by folder (since Document no longer has subjectId)
-      const docCountByFolder: Record<string, number> = {};
-      documents.forEach((d) => {
-        if (d.folderId != null) {
-          docCountByFolder[String(d.folderId)] =
-            (docCountByFolder[String(d.folderId)] ?? 0) + 1;
-        }
-      });
+      // Subject list: 1 endpoint trả toàn bộ (backend single source) — không N+1.
+      const allSubjects = await subjectApi.listAll().catch(() => [] as never[]);
 
       const recentNotes = [...folders]
-        .map((f) => ({
-          ...f,
-          documentCount: f.documentCount ?? docCountByFolder[String(f.id)] ?? 0,
-        }))
         .sort((a, b) =>
           (b.updatedAt ?? b.createdAt ?? "").localeCompare(
             a.updatedAt ?? a.createdAt ?? "",
@@ -526,6 +500,12 @@ export function useSaveSharedDocument() {
 export function useReportDocument() {
   return useMutation({
     mutationFn: (input: ReportDocumentRequest) => shareApi.report(input),
+  });
+}
+
+export function useSubmitAppeal() {
+  return useMutation({
+    mutationFn: (input: ReportDocumentRequest) => shareApi.submitAppeal(input),
   });
 }
 

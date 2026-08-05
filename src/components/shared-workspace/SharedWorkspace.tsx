@@ -147,13 +147,7 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
               Array.from({ length: 3 }).map((_, i) => (
                 <Skeleton key={i} className="h-9 rounded-lg" />
               ))}
-            {docs
-              .filter((d: any) => {
-                if (isDocument) return true;
-                const s = d.status?.toUpperCase();
-                return s !== "BANNED" && s !== "REJECT" && s !== "COMPLETED";
-              })
-              .map((d: any) => {
+            {docs.map((d: any) => {
                 const active = isDocument ? true : d.id === docId;
                 return (
                   <div key={d.id} className="flex items-center gap-1 group">
@@ -219,12 +213,7 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
               </div>
             ) : (
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {docs
-                  .filter((d: any) => {
-                    const s = d.status?.toUpperCase();
-                    return s !== "BANNED" && s !== "REJECT" && s !== "COMPLETED";
-                  })
-                  .map((d: any) => (
+                {docs.map((d: any) => (
                     <button
                       key={d.id}
                       onClick={() => openDoc(d.id)}

@@ -99,6 +99,7 @@ export const semesterApi = {
 // SUBJECT  →  /api/subjects
 // ================================================================
 export const subjectApi = {
+  listAll: (): Promise<Subject[]> => api<Subject[]>("/api/subjects"),
   listBySemester: (semesterId: string): Promise<Subject[]> =>
     api<Subject[]>(`/api/subjects/semester/${semesterId}`),
   getById: (id: string): Promise<Subject> => api<Subject>(`/api/subjects/${id}`),
@@ -233,6 +234,12 @@ export const shareApi = {
 
   report: (body: ReportDocumentRequest): Promise<void> =>
     api<void>("/api/reports", {
+      method: "POST",
+      body: { documentId: body.id, reason: body.reason, description: body.description },
+    }),
+
+  submitAppeal: (body: ReportDocumentRequest): Promise<void> =>
+    api<void>("/api/reports/appeal", {
       method: "POST",
       body: { documentId: body.id, reason: body.reason, description: body.description },
     }),

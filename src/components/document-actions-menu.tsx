@@ -38,6 +38,7 @@ export function DocumentActionsMenu({
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
   const pinned = isPinned(documentId);
   const isRejected = status?.toUpperCase() === "REJECT";
+  const isBanned = status?.toUpperCase() === "BANNED";
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
@@ -70,6 +71,9 @@ export function DocumentActionsMenu({
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+          {/* BANNED: chỉ còn Xóa. Mở/Sửa/Chia sẻ ẩn — backend chặn mọi action này. */}
+          {!isBanned && (
+            <>
           <DropdownMenuItem
             onClick={() =>
               navigate({
@@ -96,6 +100,8 @@ export function DocumentActionsMenu({
           >
             <Share2 className="h-3.5 w-3.5 mr-2" /> Chia sẻ
           </DropdownMenuItem>
+            </>
+          )}
           <DropdownMenuItem
             onClick={() => setDeleteOpen(true)}
             className="text-destructive focus:text-destructive"

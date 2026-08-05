@@ -8,13 +8,8 @@ export function isAIAvailable(status?: string | null): boolean {
   return s === "READY" || s === "REPORTED";
 }
 
-/** Owner can view any status except BANNED (metadata only). */
-export function isOwnerViewable(status?: string | null): boolean {
-  const s = status?.toUpperCase();
-  return s !== "BANNED";
-}
-
-/** Owner can view document content (file viewer) only for READY or REPORTED. */
+/** Owner có thể xem nội dung (file viewer) chỉ khi READY hoặc REPORTED — BANNED/COMPLETED/REJECT
+ *  không có content. */
 export function isContentAccessible(status?: string | null): boolean {
   const s = status?.toUpperCase();
   return s === "READY" || s === "REPORTED";

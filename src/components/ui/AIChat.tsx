@@ -74,14 +74,6 @@ interface ChatMsg {
   content: string;
 }
 
-function formatBytes(n: number) {
-  if (!n) return "0 MB";
-  if (n < 1024) return `${n} B`;
-  if (n < 1024 ** 2) return `${(n / 1024).toFixed(0)} KB`;
-  if (n < 1024 ** 3) return `${(n / 1024 ** 2).toFixed(0)} MB`;
-  return `${(n / 1024 ** 3).toFixed(2)} GB`;
-}
-
 function fileTone(d: Document) {
   const name = (d.title ?? "").toLowerCase();
   if (name.endsWith(".pdf") || d.mimeType?.includes("pdf"))
@@ -204,8 +196,7 @@ export function AIChat({
   const processDoc = useProcessRag();
   const qc = useQueryClient();
 
-  const docs = (folderDocs.data ?? []).filter((d: any) => d.status?.toUpperCase() !== 'BANNED');
-  const totalSize = docs.reduce((s, d) => s + (d.fileSize ?? 0), 0);
+  const docs = folderDocs.data ?? [];
 
   const handlePrepareKnowledge = useCallback(async () => {
     if (!docId) return;
@@ -313,7 +304,7 @@ export function AIChat({
                   (folder.isLoading ? "Đang tải…" : "Thư mục")}
               </div>
               <div className="text-[11px] text-muted-foreground mt-0.5">
-                {formatBytes(totalSize)} · {docs.length} tài liệu
+                {docs.length} tài liệu
               </div>
             </div>
             <DropdownMenu>
@@ -380,7 +371,6 @@ export function AIChat({
                 <Skeleton key={i} className="h-10 rounded-lg" />
               ))}
              {docs
-               .filter((d) => d.status?.toUpperCase() !== 'BANNED')
                .map((d) => {
                const active = d.id === docId;
                const tone = fileTone(d);

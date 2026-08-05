@@ -16,3 +16,11 @@ export function useReportedDocuments() {
     queryFn: () => reportApi.getReports(),
   });
 }
+
+export function useReportsByType(type?: string) {
+  return useQuery({
+    queryKey: ["reports", "type", type ?? "all"],
+    queryFn: () => (type ? reportApi.getReports(type) : Promise.resolve([])),
+    enabled: !!type,
+  });
+}
