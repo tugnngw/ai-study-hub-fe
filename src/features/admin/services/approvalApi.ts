@@ -23,6 +23,7 @@ export const approvalApi = {
         size: r.size,
         reporter: r.reporter,
         reason: r.reason,
+        type: (r as any).type ?? (r as any).reportType ?? "REPORT",
       }));
       console.log("[approvalApi.getPendingList] returning pending reports length:", data.length, "total reports:", reports.length);
       return JSON.parse(JSON.stringify(data));

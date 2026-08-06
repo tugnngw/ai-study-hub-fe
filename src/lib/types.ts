@@ -327,6 +327,12 @@ export interface QuizSubmitResponse {
   correctCount: number;
   totalQuestions: number;
   percentage: number;
+  questionResults?: {
+    questionId: string;
+    selectedAnswer: string | null;
+    correctAnswer: string;
+    correct: boolean;
+  }[];
 }
 
 // =============================================================
@@ -386,6 +392,7 @@ export interface ReportResponse {
   reporterUsername?: string;
   reason: string;
   status: string;
+  type?: string;
   adminComment?: string;
   cloudinaryUrl?: string | null;
   mimeType?: string | null;

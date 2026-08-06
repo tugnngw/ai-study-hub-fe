@@ -19,6 +19,11 @@ export interface ShareResponse {
   documentTitle: string | null;
   folderName: string | null;
   fileCount: number | null;
+  documentFileSize?: number | null;
+  folderSizeBytes?: number | null;
+  subjectName?: string | null;
+  semesterName?: string | null;
+  documentStatus?: string | null;
 }
 
 export interface ShareRequest {
@@ -63,6 +68,10 @@ export interface SharedWithMeItem {
   fileCount: number;
   savedFolderId?: string;
   isDocument?: boolean;
+  folderName?: string;
+  subjectName?: string;
+  semesterName?: string;
+  documentStatus?: string | null;
 }
 
 export interface SharedByMeItem {
@@ -78,6 +87,10 @@ export interface SharedByMeItem {
   order: number;
   fileCount: number;
   savedFolderId?: string;
+  folderName?: string;
+  subjectName?: string;
+  semesterName?: string;
+  documentStatus?: string | null;
 }
 
 export type ShareSort = "newest" | "oldest";

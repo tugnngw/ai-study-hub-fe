@@ -24,6 +24,7 @@ export const reportApi = {
         reason: r.reason || "No reason provided",
         createdAt: r.createdAt || new Date().toISOString(),
         status: r.status || "pending",
+        type: r.type ?? r.reportType ?? "REPORT",
       }));
     } catch {
       return [];
@@ -72,6 +73,7 @@ export const reportApi = {
         decision: r.status === "approved" ? "Đã chấp nhận" :
                  r.status === "rejected" || r.status === "removed" ? "Không chấp nhận" :
                  "Chờ xử lý",
+        type: r.type ?? r.reportType ?? "REPORT",
       }));
     } catch {
       return [];

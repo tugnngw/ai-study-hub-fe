@@ -1,9 +1,7 @@
 // src/features/shares/components/SharedByMeTable.tsx
-import { useState } from "react";
 import { FolderOpen, Link2, Trash2, Flag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { ReportDocumentDialog } from "@/components/report-document-dialog";
 import type { SharedByMeItem } from "../types/share.types";
 import { ItemIcon } from "./ItemIcon";
 import { PersonAvatar } from "./PersonAvatar";
@@ -19,6 +17,8 @@ interface Props {
   onOpen: (id: string) => void;
   onCopyLink: (id: string, name: string) => void;
   onRemove: (id: string, name: string) => void;
+  onReport: (id: string, name: string) => void;
+  onAppeal: (id: string, name: string) => void;
 }
 
 export function SharedByMeTable({
@@ -30,9 +30,9 @@ export function SharedByMeTable({
                                   onOpen,
                                   onCopyLink,
                                   onRemove,
+                                  onReport,
+                                  onAppeal,
                                 }: Props) {
-  const [reportDocId, setReportDocId] = useState("");
-  const [reportDocTitle, setReportDocTitle] = useState("");
   return (<>
       <section className="space-y-3">
         <h2 className="flex items-center gap-2 font-bold">
@@ -67,7 +67,12 @@ export function SharedByMeTable({
                         <div className="min-w-0">
                           <div className="font-medium truncate">{it.name}</div>
                           <div className="text-xs text-muted-foreground">
-                            {it.size} · {it.items} mục
+                            {[
+                              it.documentId && it.folderName ? it.folderName : null,
+                              it.semesterName,
+                              it.subjectName,
+                              it.size,
+                            ].filter(Boolean).join(" · ") || "—"}
                           </div>
                         </div>
                       </div>
@@ -97,13 +102,15 @@ export function SharedByMeTable({
                               label: "Sao chép link",
                               onClick: () => onCopyLink(it.id, it.name),
                             },
-                            ...(it.documentId ? [{
+                            ...(it.documentId && it.documentStatus !== "BANNED" ? [{
                               icon: <Flag className="h-4 w-4" />,
                               label: "Báo cáo",
-                              onClick: () => {
-                                setReportDocId(it.documentId!);
-                                setReportDocTitle(it.name);
-                              },
+                              onClick: () => onReport(it.id, it.name),
+                            }] : []),
+                            ...(it.documentId && it.documentStatus === "BANNED" ? [{
+                              icon: <Flag className="h-4 w-4" />,
+                              label: "Kháng cáo",
+                              onClick: () => onAppeal(it.id, it.name),
                             }] : []),
                             {
                               icon: <Trash2 className="h-4 w-4" />,
@@ -120,12 +127,6 @@ export function SharedByMeTable({
         </Card>
         <Pager page={page} totalPages={totalPages} onChange={onPage} />
       </section>
-      <ReportDocumentDialog
-        open={!!reportDocId}
-        onOpenChange={(v) => { if (!v) { setReportDocId(""); setReportDocTitle(""); } }}
-        documentId={reportDocId}
-        documentTitle={reportDocTitle}
-      />
     </>
   );
 }

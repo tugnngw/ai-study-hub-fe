@@ -32,6 +32,7 @@ import { Route as Admin_panelApprovalsRouteImport } from './routes/admin_panel/a
 import { Route as AuthenticatedTrashRouteImport } from './routes/_authenticated/trash'
 import { Route as AuthenticatedTransactionsRouteImport } from './routes/_authenticated/transactions'
 import { Route as AuthenticatedSharedRouteImport } from './routes/_authenticated/shared'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedReportedRouteImport } from './routes/_authenticated/reported'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedPremiumRouteImport } from './routes/_authenticated/premium'
@@ -40,7 +41,6 @@ import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCloudRouteImport } from './routes/_authenticated/cloud'
 import { Route as AuthenticatedAiRouteImport } from './routes/_authenticated/ai'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedSubjectsIdRouteImport } from './routes/_authenticated/subjects.$id'
 import { Route as AuthenticatedSharedShareIdRouteImport } from './routes/_authenticated/shared.$shareId'
 import { Route as AuthenticatedPaymentSuccessRouteImport } from './routes/_authenticated/payment.success'
@@ -164,6 +164,11 @@ const AuthenticatedSharedRoute = AuthenticatedSharedRouteImport.update({
   path: '/shared',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedReportedRoute = AuthenticatedReportedRouteImport.update({
   id: '/reported',
   path: '/reported',
@@ -202,11 +207,6 @@ const AuthenticatedCloudRoute = AuthenticatedCloudRouteImport.update({
 const AuthenticatedAiRoute = AuthenticatedAiRouteImport.update({
   id: '/ai',
   path: '/ai',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedSubjectsIdRoute = AuthenticatedSubjectsIdRouteImport.update({
@@ -250,7 +250,6 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
   '/verify-email': typeof VerifyEmailRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/ai': typeof AuthenticatedAiRoute
   '/cloud': typeof AuthenticatedCloudRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -259,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/premium': typeof AuthenticatedPremiumRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reported': typeof AuthenticatedReportedRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/shared': typeof AuthenticatedSharedRouteWithChildren
   '/transactions': typeof AuthenticatedTransactionsRoute
   '/trash': typeof AuthenticatedTrashRoute
@@ -287,7 +287,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/oauth-success': typeof OauthSuccessRoute
   '/verify-email': typeof VerifyEmailRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/ai': typeof AuthenticatedAiRoute
   '/cloud': typeof AuthenticatedCloudRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -296,6 +295,7 @@ export interface FileRoutesByTo {
   '/premium': typeof AuthenticatedPremiumRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/reported': typeof AuthenticatedReportedRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/shared': typeof AuthenticatedSharedRouteWithChildren
   '/transactions': typeof AuthenticatedTransactionsRoute
   '/trash': typeof AuthenticatedTrashRoute
@@ -328,7 +328,6 @@ export interface FileRoutesById {
   '/auth': typeof AuthRouteRouteWithChildren
   '/oauth-success': typeof OauthSuccessRoute
   '/verify-email': typeof VerifyEmailRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/ai': typeof AuthenticatedAiRoute
   '/_authenticated/cloud': typeof AuthenticatedCloudRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
@@ -337,6 +336,7 @@ export interface FileRoutesById {
   '/_authenticated/premium': typeof AuthenticatedPremiumRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/reported': typeof AuthenticatedReportedRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/shared': typeof AuthenticatedSharedRouteWithChildren
   '/_authenticated/transactions': typeof AuthenticatedTransactionsRoute
   '/_authenticated/trash': typeof AuthenticatedTrashRoute
@@ -369,7 +369,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/oauth-success'
     | '/verify-email'
-    | '/admin'
     | '/ai'
     | '/cloud'
     | '/dashboard'
@@ -378,6 +377,7 @@ export interface FileRouteTypes {
     | '/premium'
     | '/profile'
     | '/reported'
+    | '/settings'
     | '/shared'
     | '/transactions'
     | '/trash'
@@ -406,7 +406,6 @@ export interface FileRouteTypes {
     | '/'
     | '/oauth-success'
     | '/verify-email'
-    | '/admin'
     | '/ai'
     | '/cloud'
     | '/dashboard'
@@ -415,6 +414,7 @@ export interface FileRouteTypes {
     | '/premium'
     | '/profile'
     | '/reported'
+    | '/settings'
     | '/shared'
     | '/transactions'
     | '/trash'
@@ -446,7 +446,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/oauth-success'
     | '/verify-email'
-    | '/_authenticated/admin'
     | '/_authenticated/ai'
     | '/_authenticated/cloud'
     | '/_authenticated/dashboard'
@@ -455,6 +454,7 @@ export interface FileRouteTypes {
     | '/_authenticated/premium'
     | '/_authenticated/profile'
     | '/_authenticated/reported'
+    | '/_authenticated/settings'
     | '/_authenticated/shared'
     | '/_authenticated/transactions'
     | '/_authenticated/trash'
@@ -652,6 +652,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSharedRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/reported': {
       id: '/_authenticated/reported'
       path: '/reported'
@@ -706,13 +713,6 @@ declare module '@tanstack/react-router' {
       path: '/ai'
       fullPath: '/ai'
       preLoaderRoute: typeof AuthenticatedAiRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/subjects/$id': {
@@ -797,7 +797,6 @@ const AuthenticatedSharedRouteWithChildren =
   AuthenticatedSharedRoute._addFileChildren(AuthenticatedSharedRouteChildren)
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedAiRoute: typeof AuthenticatedAiRoute
   AuthenticatedCloudRoute: typeof AuthenticatedCloudRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
@@ -806,6 +805,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedPremiumRoute: typeof AuthenticatedPremiumRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedReportedRoute: typeof AuthenticatedReportedRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedSharedRoute: typeof AuthenticatedSharedRouteWithChildren
   AuthenticatedTransactionsRoute: typeof AuthenticatedTransactionsRoute
   AuthenticatedTrashRoute: typeof AuthenticatedTrashRoute
@@ -815,7 +815,6 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedAiRoute: AuthenticatedAiRoute,
   AuthenticatedCloudRoute: AuthenticatedCloudRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
@@ -824,6 +823,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedPremiumRoute: AuthenticatedPremiumRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedReportedRoute: AuthenticatedReportedRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedSharedRoute: AuthenticatedSharedRouteWithChildren,
   AuthenticatedTransactionsRoute: AuthenticatedTransactionsRoute,
   AuthenticatedTrashRoute: AuthenticatedTrashRoute,

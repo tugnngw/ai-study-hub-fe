@@ -312,7 +312,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                     <Link to="/profile" className="cursor-pointer"><UserIcon className="h-4 w-4 mr-2" /> Hồ sơ của tôi</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/admin" className="cursor-pointer"><Settings className="h-4 w-4 mr-2" /> Cài đặt & Bảo mật</Link>
+                    <Link to="/settings" className="cursor-pointer"><Settings className="h-4 w-4 mr-2" /> Cài đặt & Bảo mật</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-destructive focus:text-destructive">

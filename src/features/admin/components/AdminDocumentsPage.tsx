@@ -16,6 +16,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAdminDocuments, useApproveDocument, useRejectDocument, useDeleteDocument, useRestoreDocument } from "../hooks";
+import { formatDateTime } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -124,6 +125,7 @@ export const AdminDocumentsPage: React.FC = () => {
                   <TableHeader>
                     <TableRow>
                       <TableHead>Tài liệu</TableHead>
+                      <TableHead>Upload Time</TableHead>
                       <TableHead>Người upload</TableHead>
                       <TableHead>Trạng thái</TableHead>
                       <TableHead className="text-right">Hành động</TableHead>
@@ -132,7 +134,7 @@ export const AdminDocumentsPage: React.FC = () => {
                   <TableBody>
                     {filtered.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                        <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
                           Không có tài liệu
                         </TableCell>
                       </TableRow>
@@ -151,6 +153,9 @@ export const AdminDocumentsPage: React.FC = () => {
                                 </p>
                               </div>
                             </div>
+                          </TableCell>
+                          <TableCell className="text-muted-foreground whitespace-nowrap">
+                            {formatDateTime(d.createdAt)}
                           </TableCell>
                           <TableCell className="text-muted-foreground">
                             {d.ownerName ?? "-"}

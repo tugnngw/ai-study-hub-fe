@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { FolderOpen, MoreVertical, Trash2, Pin, PinOff, Share2, Pencil } from "lucide-react";
+import { FolderOpen, MoreVertical, Trash2, Pin, PinOff, Share2, Pencil, Flag } from "lucide-react";
 import { toast } from "sonner";
 import {
   DropdownMenu,
@@ -8,11 +8,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useDeleteDocument } from "@/lib/queries";
+import { useDeleteDocument, useMySubmittedReports } from "@/lib/queries";
 import { usePinnedDocuments } from "@/lib/preferences";
 import { ConfirmDeleteDialog } from "@/components/confirm-delete-dialog";
 import { ShareEntityDialog } from "@/components/share-entity-dialog";
 import { EditDocumentDialog } from "@/components/edit-document-dialog";
+import { ReportDocumentDialog } from "@/components/report-document-dialog";
 
 export function DocumentActionsMenu({
   documentId,
@@ -40,9 +41,16 @@ export function DocumentActionsMenu({
   const isRejected = status?.toUpperCase() === "REJECT";
   const isBanned = status?.toUpperCase() === "BANNED";
 
+  const myReports = useMySubmittedReports();
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+  const [appealOpen, setAppealOpen] = useState(false);
+
+  // Appeal pending cho doc BANNED → disable Appeal
+  const hasPendingAppeal = (myReports.data ?? []).some(
+    (r: any) => String(r.documentId) === String(documentId) && r.status === "pending",
+  );
 
   const handleDelete = async () => {
     try {
@@ -102,6 +110,19 @@ export function DocumentActionsMenu({
           </DropdownMenuItem>
             </>
           )}
+          {isBanned && (
+            <DropdownMenuItem
+              onClick={() => {
+                if (hasPendingAppeal) return;
+                setAppealOpen(true);
+              }}
+              disabled={hasPendingAppeal}
+              className={hasPendingAppeal ? "opacity-50 cursor-not-allowed" : ""}
+            >
+              <Flag className="h-3.5 w-3.5 mr-2" />
+              {hasPendingAppeal ? "Appeal Pending" : "Appeal"}
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem
             onClick={() => setDeleteOpen(true)}
             className="text-destructive focus:text-destructive"
@@ -142,6 +163,13 @@ export function DocumentActionsMenu({
         onOpenChange={setEditOpen}
         documentId={documentId}
         initial={{ title, description, folderId, subjectId }}
+      />
+      <ReportDocumentDialog
+        mode="APPEAL"
+        open={appealOpen}
+        onOpenChange={setAppealOpen}
+        documentId={documentId}
+        documentTitle={title}
       />
     </>
   );

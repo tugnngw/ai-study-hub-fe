@@ -57,13 +57,13 @@ const nav = [
   },
   {
     to: "/admin_panel/approvals",
-    label: "Báo cáo file",
+    label: "Báo cáo & Kháng cáo",
     icon: ClipboardCheck,
     exact: false,
   },
   {
     to: "/admin_panel/report_history",
-    label: "Lịch sử báo cáo",
+    label: "Lịch sử xử lý",
     icon: History,
     exact: false,
   },

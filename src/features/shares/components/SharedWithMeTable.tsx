@@ -89,7 +89,12 @@ export function SharedWithMeTable({
                           <div className="min-w-0">
                             <div className="font-medium truncate">{it.name}</div>
                             <div className="text-xs text-muted-foreground">
-                              {it.size} · {it.items} mục
+                              {[
+                                it.isDocument && it.folderName ? it.folderName : null,
+                                it.semesterName,
+                                it.subjectName,
+                                it.size,
+                              ].filter(Boolean).join(" · ") || "—"}
                             </div>
                           </div>
                         </div>

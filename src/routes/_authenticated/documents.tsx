@@ -1,8 +1,9 @@
 // src/routes/_authenticated/documents.tsx
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { FileText, Plus, Search, Upload, Pin, X } from "lucide-react";
 import { toast } from "sonner";
+import { z } from "zod";
 import { 
   Dialog, 
   DialogContent, 
@@ -20,8 +21,9 @@ import {
   useSubjectsBySemester,
   useSubjects,
 } from "@/lib/queries";
+import { documentApi } from "@/lib/realApi";
 import { usePinnedDocuments } from "@/lib/preferences";
-import { cn, formatBytes } from "@/lib/utils";
+import { cn, formatBytes, formatDateTime } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,6 +40,10 @@ import {
 } from "@/components/ui/select";
 
 export const Route = createFileRoute("/_authenticated/documents")({
+  validateSearch: z.object({
+    upload: z.string().optional(),
+    newFolderId: z.string().optional(),
+  }),
   component: DocumentsPage,
 });
 
@@ -52,6 +58,12 @@ function DocumentsPage() {
   const folderLookup = useMemo(() => new Map(folderData.map((f) => [f.id, f])), [folderData]);
   const [query, setQuery] = useState("");
   const [uploadOpen, setUploadOpen] = useState(false);
+  const search = Route.useSearch();
+
+  // /documents?upload=1&newFolderId=... → tự mở dialog Tải lên và chọn sẵn thư mục vừa tạo
+  useEffect(() => {
+    if (search.upload) setUploadOpen(true);
+  }, [search.upload]);
   const { isMarked: isPinned, toggle: togglePin } = usePinnedDocuments();
 
   const filtered = (data ?? [])
@@ -111,6 +123,7 @@ function DocumentsPage() {
                 <th className="px-4 py-3 font-medium hidden lg:table-cell">
                   Subject
                 </th>
+                <th className="px-4 py-3 font-medium">Upload Time</th>
                 <th className="px-4 py-3 font-medium hidden md:table-cell">
                   Description
                 </th>
@@ -148,7 +161,7 @@ function DocumentsPage() {
         </div>
       )}
 
-      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} />
+      <UploadDialog open={uploadOpen} onOpenChange={setUploadOpen} initialFolderId={search.newFolderId} />
     </div>
   );
 }
@@ -307,13 +320,17 @@ function DocumentRow({
 function UploadDialog({
   open,
   onOpenChange,
+  initialFolderId,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
+  initialFolderId?: string;
 }) {
   const folders = useFolders();
   const semesters = useSemesters();
   const upload = useUploadDocument();
+  const navigate = useNavigate();
+  const [uploadConfig, setUploadConfig] = useState<{ allowedExtensions: string[]; maxFileSize: number } | null>(null);
   const [files, setFiles] = useState<File[]>([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -321,7 +338,30 @@ function UploadDialog({
   const [semesterId, setSemesterId] = useState<string>("");
   const [subjectId, setSubjectId] = useState<string>("");
 
+  // Upload config từ backend (endpoint /api/documents/upload-config)
+  useEffect(() => {
+    if (!open) return;
+    documentApi.getUploadConfig().then(setUploadConfig).catch(() => setUploadConfig(null));
+  }, [open]);
+
+  // "+ Upload vào thư mục mới..." → đóng popup, sang My Folders mở dialog create
+  const goCreateFolder = () => {
+    onOpenChange(false);
+    navigate({ to: "/folders", search: { createFolder: "1" } });
+  };
+
   const subjects = useSubjectsBySemester(semesterId);
+
+  // Mở dialog kèm thư mục mới tạo → chọn sẵn thư mục + kỳ/môn
+  useEffect(() => {
+    if (!open || !initialFolderId) return;
+    const folder = (folders.data ?? []).find((f) => f.id === initialFolderId);
+    if (folder) {
+      setFolderId(folder.id);
+      setSemesterId(folder.semesterId ?? "");
+      setSubjectId(folder.subjectId ?? "");
+    }
+  }, [open, initialFolderId, folders.data]);
 
   const subjectsInSemester = useMemo(
     () => subjects.data ?? [],
@@ -386,6 +426,15 @@ function UploadDialog({
     }
   };
 
+    const handleFolderChange = (value: string) => {
+    if (value === "create_folder") {
+      reset();
+      onOpenChange(false);
+      navigate({ to: "/folders", search: { createFolder: "1" } });
+    } else {
+      setFolderId(value);
+    }
+  };
   return (
     <Dialog
       open={open}
@@ -394,7 +443,7 @@ function UploadDialog({
         if (!v) reset();
       }}
     >
-      <DialogContent>
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>Tải lên tài liệu</DialogTitle>
           <DialogDescription>
@@ -402,12 +451,26 @@ function UploadDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
+          {uploadConfig && (
+            <div className="rounded-lg border border-border/60 bg-muted/40 px-3 py-2 text-xs text-muted-foreground space-y-0.5">
+              <p>
+                Định dạng hỗ trợ:{" "}
+                <span className="font-medium">
+                  {uploadConfig.allowedExtensions.join(", ")}
+                </span>
+              </p>
+              <p>
+                Dung lượng tối đa mỗi tệp:{" "}
+                <span className="font-medium">{formatBytes(uploadConfig.maxFileSize)}</span>
+              </p>
+            </div>
+          )}
           <div className="space-y-2">
             <Label>File (có thể chọn nhiều)</Label>
             <Input
               type="file"
               multiple
-              accept=".pdf,.txt"
+              accept={uploadConfig?.allowedExtensions.join(",") ?? ".pdf,.txt"}
               onChange={(e) => {
                 const picked = Array.from(e.target.files ?? []);
                 if (picked.length) setFiles((prev) => [...prev, ...picked]);
@@ -423,7 +486,7 @@ function UploadDialog({
                   >
                     <span className="truncate flex items-center gap-2 min-w-0">
                       <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                      <span className="truncate">{f.name}</span>
+                      <span className="truncate max-w-[300px] sm:max-w-[400px]">{f.name}</span>
                       <span className="text-xs text-muted-foreground shrink-0">
                         ({formatBytes(f.size)})
                       </span>
@@ -531,28 +594,54 @@ function UploadDialog({
           </div>
 
           <div className="space-y-2">
-            <Label>Thư mục</Label>
-            <Select value={folderId} onValueChange={setFolderId}>
+            <div className="flex items-center justify-between">
+              <Label>Thư mục</Label>
+              {folderId && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFolderId("");
+                    // Bỏ chọn folder → reset luôn kỳ/môn để tránh giữ dữ liệu cũ
+                    setSemesterId("");
+                    setSubjectId("");
+                  }}
+                  className="text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground"
+                >
+                  Bỏ chọn thư mục
+                </button>
+              )}
+            </div>
+            <Select value={folderId} onValueChange={handleFolderChange}>
               <SelectTrigger>
                 <SelectValue placeholder={!subjectId ? "Chọn thư mục (sẽ tự nhập kỳ & môn)" : "Chọn thư mục"} />
               </SelectTrigger>
               <SelectContent>
                 {foldersInSubject.length === 0 ? (
-                  <div className="px-3 py-2 text-sm text-muted-foreground">
-                    Không có thư mục
-                  </div>
-                ) : (
-                  foldersInSubject.map((f) => (
-                    <SelectItem key={f.id} value={String(f.id)}>
-                      {f.name}
+                  <>
+                    <div className="px-3 py-2 text-sm text-muted-foreground">
+                      Không có thư mục
+                    </div>
+                    <SelectItem value="create_folder" className="px-3 py-2 text-sm text-muted-foreground">
+                      + Tạo thư mục mới...
                     </SelectItem>
-                  ))
+                  </>
+                ) : (
+                  <>
+                    {foldersInSubject.map((f) => (
+                      <SelectItem key={f.id} value={String(f.id)}>
+                        {f.name}
+                      </SelectItem>
+                    ))}
+                    <SelectItem value="create_folder" className="px-3 py-2 text-sm text-muted-foreground">
+                      + Tạo thư mục mới...
+                    </SelectItem>
+                  </>
                 )}
               </SelectContent>
             </Select>
             {subjectId && foldersInSubject.length === 0 && (
               <p className="text-xs text-amber-600 dark:text-amber-400">
-                Chưa có thư mục nào cho môn này. <a href="/folders" className="underline">Tạo mới</a>.
+                Chưa có thư mục nào cho môn này.
               </p>
             )}
           </div>

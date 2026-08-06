@@ -1,7 +1,7 @@
 // src/features/admin/components/AdminApprovalsPage.tsx
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { FileText, Check, X, Flag, AlertCircle, Eye } from "lucide-react";
+import { FileText, Check, X, Flag, AlertCircle, Eye, Scale } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -16,6 +16,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { useApprovals, useApprovalAction } from "../hooks";
 import type { ApprovalAction } from "../types/admin.types";
+import { cn, formatDateTime } from "@/lib/utils";
 import { FilePreviewDialog } from "./FilePreviewDialog";
 import { documentApi } from "@/lib/realApi";
 import {
@@ -47,6 +48,7 @@ export const AdminApprovalsPage: React.FC = () => {
   const action = useApprovalAction();
   const [list, setList] = useState<(typeof query.data)[number][] | []>(query.data || []);
   const [_, setForceUpdate] = useState(0);
+  const [filterType, setFilterType] = useState<"all" | "REPORT" | "APPEAL">("all");
 
   // Xem trước file trước khi ra quyết định.
   const [preview, setPreview] = useState<{ title: string; url?: string | null; mimeType?: string | null } | null>(null);
@@ -137,6 +139,27 @@ export const AdminApprovalsPage: React.FC = () => {
     );
   };
 
+  const isAppeal = (type?: string) => (type ?? "").toUpperCase() === "APPEAL";
+
+  const typeBadge = (item: any) => {
+    const appeal = isAppeal(item.type);
+    return (
+        <span
+            className={cn(
+                "inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-medium",
+                appeal
+                    ? "bg-blue-500/10 text-blue-600 border border-blue-500/20"
+                    : "bg-destructive/10 text-destructive border border-destructive/20",
+            )}
+        >
+          {appeal ? <Scale className="h-3 w-3" /> : <Flag className="h-3 w-3" />}
+          {appeal ? "Kháng cáo" : "Báo cáo"}
+        </span>
+    );
+  };
+
+  const filtered = filterType === "all" ? list : list.filter((i: any) => (i.type ?? "").toUpperCase() === filterType);
+
   return (
     <div className="space-y-6">
       <div>
@@ -144,53 +167,85 @@ export const AdminApprovalsPage: React.FC = () => {
           Báo cáo File
         </h1>
         <p className="text-muted-foreground mt-1 text-sm">
-          Xử lý các file bị người dùng báo cáo vi phạm
+          Xử lý các file bị báo cáo vi phạm và kháng cáo của người upload
         </p>
+      </div>
+
+      <div className="flex rounded-lg border border-border/70 bg-muted/40 p-0.5 w-fit">
+        {((["all", "REPORT", "APPEAL"] as const)).map((t) => (
+            <button
+                key={t}
+                type="button"
+                onClick={() => setFilterType(t)}
+                className={cn(
+                    "px-3 py-1.5 text-sm rounded-md transition-colors flex items-center gap-1.5",
+                    filterType === t
+                        ? "bg-background shadow-sm font-medium"
+                        : "text-muted-foreground hover:text-foreground",
+                )}
+            >
+              {t === "all" ? "Tất cả" : t === "REPORT" ? (
+                  <><Flag className="h-3.5 w-3.5 text-destructive" /> Báo cáo</>
+              ) : (
+                  <><Scale className="h-3.5 w-3.5 text-blue-600" /> Kháng cáo</>
+              )}
+            </button>
+        ))}
       </div>
 
       <Card>
         <CardHeader className="flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-base">File bị báo cáo</CardTitle>
+          <CardTitle className="text-base">
+            {filterType === "APPEAL" ? "File kháng cáo" : filterType === "REPORT" ? "File bị báo cáo" : "Hàng chờ xử lý"}
+          </CardTitle>
           <span className="text-sm text-muted-foreground">
-            {list.length} mục
+            {filtered.length} mục
           </span>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>Loại</TableHead>
                 <TableHead>File</TableHead>
                 <TableHead>Người tải lên</TableHead>
-                <TableHead>Lý do báo cáo</TableHead>
-                <TableHead>Người báo cáo</TableHead>
+                <TableHead>Lý do</TableHead>
+                <TableHead>Người gửi</TableHead>
+                <TableHead>{filterType === "APPEAL" ? "Appeal Time" : "Report Time"}</TableHead>
                 <TableHead>Lý do từ chối (Admin)</TableHead>
                 <TableHead className="text-right">Hành động</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {list.length === 0 ? (
+              {filtered.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={6}
+                    colSpan={8}
                     className="h-24 text-center text-muted-foreground"
                   >
-                    Không có báo cáo nào
+                    Không có {filterType === "APPEAL" ? "kháng cáo" : "báo cáo"} nào
                   </TableCell>
                 </TableRow>
               ) : (
-                list.map((item: any) => (
+                filtered.map((item: any) => (
                   <TableRow key={item.id}>
+                    <TableCell>{typeBadge(item)}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="h-9 w-9 rounded-lg bg-destructive/10 text-destructive flex items-center justify-center shrink-0">
-                          <Flag className="h-4 w-4" />
+                        <div className={cn(
+                            "h-9 w-9 rounded-lg flex items-center justify-center shrink-0",
+                            isAppeal(item.type)
+                                ? "bg-blue-500/10 text-blue-600"
+                                : "bg-destructive/10 text-destructive",
+                        )}>
+                          {isAppeal(item.type) ? <Scale className="h-4 w-4" /> : <Flag className="h-4 w-4" />}
                         </div>
                         <div className="min-w-0">
                           <span className="font-medium truncate block">
                             {item.title}
                           </span>
                           <span className="text-xs text-muted-foreground truncate block">
-                            {item.date}
+                            {formatDateTime(item.date)}
                           </span>
                         </div>
                       </div>
@@ -219,6 +274,9 @@ export const AdminApprovalsPage: React.FC = () => {
                     </TableCell>
                     <TableCell className="text-muted-foreground">
                       {item.reporter || "Anonymous"}
+                    </TableCell>
+                    <TableCell className="text-muted-foreground whitespace-nowrap">
+                      {formatDateTime(item.date)}
                     </TableCell>
                     <TableCell className="text-muted-foreground text-sm">
                       {item.adminComment || "—"}

@@ -77,7 +77,8 @@ export const AdminUsersPage: React.FC = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Thành viên</TableHead>
+                  <TableHead>Tên</TableHead>
+                  <TableHead>Username</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Gói</TableHead>
                   <TableHead>Trạng thái</TableHead>
@@ -88,7 +89,7 @@ export const AdminUsersPage: React.FC = () => {
                 {filtered.length === 0 ? (
                     <TableRow>
                       <TableCell
-                          colSpan={5}
+                          colSpan={6}
                           className="h-24 text-center text-muted-foreground"
                       >
                         {users.length === 0 ? "Không có thành viên nào" : "Không tìm thấy thành viên"}
@@ -106,6 +107,9 @@ export const AdminUsersPage: React.FC = () => {
                               </Avatar>
                                <span className="font-medium">{u.name ?? "-"}</span>
                             </div>
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">
+                            {u.username || "-"}
                           </TableCell>
                           <TableCell className="text-muted-foreground">
                             {u.email}

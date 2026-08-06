@@ -19,7 +19,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { isContentAccessible, contentBlockedReason } from "@/lib/document-status";
-import { useDeleteDocument } from "@/lib/queries";
+import { useDeleteDocument, useMySubmittedReports } from "@/lib/queries";
 import { toast } from "sonner";
 import { ReportDocumentDialog } from "@/components/report-document-dialog";
 
@@ -35,8 +35,14 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
   onReport,
 }) => {
   const del = useDeleteDocument();
+  const myReports = useMySubmittedReports();
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [appealOpen, setAppealOpen] = useState(false);
+
+  // Appeal đã gửi + đang chờ xử lý → disable nút kháng cáo
+  const hasPendingAppeal = (myReports.data ?? []).some(
+    (r: any) => String(r.documentId) === String(document.id) && r.status === "pending",
+  );
 
   const handleDelete = async () => {
     try {
@@ -113,15 +119,21 @@ export const DocumentViewer: React.FC<DocumentViewerProps> = ({
                   Xóa tài liệu
                 </button>
               </div>
-              <div className="flex items-center gap-1.5 text-primary mt-1.5">
-                <button
-                  type="button"
-                  onClick={() => setAppealOpen(true)}
-                  className="underline decoration-primary/40 underline-offset-2 hover:text-primary/80"
-                >
-                  Kháng cáo
-                </button>
-              </div>
+              {hasPendingAppeal ? (
+                <div className="flex items-center gap-1.5 text-amber-600 mt-1.5 text-xs font-medium">
+                  Kháng cáo đang chờ xử lý
+                </div>
+              ) : (
+                <div className="flex items-center gap-1.5 text-primary mt-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setAppealOpen(true)}
+                    className="underline decoration-primary/40 underline-offset-2 hover:text-primary/80"
+                  >
+                    Kháng cáo
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

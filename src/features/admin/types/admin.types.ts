@@ -37,6 +37,7 @@ export type PlanId = "FREE" | "BASIC" | "PRO" | "PREMIUM";
 
 export interface AdminUserItem {
   id: string; // UUID from BE
+  username: string;
   name: string;
   email: string;
   status: UserStatus;
@@ -84,6 +85,7 @@ export interface ReportedFileItem {
   createdAt?: string;
   status?: string;
   decision?: string;
+  type?: string;
   cloudinaryUrl?: string | null;
   mimeType?: string | null;
 }

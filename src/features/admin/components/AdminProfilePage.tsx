@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Pencil, Save, X, ShieldCheck, KeyRound, Lock } from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { accountApi } from "@/lib/realApi";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -51,12 +52,29 @@ export const AdminProfilePage: React.FC = () => {
     setError(null);
   };
 
-  // Change password – backend not available
+  // Change password – backend: PUT /api/account/password
   const [pwd, setPwd] = useState({ current: "", next: "", confirm: "" });
+  const [pwdLoading, setPwdLoading] = useState(false);
   const updatePwd = (k: keyof typeof pwd, v: string) => setPwd(p => ({ ...p, [k]: v }));
-  const changePassword = (e: React.FormEvent) => {
+  const changePassword = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.info("Chức năng sẽ khả dụng khi backend hỗ trợ");
+    setPwdLoading(true);
+    setError(null);
+    try {
+      await accountApi.changePassword({
+        currentPassword: pwd.current,
+        newPassword: pwd.next,
+        confirmPassword: pwd.confirm,
+      });
+      toast.success("Đổi mật khẩu thành công");
+      setPwd({ current: "", next: "", confirm: "" });
+    } catch (e: any) {
+      const msg = e?.response?.data?.message ?? e?.message ?? "Đổi mật khẩu thất bại";
+      setError(msg);
+      toast.error(msg);
+    } finally {
+      setPwdLoading(false);
+    }
   };
 
   return (
@@ -185,13 +203,15 @@ export const AdminProfilePage: React.FC = () => {
                 </div>
               </div>
               <div className="flex justify-end">
-                <Button type="submit" variant="outline" disabled>
-                  <Lock className="h-4 w-4 mr-2" /> Đổi mật khẩu
+                <Button type="submit" variant="outline" disabled={pwdLoading}>
+                  {pwdLoading ? (
+                    <Lock className="h-4 w-4 mr-2 animate-pulse" />
+                  ) : (
+                    <Lock className="h-4 w-4 mr-2" />
+                  )}
+                  {pwdLoading ? "Đang đổi..." : "Đổi mật khẩu"}
                 </Button>
               </div>
-              <p className="text-sm text-muted-foreground">
-                Chức năng đổi mật khẩu sẽ khả dụng khi backend hỗ trợ.
-              </p>
             </CardContent>
           </Card>
         </form>

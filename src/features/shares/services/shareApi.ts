@@ -39,46 +39,61 @@ export const sharesApi = {
 };
 
 function mapShareResponseToSharedWithMe(resp: ShareResponse): SharedWithMeItem {
-  return {
-    id: resp.shareToken,
-    shareId: resp.id,
-    actualFolderId: resp.folderId ?? "",
-    name: resp.folderName || resp.documentTitle || "Unknown",
-    size: "11.4mb",
-    items: resp.fileCount || 0,
-    sharedBy: {
-      name: resp.ownerUsername || resp.ownerEmail || "Unknown",
-      avatarUrl: null,
-    },
-    time: formatRelativeTime(resp.createdAt),
-    order: new Date(resp.createdAt).getTime(),
-    fileCount: resp.fileCount || 0,
-    savedFolderId: resp.folderId ?? undefined,
-    isDocument: !!resp.documentId,
-    documentId: resp.documentId ?? undefined,
-  };
-}
+   const sizeBytes = resp.documentId ? resp.documentFileSize : resp.folderSizeBytes;
+   return {
+     id: resp.shareToken,
+     shareId: resp.id,
+     actualFolderId: resp.folderId ?? "",
+     name: resp.documentTitle || resp.folderName || "Unknown",
+     folderName: resp.folderName ?? undefined,
+     size: sizeBytes != null ? formatFileSize(sizeBytes) : "—",
+     items: 0,
+     sharedBy: {
+       name: resp.ownerUsername || resp.ownerEmail || "Unknown",
+       avatarUrl: null,
+     },
+     time: formatRelativeTime(resp.createdAt),
+     order: new Date(resp.createdAt).getTime(),
+     fileCount: 0,
+     savedFolderId: resp.folderId ?? undefined,
+     isDocument: !!resp.documentId,
+     documentId: resp.documentId ?? undefined,
+     documentStatus: resp.documentStatus ?? null,
+   };
+ }
 
 function mapShareResponseToSharedByMe(resp: ShareResponse): SharedByMeItem {
-  const sharedWith: any[] = [];
-  if (resp.sharedUsername) {
-    sharedWith.push({ name: resp.sharedUsername, avatarUrl: null });
-  } else if (resp.sharedEmail) {
-    sharedWith.push({ name: resp.sharedEmail, avatarUrl: null });
-  }
+   const sharedWith: any[] = [];
+   if (resp.sharedUsername) {
+     sharedWith.push({ name: resp.sharedUsername, avatarUrl: null });
+   } else if (resp.sharedEmail) {
+     sharedWith.push({ name: resp.sharedEmail, avatarUrl: null });
+   }
 
-  return {
-    id: resp.shareToken,
-    shareId: resp.id,
-    actualFolderId: resp.folderId ?? "",
-    name: resp.folderName || resp.documentTitle || "Unknown",
-    size: "11.4mb",
-    items: resp.fileCount || 0,
-    sharedWith: sharedWith,
-    time: formatRelativeTime(resp.createdAt),
-    order: new Date(resp.createdAt).getTime(),
-    fileCount: resp.fileCount || 0,
-    savedFolderId: resp.folderId ?? undefined,
-    documentId: resp.documentId ?? undefined,
-  };
+   const sizeBytes = resp.documentId ? resp.documentFileSize : resp.folderSizeBytes;
+   return {
+     id: resp.shareToken,
+     shareId: resp.id,
+     actualFolderId: resp.folderId ?? "",
+     name: resp.documentTitle || resp.folderName || "Unknown",
+     folderName: resp.folderName ?? undefined,
+     size: sizeBytes != null ? formatFileSize(sizeBytes) : "—",
+     items: 0,
+     sharedWith: sharedWith,
+     time: formatRelativeTime(resp.createdAt),
+     order: new Date(resp.createdAt).getTime(),
+     fileCount: 0,
+     savedFolderId: resp.folderId ?? undefined,
+     documentId: resp.documentId ?? undefined,
+     documentStatus: resp.documentStatus ?? null,
+     subjectName: resp.subjectName ?? undefined,
+     semesterName: resp.semesterName ?? undefined,
+   };
+ }
+
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  return `${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
 }

@@ -1,5 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { z } from "zod";
+import { useState, useMemo, useEffect } from "react";
 import { FolderKanban, Plus, Search, Trash2, Pencil, Star, MoreVertical, Share2, BookOpen, GraduationCap, Loader2, BadgeCheck } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -56,6 +57,9 @@ import type { Folder, Subject } from "@/lib/types";
 import { cn, formatBytes } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/folders")({
+  validateSearch: z.object({
+    createFolder: z.string().optional(),
+  }),
   component: FoldersPage,
 });
 
@@ -63,9 +67,17 @@ function FoldersPage() {
   const { data, isLoading } = useFolders();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
+  const createFolderSearch = Route.useSearch().createFolder;
+
+  // /folders?createFolder=1 → tự mở dialog tạo thư mục
+  useEffect(() => {
+    if (createFolderSearch) setOpen(true);
+  }, [createFolderSearch]);
   const [editing, setEditing] = useState<Folder | null>(null);
   const [deleting, setDeleting] = useState<Folder | null>(null);
   const [sharing, setSharing] = useState<Folder | null>(null);
+  // Mở từ "Upload vào thư mục mới..." → tạo xong sẽ quay lại dialog Tải lên
+  const cameFromUpload = useState(() => !!createFolderSearch)[0];
   const { isMarked: isStarred, toggle: toggleStar } = useStarredFolders();
   const folders = useFolders();
   const semesters = useSemesters();
@@ -233,6 +245,7 @@ function FoldersPage() {
             onOpenChange={setOpen}
             folder={editing}
             initialSubjectId={editingSubjectId}
+            returnAfterCreate={cameFromUpload}
         />
 
         <DeleteFolderDialog folder={deleting} onClose={() => setDeleting(null)} />
@@ -253,15 +266,18 @@ function FolderFormDialog({
                             onOpenChange,
                             folder,
                             initialSubjectId,
+                            returnAfterCreate,
                           }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   folder: Folder | null;
   initialSubjectId?: string;
+  returnAfterCreate?: boolean;
 }) {
   const create = useCreateFolder();
   const update = useUpdateFolder();
   const semesters = useSemesters();
+  const navigate = useNavigate();
 
   const [name, setName] = useState(folder?.name ?? "");
   const [semesterId, setSemesterId] = useState("");
@@ -296,12 +312,18 @@ function FolderFormDialog({
         });
         toast.success("Folder updated");
       } else {
-        await create.mutateAsync({
+        const created = await create.mutateAsync({
           name: name.trim(),
           subjectId,
           description: description.trim() || undefined,
         });
         toast.success("Folder created");
+        if (returnAfterCreate) {
+          // Quay lại trang Documents, tự mở lại dialog Tải lên và chọn sẵn thư mục vừa tạo
+          onOpenChange(false);
+          navigate({ to: "/documents", search: { upload: "1", newFolderId: created.id } });
+          return;
+        }
       }
       onOpenChange(false);
       reset();

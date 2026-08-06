@@ -1,12 +1,13 @@
 // src/routes/_authenticated/reported.tsx
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
-import { FileText } from "lucide-react";
+import { FileText, Flag, Scale } from "lucide-react";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useMySubmittedReports } from "@/lib/queries";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/reported")({
   component: ReportedDocumentsPage,
@@ -25,6 +26,8 @@ const getReasonLabel = (reason: string | undefined): string => {
   return REPORT_REASON_LABELS[reason] || reason;
 };
 
+const isAppeal = (r: any) => (r.type ?? "").toUpperCase() === "APPEAL";
+
 const getStatusBadge = (status: string) => {
   switch (status?.toLowerCase()) {
     case "pending":
@@ -40,6 +43,23 @@ const getStatusBadge = (status: string) => {
   }
 };
 
+const TypeBadge = ({ r }: { r: any }) => {
+  const appeal = isAppeal(r);
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full font-medium shrink-0",
+        appeal
+          ? "bg-blue-500/10 text-blue-600 border border-blue-500/20"
+          : "bg-destructive/10 text-destructive border border-destructive/20",
+      )}
+    >
+      {appeal ? <Scale className="h-3 w-3" /> : <Flag className="h-3 w-3" />}
+      {appeal ? "Kháng cáo" : "Báo cáo"}
+    </span>
+  );
+};
+
 function ReportedDocumentsPage() {
   const [activeTab, setActiveTab] = useState("all");
   const { data, isLoading } = useMySubmittedReports();
@@ -47,33 +67,37 @@ function ReportedDocumentsPage() {
   const myReports = Array.isArray(data) ? data : (data as any)?.content || [];
   console.log("[ReportedDocumentsPage] processed reports:", myReports);
 
+  const reports = useMemo(() => myReports.filter((r: any) => !isAppeal(r)), [myReports]);
+  const appeals = useMemo(() => myReports.filter((r: any) => isAppeal(r)), [myReports]);
   const pendingReports = useMemo(() => myReports.filter((r: any) => r.status === 'pending'), [myReports]);
   const handledReports = useMemo(() => myReports.filter((r: any) => r.status !== 'pending'), [myReports]);
+
+  const shown =
+    activeTab === "reports" ? reports :
+    activeTab === "appeals" ? appeals :
+    activeTab === "pending" ? pendingReports :
+    activeTab === "handled" ? handledReports : myReports;
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Báo cáo của tôi</h1>
-        <p className="text-muted-foreground mt-1">Theo dõi các báo cáo bạn đã gửi</p>
+        <p className="text-muted-foreground mt-1">Theo dõi báo cáo bạn đã gửi và kháng cáo của bạn</p>
       </div>
 
       <Card>
         <CardHeader>
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList>
+            <TabsList className="flex-wrap">
               <TabsTrigger value="all">Tất cả ({myReports.length})</TabsTrigger>
+              <TabsTrigger value="reports">Báo cáo ({reports.length})</TabsTrigger>
+              <TabsTrigger value="appeals">Kháng cáo ({appeals.length})</TabsTrigger>
               <TabsTrigger value="pending">Chờ duyệt ({pendingReports.length})</TabsTrigger>
               <TabsTrigger value="handled">Đã xử lý ({handledReports.length})</TabsTrigger>
             </TabsList>
-            
-            <TabsContent value="all">
-              <ReportsTable reports={myReports} isLoading={isLoading} />
-            </TabsContent>
-            <TabsContent value="pending">
-              <ReportsTable reports={pendingReports} isLoading={isLoading} />
-            </TabsContent>
-            <TabsContent value="handled">
-              <ReportsTable reports={handledReports} isLoading={isLoading} />
+
+            <TabsContent value={activeTab}>
+              <ReportsTable reports={shown} isLoading={isLoading} />
             </TabsContent>
           </Tabs>
         </CardHeader>
@@ -87,6 +111,7 @@ function ReportsTable({ reports, isLoading }: { reports: any[], isLoading: boole
     <Table>
       <TableHeader>
         <TableRow>
+          <TableHead>Loại</TableHead>
           <TableHead>Tài liệu</TableHead>
           <TableHead>Lý do</TableHead>
           <TableHead>Trạng thái</TableHead>
@@ -95,13 +120,19 @@ function ReportsTable({ reports, isLoading }: { reports: any[], isLoading: boole
       </TableHeader>
       <TableBody>
         {isLoading ? (
-          <TableRow><TableCell colSpan={4} className="text-center py-10">Đang tải...</TableCell></TableRow>
+          <TableRow><TableCell colSpan={5} className="text-center py-10">Đang tải...</TableCell></TableRow>
         ) : reports.length === 0 ? (
-          <TableRow><TableCell colSpan={4} className="text-center py-10">Không có báo cáo nào</TableCell></TableRow>
+          <TableRow><TableCell colSpan={5} className="text-center py-10">Không có mục nào</TableCell></TableRow>
         ) : (
           reports.map((r: any) => (
             <TableRow key={r.id}>
-              <TableCell className="font-medium">{r.documentTitle}</TableCell>
+              <TableCell><TypeBadge r={r} /></TableCell>
+              <TableCell className="font-medium">
+                <span className="flex items-center gap-2 min-w-0">
+                  <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                  <span className="truncate">{r.documentTitle}</span>
+                </span>
+              </TableCell>
               <TableCell>{getReasonLabel(r.reason)}</TableCell>
               <TableCell>{getStatusBadge(r.status)}</TableCell>
               <TableCell className="text-muted-foreground">{r.adminComment || "-"}</TableCell>

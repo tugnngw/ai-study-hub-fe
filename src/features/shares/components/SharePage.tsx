@@ -6,6 +6,7 @@ import { useShares, useShareActions } from "../hooks";
 import { ShareToolbar, type ShareTabKey } from "./ShareToolbar";
 import { SharedWithMeTable } from "./SharedWithMeTable";
 import { SharedByMeTable } from "./SharedByMeTable";
+import { ReportDocumentDialog } from "@/components/report-document-dialog";
 
 export function SharePage() {
   const s = useShares();
@@ -36,55 +37,82 @@ export function SharePage() {
     });
   };
 
+  const [reportDocId, setReportDocId] = useState("");
+  const [reportDocTitle, setReportDocTitle] = useState("");
+
+  const handleReport = (id: string, name: string) => {
+    setReportDocId(id);
+    setReportDocTitle(name);
+  };
+
+  const handleAppeal = (id: string, name: string) => {
+    setReportDocId(id);
+    setReportDocTitle(name);
+  };
+
   return (
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight font-display">
-            Chia sẻ
-          </h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            Quản lý tài liệu bạn được chia sẻ và những tài liệu bạn đã chia sẻ
-          </p>
-        </div>
-
-        <ShareToolbar
-            q={s.q}
-            onQ={s.setQ}
-            sort={s.sort}
-            onSort={s.setSort}
-            tab={tab}
-            onTab={setTab}
-        />
-
-        {showWithMe && (
-            <SharedWithMeTable
-                items={s.pagedWithMe}
-                count={s.withMeCount}
-                page={s.pageWithMe}
-                totalPages={s.totalPagesWithMe}
-                onPage={s.setPageWithMe}
-                onOpen={(id) => {
-                  handleOpenWithMe(id);
-                }}
-                onDownload={actions.download}
-                onRemove={actions.removeWithMe}
-            />
-        )}
-
-        {showByMe && (
-            <SharedByMeTable
-                items={s.pagedByMe}
-                count={s.byMeCount}
-                page={s.pageByMe}
-                totalPages={s.totalPagesByMe}
-                onPage={s.setPageByMe}
-                onOpen={(id) => {
-                  handleOpenByMe(id);
-                }}
-                onCopyLink={actions.copyLink}
-                onRemove={actions.removeByMe}
-            />
-        )}
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight font-display">
+          Chia sẻ
+        </h1>
+        <p className="text-muted-foreground mt-1 text-sm">
+          Quản lý tài liệu bạn được chia sẻ và những tài liệu bạn đã chia sẻ
+        </p>
       </div>
+
+      <ShareToolbar
+        q={s.q}
+        onQ={s.setQ}
+        sort={s.sort}
+        onSort={s.setSort}
+        tab={tab}
+        onTab={setTab}
+      />
+
+      {showWithMe && (
+        <SharedWithMeTable
+          items={s.pagedWithMe}
+          count={s.withMeCount}
+          page={s.pageWithMe}
+          totalPages={s.totalPagesWithMe}
+          onPage={s.setPageWithMe}
+          onOpen={(id) => {
+            handleOpenWithMe(id);
+          }}
+          onDownload={actions.download}
+          onRemove={actions.removeWithMe}
+        />
+      )}
+
+      {showByMe && (
+        <SharedByMeTable
+          items={s.pagedByMe}
+          count={s.byMeCount}
+          page={s.pageByMe}
+          totalPages={s.totalPagesByMe}
+          onPage={s.setPageByMe}
+          onOpen={(id) => {
+            handleOpenByMe(id);
+          }}
+          onCopyLink={actions.copyLink}
+          onRemove={actions.removeByMe}
+          onReport={handleReport}
+          onAppeal={handleAppeal}
+        />
+      )}
+
+      <ReportDocumentDialog
+        open={!!reportDocId}
+        onOpenChange={(v) => {
+          if (!v) {
+            setReportDocId("");
+            setReportDocTitle("");
+          }
+        }}
+        documentId={reportDocId}
+        documentTitle={reportDocTitle}
+      />
+    </div>
   );
 }

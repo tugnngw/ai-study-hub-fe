@@ -12,25 +12,27 @@ export function ConfirmDeleteDialog({
   open,
   onOpenChange,
   title,
-  description,
   onConfirm,
   isPending,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
   title: string;
-  description?: string;
   onConfirm: () => void;
   isPending?: boolean;
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="truncate">Xóa "{title}"?</DialogTitle>
-          <DialogDescription>
-            {description ??
-              "Bạn có chắc chắn muốn xóa tài liệu này? Hành động này không thể hoàn tác."}
+          <DialogTitle>Xác nhận xóa</DialogTitle>
+          <DialogDescription asChild>
+            <span>
+              Bạn có chắc chắn muốn xóa tài liệu này?
+              <span className="font-medium text-foreground break-all block mt-2.5 rounded-md bg-muted/60 border border-border/60 px-3 py-2 text-xs">
+                Tên file: {title}
+              </span>
+            </span>
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

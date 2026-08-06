@@ -81,6 +81,11 @@ export const accountApi = {
   me: (): Promise<User> => api<User>("/api/account/me"),
   updateProfile: (body: { fullName?: string; email?: string }): Promise<User> =>
     api<User>("/api/account/profile", { method: "PUT", body }),
+  changePassword: (body: {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }): Promise<void> => api<void>("/api/account/password", { method: "PUT", body }),
 };
 
 // ================================================================
@@ -132,6 +137,8 @@ export const folderApi = {
 // DOCUMENT  →  /api/documents
 // ================================================================
 export const documentApi = {
+  getUploadConfig: (): Promise<{ allowedExtensions: string[]; maxFileSize: number }> =>
+    api<{ allowedExtensions: string[]; maxFileSize: number }>("/api/documents/upload-config"),
   list: (): Promise<Document[]> => api<Document[]>("/api/documents"),
   listByFolder: (folderId: string): Promise<Document[]> =>
     api<Document[]>(`/api/documents/folder/${folderId}`),

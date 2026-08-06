@@ -11,6 +11,7 @@ export const adminUserApi = {
     return Array.isArray(content) ? content.map((u: any) => ({
       id: u.id ?? u.accountId,
       name: u.fullName ?? u.username ?? "Unknown",
+      username: u.username ?? "",
       email: u.email ?? "",
       status: u.status === "ACTIVE" ? "Hoạt động" as const :
               u.status === "INACTIVE" ? "Ngưng hoạt động (Khóa)" as const :
@@ -46,6 +47,7 @@ export const adminUserApi = {
     return Array.isArray(list) ? list.map((u: any) => ({
       id: u.id ?? u.accountId,
       name: u.fullName ?? u.username ?? "Unknown",
+      username: u.username ?? "",
       email: u.email ?? "",
       status: "Xóa mềm" as const,
       plan: "FREE" as const,
