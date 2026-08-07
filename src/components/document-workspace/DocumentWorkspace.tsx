@@ -141,6 +141,7 @@ export function UploadDialog({
   const submit = async () => {
     if (files.length === 0) return toast.error("Chọn ít nhất một file");
     if (!multiple && !title.trim()) return toast.error("Nhập tiêu đề");
+    if (title.length > 255) return toast.error("Tiêu đề không được quá 255 ký tự");
     try {
       await upload.mutateAsync({
         files,
@@ -230,6 +231,7 @@ export function UploadDialog({
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       placeholder="Tên tài liệu"
+                      maxLength={255}
                   />
                 </div>
             )}

@@ -80,6 +80,7 @@ export function EditDocumentDialog({
 
   const submit = async () => {
     if (!title.trim()) return toast.error("Nhập tiêu đề");
+    if (title.length > 255) return toast.error("Tiêu đề không được quá 255 ký tự");
     try {
       await update.mutateAsync({
         id: documentId,
@@ -106,7 +107,11 @@ export function EditDocumentDialog({
         <div className="space-y-4">
           <div className="space-y-2">
             <Label>Tiêu đề</Label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={255}
+            />
           </div>
           <div className="space-y-2">
             <Label>Mô tả</Label>

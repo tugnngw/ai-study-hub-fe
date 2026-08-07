@@ -916,6 +916,7 @@ function UploadDialog({
   const submit = async () => {
     if (files.length === 0) return toast.error("Chọn ít nhất một file");
     if (!multiple && !title.trim()) return toast.error("Nhập tiêu đề");
+    if (title.length > 255) return toast.error("Tiêu đề không được quá 255 ký tự");
     try {
       await upload.mutateAsync({
         files,
@@ -998,16 +999,17 @@ function UploadDialog({
             )}
           </div>
 
-          {!multiple && (
-            <div className="space-y-2">
-              <Label>Tiêu đề</Label>
-              <Input
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Tên tài liệu"
-              />
-            </div>
-          )}
+{!multiple && (
+                <div className="space-y-2">
+                  <Label>Tiêu đề</Label>
+                  <Input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="Tên tài liệu"
+                    maxLength={255}
+                  />
+                </div>
+              )}
           {multiple && (
             <p className="text-xs text-muted-foreground">
               Đang tải {files.length} tệp — mỗi tệp sẽ tạo một tài liệu riêng, lấy tên theo tên tệp.

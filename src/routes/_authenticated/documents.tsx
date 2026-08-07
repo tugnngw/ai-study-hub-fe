@@ -129,6 +129,7 @@ function DocumentsPage() {
                 </th>
                 <th className="px-4 py-3 font-medium hidden md:table-cell">Size</th>
                 <th className="px-4 py-3 font-medium hidden sm:table-cell">Status</th>
+                <th className="px-4 py-3 font-medium w-24">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -275,6 +276,15 @@ function DocumentRow({
         <td className="px-4 py-3 hidden sm:table-cell">
            {getStatusBadge()}
          </td>
+         <td className="px-4 py-3">
+           <DocumentActionsMenu
+             documentId={id}
+             folderId={folderId}
+             title={title}
+             status={status}
+             description={description}
+           />
+         </td>
        </tr>
 
        <Dialog open={showDialog} onOpenChange={setShowDialog}>
@@ -402,6 +412,7 @@ function UploadDialog({
   const submit = async () => {
     if (files.length === 0) return toast.error("Chọn ít nhất một file");
     if (!multiple && !title.trim()) return toast.error("Nhập tiêu đề");
+    if (title.length > 255) return toast.error("Tiêu đề không được quá 255 ký tự");
     if (!semesterId) return toast.error("Chọn kỳ học");
     if (!subjectId) return toast.error("Chọn môn học");
     if (!folderId) return toast.error("Chọn thư mục");
@@ -508,6 +519,7 @@ function UploadDialog({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Tên tài liệu"
+                maxLength={255}
               />
             </div>
           )}
@@ -516,7 +528,7 @@ function UploadDialog({
               Đang tải {files.length} tệp — mỗi tệp sẽ tạo một tài liệu riêng, lấy tên theo tên tệp.
             </p>
           )}
-          <div className="space-y-2">
+          <div className="space-y-2">ư
             <Label>Mô tả (tuỳ chọn)</Label>
             <Textarea
               value={description}

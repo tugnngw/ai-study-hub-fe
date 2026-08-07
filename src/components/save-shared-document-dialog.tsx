@@ -79,6 +79,11 @@ export function SaveSharedDocumentDialog({
       return;
     }
 
+    if (title.length > 255) {
+      toast.error("Title must be at most 255 characters");
+      return;
+    }
+
     let targetFolderId: string | null = null;
 
     try {
@@ -235,7 +240,11 @@ export function SaveSharedDocumentDialog({
 
           <div className="space-y-2">
             <Label>Title</Label>
-            <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              maxLength={255}
+            />
           </div>
 
           <div className="space-y-2">
