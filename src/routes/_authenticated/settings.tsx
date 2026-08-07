@@ -191,6 +191,7 @@ function SettingsPage() {
                 onChange={(e) =>
                   setPwd((p) => ({ ...p, current: e.target.value }))
                 }
+                maxLength={128}
               />
             </div>
             <div className="space-y-2">
@@ -199,6 +200,7 @@ function SettingsPage() {
                 type="password"
                 value={pwd.next}
                 onChange={(e) => setPwd((p) => ({ ...p, next: e.target.value }))}
+                maxLength={128}
               />
             </div>
             <div className="space-y-2">
@@ -209,6 +211,7 @@ function SettingsPage() {
                 onChange={(e) =>
                   setPwd((p) => ({ ...p, confirm: e.target.value }))
                 }
+                maxLength={128}
               />
             </div>
             <DialogFooter>

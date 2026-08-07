@@ -1,7 +1,13 @@
 import { formatBytes } from "@/lib/utils";
 import React, { useState, useMemo } from "react";
 import { toast } from "sonner";
-import { FileText, CheckCircle2, XCircle, Search, Eye } from "lucide-react";
+import { FileText, CheckCircle2, XCircle, Search, Eye, Loader2 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -101,115 +107,145 @@ export const AdminFilesPage: React.FC = () => {
                   />
                 </div>
 
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>File</TableHead>
-                      <TableHead>Owner</TableHead>
-                      <TableHead>Thời gian upload</TableHead>
-                      <TableHead>Trạng thái</TableHead>
-                      <TableHead>Size</TableHead>
-                      <TableHead className="text-right">Hành động</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filtered.length === 0 ? (
+                <div className="overflow-x-auto w-full border border-border/60 rounded-lg">
+                  <Table className="min-w-[800px]">
+                    <TableHeader>
                       <TableRow>
-                        <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                          Không có file nào
-                        </TableCell>
+                        <TableHead>File</TableHead>
+                        <TableHead>Owner</TableHead>
+                        <TableHead>Thời gian upload</TableHead>
+                        <TableHead>Trạng thái</TableHead>
+                        <TableHead>Size</TableHead>
+                        <TableHead className="text-right">Hành động</TableHead>
                       </TableRow>
-                    ) : (
-                      filtered.map((d) => (
-                        <TableRow key={d.id}>
-                          <TableCell>
-                            <div className="flex items-center gap-3 min-w-0">
-                              <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                                <FileText className="h-4 w-4" />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="font-medium truncate">{d.title}</p>
-                                <p className="text-muted-foreground text-xs">
-                                  {formatBytes(d.fileSize)}
-                                </p>
-                              </div>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {d.ownerName || d.ownerId?.slice(0, 8) + '...'}
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {new Date(d.createdAt).toLocaleDateString("vi-VN", {
-                              year: "numeric",
-                              month: "2-digit",
-                              day: "2-digit",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })}
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
-                              {statusLabel[d.status as string] ?? d.status}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {formatBytes(d.fileSize)}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => {
-                                    setPreview({
-                                      title: d.title,
-                                      url: d.cloudinaryUrl,
-                                      mimeType: d.mimeType,
-                                    });
-                                    setReviewedIds((prev) => new Set(prev).add(d.id));
-                                  }}
-                                >
-                                  <Eye className="h-3.5 w-3.5" /> Xem
-                                </Button>
-                              {activeTab === "pending" && (
-                                <>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    disabled={approveDocument.isPending || !reviewedIds.has(d.id)}
-                                    title={!reviewedIds.has(d.id) ? "Bạn cần xem file trước khi duyệt" : undefined}
-                                    onClick={() => {
-                                      approveDocument.mutate(d.id, {
-                                        onSuccess: () => toast.success("Đã duyệt file"),
-                                        onError: (err) => toast.error("Lỗi: " + err.message),
-                                      });
-                                    }}
-                                  >
-                                    <CheckCircle2 className="h-3.5 w-3.5" /> Duyệt
-                                  </Button>
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    disabled={rejectDocument.isPending || !reviewedIds.has(d.id)}
-                                    title={!reviewedIds.has(d.id) ? "Bạn cần xem file trước khi từ chối" : undefined}
-                                     onClick={() => {
-                                       rejectDocument.mutate({ id: d.id }, {
-                                         onSuccess: () => toast.success("Đã từ chối file"),
-                                         onError: (err) => toast.error("Lỗi: " + err.message),
-                                       });
-                                     }}
-                                  >
-                                    <XCircle className="h-3.5 w-3.5" /> Từ chối
-                                  </Button>
-                                </>
-                              )}
-                            </div>
+                    </TableHeader>
+                    <TableBody>
+                      {filtered.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                            Không có file nào
                           </TableCell>
                         </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
+                      ) : (
+                        filtered.map((d) => (
+                          <TableRow key={d.id}>
+                            <TableCell className="max-w-[250px]">
+                              <div className="flex items-center gap-3 min-w-0">
+                                <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                                  <FileText className="h-4 w-4" />
+                                </div>
+                                <div className="min-w-0">
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <p className="font-medium truncate cursor-help">{d.title}</p>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>{d.title}</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                  <p className="text-muted-foreground text-xs">
+                                    {formatBytes(d.fileSize)}
+                                  </p>
+                                </div>
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground max-w-[150px]">
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span className="truncate block cursor-help">{d.ownerName || d.ownerId?.slice(0, 8) + '...'}</span>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{d.ownerName || d.ownerId}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">
+                              {new Date(d.createdAt).toLocaleDateString("vi-VN", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
+                            </TableCell>
+                            <TableCell>
+                              <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
+                                {statusLabel[d.status as string] ?? d.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground">
+                              {formatBytes(d.fileSize)}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-2">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      setPreview({
+                                        title: d.title,
+                                        url: d.cloudinaryUrl,
+                                        mimeType: d.mimeType,
+                                      });
+                                      setReviewedIds((prev) => new Set(prev).add(d.id));
+                                    }}
+                                  >
+                                    <Eye className="h-3.5 w-3.5" /> Xem
+                                  </Button>
+                                {activeTab === "pending" && (
+                                  <>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      disabled={approveDocument.isPending || !reviewedIds.has(d.id)}
+                                      title={!reviewedIds.has(d.id) ? "Bạn cần xem file trước khi duyệt" : undefined}
+                                      onClick={() => {
+                                        approveDocument.mutate(d.id, {
+                                          onSuccess: () => toast.success("Đã duyệt file"),
+                                          onError: (err) => toast.error("Lỗi: " + err.message),
+                                        });
+                                      }}
+                                    >
+                                      {approveDocument.isPending ? (
+                                        <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+                                      ) : (
+                                        <CheckCircle2 className="h-3.5 w-3.5 mr-1" />
+                                      )}
+                                      {approveDocument.isPending ? "Đang duyệt..." : "Duyệt"}
+                                    </Button>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      disabled={rejectDocument.isPending || !reviewedIds.has(d.id)}
+                                      title={!reviewedIds.has(d.id) ? "Bạn cần xem file trước khi từ chối" : undefined}
+                                       onClick={() => {
+                                         rejectDocument.mutate({ id: d.id }, {
+                                           onSuccess: () => toast.success("Đã từ chối file"),
+                                           onError: (err) => toast.error("Lỗi: " + err.message),
+                                         });
+                                       }}
+                                    >
+                                      {rejectDocument.isPending ? (
+                                        <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+                                      ) : (
+                                        <XCircle className="h-3.5 w-3.5 mr-1" />
+                                      )}
+                                      {rejectDocument.isPending ? "Đang từ chối..." : "Từ chối"}
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </TabsContent>
             ))}
           </Tabs>

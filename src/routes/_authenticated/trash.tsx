@@ -180,12 +180,18 @@ function TrashPage() {
                   }
                   disabled={restore.isPending || restoreFolder.isPending}
                 >
-                  <RotateCcw className="h-3.5 w-3.5 mr-2" /> Khôi phục
+                  {(restore.isPending || restoreFolder.isPending) ? (
+                    <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />
+                  ) : (
+                    <RotateCcw className="h-3.5 w-3.5 mr-2" />
+                  )}
+                  Khôi phục
                 </Button>
                 <Button
                   size="sm"
                   variant="ghost"
                   className="text-destructive"
+                  disabled={erase.isPending || eraseFolder.isPending}
                   onClick={() => {
                     if (confirm(`Xoá vĩnh viễn ${d.name || d.title}?`))
                       d._type === "folder"
@@ -193,7 +199,11 @@ function TrashPage() {
                         : erase.mutate(d.id);
                   }}
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
+                  {(erase.isPending || eraseFolder.isPending) ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-3.5 w-3.5" />
+                  )}
                 </Button>
               </div>
             );

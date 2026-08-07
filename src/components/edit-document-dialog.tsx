@@ -118,6 +118,7 @@ export function EditDocumentDialog({
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              maxLength={500}
             />
           </div>
 

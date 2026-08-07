@@ -6,6 +6,12 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useMySubmittedReports } from "@/lib/queries";
 import { cn } from "@/lib/utils";
 
@@ -108,38 +114,71 @@ function ReportedDocumentsPage() {
 
 function ReportsTable({ reports, isLoading }: { reports: any[], isLoading: boolean }) {
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Loại</TableHead>
-          <TableHead>Tài liệu</TableHead>
-          <TableHead>Lý do</TableHead>
-          <TableHead>Trạng thái</TableHead>
-          <TableHead>Ghi chú admin</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {isLoading ? (
-          <TableRow><TableCell colSpan={5} className="text-center py-10">Đang tải...</TableCell></TableRow>
-        ) : reports.length === 0 ? (
-          <TableRow><TableCell colSpan={5} className="text-center py-10">Không có mục nào</TableCell></TableRow>
-        ) : (
-          reports.map((r: any) => (
-            <TableRow key={r.id}>
-              <TableCell><TypeBadge r={r} /></TableCell>
-              <TableCell className="font-medium">
-                <span className="flex items-center gap-2 min-w-0">
-                  <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                  <span className="truncate">{r.documentTitle}</span>
-                </span>
-              </TableCell>
-              <TableCell>{getReasonLabel(r.reason)}</TableCell>
-              <TableCell>{getStatusBadge(r.status)}</TableCell>
-              <TableCell className="text-muted-foreground">{r.adminComment || "-"}</TableCell>
-            </TableRow>
-          ))
-        )}
-      </TableBody>
-    </Table>
+    <div className="overflow-x-auto w-full border border-border/60 rounded-lg">
+      <Table className="min-w-[800px]">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[120px]">Loại</TableHead>
+            <TableHead className="w-[220px]">Tài liệu</TableHead>
+            <TableHead className="w-[200px]">Lý do</TableHead>
+            <TableHead className="w-[120px]">Trạng thái</TableHead>
+            <TableHead>Ghi chú admin</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {isLoading ? (
+            <TableRow><TableCell colSpan={5} className="text-center py-10">Đang tải...</TableCell></TableRow>
+          ) : reports.length === 0 ? (
+            <TableRow><TableCell colSpan={5} className="text-center py-10">Không có mục nào</TableCell></TableRow>
+          ) : (
+            reports.map((r: any) => (
+              <TableRow key={r.id}>
+                <TableCell><TypeBadge r={r} /></TableCell>
+                <TableCell className="font-medium max-w-[220px]">
+                  <span className="flex items-center gap-2 min-w-0">
+                    <FileText className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="truncate block cursor-help">{r.documentTitle}</span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>{r.documentTitle}</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </span>
+                </TableCell>
+                <TableCell className="max-w-[200px]">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="truncate block cursor-help">{getReasonLabel(r.reason)}</span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{getReasonLabel(r.reason)}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
+                <TableCell>{getStatusBadge(r.status)}</TableCell>
+                <TableCell className="text-muted-foreground max-w-[250px]">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span className="truncate block cursor-help">{r.adminComment || "—"}</span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p className="max-w-xs break-all">{r.adminComment || "Chưa có phản hồi"}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

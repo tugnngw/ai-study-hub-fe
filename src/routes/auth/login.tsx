@@ -19,8 +19,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 
 const schema = z.object({
-  username: z.string().trim().min(1, "Vui lòng nhập tên đăng nhập"),
-  password: z.string().min(1, "Vui lòng nhập mật khẩu"),
+  username: z.string().trim().min(1, "Vui lòng nhập tên đăng nhập").max(255, "Tối đa 255 ký tự"),
+  password: z.string().min(1, "Vui lòng nhập mật khẩu").max(128, "Tối đa 128 ký tự"),
 });
 
 export const Route = createFileRoute("/auth/login")({
@@ -50,7 +50,6 @@ function LoginPage() {
     try {
       await login(form.username, form.password);
       toast.success("Chào mừng trở lại!");
-      // Navigate after token saved
       await navigate({ to: "/dashboard", replace: true });
     } catch (err) {
       console.error("❌ Login error:", err);
@@ -70,7 +69,6 @@ function LoginPage() {
 
   const resendVerification = async () => {
     try {
-      // User not authenticated yet — use public endpoint with username
       await authApi.resendVerificationByUsername(form.username);
       toast.success("Email xác thực đã được gửi lại! Nếu tài khoản hợp lệ, bạn sẽ nhận được email.");
     } catch {
@@ -95,12 +93,15 @@ function LoginPage() {
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Tên đăng nhập</Label>
+            <div className="flex items-center">
+              <Label htmlFor="username">Tên đăng nhập hoặc email</Label>
+            </div>
             <Input
               id="username"
               autoComplete="username"
               value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
+              maxLength={255}
             />
             {errors.username && (
               <p className="text-xs text-destructive">{errors.username}</p>
@@ -111,7 +112,7 @@ function LoginPage() {
               <Label htmlFor="password">Mật khẩu</Label>
               <Link
                 to="/auth/forgot-password"
-                className="text-xs text-primary hover:underline"
+                className="text-xs text-primary hover:underline ml-2"
               >
                 Quên mật khẩu?
               </Link>
@@ -122,6 +123,7 @@ function LoginPage() {
               autoComplete="current-password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
+              maxLength={128}
             />
             {errors.password && (
               <p className="text-xs text-destructive">{errors.password}</p>

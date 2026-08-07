@@ -22,8 +22,8 @@ const searchSchema = z.object({
 
 const schema = z
   .object({
-    password: z.string().min(6, "Tối thiểu 6 ký tự"),
-    confirmPassword: z.string().min(6, "Tối thiểu 6 ký tự"),
+    password: z.string().min(8, "Tối thiểu 8 ký tự").max(128, "Tối đa 128 ký tự"),
+    confirmPassword: z.string().min(8, "Tối thiểu 8 ký tự").max(128, "Tối đa 128 ký tự"),
   })
   .refine((d) => d.password === d.confirmPassword, {
     path: ["confirmPassword"],
@@ -35,21 +35,27 @@ export const Route = createFileRoute("/auth/reset-password")({
   component: ResetPasswordPage,
 });
 
+function Counter({ value, max }: { value: number; max: number }) {
+  return (
+    <span className={`text-xs ml-auto ${value > max ? "text-destructive" : "text-muted-foreground"}`}>
+      {value} / {max}
+    </span>
+  );
+}
+
 function ResetPasswordPage() {
   const { email, otp } = Route.useSearch();
   const { resetPassword } = useAuth();
+  const navigate = useNavigate();
+  const [form, setForm] = useState({ password: "", confirmPassword: "" });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
 
-  // OTP + email truyền qua URL (từ email reset) — xóa khỏi URL ngay sau khi
-  // đọc để OTP không nằm lại trong browser history.
   useEffect(() => {
     if (email || otp) {
       window.history.replaceState({}, "", "/auth/reset-password");
     }
   }, [email, otp]);
-  const navigate = useNavigate();
-  const [form, setForm] = useState({ password: "", confirmPassword: "" });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,13 +92,17 @@ function ResetPasswordPage() {
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="password">Mật khẩu mới</Label>
+            <div className="flex items-center">
+              <Label htmlFor="password">Mật khẩu mới</Label>
+              <Counter value={form.password.length} max={128} />
+            </div>
             <Input
               id="password"
               type="password"
               autoComplete="new-password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
+              maxLength={128}
               disabled={loading}
             />
             {errors.password && (
@@ -107,6 +117,7 @@ function ResetPasswordPage() {
               autoComplete="new-password"
               value={form.confirmPassword}
               onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+              maxLength={128}
               disabled={loading}
             />
             {errors.confirmPassword && (

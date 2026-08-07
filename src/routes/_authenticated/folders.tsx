@@ -440,15 +440,16 @@ function FolderFormDialog({
 
             {/* Folder Name */}
             <div className="space-y-2">
-              <Label className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1.5">
                 <FolderKanban className="h-4 w-4 text-muted-foreground" />
-                Folder name
-              </Label>
+                <Label>Folder name</Label>
+              </div>
               <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   disabled={!subjectId}
                   placeholder={!subjectId ? !semesterId ? "Select a semester first" : "Select a subject first" : "e.g. Week 1 – Introduction"}
+                  maxLength={100}
               />
             </div>
 
@@ -461,6 +462,7 @@ function FolderFormDialog({
                   disabled={!subjectId}
                   placeholder={!subjectId ? "Select a subject first" : "Brief description of this folder..."}
                   rows={2}
+                  maxLength={500}
               />
             </div>
 
@@ -512,13 +514,14 @@ function DeleteFolderDialog({
           <AlertDialogHeader>
             <AlertDialogTitle>Delete folder?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will delete &ldquo;{folder?.name}&rdquo;. This action cannot be
+              This will delete <span className="font-medium break-all">&ldquo;{folder?.name}&rdquo;</span>. This action cannot be
               undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={del.isPending}>Cancel</AlertDialogCancel>
             <AlertDialogAction
+                disabled={del.isPending}
                 onClick={async () => {
                   if (!folder) return;
                   try {
@@ -530,7 +533,14 @@ function DeleteFolderDialog({
                   }
                 }}
             >
-              Delete
+              {del.isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

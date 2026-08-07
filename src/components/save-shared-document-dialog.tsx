@@ -230,11 +230,14 @@ export function SaveSharedDocumentDialog({
                 </Select>
               </div>
 
-              <Input
-                placeholder="New folder name"
-                value={newFolderName}
-                onChange={(e) => setNewFolderName(e.target.value)}
-              />
+              <div className="space-y-1">
+                <Input
+                  placeholder="New folder name"
+                  value={newFolderName}
+                  onChange={(e) => setNewFolderName(e.target.value)}
+                  maxLength={100}
+                />
+              </div>
             </div>
           )}
 
@@ -253,6 +256,7 @@ export function SaveSharedDocumentDialog({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
+              maxLength={500}
             />
           </div>
         </div>

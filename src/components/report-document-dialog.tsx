@@ -114,6 +114,7 @@ export function ReportDocumentDialog({
               onChange={(e) => setDescription(e.target.value)}
               placeholder={isAppeal ? "Cung cấp chi tiết để quản trị viên xem xét..." : "Cung cấp chi tiết để chúng tôi xử lý nhanh hơn..."}
               rows={3}
+              maxLength={500}
             />
           </div>
         </div>

@@ -22,19 +22,25 @@ const schema = z
       .string()
       .trim()
       .min(3, "Tối thiểu 3 ký tự")
-      .max(10, "Tối đa 10 ký tự")
+      .max(50, "Tối đa 50 ký tự")
       .regex(/^[a-zA-Z0-9_]+$/, "Chỉ gồm chữ, số và dấu gạch dưới"),
     fullName: z
       .string()
       .trim()
       .min(2, "Vui lòng nhập họ và tên")
       .max(30, "Tối đa 30 ký tự"),
-    password: z.string().min(6, "Tối thiểu 6 ký tự"),
-    confirmPassword: z.string().min(6, "Tối thiểu 6 ký tự"),
+    password: z
+      .string()
+      .min(8, "Tối thiểu 8 ký tự")
+      .max(128, "Tối đa 128 ký tự"),
+    confirmPassword: z
+      .string()
+      .min(8, "Tối thiểu 8 ký tự")
+      .max(128, "Tối đa 128 ký tự"),
     email: z
       .string()
       .trim()
-      .max(100, "Tối đa 100 ký tự")
+      .max(255, "Tối đa 255 ký tự")
       .email("Email không hợp lệ")
       .optional()
       .or(z.literal("")),
@@ -87,11 +93,9 @@ function RegisterPage() {
       }
       await register(payload);
       if (form.email.trim()) {
-        // Email provided → must verify before login
         toast.success("Tạo tài khoản thành công! Vui lòng kiểm tra email để xác thực.");
         navigate({ to: "/verify-email" });
       } else {
-        // No email → logged in immediately
         toast.success("Tạo tài khoản thành công! Chào mừng bạn.");
         navigate({ to: "/dashboard", replace: true });
       }
@@ -113,30 +117,38 @@ function RegisterPage() {
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="username">Tên đăng nhập (tối đa 10 ký tự)</Label>
+            <div className="flex items-center">
+              <Label htmlFor="username">Tên đăng nhập</Label>
+            </div>
             <Input
               id="username"
               autoComplete="username"
               value={form.username}
               onChange={update("username")}
+              maxLength={50}
             />
             {errors.username && (
               <p className="text-xs text-destructive">{errors.username}</p>
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="fullName">Họ và tên (tối đa 30 ký tự)</Label>
+            <div className="flex items-center">
+              <Label htmlFor="fullName">Họ và tên</Label>
+            </div>
             <Input
               id="fullName"
               value={form.fullName}
               onChange={update("fullName")}
+              maxLength={30}
             />
             {errors.fullName && (
               <p className="text-xs text-destructive">{errors.fullName}</p>
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email (không bắt buộc)</Label>
+            <div className="flex items-center">
+              <Label htmlFor="email">Email (không bắt buộc)</Label>
+            </div>
             <Input
               id="email"
               type="email"
@@ -144,32 +156,39 @@ function RegisterPage() {
               placeholder="email@example.com"
               value={form.email}
               onChange={update("email")}
+              maxLength={255}
             />
             {errors.email && (
               <p className="text-xs text-destructive">{errors.email}</p>
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Mật khẩu (tối thiểu 6 ký tự)</Label>
+            <div className="flex items-center">
+              <Label htmlFor="password">Mật khẩu (8–128 ký tự)</Label>
+            </div>
             <Input
               id="password"
               type="password"
               autoComplete="new-password"
               value={form.password}
               onChange={update("password")}
+              maxLength={128}
             />
             {errors.password && (
               <p className="text-xs text-destructive">{errors.password}</p>
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+            <div className="flex items-center">
+              <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
+            </div>
             <Input
               id="confirmPassword"
               type="password"
               autoComplete="new-password"
               value={form.confirmPassword}
               onChange={update("confirmPassword")}
+              maxLength={128}
             />
             {errors.confirmPassword && (
               <p className="text-xs text-destructive">

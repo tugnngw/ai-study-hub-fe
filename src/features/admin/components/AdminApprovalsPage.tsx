@@ -1,7 +1,13 @@
 // src/features/admin/components/AdminApprovalsPage.tsx
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { FileText, Check, X, Flag, AlertCircle, Eye, Scale } from "lucide-react";
+import { FileText, Check, X, Flag, AlertCircle, Eye, Scale, Loader2 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -203,119 +209,172 @@ export const AdminApprovalsPage: React.FC = () => {
           </span>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Loại</TableHead>
-                <TableHead>File</TableHead>
-                <TableHead>Người tải lên</TableHead>
-                <TableHead>Lý do</TableHead>
-                <TableHead>Người gửi</TableHead>
-                <TableHead>{filterType === "APPEAL" ? "Appeal Time" : "Report Time"}</TableHead>
-                <TableHead>Lý do từ chối (Admin)</TableHead>
-                <TableHead className="text-right">Hành động</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.length === 0 ? (
+          <div className="overflow-x-auto w-full border border-border/60 rounded-lg">
+            <Table className="min-w-[800px]">
+              <TableHeader>
                 <TableRow>
-                  <TableCell
-                    colSpan={8}
-                    className="h-24 text-center text-muted-foreground"
-                  >
-                    Không có {filterType === "APPEAL" ? "kháng cáo" : "báo cáo"} nào
-                  </TableCell>
+                  <TableHead>Loại</TableHead>
+                  <TableHead>File</TableHead>
+                  <TableHead>Người tải lên</TableHead>
+                  <TableHead>Lý do</TableHead>
+                  <TableHead>Người gửi</TableHead>
+                  <TableHead>{filterType === "APPEAL" ? "Appeal Time" : "Report Time"}</TableHead>
+                  <TableHead>Lý do từ chối (Admin)</TableHead>
+                  <TableHead className="text-right">Hành động</TableHead>
                 </TableRow>
-              ) : (
-                filtered.map((item: any) => (
-                  <TableRow key={item.id}>
-                    <TableCell>{typeBadge(item)}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className={cn(
-                            "h-9 w-9 rounded-lg flex items-center justify-center shrink-0",
-                            isAppeal(item.type)
-                                ? "bg-blue-500/10 text-blue-600"
-                                : "bg-destructive/10 text-destructive",
-                        )}>
-                          {isAppeal(item.type) ? <Scale className="h-4 w-4" /> : <Flag className="h-4 w-4" />}
-                        </div>
-                        <div className="min-w-0">
-                          <span className="font-medium truncate block">
-                            {item.title}
-                          </span>
-                          <span className="text-xs text-muted-foreground truncate block">
-                            {formatDateTime(item.date)}
-                          </span>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2.5">
-                        <Avatar className="h-7 w-7">
-                          <AvatarFallback className="bg-muted text-xs">
-                            {item.uploader?.charAt(0) || "U"}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="text-muted-foreground truncate">
-                          {item.uploader}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="max-w-xs">
-                        <div className="flex items-start gap-2">
-                          <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                           <span className="text-sm">
-                             {getReasonLabel(item.reason)}
-                           </span>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {item.reporter || "Anonymous"}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground whitespace-nowrap">
-                      {formatDateTime(item.date)}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground text-sm">
-                      {item.adminComment || "—"}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          disabled={loadingPreview === item.id}
-                          onClick={() => openPreview(item)}
-                        >
-                          <Eye /> {loadingPreview === item.id ? "Đang mở..." : "Xem file"}
-                        </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="text-destructive hover:text-destructive"
-                          disabled={!reviewedIds.has(item.id) || action.isPending}
-                          title={!reviewedIds.has(item.id) ? "Xem file trước khi xử lý" : undefined}
-                          onClick={() => handle(item.id, "reject")}
-                        >
-                          <X /> Từ chối file
-                        </Button>
-                        <Button
-                          size="sm"
-                          disabled={!reviewedIds.has(item.id)}
-                          title={!reviewedIds.has(item.id) ? "Xem file trước khi xử lý" : undefined}
-                          onClick={() => handle(item.id, "approve")}
-                        >
-                          <Check /> Chấp nhận báo cáo
-                        </Button>
-                      </div>
+              </TableHeader>
+              <TableBody>
+                {filtered.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={8}
+                      className="h-24 text-center text-muted-foreground"
+                    >
+                      Không có {filterType === "APPEAL" ? "kháng cáo" : "báo cáo"} nào
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  filtered.map((item: any) => (
+                    <TableRow key={item.id}>
+                      <TableCell>{typeBadge(item)}</TableCell>
+                      <TableCell className="max-w-[200px]">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className={cn(
+                              "h-9 w-9 rounded-lg flex items-center justify-center shrink-0",
+                              isAppeal(item.type)
+                                  ? "bg-blue-500/10 text-blue-600"
+                                  : "bg-destructive/10 text-destructive",
+                          )}>
+                            {isAppeal(item.type) ? <Scale className="h-4 w-4" /> : <Flag className="h-4 w-4" />}
+                          </div>
+                          <div className="min-w-0">
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className="font-medium truncate block cursor-help">
+                                    {item.title}
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>{item.title}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                            <span className="text-xs text-muted-foreground truncate block">
+                              {formatDateTime(item.date)}
+                            </span>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="max-w-[150px]">
+                        <div className="flex items-center gap-2.5">
+                          <Avatar className="h-7 w-7">
+                            <AvatarFallback className="bg-muted text-xs">
+                              {item.uploader?.charAt(0) || "U"}
+                            </AvatarFallback>
+                          </Avatar>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <span className="text-muted-foreground truncate cursor-help">
+                                  {item.uploader}
+                                </span>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{item.uploader}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </div>
+                      </TableCell>
+                      <TableCell className="max-w-[180px]">
+                        <div className="max-w-xs">
+                          <div className="flex items-start gap-2">
+                            <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                   <span className="text-sm truncate block cursor-help">
+                                     {getReasonLabel(item.reason)}
+                                   </span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p className="max-w-xs break-all">{getReasonLabel(item.reason)}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground max-w-[130px]">
+                        <span className="truncate block">{item.reporter || "Anonymous"}</span>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground whitespace-nowrap">
+                        {formatDateTime(item.date)}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-sm max-w-[200px]">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span className="truncate block cursor-help">{item.adminComment || "—"}</span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="max-w-xs break-all">{item.adminComment || "Chưa có nhận xét"}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            disabled={loadingPreview === item.id}
+                            onClick={() => openPreview(item)}
+                          >
+                            {loadingPreview === item.id ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+                            ) : (
+                              <Eye className="h-3.5 w-3.5 mr-1" />
+                            )}
+                            {loadingPreview === item.id ? "Đang tải..." : "Xem file"}
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-destructive hover:text-destructive"
+                            disabled={!reviewedIds.has(item.id) || action.isPending}
+                            title={!reviewedIds.has(item.id) ? "Xem file trước khi xử lý" : undefined}
+                            onClick={() => handle(item.id, "reject")}
+                          >
+                            {action.isPending && rejectId === item.id ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+                            ) : (
+                              <X className="h-3.5 w-3.5 mr-1" />
+                            )}
+                            Từ chối file
+                          </Button>
+                          <Button
+                            size="sm"
+                            disabled={!reviewedIds.has(item.id) || action.isPending}
+                            title={!reviewedIds.has(item.id) ? "Xem file trước khi xử lý" : undefined}
+                            onClick={() => handle(item.id, "approve")}
+                          >
+                            {action.isPending && rejectId !== item.id ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+                            ) : (
+                              <Check className="h-3.5 w-3.5 mr-1" />
+                            )}
+                            Chấp nhận báo cáo
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 
@@ -335,11 +394,16 @@ export const AdminApprovalsPage: React.FC = () => {
               Vui lòng nhập lý do từ chối để thông báo cho người upload.
             </DialogDescription>
           </DialogHeader>
-          <Textarea
-            placeholder="Nhập lý do từ chối..."
-            value={rejectReason}
-            onChange={(e) => setRejectReason(e.target.value)}
-          />
+          <div className="space-y-1">
+            <Textarea
+              placeholder="Nhập lý do từ chối..."
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              maxLength={500}
+              rows={4}
+              className="max-h-[200px] overflow-y-auto"
+            />
+          </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setRejectId(null)}>Hủy</Button>
             <Button

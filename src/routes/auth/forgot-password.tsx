@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 
-const emailSchema = z.string().email("Email không hợp lệ");
+const emailSchema = z.string().email("Email không hợp lệ").max(255, "Tối đa 255 ký tự");
 
 export const Route = createFileRoute("/auth/forgot-password")({
   component: ForgotPasswordPage,
@@ -80,13 +80,16 @@ function ForgotPasswordPage() {
         {step === "email" ? (
           <form onSubmit={onSendOtp} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <div className="flex items-center">
+                <Label htmlFor="email">Email</Label>
+              </div>
               <Input
                 id="email"
                 type="email"
                 autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                maxLength={255}
                 disabled={loading}
               />
               {error && <p className="text-xs text-destructive">{error}</p>}

@@ -34,6 +34,12 @@ import {
 import { formatStorage } from "@/lib/config";
 import { Loader2 } from "lucide-react";
 import { PlanFormModal } from "./PlanFormModal";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { AdminPlan, RevenueStatsResponse } from "../services/paymentApi";
 import { paymentApi } from "../services/paymentApi";
 import { StatCard } from "@/components/ui/stat-card";
@@ -109,121 +115,143 @@ function PlanConfigCard() {
           </Button>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="[&>th]:text-[14px] [&>th]:font-semibold [&>th]:text-foreground">
-                <TableHead>Gói</TableHead>
-                <TableHead>Giá</TableHead>
-                <TableHead>Cấp độ</TableHead>
-                <TableHead>Thời hạn</TableHead>
-                <TableHead>Lưu trữ</TableHead>
-                <TableHead>Quiz AI (số câu)</TableHead>
-                <TableHead>AI Chat (lượt)</TableHead>
-                <TableHead>Tạo Quiz (lượt)</TableHead>
-                <TableHead>Tạo Flashcard (lượt)</TableHead>
-                <TableHead>Tóm tắt (lượt)</TableHead>
-                <TableHead>Trạng thái</TableHead>
-                <TableHead className="text-right">Hành động</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <TableRow>
-                  <TableCell colSpan={12} className="h-20 text-center">
-                    <Loader2 className="h-5 w-5 animate-spin mx-auto text-primary" />
-                  </TableCell>
+          <div className="overflow-x-auto w-full border border-border/60 rounded-lg">
+            <Table className="min-w-[1000px]">
+              <TableHeader>
+                <TableRow className="[&>th]:text-[14px] [&>th]:font-semibold [&>th]:text-foreground">
+                  <TableHead>Gói</TableHead>
+                  <TableHead>Giá</TableHead>
+                  <TableHead>Cấp độ</TableHead>
+                  <TableHead>Thời hạn</TableHead>
+                  <TableHead>Lưu trữ</TableHead>
+                  <TableHead>Quiz AI (số câu)</TableHead>
+                  <TableHead>AI Chat (lượt)</TableHead>
+                  <TableHead>Tạo Quiz (lượt)</TableHead>
+                  <TableHead>Tạo Flashcard (lượt)</TableHead>
+                  <TableHead>Tóm tắt (lượt)</TableHead>
+                  <TableHead>Trạng thái</TableHead>
+                  <TableHead className="text-right">Hành động</TableHead>
                 </TableRow>
-              ) : (plans ?? []).length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={12} className="h-20 text-center text-muted-foreground">
-                    Chưa có gói nào
-                  </TableCell>
-                </TableRow>
-              ) : (
-                (plans ?? []).map((p) => (
-                  <TableRow key={p.id} className="[&>td]:py-3">
-                    <TableCell className="font-semibold">
-                      {p.name}
-                      {!p.isActive && (
-                        <Badge variant="secondary" className="ml-2 text-xs bg-gray-100 text-gray-500">
-                          Đã ẩn
-                        </Badge>
-                      )}
-                    </TableCell>
-                    <TableCell>{fmtVnd(p.price)}</TableCell>
-                    <TableCell>
-                      <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-primary/10 text-primary font-bold text-sm">
-                        {p.tier ?? 0}
-                      </span>
-                    </TableCell>
-                    <TableCell>
-                      {p.durationDays === 0 || p.durationDays === -1 ? "Vĩnh viễn" : p.durationDays ? `${p.durationDays} ngày` : "—"}
-                    </TableCell>
-                    <TableCell>{formatStorage(p.storageGb)}</TableCell>
-                    <TableCell>
-                      {p.aiQuestions == null ? "—" : p.aiQuestions > 9999 ? "Không giới hạn" : `${p.aiQuestions} câu`}
-                    </TableCell>
-                    <TableCell>
-                      {p.chatLimit == null ? "—" : p.chatLimit > 9999 ? "Không giới hạn" : `${p.chatLimit} lượt`}
-                    </TableCell>
-                    <TableCell>
-                      {p.questionLimit == null ? "—" : p.questionLimit > 9999 ? "Không giới hạn" : `${p.questionLimit} lượt`}
-                    </TableCell>
-                    <TableCell>
-                      {p.flashcardLimit == null ? "—" : p.flashcardLimit > 9999 ? "Không giới hạn" : `${p.flashcardLimit} lượt`}
-                    </TableCell>
-                    <TableCell>
-                      {p.summaryLimit == null ? "—" : p.summaryLimit > 9999 ? "Không giới hạn" : `${p.summaryLimit} lượt`}
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant="secondary"
-                        className={
-                          p.isActive
-                            ? "bg-emerald-500/10 text-emerald-600"
-                            : "bg-gray-500/10 text-gray-600"
-                        }
-                      >
-                        {p.isActive ? "Đang bật" : "Đang tắt"}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => openEditModal(p)}
-                        >
-                          <Pencil className="h-3.5 w-3.5 mr-1" /> Sửa
-                        </Button>
-                        {p.isActive ? (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="text-destructive hover:bg-destructive/10"
-                            onClick={() => handleDelete(p.id, p.name)}
-                            disabled={deletePlan.isPending}
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
-                        ) : (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="text-emerald-600 hover:bg-emerald-500/10"
-                            onClick={() => handleRestore(p.id)}
-                            disabled={restorePlan.isPending}
-                          >
-                            <RotateCcw className="h-3.5 w-3.5" />
-                          </Button>
-                        )}
-                      </div>
+              </TableHeader>
+              <TableBody>
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={12} className="h-20 text-center">
+                      <Loader2 className="h-5 w-5 animate-spin mx-auto text-primary" />
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (plans ?? []).length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={12} className="h-20 text-center text-muted-foreground">
+                      Chưa có gói nào
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  (plans ?? []).map((p) => (
+                    <TableRow key={p.id} className="[&>td]:py-3">
+                      <TableCell className="font-semibold max-w-[150px]">
+                        <div className="flex items-center min-w-0">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <span className="truncate block cursor-help">{p.name}</span>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{p.name}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                          {!p.isActive && (
+                            <Badge variant="secondary" className="ml-2 text-xs bg-gray-100 text-gray-500 shrink-0">
+                              Đã ẩn
+                            </Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell>{fmtVnd(p.price)}</TableCell>
+                      <TableCell>
+                        <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-primary/10 text-primary font-bold text-sm">
+                          {p.tier ?? 0}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        {p.durationDays === 0 || p.durationDays === -1 ? "Vĩnh viễn" : p.durationDays ? `${p.durationDays} ngày` : "—"}
+                      </TableCell>
+                      <TableCell>{formatStorage(p.storageGb)}</TableCell>
+                      <TableCell>
+                        {p.aiQuestions == null ? "—" : p.aiQuestions > 9999 ? "Không giới hạn" : `${p.aiQuestions} câu`}
+                      </TableCell>
+                      <TableCell>
+                        {p.chatLimit == null ? "—" : p.chatLimit > 9999 ? "Không giới hạn" : `${p.chatLimit} lượt`}
+                      </TableCell>
+                      <TableCell>
+                        {p.questionLimit == null ? "—" : p.questionLimit > 9999 ? "Không giới hạn" : `${p.questionLimit} lượt`}
+                      </TableCell>
+                      <TableCell>
+                        {p.flashcardLimit == null ? "—" : p.flashcardLimit > 9999 ? "Không giới hạn" : `${p.flashcardLimit} lượt`}
+                      </TableCell>
+                      <TableCell>
+                        {p.summaryLimit == null ? "—" : p.summaryLimit > 9999 ? "Không giới hạn" : `${p.summaryLimit} lượt`}
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="secondary"
+                          className={
+                            p.isActive
+                              ? "bg-emerald-500/10 text-emerald-600"
+                              : "bg-gray-500/10 text-gray-600"
+                          }
+                        >
+                          {p.isActive ? "Đang bật" : "Đang tắt"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-2">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => openEditModal(p)}
+                            disabled={deletePlan.isPending || restorePlan.isPending}
+                          >
+                            <Pencil className="h-3.5 w-3.5 mr-1" /> Sửa
+                          </Button>
+                          {p.isActive ? (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-destructive hover:bg-destructive/10"
+                              onClick={() => handleDelete(p.id, p.name)}
+                              disabled={deletePlan.isPending}
+                            >
+                              {deletePlan.isPending ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <Trash2 className="h-3.5 w-3.5" />
+                              )}
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              className="text-emerald-600 hover:bg-emerald-500/10"
+                              onClick={() => handleRestore(p.id)}
+                              disabled={restorePlan.isPending}
+                            >
+                              {restorePlan.isPending ? (
+                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                              ) : (
+                                <RotateCcw className="h-3.5 w-3.5" />
+                              )}
+                            </Button>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
 
@@ -308,49 +336,73 @@ export const AdminPremiumPage: React.FC = () => {
           </Tabs>
         </CardHeader>
         <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow className="[&>th]:text-[14px] [&>th]:font-semibold [&>th]:text-foreground">
-                <TableHead>User</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Gói</TableHead>
-                <TableHead>Số tiền</TableHead>
-                <TableHead>Trạng thái</TableHead>
-                <TableHead>Ngày tạo</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filtered.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
-                    Không có giao dịch nào
-                  </TableCell>
+          <div className="overflow-x-auto w-full border border-border/60 rounded-lg">
+            <Table className="min-w-[800px]">
+              <TableHeader>
+                <TableRow className="[&>th]:text-[14px] [&>th]:font-semibold [&>th]:text-foreground">
+                  <TableHead>User</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Gói</TableHead>
+                  <TableHead>Số tiền</TableHead>
+                  <TableHead>Trạng thái</TableHead>
+                  <TableHead>Ngày tạo</TableHead>
                 </TableRow>
-              ) : (
-                filtered.map((tx) => {
-                  const s = statusBadge[tx.status] || statusBadge.PENDING;
-                  return (
-                    <TableRow key={tx.id} className="[&>td]:py-4 [&>td]:text-[15px]">
-                      <TableCell className="font-semibold">{tx.userName || "N/A"}</TableCell>
-                      <TableCell className="text-muted-foreground">{tx.userEmail || "N/A"}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{tx.planName}</Badge>
-                      </TableCell>
-                      <TableCell className="font-semibold">{fmtVnd(tx.amount)}</TableCell>
-                      <TableCell>
-                        <Badge variant="secondary" className={`${s.cls} text-[13px] px-2.5 py-1`}>
-                          {s.label}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground text-sm">
-                        {fmtDate(tx.createdAt)}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })
-              )}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {filtered.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                      Không có giao dịch nào
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filtered.map((tx) => {
+                    const s = statusBadge[tx.status] || statusBadge.PENDING;
+                    return (
+                      <TableRow key={tx.id} className="[&>td]:py-4 [&>td]:text-[15px]">
+                        <TableCell className="font-semibold max-w-[150px]">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <span className="truncate block cursor-help">{tx.userName || "N/A"}</span>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{tx.userName || "N/A"}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground max-w-[200px]">
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <span className="truncate block cursor-help">{tx.userEmail || "N/A"}</span>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>{tx.userEmail || "N/A"}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline">{tx.planName}</Badge>
+                        </TableCell>
+                        <TableCell className="font-semibold">{fmtVnd(tx.amount)}</TableCell>
+                        <TableCell>
+                          <Badge variant="secondary" className={`${s.cls} text-[13px] px-2.5 py-1`}>
+                            {s.label}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground text-sm">
+                          {fmtDate(tx.createdAt)}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

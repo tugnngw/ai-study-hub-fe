@@ -1,0 +1,278 @@
+import { t as accountApi } from "./realApi-BCKVeZFR.js";
+import { n as useAuth } from "./auth-B65hUS2-.js";
+import { t as Button } from "./button-C90jjaif.js";
+import { t as Input } from "./input-Cek7xrlr.js";
+import { t as Label } from "./label-HQjKAyB7.js";
+import { a as CardTitle, i as CardHeader, n as CardContent, t as Card } from "./card-D4JpMjWP.js";
+import { t as Badge } from "./badge-CXVSNBvN.js";
+import { useMemo, useState } from "react";
+import { Fragment, jsx, jsxs } from "react/jsx-runtime";
+import { toast } from "sonner";
+import { KeyRound, Lock, Pencil, Save, ShieldCheck, X } from "lucide-react";
+//#region src/features/admin/components/AdminProfilePage.tsx
+var AdminProfilePage = () => {
+	const { user, updateProfile } = useAuth();
+	const [editing, setEditing] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(null);
+	const initialForm = useMemo(() => ({
+		fullName: user?.fullName ?? "",
+		username: user?.username ?? "",
+		email: user?.email ?? ""
+	}), [user]);
+	const [form, setForm] = useState(initialForm);
+	const update = (k, v) => setForm((p) => ({
+		...p,
+		[k]: v
+	}));
+	const save = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		setError(null);
+		try {
+			await updateProfile({
+				fullName: form.fullName,
+				email: form.email
+			});
+			toast.success("Cập nhật hồ sơ thành công");
+			setEditing(false);
+		} catch (e) {
+			const msg = e?.response?.data?.message ?? "Failed to update profile";
+			setError(msg);
+			toast.error(msg);
+		} finally {
+			setLoading(false);
+		}
+	};
+	const cancel = () => {
+		setForm(initialForm);
+		setEditing(false);
+		setError(null);
+	};
+	const [pwd, setPwd] = useState({
+		current: "",
+		next: "",
+		confirm: ""
+	});
+	const [pwdLoading, setPwdLoading] = useState(false);
+	const updatePwd = (k, v) => setPwd((p) => ({
+		...p,
+		[k]: v
+	}));
+	const changePassword = async (e) => {
+		e.preventDefault();
+		setPwdLoading(true);
+		setError(null);
+		try {
+			await accountApi.changePassword({
+				currentPassword: pwd.current,
+				newPassword: pwd.next,
+				confirmPassword: pwd.confirm
+			});
+			toast.success("Đổi mật khẩu thành công");
+			setPwd({
+				current: "",
+				next: "",
+				confirm: ""
+			});
+		} catch (e) {
+			const msg = e?.response?.data?.message ?? e?.message ?? "Đổi mật khẩu thất bại";
+			setError(msg);
+			toast.error(msg);
+		} finally {
+			setPwdLoading(false);
+		}
+	};
+	return /* @__PURE__ */ jsxs("div", {
+		className: "space-y-6",
+		children: [/* @__PURE__ */ jsxs("div", {
+			className: "flex items-center justify-between",
+			children: [/* @__PURE__ */ jsxs("div", { children: [/* @__PURE__ */ jsx("h1", {
+				className: "text-2xl font-bold tracking-tight font-display",
+				children: "Hồ sơ quản trị"
+			}), /* @__PURE__ */ jsx("p", {
+				className: "text-muted-foreground mt-1 text-sm",
+				children: "Thông tin tài khoản admin của bạn"
+			})] }), !editing && /* @__PURE__ */ jsxs(Button, {
+				onClick: () => setEditing(true),
+				variant: "outline",
+				children: [/* @__PURE__ */ jsx(Pencil, { className: "h-4 w-4 mr-2" }), " Chỉnh sửa"]
+			})]
+		}), /* @__PURE__ */ jsxs("div", {
+			className: "grid grid-cols-1 lg:grid-cols-2 gap-6 items-start",
+			children: [/* @__PURE__ */ jsx("form", {
+				onSubmit: save,
+				children: /* @__PURE__ */ jsxs(Card, { children: [/* @__PURE__ */ jsx(CardHeader, { children: /* @__PURE__ */ jsx(CardTitle, {
+					className: "text-base",
+					children: "Thông tin tài khoản"
+				}) }), /* @__PURE__ */ jsxs(CardContent, {
+					className: "space-y-5",
+					children: [
+						/* @__PURE__ */ jsxs("div", {
+							className: "flex items-center gap-4 pb-4 border-b border-border",
+							children: [
+								/* @__PURE__ */ jsx("div", {
+									className: "h-16 w-16 rounded-full bg-gradient-brand text-white flex items-center justify-center text-xl font-semibold shadow-soft",
+									children: form.fullName?.[0]?.toUpperCase() ?? "A"
+								}),
+								/* @__PURE__ */ jsxs("div", {
+									className: "flex-1",
+									children: [/* @__PURE__ */ jsx("div", {
+										className: "font-medium",
+										children: form.fullName || "Quản trị viên"
+									}), /* @__PURE__ */ jsxs(Badge, {
+										variant: "secondary",
+										className: "mt-1 gap-1",
+										children: [/* @__PURE__ */ jsx(ShieldCheck, { className: "h-3 w-3" }), " Quản trị viên"]
+									})]
+								}),
+								editing && /* @__PURE__ */ jsx(Button, {
+									type: "button",
+									variant: "outline",
+									size: "sm",
+									children: "Đổi ảnh đại diện"
+								})
+							]
+						}),
+						/* @__PURE__ */ jsxs("div", {
+							className: "grid sm:grid-cols-2 gap-4",
+							children: [
+								/* @__PURE__ */ jsxs("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ jsxs("div", {
+										className: "flex items-center",
+										children: [/* @__PURE__ */ jsx(Label, { children: "Họ và tên" }), editing && /* @__PURE__ */ jsxs("span", {
+											className: `text-xs ml-auto ${form.fullName.length > 30 ? "text-destructive" : "text-muted-foreground"}`,
+											children: [form.fullName.length, " / 30"]
+										})]
+									}), /* @__PURE__ */ jsx(Input, {
+										value: form.fullName,
+										onChange: (e) => update("fullName", e.target.value),
+										disabled: !editing,
+										maxLength: 30
+									})]
+								}),
+								/* @__PURE__ */ jsxs("div", {
+									className: "space-y-2",
+									children: [/* @__PURE__ */ jsx(Label, { children: "Tên đăng nhập" }), /* @__PURE__ */ jsx(Input, {
+										value: form.username,
+										onChange: (e) => update("username", e.target.value),
+										disabled: true
+									})]
+								}),
+								/* @__PURE__ */ jsxs("div", {
+									className: "space-y-2 sm:col-span-2",
+									children: [/* @__PURE__ */ jsxs("div", {
+										className: "flex items-center",
+										children: [/* @__PURE__ */ jsx(Label, { children: "Email" }), editing && /* @__PURE__ */ jsxs("span", {
+											className: `text-xs ml-auto ${form.email.length > 255 ? "text-destructive" : "text-muted-foreground"}`,
+											children: [form.email.length, " / 255"]
+										})]
+									}), /* @__PURE__ */ jsx(Input, {
+										type: "email",
+										value: form.email,
+										onChange: (e) => update("email", e.target.value),
+										disabled: !editing,
+										maxLength: 255
+									})]
+								})
+							]
+						}),
+						error && /* @__PURE__ */ jsx("p", {
+							className: "text-sm text-red-600",
+							role: "alert",
+							children: error
+						}),
+						editing && /* @__PURE__ */ jsxs("div", {
+							className: "flex justify-end gap-2 mt-4",
+							children: [/* @__PURE__ */ jsxs(Button, {
+								type: "button",
+								variant: "outline",
+								onClick: cancel,
+								children: [/* @__PURE__ */ jsx(X, { className: "h-4 w-4 mr-2" }), " Huỷ"]
+							}), /* @__PURE__ */ jsx(Button, {
+								type: "submit",
+								disabled: loading,
+								children: loading ? "Đang lưu..." : /* @__PURE__ */ jsxs(Fragment, { children: [/* @__PURE__ */ jsx(Save, { className: "h-4 w-4 mr-2" }), " Lưu thay đổi"] })
+							})]
+						})
+					]
+				})] })
+			}), /* @__PURE__ */ jsx("form", {
+				onSubmit: changePassword,
+				children: /* @__PURE__ */ jsxs(Card, { children: [/* @__PURE__ */ jsx(CardHeader, { children: /* @__PURE__ */ jsxs(CardTitle, {
+					className: "text-base flex items-center gap-2",
+					children: [/* @__PURE__ */ jsx(KeyRound, { className: "h-4 w-4 text-muted-foreground" }), " Bảo mật"]
+				}) }), /* @__PURE__ */ jsxs(CardContent, {
+					className: "space-y-4",
+					children: [
+						/* @__PURE__ */ jsxs("div", {
+							className: "space-y-2",
+							children: [/* @__PURE__ */ jsxs("div", {
+								className: "flex items-center",
+								children: [/* @__PURE__ */ jsx(Label, { children: "Mật khẩu hiện tại" }), /* @__PURE__ */ jsxs("span", {
+									className: `text-xs ml-auto ${pwd.current.length > 128 ? "text-destructive" : "text-muted-foreground"}`,
+									children: [pwd.current.length, " / 128"]
+								})]
+							}), /* @__PURE__ */ jsx(Input, {
+								type: "password",
+								value: pwd.current,
+								onChange: (e) => updatePwd("current", e.target.value),
+								placeholder: "••••••••",
+								maxLength: 128
+							})]
+						}),
+						/* @__PURE__ */ jsxs("div", {
+							className: "grid sm:grid-cols-2 gap-4",
+							children: [/* @__PURE__ */ jsxs("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ jsxs("div", {
+									className: "flex items-center",
+									children: [/* @__PURE__ */ jsx(Label, { children: "Mật khẩu mới" }), /* @__PURE__ */ jsxs("span", {
+										className: `text-xs ml-auto ${pwd.next.length > 128 ? "text-destructive" : "text-muted-foreground"}`,
+										children: [pwd.next.length, " / 128"]
+									})]
+								}), /* @__PURE__ */ jsx(Input, {
+									type: "password",
+									value: pwd.next,
+									onChange: (e) => updatePwd("next", e.target.value),
+									placeholder: "••••••••",
+									maxLength: 128
+								})]
+							}), /* @__PURE__ */ jsxs("div", {
+								className: "space-y-2",
+								children: [/* @__PURE__ */ jsxs("div", {
+									className: "flex items-center",
+									children: [/* @__PURE__ */ jsx(Label, { children: "Xác nhận mật khẩu mới" }), /* @__PURE__ */ jsxs("span", {
+										className: `text-xs ml-auto ${pwd.confirm.length > 128 ? "text-destructive" : "text-muted-foreground"}`,
+										children: [pwd.confirm.length, " / 128"]
+									})]
+								}), /* @__PURE__ */ jsx(Input, {
+									type: "password",
+									value: pwd.confirm,
+									onChange: (e) => updatePwd("confirm", e.target.value),
+									placeholder: "••••••••",
+									maxLength: 128
+								})]
+							})]
+						}),
+						/* @__PURE__ */ jsx("div", {
+							className: "flex justify-end",
+							children: /* @__PURE__ */ jsxs(Button, {
+								type: "submit",
+								variant: "outline",
+								disabled: pwdLoading,
+								children: [pwdLoading ? /* @__PURE__ */ jsx(Lock, { className: "h-4 w-4 mr-2 animate-pulse" }) : /* @__PURE__ */ jsx(Lock, { className: "h-4 w-4 mr-2" }), pwdLoading ? "Đang đổi..." : "Đổi mật khẩu"]
+							})
+						})
+					]
+				})] })
+			})]
+		})]
+	});
+};
+//#endregion
+//#region src/routes/admin_panel/profile.tsx?tsr-split=component
+var SplitComponent = AdminProfilePage;
+//#endregion
+export { SplitComponent as component };

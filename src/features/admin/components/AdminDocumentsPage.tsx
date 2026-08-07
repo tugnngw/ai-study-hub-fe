@@ -1,7 +1,7 @@
 // src/features/admin/components/AdminDocumentsPage.tsx
 import React, { useState, useMemo } from "react";
 import { toast } from "sonner";
-import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search, AlertCircle } from "lucide-react";
+import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search, AlertCircle, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -121,148 +121,188 @@ export const AdminDocumentsPage: React.FC = () => {
                   />
                 </div>
 
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Tài liệu</TableHead>
-                      <TableHead>Upload Time</TableHead>
-                      <TableHead>Người upload</TableHead>
-                      <TableHead>Trạng thái</TableHead>
-                      <TableHead className="text-right">Hành động</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filtered.length === 0 ? (
+                <div className="overflow-x-auto w-full border border-border/60 rounded-lg">
+                  <Table className="min-w-[800px]">
+                    <TableHeader>
                       <TableRow>
-                        <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
-                          Không có tài liệu
-                        </TableCell>
+                        <TableHead>Tài liệu</TableHead>
+                        <TableHead>Upload Time</TableHead>
+                        <TableHead>Người upload</TableHead>
+                        <TableHead>Trạng thái</TableHead>
+                        <TableHead className="text-right">Hành động</TableHead>
                       </TableRow>
-                    ) : (
-                      filtered.map((d) => (
-                        <TableRow key={d.id}>
-                          <TableCell>
-                            <div className="flex items-center gap-3 min-w-0">
-                              <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                                <FileText className="h-4 w-4" />
+                    </TableHeader>
+                    <TableBody>
+                      {filtered.length === 0 ? (
+                        <TableRow>
+                          <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                            Không có tài liệu
+                          </TableCell>
+                        </TableRow>
+                      ) : (
+                        filtered.map((d) => (
+                          <TableRow key={d.id}>
+                            <TableCell className="max-w-[250px]">
+                              <div className="flex items-center gap-3 min-w-0">
+                                <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                                  <FileText className="h-4 w-4" />
+                                </div>
+                                <div className="min-w-0">
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <p className="font-medium truncate cursor-help">{d.title}</p>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>{d.title}</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                  <p className="text-muted-foreground text-xs">
+                                    {d.fileSize ? `${(d.fileSize / 1024 / 1024).toFixed(2)} MB` : ""}
+                                  </p>
+                                </div>
                               </div>
-                              <div className="min-w-0">
-                                <p className="font-medium truncate">{d.title}</p>
-                                <p className="text-muted-foreground text-xs">
-                                  {d.fileSize ? `${(d.fileSize / 1024 / 1024).toFixed(2)} MB` : ""}
-                                </p>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground whitespace-nowrap">
+                              {formatDateTime(d.createdAt)}
+                            </TableCell>
+                            <TableCell className="text-muted-foreground max-w-[150px]">
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span className="truncate block cursor-help">{d.ownerName ?? "-"}</span>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{d.ownerName ?? "—"}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
+                                  {statusLabel[d.status as string] ?? d.status}
+                                </Badge>
+                                {d.status === "REJECT" && d.rejectReason && (
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger>
+                                        <AlertCircle className="h-4 w-4 text-destructive" />
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        <p>Lý do: {d.rejectReason}</p>
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
                               </div>
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-muted-foreground whitespace-nowrap">
-                            {formatDateTime(d.createdAt)}
-                          </TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {d.ownerName ?? "-"}
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
-                                {statusLabel[d.status as string] ?? d.status}
-                              </Badge>
-                              {d.status === "REJECT" && d.rejectReason && (
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger>
-                                      <AlertCircle className="h-4 w-4 text-destructive" />
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      <p>Lý do: {d.rejectReason}</p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              )}
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              {activeTab === "pending" && (
-                                <>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-2">
+                                {activeTab === "pending" && (
+                                  <>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      disabled={approveDocument.isPending}
+                                      onClick={() => {
+                                        console.log("[DEBUG] Approve clicked, docId:", d.id);
+                                        if (!isValidUUID(d.id)) {
+                                          toast.error("Invalid document ID format");
+                                          return;
+                                        }
+                                        approveDocument.mutate(d.id, {
+                                          onSuccess: () => toast.success("Đã duyệt tài liệu"),
+                                          onError: (err) => toast.error("Lỗi: " + err.message),
+                                        });
+                                      }}
+                                    >
+                                      {approveDocument.isPending ? (
+                                        <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+                                      ) : (
+                                        <CheckCircle2 className="h-3.5 w-3.5 mr-1" />
+                                      )}
+                                      {approveDocument.isPending ? "Đang duyệt..." : "Duyệt"}
+                                    </Button>
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      disabled={rejectDocument.isPending}
+                                      onClick={() => {
+                                        if (!d.id) {
+                                          toast.error("Tài liệu không có ID hợp lệ");
+                                          return;
+                                        }
+                                        console.log("Button clicked, document ID:", d.id);
+                                        setRejectId(d.id);
+                                      }}
+                                    >
+                                      {rejectDocument.isPending ? (
+                                        <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+                                      ) : (
+                                        <XCircle className="h-3.5 w-3.5 mr-1" />
+                                      )}
+                                      {rejectDocument.isPending ? "Đang từ chối..." : "Từ chối"}
+                                    </Button>
+                                  </>
+                                )}
+                                {activeTab === "trash" ? (
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    disabled={approveDocument.isPending}
+                                    disabled={restoreDocument.isPending}
                                     onClick={() => {
-                                      console.log("[DEBUG] Approve clicked, docId:", d.id);
                                       if (!isValidUUID(d.id)) {
                                         toast.error("Invalid document ID format");
                                         return;
                                       }
-                                      approveDocument.mutate(d.id, {
-                                        onSuccess: () => toast.success("Đã duyệt tài liệu"),
-                                        onError: (err) => toast.error("Lỗi: " + err.message),
+                                      restoreDocument.mutate(d.id, {
+                                        onSuccess: () => toast.success("Đã khôi phục tài liệu"),
                                       });
                                     }}
                                   >
-                                    <CheckCircle2 className="h-3.5 w-3.5" /> Duyệt
+                                    {restoreDocument.isPending ? (
+                                      <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+                                    ) : (
+                                      <RotateCcw className="h-3.5 w-3.5 mr-1" />
+                                    )}
+                                    {restoreDocument.isPending ? "Đang khôi phục..." : "Khôi phục"}
                                   </Button>
+                                ) : (
                                   <Button
                                     variant="outline"
                                     size="sm"
-                                    disabled={rejectDocument.isPending}
+                                    className="text-destructive hover:text-destructive"
+                                    disabled={deleteDocument.isPending}
                                     onClick={() => {
-                                      if (!d.id) {
-                                        toast.error("Tài liệu không có ID hợp lệ");
+                                      if (!isValidUUID(d.id)) {
+                                        toast.error("Invalid document ID format");
                                         return;
                                       }
-                                      console.log("Button clicked, document ID:", d.id);
-                                      setRejectId(d.id);
+                                      if (window.confirm("Xóa vĩnh viễn tài liệu này?")) {
+                                        deleteDocument.mutate(d.id, {
+                                          onSuccess: () => toast.success("Đã xóa tài liệu"),
+                                        });
+                                      }
                                     }}
                                   >
-                                    <XCircle className="h-3.5 w-3.5" /> Từ chối
+                                    {deleteDocument.isPending ? (
+                                      <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+                                    ) : (
+                                      <Trash2 className="h-3.5 w-3.5 mr-1" />
+                                    )}
+                                    {deleteDocument.isPending ? "Đang xóa..." : "Xóa"}
                                   </Button>
-                                </>
-                              )}
-                              {activeTab === "trash" ? (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  disabled={restoreDocument.isPending}
-                                  onClick={() => {
-                                    if (!isValidUUID(d.id)) {
-                                      toast.error("Invalid document ID format");
-                                      return;
-                                    }
-                                    restoreDocument.mutate(d.id, {
-                                      onSuccess: () => toast.success("Đã khôi phục tài liệu"),
-                                    });
-                                  }}
-                                >
-                                  <RotateCcw className="h-3.5 w-3.5" /> Khôi phục
-                                </Button>
-                              ) : (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="text-destructive hover:text-destructive"
-                                  disabled={deleteDocument.isPending}
-                                  onClick={() => {
-                                    if (!isValidUUID(d.id)) {
-                                      toast.error("Invalid document ID format");
-                                      return;
-                                    }
-                                    if (window.confirm("Xóa vĩnh viễn tài liệu này?")) {
-                                      deleteDocument.mutate(d.id, {
-                                        onSuccess: () => toast.success("Đã xóa tài liệu"),
-                                      });
-                                    }
-                                  }}
-                                >
-                                  <Trash2 className="h-3.5 w-3.5" /> Xóa
-                                </Button>
-                              )}
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    )}
-                  </TableBody>
-                </Table>
+                                )}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </TabsContent>
             ))}
           </Tabs>
@@ -277,11 +317,16 @@ export const AdminDocumentsPage: React.FC = () => {
               Bạn có chắc chắn muốn từ chối tài liệu này không? Vui lòng nhập lý do.
             </DialogDescription>
           </DialogHeader>
-          <Textarea
-            placeholder="Nhập lý do từ chối..."
-            value={rejectReason}
-            onChange={(e) => setRejectReason(e.target.value)}
-          />
+          <div className="space-y-1">
+            <Textarea
+              placeholder="Nhập lý do từ chối..."
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              maxLength={500}
+              rows={4}
+              className="max-h-[200px] overflow-y-auto"
+            />
+          </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setRejectId(null)}>Hủy</Button>
             <Button

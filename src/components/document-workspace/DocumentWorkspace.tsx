@@ -245,6 +245,7 @@ export function UploadDialog({
               <Textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
+                  maxLength={500}
               />
             </div>
           </div>

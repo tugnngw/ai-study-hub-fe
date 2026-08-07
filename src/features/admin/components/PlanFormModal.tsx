@@ -194,6 +194,7 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ví dụ: Pro, Premium"
+              maxLength={100}
             />
           </div>
 

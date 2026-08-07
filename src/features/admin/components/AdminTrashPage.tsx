@@ -1,7 +1,7 @@
 // src/features/admin/components/AdminTrashPage.tsx
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { FileText, RotateCcw, Trash2, Info } from "lucide-react";
+import { FileText, RotateCcw, Trash2, Info, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -66,17 +66,29 @@ export const AdminTrashPage: React.FC = () => {
       <Button
         variant="outline"
         size="sm"
+        disabled={restoreItem.isPending || permanentDelete.isPending}
         onClick={() => handleAction(id, type, "restore")}
       >
-        <RotateCcw /> Khôi phục
+        {restoreItem.isPending ? (
+          <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+        ) : (
+          <RotateCcw className="h-3.5 w-3.5 mr-1" />
+        )}
+        Khôi phục
       </Button>
       <Button
         variant="outline"
         size="sm"
         className="text-destructive hover:text-destructive"
+        disabled={permanentDelete.isPending || restoreItem.isPending}
         onClick={() => handleAction(id, type, "delete")}
       >
-        <Trash2 /> Xóa vĩnh viễn
+        {permanentDelete.isPending ? (
+          <Loader2 className="h-3.5 w-3.5 animate-spin mr-1" />
+        ) : (
+          <Trash2 className="h-3.5 w-3.5 mr-1" />
+        )}
+        Xóa vĩnh viễn
       </Button>
     </div>
   );
@@ -108,7 +120,8 @@ export const AdminTrashPage: React.FC = () => {
         <CardContent className="p-0">
           <Tabs value={subTab}>
             <TabsContent value="file" className="m-0">
-              <Table>
+              <div className="overflow-x-auto w-full">
+              <Table className="min-w-[600px]">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Tên File</TableHead>
@@ -136,7 +149,7 @@ export const AdminTrashPage: React.FC = () => {
                             <div className="h-9 w-9 rounded-lg bg-muted text-muted-foreground flex items-center justify-center shrink-0">
                               <FileText className="h-4 w-4" />
                             </div>
-                            <span className="font-medium truncate">
+                            <span className="font-medium truncate max-w-[200px]">
                               {f.name}
                             </span>
                           </div>
@@ -144,7 +157,7 @@ export const AdminTrashPage: React.FC = () => {
                         <TableCell className="text-muted-foreground whitespace-nowrap">
                           {f.size || "—"}
                         </TableCell>
-                        <TableCell className="text-muted-foreground">
+                        <TableCell className="text-muted-foreground whitespace-nowrap">
                           {f.deletedDate}
                         </TableCell>
                         <TableCell>
@@ -158,10 +171,12 @@ export const AdminTrashPage: React.FC = () => {
                   )}
                 </TableBody>
               </Table>
+              </div>
             </TabsContent>
 
             <TabsContent value="account" className="m-0">
-              <Table>
+              <div className="overflow-x-auto w-full">
+              <Table className="min-w-[500px]">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Chủ tài khoản</TableHead>
@@ -185,18 +200,18 @@ export const AdminTrashPage: React.FC = () => {
                       <TableRow key={a.id}>
                         <TableCell>
                           <div className="flex items-center gap-3 min-w-0">
-                            <Avatar className="h-9 w-9">
+                            <Avatar className="h-9 w-9 shrink-0">
                               <AvatarFallback className="bg-muted text-sm">
                                 {a.name.charAt(0)}
                               </AvatarFallback>
                             </Avatar>
-                            <span className="font-medium truncate">
+                            <span className="font-medium truncate max-w-[160px]">
                               {a.name}
                             </span>
                           </div>
                         </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {a.email}
+                        <TableCell className="text-muted-foreground max-w-[200px]">
+                          <span className="truncate block">{a.email}</span>
                         </TableCell>
                         <TableCell>
                           <CountdownBadge days={a.remainingDays} />
@@ -209,6 +224,7 @@ export const AdminTrashPage: React.FC = () => {
                   )}
                 </TableBody>
               </Table>
+              </div>
             </TabsContent>
           </Tabs>
 

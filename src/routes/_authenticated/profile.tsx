@@ -197,11 +197,14 @@ function ProfilePage() {
 
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>Họ và tên</Label>
+                <div className="flex items-center">
+                  <Label>Họ và tên</Label>
+                </div>
                 <Input
                   value={form.fullName}
                   onChange={(e) => update("fullName", e.target.value)}
                   disabled={!editing}
+                  maxLength={30}
                 />
               </div>
               <div className="space-y-2">
@@ -209,11 +212,13 @@ function ProfilePage() {
                 <Input
                   value={form.username}
                   onChange={(e) => update("username", e.target.value)}
-                  disabled={!editing}
+                  disabled={true}
                 />
               </div>
               <div className="space-y-2">
-                <Label>Email</Label>
+                <div className="flex items-center">
+                  <Label>Email</Label>
+                </div>
                 <div className="flex gap-2 items-start">
                   <div className="flex-1">
                     <Input
@@ -221,6 +226,7 @@ function ProfilePage() {
                       value={form.email}
                       onChange={(e) => update("email", e.target.value)}
                       disabled={!editing}
+                      maxLength={255}
                     />
                   </div>
                   {!editing && user?.email && (

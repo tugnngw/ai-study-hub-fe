@@ -1,7 +1,7 @@
 // src/features/admin/components/AdminReportHistoryPage.tsx
 import React, { useState } from "react";
 import { toast } from "sonner";
-import { FileText, Check, X, Flag, AlertCircle, Eye, Scale } from "lucide-react";
+import { FileText, Check, X, Flag, AlertCircle, Eye, Scale, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -18,6 +18,12 @@ import { useReportHistory, useReportsByType } from "../hooks";
 import { cn, formatDateTime } from "@/lib/utils";
 import { FilePreviewDialog } from "./FilePreviewDialog";
 import { documentApi } from "@/lib/realApi";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const REPORT_REASON_LABELS: Record<string, string> = {
   copyright: "Nội dung vi phạm bản quyền",
@@ -136,20 +142,21 @@ export const AdminReportHistoryPage: React.FC = () => {
             </span>
           </CardHeader>
           <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Loại</TableHead>
-                  <TableHead>File</TableHead>
-                  <TableHead>Người tải lên</TableHead>
-                  <TableHead>Lý do</TableHead>
-                  <TableHead>Người gửi</TableHead>
-                  <TableHead>{activeTab === "appeals" ? "Appeal Time" : "Report Time"}</TableHead>
-                  <TableHead>Trạng thái</TableHead>
-                  <TableHead className="text-right">Hành động</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
+            <div className="overflow-x-auto w-full border border-border/60 rounded-lg">
+              <Table className="min-w-[800px]">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Loại</TableHead>
+                    <TableHead>File</TableHead>
+                    <TableHead>Người tải lên</TableHead>
+                    <TableHead>Lý do</TableHead>
+                    <TableHead>Người gửi</TableHead>
+                    <TableHead>{activeTab === "appeals" ? "Appeal Time" : "Report Time"}</TableHead>
+                    <TableHead>Trạng thái</TableHead>
+                    <TableHead className="text-right">Hành động</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
                 {isLoading || (activeTab !== "all" && tabItems.isLoading) ? (
                   <TableRow>
                     <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
@@ -177,9 +184,18 @@ export const AdminReportHistoryPage: React.FC = () => {
                               {isAppeal(item.type) ? <Scale className="h-4 w-4" /> : <Flag className="h-4 w-4" />}
                             </div>
                             <div className="min-w-0">
-                              <span className="font-medium truncate block">
-                                {item.title || item.name || "Unknown"}
-                              </span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span className="font-medium truncate block cursor-help">
+                                      {item.title || item.name || "Unknown"}
+                                    </span>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p>{item.title || item.name || "Unknown"}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
                               <span className="text-xs text-muted-foreground truncate block">
                                 ID: {item.documentId?.slice(0, 8) || "N/A"}
                               </span>
@@ -193,23 +209,41 @@ export const AdminReportHistoryPage: React.FC = () => {
                                 {item.uploader?.charAt(0) || "U"}
                               </AvatarFallback>
                             </Avatar>
-                            <span className="text-muted-foreground truncate">
-                              {item.uploader}
-                            </span>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className="text-muted-foreground truncate cursor-help">
+                                    {item.uploader}
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>{item.uploader}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           </div>
                         </TableCell>
                         <TableCell>
                           <div className="max-w-xs">
                             <div className="flex items-start gap-2">
                               <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                              <span className="text-sm line-clamp-2">
-                                {getReasonLabel(item.reason)}
-                              </span>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span className="text-sm line-clamp-2 cursor-help">
+                                      {getReasonLabel(item.reason)}
+                                    </span>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <p className="max-w-xs break-all">{getReasonLabel(item.reason)}</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {item.reporter || "Anonymous"}
+                        <TableCell className="text-muted-foreground max-w-[130px]">
+                          <span className="truncate block">{item.reporter || "Anonymous"}</span>
                         </TableCell>
                         <TableCell className="text-muted-foreground whitespace-nowrap">
                           {formatDateTime(item.createdAt)}
@@ -245,15 +279,20 @@ export const AdminReportHistoryPage: React.FC = () => {
                                 }
                               }}
                           >
-                            <Eye className="h-4 w-4 mr-1" />
+                            {loadingPreview === item.id ? (
+                              <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                            ) : (
+                              <Eye className="h-4 w-4 mr-1" />
+                            )}
                             {loadingPreview === item.id ? "Đang tải..." : "Xem"}
                           </Button>
                         </TableCell>
                       </TableRow>
                   ))
                 )}
-              </TableBody>
-            </Table>
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 

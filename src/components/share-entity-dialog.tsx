@@ -122,6 +122,7 @@ export function ShareEntityDialog({
                     void handleInvite();
                   }
                 }}
+                maxLength={255}
               />
               <Button
                 onClick={handleInvite}

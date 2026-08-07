@@ -119,7 +119,7 @@ export const ChatPanel = forwardRef<
                     e.preventDefault();
                     submitChat();
                 }}
-                className="p-3 border-t border-border flex gap-2"
+                className="p-3 border-t border-border flex flex-col gap-1"
             >
                 <Input
                     value={input}
@@ -127,15 +127,18 @@ export const ChatPanel = forwardRef<
                     placeholder="Hỏi AI bất cứ điều gì…"
                     className="text-sm rounded-xl bg-muted/40 border-transparent focus-visible:bg-card focus-visible:border-input"
                     disabled={!isDocSelected}
+                    maxLength={2000}
                 />
-                <Button
-                    type="submit"
-                    size="icon"
-                    disabled={isPending || !input.trim() || !isDocSelected}
-                    className="bg-gradient-brand hover:opacity-90 rounded-xl shrink-0"
-                >
-                    <Send className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center justify-between">
+                    <Button
+                        type="submit"
+                        size="icon"
+                        disabled={isPending || !input.trim() || !isDocSelected}
+                        className="bg-gradient-brand hover:opacity-90 rounded-xl shrink-0"
+                    >
+                        <Send className="h-4 w-4" />
+                    </Button>
+                </div>
             </form>
         </aside>
     );

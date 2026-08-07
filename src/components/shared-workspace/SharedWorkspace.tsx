@@ -316,22 +316,34 @@ export function SharedWorkspace({ shareToken, docId }: SharedWorkspaceProps) {
                 {isDocument && (
                   <>
                     <div className="space-y-2">
-                      <Label htmlFor="save-title">Tiêu đề</Label>
+                      <div className="flex items-center">
+                        <Label htmlFor="save-title">Tiêu đề</Label>
+                        <span className={`text-xs ml-auto ${saveTitle.length > 255 ? "text-destructive" : "text-muted-foreground"}`}>
+                          {saveTitle.length} / 255
+                        </span>
+                      </div>
                       <Input
                         id="save-title"
                         value={saveTitle}
                         onChange={(e) => setSaveTitle(e.target.value)}
                         placeholder="Tiêu đề (không bắt buộc)"
+                        maxLength={255}
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="save-desc">Mô tả</Label>
+                      <div className="flex items-center">
+                        <Label htmlFor="save-desc">Mô tả</Label>
+                        <span className={`text-xs ml-auto ${saveDesc.length > 500 ? "text-destructive" : "text-muted-foreground"}`}>
+                          {saveDesc.length} / 500
+                        </span>
+                      </div>
                       <Textarea
                         id="save-desc"
                         value={saveDesc}
                         onChange={(e) => setSaveDesc(e.target.value)}
                         placeholder="Mô tả (không bắt buộc)"
                         rows={2}
+                        maxLength={500}
                       />
                     </div>
                   </>

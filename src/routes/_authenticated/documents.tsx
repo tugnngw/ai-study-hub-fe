@@ -38,6 +38,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/documents")({
   validateSearch: z.object({
@@ -111,8 +118,8 @@ function DocumentsPage() {
           </CardContent>
         </Card>
       ) : (
-        <div className="border border-border/60 rounded-lg overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="overflow-x-auto w-full border border-border/60 rounded-lg">
+          <table className="w-full text-sm min-w-[800px]">
             <thead className="bg-muted/40">
               <tr className="text-left">
                 <th className="px-4 py-3 font-medium">Title</th>
@@ -255,20 +262,56 @@ function DocumentRow({
             </Link>
           </div>
         </td>
-        <td className="px-4 py-3 hidden lg:table-cell">
-          <span className="text-sm">{folderName}</span>
+        <td className="px-4 py-3 hidden lg:table-cell max-w-[150px]">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="text-sm truncate block">{folderName}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{folderName}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </td>
-        <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell text-sm">
-          {semesterName}
+        <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell text-sm max-w-[120px]">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="truncate block">{semesterName}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{semesterName}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </td>
-        <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell text-sm">
-          {subjectName}
+        <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell text-sm max-w-[150px]">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="truncate block">{subjectName}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{subjectName}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </td>
         <td className="px-4 py-3 text-muted-foreground text-sm">
           {formatDateTime(createdAt)}
         </td>
-        <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
-          {description}
+        <td className="px-4 py-3 text-muted-foreground hidden md:table-cell max-w-[200px]">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <span className="truncate block">{description || "—"}</span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs break-all">{description || "Không có mô tả"}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </td>
         <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">
           {fileSize}
@@ -300,7 +343,7 @@ function DocumentRow({
              </DialogDescription>
            </DialogHeader>
            {isRejected && (
-             <div className="p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg">
+             <div className="p-3 bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg max-h-[150px] overflow-y-auto">
                <p className="font-medium text-red-800 dark:text-red-300">Lý do từ chối:</p>
                <p className="text-sm text-red-700 dark:text-red-400 mt-1">
                  {rejectReason || "Không có thông tin lý do cụ thể."}
@@ -533,6 +576,7 @@ function UploadDialog({
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              maxLength={500}
             />
           </div>
 
@@ -655,11 +699,18 @@ function UploadDialog({
           </div>
         </div>
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={upload.isPending}>
             Huỷ
           </Button>
           <Button onClick={submit} disabled={upload.isPending}>
-            {upload.isPending ? "Đang tải lên…" : "Tải lên"}
+            {upload.isPending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Đang tải lên…
+              </>
+            ) : (
+              "Tải lên"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

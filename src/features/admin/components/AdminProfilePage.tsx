@@ -123,6 +123,7 @@ export const AdminProfilePage: React.FC = () => {
                     value={form.fullName}
                     onChange={e => update("fullName", e.target.value)}
                     disabled={!editing}
+                    maxLength={30}
                   />
                 </div>
                 <div className="space-y-2">
@@ -130,7 +131,7 @@ export const AdminProfilePage: React.FC = () => {
                   <Input
                     value={form.username}
                     onChange={e => update("username", e.target.value)}
-                    disabled={!editing}
+                    disabled={true}
                   />
                 </div>
                 <div className="space-y-2 sm:col-span-2">
@@ -140,6 +141,7 @@ export const AdminProfilePage: React.FC = () => {
                     value={form.email}
                     onChange={e => update("email", e.target.value)}
                     disabled={!editing}
+                    maxLength={255}
                   />
                 </div>
               </div>
@@ -180,6 +182,7 @@ export const AdminProfilePage: React.FC = () => {
                   value={pwd.current}
                   onChange={e => updatePwd("current", e.target.value)}
                   placeholder="••••••••"
+                  maxLength={128}
                 />
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
@@ -190,6 +193,7 @@ export const AdminProfilePage: React.FC = () => {
                     value={pwd.next}
                     onChange={e => updatePwd("next", e.target.value)}
                     placeholder="••••••••"
+                    maxLength={128}
                   />
                 </div>
                 <div className="space-y-2">
@@ -199,6 +203,7 @@ export const AdminProfilePage: React.FC = () => {
                     value={pwd.confirm}
                     onChange={e => updatePwd("confirm", e.target.value)}
                     placeholder="••••••••"
+                    maxLength={128}
                   />
                 </div>
               </div>

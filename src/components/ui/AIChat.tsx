@@ -815,7 +815,7 @@ export function AIChat({
                 e.preventDefault();
                 void submitChat();
               }}
-              className="p-3 border-t border-border flex gap-2"
+              className="p-3 border-t border-border flex flex-col gap-1"
             >
               <Input
                 ref={inputRef}
@@ -824,15 +824,21 @@ export function AIChat({
                 placeholder="Nhập câu hỏi của bạn…."
                 className="text-sm rounded-xl bg-muted/40 border-transparent focus-visible:bg-card focus-visible:border-input"
                 disabled={!docId}
+                maxLength={2000}
               />
-              <Button
-                type="submit"
-                size="icon"
-                disabled={processDoc.isPending || !input.trim() || !docId}
-                className="bg-gradient-brand hover:opacity-90 rounded-xl shrink-0"
-              >
-                <Send className="h-4 w-4" />
-              </Button>
+              <div className="flex items-center justify-between">
+                <span className={`text-xs ${input.length > 2000 ? "text-destructive" : "text-muted-foreground"}`}>
+                  {input.length} / 2000
+                </span>
+                <Button
+                  type="submit"
+                  size="icon"
+                  disabled={processDoc.isPending || !input.trim() || !docId}
+                  className="bg-gradient-brand hover:opacity-90 rounded-xl shrink-0"
+                >
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
             </form>
           ) : aiStatus === "PROCESSING" ? (
             <div className="p-3 border-t border-border flex items-center justify-center gap-2 text-sm text-muted-foreground">
@@ -1001,7 +1007,12 @@ function UploadDialog({
 
 {!multiple && (
                 <div className="space-y-2">
-                  <Label>Tiêu đề</Label>
+                  <div className="flex items-center">
+                    <Label>Tiêu đề</Label>
+                    <span className={`text-xs ml-auto ${title.length > 255 ? "text-destructive" : "text-muted-foreground"}`}>
+                      {title.length} / 255
+                    </span>
+                  </div>
                   <Input
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -1016,10 +1027,16 @@ function UploadDialog({
             </p>
           )}
           <div className="space-y-2">
-            <Label>Mô tả (tuỳ chọn)</Label>
+            <div className="flex items-center">
+              <Label>Mô tả (tuỳ chọn)</Label>
+              <span className={`text-xs ml-auto ${description.length > 500 ? "text-destructive" : "text-muted-foreground"}`}>
+                {description.length} / 500
+              </span>
+            </div>
             <Textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              maxLength={500}
             />
           </div>
         </div>

@@ -235,14 +235,17 @@ export function ContentPanel({
                             <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">1. List</span>
                             <span className="px-2 py-0.5 hover:bg-accent rounded cursor-pointer">Link</span>
                         </div>
-                        <h2 className="text-xl font-bold text-gradient-brand font-display">
-                            Ghi chú AI
-                        </h2>
+                        <div className="flex items-center justify-between">
+                            <h2 className="text-xl font-bold text-gradient-brand font-display">
+                                Ghi chú AI
+                            </h2>
+                        </div>
                         <Textarea
                             value={notes}
                             onChange={(e) => setNotes(e.target.value)}
                             placeholder="Ghi chú của bạn về tài liệu này..."
                             className="min-h-[300px] resize-none"
+                            maxLength={2000}
                         />
                     </div>
                 ) : !aiAllowed && (tab as string) !== "original" && (tab as string) !== "notes" ? (
