@@ -528,7 +528,7 @@ function UploadDialog({
               Đang tải {files.length} tệp — mỗi tệp sẽ tạo một tài liệu riêng, lấy tên theo tên tệp.
             </p>
           )}
-          <div className="space-y-2">ư
+          <div className="space-y-2">
             <Label>Mô tả (tuỳ chọn)</Label>
             <Textarea
               value={description}

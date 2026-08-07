@@ -52,18 +52,6 @@ function CloudPage() {
                   </span>
                 </div>
               </div>
-              <div className="text-right shrink-0">
-                <div
-                  className={`text-sm font-semibold ${
-                    isOverLimit ? "text-destructive" : "text-emerald-600"
-                  }`}
-                >
-                  {isOverLimit ? "⚠️ Vượt giới hạn" : "✅ Bình thường"}
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  {pct.toFixed(2)}% đã dùng
-                </div>
-              </div>
             </div>
 
             <Progress

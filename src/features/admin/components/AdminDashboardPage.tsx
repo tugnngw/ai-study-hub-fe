@@ -89,7 +89,7 @@ export const AdminDashboardPage: React.FC = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <StatCard
           label="Tổng Users"
           value={stats?.totalUsers.toLocaleString("vi-VN") ?? "—"}
@@ -101,12 +101,6 @@ export const AdminDashboardPage: React.FC = () => {
           value={stats?.totalDocs.toLocaleString("vi-VN") ?? "—"}
           icon={<FileStack className="h-5 w-5" />}
           tone="bg-emerald-500/10 text-emerald-600"
-        />
-        <StatCard
-          label="Download"
-          value={stats?.totalDownloads.toLocaleString("vi-VN") ?? "—"}
-          icon={<Download className="h-5 w-5" />}
-          tone="bg-amber-500/10 text-amber-600"
         />
       </div>
 

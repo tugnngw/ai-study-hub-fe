@@ -1,7 +1,7 @@
 import { formatBytes } from "@/lib/utils";
 import React, { useState, useMemo } from "react";
 import { toast } from "sonner";
-import { FileText, Trash2, CheckCircle2, XCircle, RotateCcw, Search, AlertTriangle, Eye } from "lucide-react";
+import { FileText, CheckCircle2, XCircle, Search, Eye } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -15,10 +15,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAdminDocuments, useApproveDocument, useRejectDocument, useDeleteDocument, useRestoreDocument } from "../hooks";
+import { useAdminDocuments, useApproveDocument, useRejectDocument } from "../hooks";
 import { FilePreviewDialog } from "./FilePreviewDialog";
 
-type TabValue = "all" | "pending" | "approved" | "rejected" | "trash";
+type TabValue = "all" | "pending" | "approved" | "rejected";
 
 const statusLabel: Record<string, string> = {
   COMPLETED: "Đã upload",
@@ -35,8 +35,6 @@ export const AdminFilesPage: React.FC = () => {
   const { data: documentsResponse = [], isLoading } = useAdminDocuments(activeTab);
   const approveDocument = useApproveDocument();
   const rejectDocument = useRejectDocument();
-  const deleteDocument = useDeleteDocument();
-  const restoreDocument = useRestoreDocument();
 
   // File đang xem trước + tập hợp id đã được admin xem (để bắt buộc xem trước khi duyệt).
   const [preview, setPreview] = useState<{ title: string; url?: string | null; mimeType?: string | null } | null>(null);
@@ -89,18 +87,10 @@ export const AdminFilesPage: React.FC = () => {
               <TabsTrigger value="pending">Chờ duyệt</TabsTrigger>
               <TabsTrigger value="approved">Đã duyệt</TabsTrigger>
               <TabsTrigger value="rejected">Từ chối</TabsTrigger>
-              <TabsTrigger value="trash">Thùng rác</TabsTrigger>
             </TabsList>
 
-            {["all", "pending", "approved", "rejected", "trash"].map((tab) => (
+            {["all", "pending", "approved", "rejected"].map((tab) => (
               <TabsContent key={tab} value={tab} className="space-y-4">
-                {tab === "trash" && (
-                  <div className="px-4 py-3 bg-muted/50 rounded-lg border border-muted">
-                    <p className="text-sm text-muted-foreground">
-                      💡 File trong thùng rác có thể được khôi phục lại cho user. Admin không thể xóa vĩnh viễn file tại đây.
-                    </p>
-                  </div>
-                )}
                 <div className="relative w-full max-w-xs">
                   <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -117,7 +107,7 @@ export const AdminFilesPage: React.FC = () => {
                       <TableHead>File</TableHead>
                       <TableHead>Owner</TableHead>
                       <TableHead>Thời gian upload</TableHead>
-                      <TableHead>{tab === "trash" ? "Thời gian xóa" : "Trạng thái"}</TableHead>
+                      <TableHead>Trạng thái</TableHead>
                       <TableHead>Size</TableHead>
                       <TableHead className="text-right">Hành động</TableHead>
                     </TableRow>
@@ -158,28 +148,15 @@ export const AdminFilesPage: React.FC = () => {
                             })}
                           </TableCell>
                           <TableCell>
-                            {tab === "trash" && d.deletedAt ? (
-                              <span className="text-sm text-muted-foreground">
-                                {new Date(d.deletedAt).toLocaleDateString("vi-VN", {
-                                  year: "numeric",
-                                  month: "2-digit",
-                                  day: "2-digit",
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}
-                              </span>
-                            ) : (
-                              <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
-                                {statusLabel[d.status as string] ?? d.status}
-                              </Badge>
-                            )}
+                            <Badge variant={d.status === "READY" ? "secondary" : d.status === "REJECT" ? "destructive" : "outline"}>
+                              {statusLabel[d.status as string] ?? d.status}
+                            </Badge>
                           </TableCell>
                           <TableCell className="text-muted-foreground">
                             {formatBytes(d.fileSize)}
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
-                              {tab !== "trash" && (
                                 <Button
                                   variant="outline"
                                   size="sm"
@@ -194,7 +171,6 @@ export const AdminFilesPage: React.FC = () => {
                                 >
                                   <Eye className="h-3.5 w-3.5" /> Xem
                                 </Button>
-                              )}
                               {activeTab === "pending" && (
                                 <>
                                   <Button
@@ -226,23 +202,6 @@ export const AdminFilesPage: React.FC = () => {
                                     <XCircle className="h-3.5 w-3.5" /> Từ chối
                                   </Button>
                                 </>
-                              )}
-                              {activeTab === "trash" && (
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  disabled={restoreDocument.isPending}
-                                  onClick={() => {
-                                    if (window.confirm(`Khôi phục file "${d.title}" cho user?`)) {
-                                      restoreDocument.mutate(d.id, {
-                                        onSuccess: () => toast.success("Đã khôi phục file"),
-                                        onError: (err) => toast.error("Lỗi: " + err.message),
-                                      });
-                                    }
-                                  }}
-                                >
-                                  <RotateCcw className="h-3.5 w-3.5" /> Khôi phục
-                                </Button>
                               )}
                             </div>
                           </TableCell>
