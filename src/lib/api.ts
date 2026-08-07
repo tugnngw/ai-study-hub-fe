@@ -232,6 +232,19 @@ export async function api<T = unknown>(
       ? await res.json().catch(() => null)
       : null;
 
+  // Backend wraps errors as ApiResponse{ code: 400, message, data } with HTTP 200.
+  // Treat code >= 400 as an error so failures aren't silently swallowed.
+  const code = json && typeof json === "object" && "code" in json
+      ? (json as { code: unknown }).code
+      : undefined;
+  if (typeof code === "number" && code >= 400) {
+    const message =
+        (json && typeof json === "object" && "message" in json &&
+            String((json as { message: unknown }).message)) ||
+        `Request failed (${code})`;
+    throw new ApiError(res.status, message, json);
+  }
+
   if (!res.ok) {
     const message =
         (json &&

@@ -826,10 +826,7 @@ export function AIChat({
                 disabled={!docId}
                 maxLength={2000}
               />
-              <div className="flex items-center justify-between">
-                <span className={`text-xs ${input.length > 2000 ? "text-destructive" : "text-muted-foreground"}`}>
-                  {input.length} / 2000
-                </span>
+              <div className="flex items-center justify-end">
                 <Button
                   type="submit"
                   size="icon"

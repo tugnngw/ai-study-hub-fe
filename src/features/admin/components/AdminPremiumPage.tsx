@@ -124,7 +124,6 @@ function PlanConfigCard() {
                   <TableHead>Cấp độ</TableHead>
                   <TableHead>Thời hạn</TableHead>
                   <TableHead>Lưu trữ</TableHead>
-                  <TableHead>Quiz AI (số câu)</TableHead>
                   <TableHead>AI Chat (lượt)</TableHead>
                   <TableHead>Tạo Quiz (lượt)</TableHead>
                   <TableHead>Tạo Flashcard (lượt)</TableHead>
@@ -136,13 +135,13 @@ function PlanConfigCard() {
               <TableBody>
                 {isLoading ? (
                   <TableRow>
-                    <TableCell colSpan={12} className="h-20 text-center">
+                    <TableCell colSpan={11} className="h-20 text-center">
                       <Loader2 className="h-5 w-5 animate-spin mx-auto text-primary" />
                     </TableCell>
                   </TableRow>
                 ) : (plans ?? []).length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={12} className="h-20 text-center text-muted-foreground">
+                    <TableCell colSpan={11} className="h-20 text-center text-muted-foreground">
                       Chưa có gói nào
                     </TableCell>
                   </TableRow>
@@ -178,9 +177,6 @@ function PlanConfigCard() {
                         {p.durationDays === 0 || p.durationDays === -1 ? "Vĩnh viễn" : p.durationDays ? `${p.durationDays} ngày` : "—"}
                       </TableCell>
                       <TableCell>{formatStorage(p.storageGb)}</TableCell>
-                      <TableCell>
-                        {p.aiQuestions == null ? "—" : p.aiQuestions > 9999 ? "Không giới hạn" : `${p.aiQuestions} câu`}
-                      </TableCell>
                       <TableCell>
                         {p.chatLimit == null ? "—" : p.chatLimit > 9999 ? "Không giới hạn" : `${p.chatLimit} lượt`}
                       </TableCell>

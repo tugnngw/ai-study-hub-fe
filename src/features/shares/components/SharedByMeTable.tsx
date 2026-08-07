@@ -20,10 +20,8 @@ interface Props {
   page: number;
   totalPages: number;
   onPage: (p: number) => void;
-  onOpen: (id: string) => void;
   onCopyLink: (id: string, name: string) => void;
   onRemove: (id: string, name: string) => void;
-  onReport: (id: string, name: string) => void;
   onAppeal: (id: string, name: string) => void;
 }
 
@@ -143,7 +141,7 @@ export function SharedByMeTable({
                               }] : []),
                               {
                                 icon: <Trash2 className="h-4 w-4" />,
-                                label: "Xóa",
+                                label: "Hủy chia sẻ",
                                 danger: true,
                                 onClick: () => onRemove(it.id, it.name),
                               },

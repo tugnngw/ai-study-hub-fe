@@ -37,7 +37,7 @@ function SubjectDetailPage() {
     <div className="space-y-6">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        <Link to="/" className="hover:text-foreground transition-colors">
+        <Link to="/dashboard" className="hover:text-foreground transition-colors">
           Dashboard
         </Link>
         <span>/</span>
@@ -51,7 +51,7 @@ function SubjectDetailPage() {
         <div>
           <div className="flex items-center gap-2">
             <Link
-              to="/"
+              to="/dashboard"
               className="h-8 w-8 rounded-lg border border-border flex items-center justify-center hover:bg-accent transition-colors"
             >
               <ChevronLeft className="h-4 w-4" />

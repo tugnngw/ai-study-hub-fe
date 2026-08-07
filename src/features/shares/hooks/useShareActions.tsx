@@ -38,7 +38,7 @@ export function useShareActions(opts?: {
     try {
       await sharesApi.deleteShared(id);
       opts?.onRemovedWithMe?.(id);
-      toast.success(`Đã chuyển "${name}" vào Thùng rác`);
+      toast.success(`Đã xóa folder/document được chia sẻ "${name}"`);
     } catch {
       toast.error("Không xóa được");
     }
@@ -47,9 +47,9 @@ export function useShareActions(opts?: {
     try {
       await sharesApi.deleteShared(id);
       opts?.onRemovedByMe?.(id);
-      toast.success(`Đã chuyển "${name}" vào Thùng rác`);
+      toast.success(`Đã hủy chia sẻ "${name}"`);
     } catch {
-      toast.error("Không xóa được");
+      toast.error("Không hủy chia sẻ được");
     }
   };
 

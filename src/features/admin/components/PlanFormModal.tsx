@@ -46,7 +46,6 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
   const [questionLimit, setQuestionLimit] = useState<number>(0);
   const [summaryLimit, setSummaryLimit] = useState<number>(0);
   const [chatLimit, setChatLimit] = useState<number>(0);
-  const [aiQuestions, setAiQuestions] = useState<number>(0);
   const [tier, setTier] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(true);
 
@@ -61,7 +60,6 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
       const useMb = (plan.storageGb || 0) < 1;
       setStorageValue(useMb ? Math.round(plan.storageGb * MB_PER_GB) : plan.storageGb);
       setStorageUnit(useMb ? "MB" : "GB");
-      setAiQuestions(plan.aiQuestions ?? 0);
       setFlashcardLimit(plan.flashcardLimit || 0);
       setQuestionLimit(plan.questionLimit || 0);
       setSummaryLimit(plan.summaryLimit || 0);
@@ -74,7 +72,6 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
       setDurationDays(30);
       setStorageValue(1);
       setStorageUnit("GB");
-      setAiQuestions(10);
       setFlashcardLimit(0);
       setQuestionLimit(0);
       setSummaryLimit(0);
@@ -89,7 +86,6 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
     if (price < 0) return { valid: false, message: "Giá không được nhỏ hơn 0" };
     if (durationDays < -1) return { valid: false, message: "Thời hạn không được nhỏ hơn -1 (-1 là vĩnh viễn)" };
     if (storageValue < 0) return { valid: false, message: "Dung lượng không được nhỏ hơn 0" };
-    if (aiQuestions < 0) return { valid: false, message: "Số câu hỏi AI không được nhỏ hơn 0" };
     if (flashcardLimit < -1) return { valid: false, message: "Giới hạn flashcard không hợp lệ" };
     if (questionLimit < -1) return { valid: false, message: "Giới hạn câu hỏi không hợp lệ" };
     if (summaryLimit < -1) return { valid: false, message: "Giới hạn tóm tắt không hợp lệ" };
@@ -114,7 +110,6 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
           price,
           durationDays,
           storageGb,
-          aiQuestions,
           flashcardLimit,
           questionLimit,
           summaryLimit,
@@ -129,7 +124,6 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
           price,
           durationDays,
           storageGb,
-          aiQuestions,
           flashcardLimit,
           questionLimit,
           summaryLimit,
@@ -223,40 +217,27 @@ export const PlanFormModal: React.FC<PlanFormModalProps> = ({
             </div>
           </div>
 
-          {/* Dung lượng & Quiz */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="storage">Dung lượng lưu trữ *</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="storage"
-                  type="number"
-                  step="any"
-                  value={storageValue}
-                  onChange={(e) => setStorageValue(Number(e.target.value))}
-                  className="flex-1"
-                  placeholder="1"
-                />
-                <select
-                  className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  value={storageUnit}
-                  onChange={(e) => setStorageUnit(e.target.value as "MB" | "GB")}
-                >
-                  <option value="MB">MB</option>
-                  <option value="GB">GB</option>
-                </select>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="aiQuestions">Số câu hỏi Quiz AI *</Label>
+          {/* Dung lượng lưu trữ */}
+          <div className="space-y-2">
+            <Label htmlFor="storage">Dung lượng lưu trữ *</Label>
+            <div className="flex gap-2">
               <Input
-                id="aiQuestions"
+                id="storage"
                 type="number"
-                value={aiQuestions}
-                onChange={(e) => setAiQuestions(Number(e.target.value))}
-                placeholder="100"
+                step="any"
+                value={storageValue}
+                onChange={(e) => setStorageValue(Number(e.target.value))}
+                className="flex-1"
+                placeholder="1"
               />
-              <p className="text-xs text-muted-foreground">Số câu hỏi cho mỗi bài Quiz (mỗi lần tạo)</p>
+              <select
+                className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                value={storageUnit}
+                onChange={(e) => setStorageUnit(e.target.value as "MB" | "GB")}
+              >
+                <option value="MB">MB</option>
+                <option value="GB">GB</option>
+              </select>
             </div>
           </div>
 

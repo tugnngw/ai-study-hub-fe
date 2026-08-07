@@ -40,11 +40,6 @@ export function SharePage() {
   const [reportDocId, setReportDocId] = useState("");
   const [reportDocTitle, setReportDocTitle] = useState("");
 
-  const handleReport = (id: string, name: string) => {
-    setReportDocId(id);
-    setReportDocTitle(name);
-  };
-
   const handleAppeal = (id: string, name: string) => {
     setReportDocId(id);
     setReportDocTitle(name);
@@ -97,7 +92,6 @@ export function SharePage() {
           }}
           onCopyLink={actions.copyLink}
           onRemove={actions.removeByMe}
-          onReport={handleReport}
           onAppeal={handleAppeal}
         />
       )}

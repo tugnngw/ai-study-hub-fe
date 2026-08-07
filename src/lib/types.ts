@@ -73,7 +73,6 @@ export interface Plan {
   price: number;
   durationDays: number;
   storageGb: number;
-  aiQuestions: number;
   chatLimit: number;          // 0: disabled, -1: unlimited, >0: limited count
   flashcardLimit: number;     // 0: disabled, -1: unlimited, >0: limited count
   questionLimit: number;      // 0: disabled, -1: unlimited, >0: limited count
@@ -96,7 +95,6 @@ export interface SubscriptionResponse {
   endDate: string | null;
   pricePaid: number;
   storageGbGranted: number;
-  aiQuestionsGranted: number;
   flashcardLimitGranted: number;
   questionLimitGranted: number;
   summaryLimitGranted: number;
@@ -206,7 +204,6 @@ export interface QuotaDetails {
   storageLimitBytes: number;
   storageRemainingBytes: number;
   overQuota: boolean;
-  aiQuestions: number;
   chatLimit: number;
   flashcardLimit: number;
   questionLimit: number;

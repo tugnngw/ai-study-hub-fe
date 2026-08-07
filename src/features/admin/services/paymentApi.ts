@@ -6,7 +6,6 @@ interface BackendPlan {
   name: string;
   description: string;
   storageGb: number;
-  aiQuestions: number;
   chatLimit?: number;
   flashcardLimit?: number;
   questionLimit?: number;
@@ -104,7 +103,6 @@ export interface AdminPlan {
   price: number;
   durationDays?: number;
   storageGb: number;
-  aiQuestions: number;
   features?: string[];
   isPopular?: boolean;
   displayOrder?: number;
@@ -126,7 +124,6 @@ export interface SubscriptionResponse {
   status: string;
   pricePaid: number;
   storageGbGranted?: number;
-  aiQuestionsGranted?: number;
   flashcardLimitGranted?: number;
   questionLimitGranted?: number;
   summaryLimitGranted?: number;
@@ -168,7 +165,6 @@ export const paymentApi = {
           tagline: p.description || "",
           features: [
             `Lưu trữ ${p.storageGb} GB`,
-            p.aiQuestions > 9999 ? "Không giới hạn câu hỏi AI" : `${p.aiQuestions} câu hỏi AI`,
             isPremium ? "Hỗ trợ 24/7" : "Hỗ trợ ưu tiên",
             isPremium ? "Ưu tiên cao nhất" : "Xử lý nhanh",
           ],
