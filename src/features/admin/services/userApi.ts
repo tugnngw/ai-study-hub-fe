@@ -53,6 +53,7 @@ export const adminUserApi = {
       plan: "FREE" as const,
       role: u.role,
       deletedAt: u.deletedAt,
+      remainingDays: u.remainingDays ?? 0,
     })) : [];
   },
 

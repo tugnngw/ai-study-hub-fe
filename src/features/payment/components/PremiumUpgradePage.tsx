@@ -80,7 +80,7 @@ export function PremiumUpgradePage() {
   const isUpgrade = (p: AdminPlan) => !isCurrent(p) && p.tier > currentTier;
   const isDowngrade = (p: AdminPlan) => !isCurrent(p) && p.tier < currentTier;
 
-  // ✅ SỬA: Gọi API preview từ server - không tính trên FE
+  // ✅ Gọi API preview từ server - chỉ cho nâng gói (upgrade)
   const { data: preview, isLoading: previewLoading } = useQuery({
     queryKey: ['upgradePreview', selected?.id],
     queryFn: () => paymentApi.previewUpgrade(selected!.id),

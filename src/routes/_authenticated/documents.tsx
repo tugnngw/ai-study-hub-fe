@@ -129,7 +129,6 @@ function DocumentsPage() {
                 </th>
                 <th className="px-4 py-3 font-medium hidden md:table-cell">Size</th>
                 <th className="px-4 py-3 font-medium hidden sm:table-cell">Status</th>
-                <th className="px-4 py-3 font-medium w-24">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -152,6 +151,7 @@ function DocumentsPage() {
                     status={d.status}
                     rejectReason={(d as any).rejectReason}
                     pinned={isPinned(d.id)}
+                    createdAt={d.createdAt}
                     onTogglePin={() => togglePin(d.id)}
                   />
                 );
@@ -178,6 +178,7 @@ function DocumentRow({
   status,
   rejectReason,
   pinned,
+  createdAt,
   onTogglePin,
 }: {
   id: string;
@@ -191,6 +192,7 @@ function DocumentRow({
   status: string;
   rejectReason?: string;
   pinned: boolean;
+  createdAt: string;
   onTogglePin: () => void;
 }) {
   const navigate = useNavigate();
@@ -261,6 +263,9 @@ function DocumentRow({
         <td className="px-4 py-3 text-muted-foreground hidden lg:table-cell text-sm">
           {subjectName}
         </td>
+        <td className="px-4 py-3 text-muted-foreground text-sm">
+          {formatDateTime(createdAt)}
+        </td>
         <td className="px-4 py-3 text-muted-foreground hidden md:table-cell truncate max-w-md">
           {description}
         </td>
@@ -269,15 +274,6 @@ function DocumentRow({
         </td>
         <td className="px-4 py-3 hidden sm:table-cell">
            {getStatusBadge()}
-         </td>
-         <td className="px-4 py-3">
-           <DocumentActionsMenu
-             documentId={id}
-             folderId={folderId}
-             title={title}
-             status={status}
-             description={description}
-           />
          </td>
        </tr>
 

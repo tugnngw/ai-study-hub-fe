@@ -102,11 +102,6 @@ export function SharedByMeTable({
                               label: "Sao chép link",
                               onClick: () => onCopyLink(it.id, it.name),
                             },
-                            ...(it.documentId && it.documentStatus !== "BANNED" ? [{
-                              icon: <Flag className="h-4 w-4" />,
-                              label: "Báo cáo",
-                              onClick: () => onReport(it.id, it.name),
-                            }] : []),
                             ...(it.documentId && it.documentStatus === "BANNED" ? [{
                               icon: <Flag className="h-4 w-4" />,
                               label: "Kháng cáo",

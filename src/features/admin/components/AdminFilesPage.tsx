@@ -116,6 +116,7 @@ export const AdminFilesPage: React.FC = () => {
                     <TableRow>
                       <TableHead>File</TableHead>
                       <TableHead>Owner</TableHead>
+                      <TableHead>Thời gian upload</TableHead>
                       <TableHead>{tab === "trash" ? "Thời gian xóa" : "Trạng thái"}</TableHead>
                       <TableHead>Size</TableHead>
                       <TableHead className="text-right">Hành động</TableHead>
@@ -124,7 +125,7 @@ export const AdminFilesPage: React.FC = () => {
                   <TableBody>
                     {filtered.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                        <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
                           Không có file nào
                         </TableCell>
                       </TableRow>
@@ -145,7 +146,16 @@ export const AdminFilesPage: React.FC = () => {
                             </div>
                           </TableCell>
                           <TableCell className="text-muted-foreground">
-                            {d.ownerId?.slice(0, 8)}...
+                            {d.ownerName || d.ownerId?.slice(0, 8) + '...'}
+                          </TableCell>
+                          <TableCell className="text-muted-foreground">
+                            {new Date(d.createdAt).toLocaleDateString("vi-VN", {
+                              year: "numeric",
+                              month: "2-digit",
+                              day: "2-digit",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })}
                           </TableCell>
                           <TableCell>
                             {tab === "trash" && d.deletedAt ? (

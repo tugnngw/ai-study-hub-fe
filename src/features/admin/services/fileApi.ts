@@ -16,11 +16,6 @@ function formatFileSize(bytes: number): string {
   return (bytes / (1024 * 1024)).toFixed(1) + " MB";
 }
 
-function calculateRemainingDays(deletedAt: string): number {
-  const diff = 30 - Math.floor((Date.now() - new Date(deletedAt).getTime()) / (1000 * 60 * 60 * 24));
-  return Math.max(0, diff);
-}
-
 export const adminFileApi = {
   getReportedFiles: async (): Promise<ReportedFileItem[]> => {
     try {
@@ -50,7 +45,7 @@ export const adminFileApi = {
         id: doc.id,
         name: doc.title,
         deletedDate: doc.deletedAt || doc.updatedAt || new Date().toISOString(),
-        remainingDays: calculateRemainingDays(doc.deletedAt || doc.updatedAt || new Date().toISOString()),
+        remainingDays: doc.remainingDays ?? 0,
         size: doc.formattedFileSize,
       }));
     } catch {
@@ -66,7 +61,7 @@ export const adminFileApi = {
         name: a.name,
         email: a.email,
         deletedDate: a.deletedAt ?? new Date().toISOString(),
-        remainingDays: 30 - Math.floor((Date.now() - new Date(a.deletedAt ?? new Date()).getTime()) / (1000 * 60 * 60 * 24)),
+        remainingDays: a.remainingDays ?? 0,
       }));
     } catch {
       return [];

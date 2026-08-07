@@ -46,6 +46,7 @@ export interface AdminUserItem {
   createdAt?: string;
   lastLoginAt?: string;
   deletedAt?: string;
+  remainingDays?: number;
 }
 
 // ── Document ──────────────────────────────────────────
@@ -69,6 +70,7 @@ export interface DocumentResponse {
   mimeType?: string;
   cloudinaryUrl?: string;
   aiStatus?: "NOT_STARTED" | "PROCESSING" | "COMPLETED" | "FAILED";
+  remainingDays?: number;
 }
 
 // ── Reported / managed files ───────────────────────────

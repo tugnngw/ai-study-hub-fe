@@ -266,7 +266,7 @@ export const AdminApprovalsPage: React.FC = () => {
                       <div className="max-w-xs">
                         <div className="flex items-start gap-2">
                           <AlertCircle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-                           <span className="text-sm line-clamp-2">
+                           <span className="text-sm">
                              {getReasonLabel(item.reason)}
                            </span>
                         </div>
